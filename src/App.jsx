@@ -1,24 +1,24 @@
-import { Fragment } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "swiper/scss";
-import PageFull from "./pages/PageFull";
-import HomePage from "./pages/HomePage";
-import SearchPage from "./pages/SearchPage";
-import PlaylistPage from "./pages/PlaylistPage";
-
+import { RouterProvider } from "react-router-dom";
+import router from "./routers/router";
 function App() {
   return (
-    <Fragment>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<PageFull />}>
-            <Route path="/" element={<HomePage />}></Route>
-            <Route path="/search" element={<SearchPage />}></Route>
-            <Route path="/playlist" element={<PlaylistPage />}></Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </Fragment>
+    // <Fragment>
+    //   <BrowserRouter>
+    //     <Routes>
+    //       <Route path="/login" element={<LoginPage />}></Route>
+    //       <Route path="/signup" element={<SignUpPage />}></Route>
+    //       <Route path="/" element={<PageFull />}>
+    //         <Route path="/" element={<HomePage />}></Route>
+    //         <Route path="/search" element={<SearchPage />}></Route>
+    //         <Route path="/playlist" element={<PlaylistPage />}></Route>
+    //       </Route>
+    //     </Routes>
+    //   </BrowserRouter>
+    // </Fragment>
+    <div>
+      <RouterProvider router={router} />
+    </div>
   );
 }
 

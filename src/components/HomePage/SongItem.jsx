@@ -1,13 +1,13 @@
 const SongItem = () => {
   return (
     <div>
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl">
+      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base">
         <img
-          className="ml-[15px] mt-[15px] mr-[15px] mb-[15px] w-[50px] h-[50px] rounded-lg object-cover"
+          className="ml-[15px] mt-[15px] mr-[15px] mb-[15px] w-[40px] h-[40px] xl:w-[50px] xl:h-[50px] rounded-lg object-cover"
           alt="Album cover"
           src="https://source.unsplash.com/random"
         />
-        <div className="text-[#2E3271] text-base font-semibold">
+        <div className="text-[#2E3271] xl:text-base font-semibold">
           <h2 className="">What make you beautiful</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">Maroon V</h2>
         </div>
