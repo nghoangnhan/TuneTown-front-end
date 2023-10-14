@@ -8,16 +8,22 @@ const onFinishFailed = (errorInfo) => {
 };
 const SignUpPage = () => {
   return (
-    <div className="flex flex-col justify-center items-center bg-[#FFFFFFCC]">
+    <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
       <div className="flex flex-row flex-1 relative">
+        <div className="hidden xl:block xl:w-1/2">
+          <img
+            src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
+            className="h-screen w-auto object-cover"
+            alt=""
+          />
+        </div>
+
         <div className="flex flex-col justify-center items-center min-h-screen xl:w-1/2">
           <div className="mb-20">
-            <h1 className="font-bold text-[#2E3271] text-3xl">
-              Create Your Account
-            </h1>
+            <h1 className="font-bold text-[#2E3271] text-3xl">Sign up</h1>
           </div>
           <Form
-            className="w-full flex flex-col justify-center items-center"
+            className="w-full"
             name="basic"
             labelCol={{
               span: 8,
@@ -86,8 +92,8 @@ const SignUpPage = () => {
           </Form>
           <div>
             <p className="text-[#2E3271]">
-              Have an account?{" "}
-              <NavLink to="/login" className="text-[#34a56d]">
+              Have an account?
+              <NavLink to="/login" className="text-[#34a56d] ml-1">
                 Login
               </NavLink>
             </p>
@@ -95,14 +101,6 @@ const SignUpPage = () => {
           <footer className="bottom-5 absolute ">
             <p className="text-[#8d8d8d]">© 2023 TuneTown</p>
           </footer>
-        </div>
-
-        <div className="hidden xl:block xl:w-1/2">
-          <img
-            src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
-            className="h-screen w-auto object-cover"
-            alt=""
-          />
         </div>
       </div>
     </div>
