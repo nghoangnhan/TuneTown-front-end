@@ -13,6 +13,16 @@ const TheHeader = () => {
           Home <span className="">{">"}</span>
         </div>
       </NavLink>
+      <NavLink
+        to="/detail"
+        className={({ isActive }) =>
+          isActive ? "text-[#2E3271]" : "text-[#2E327180]"
+        }
+      >
+        <div className="font-bold">
+          Detail Playlist <span className="">{">"}</span>
+        </div>
+      </NavLink>
     </header>
   );
 };

@@ -3,10 +3,9 @@ import PlaylistItem from "./PlaylistItem";
 
 const PlaylistSection = () => {
   return (
-    <div className="playlist-section xl:w-full">
-      <h1 className="text-[#2E3271] text-xl font-bold">Chart: Top 50</h1>
+    <div className="playlist-section xl:w-full py-2">
       <Swiper
-        className="mt-7"
+        className="xl:mt-7 mt-4 pl-3 xl:pl-2"
         spaceBetween={50}
         grabCursor={"true"}
         slidesPerView={"auto"}
