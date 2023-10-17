@@ -7,11 +7,12 @@ const DurationBar = () => {
   let [currentTime, setCurrentTime] = useState(0);
 
   // Max time of the song
-  const [duration, setDuration] = useState(300);
-
+  const [duration, setDuration] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef();
-  const SongDuration = () => {
-    // Get the max duration of the song
+
+  // Get the max duration of the song
+  const getSongDuration = () => {
     setDuration(audioRef.current.duration);
   };
 
@@ -23,12 +24,10 @@ const DurationBar = () => {
     return `${minutes}:${formattedSeconds}`;
   };
 
-  const [isPlaying, setIsPlaying] = useState(false);
-
   // Update the currentTime every second
   useEffect(() => {
     // Get the duration of the song
-    SongDuration();
+    getSongDuration();
     // Count the currentTime every second
     let interval;
     if (isPlaying) {
@@ -50,21 +49,29 @@ const DurationBar = () => {
     return () => clearInterval(interval);
   }, [isPlaying, currentTime, duration]);
 
-  // When the seekbar is changed by user, the currentTime will be changed
+  // When the seekbar is changed by user
   const handleSeek = (e) => {
+    // newTime is the new value of the seekbar
     const newTime = e.target.value;
     setCurrentTime(parseFloat(newTime));
+
+    // When move the seekbar, the song will be played
+    setIsPlaying(true);
+    audioRef.current.play();
+
     // Điều hướng đến thời gian mới trong bài hát
-    // Ví dụ: audioElement.current.currentTime = newTime;
     audioRef.current.currentTime = newTime;
-    if (!isPlaying) {
+    // if the song is paused, play the song
+    if (newTime < duration && newTime > 0 && isPlaying === false) {
       setIsPlaying(true);
-    } else if (newTime == duration) {
+    }
+    // If the song is ended, stop the song
+    else if (newTime === duration || newTime > duration) {
       setIsPlaying(false);
     }
   };
 
-  // When click the play/pause button, the isPlaying state will be changed
+  // When click the play/pause button
   const handlePlayPause = () => {
     /**
      *Set the isPlaying state to the opposite value, then the useEffect will
@@ -72,11 +79,11 @@ const DurationBar = () => {
      */
     setIsPlaying(!isPlaying);
     // Pause the song
-    if (isPlaying) {
+    if (isPlaying === true) {
       audioRef.current.pause();
     }
     // Play the song
-    else {
+    else if (isPlaying === false) {
       audioRef.current.play();
     }
   };
