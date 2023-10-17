@@ -8,7 +8,6 @@ import SearchPage from "../pages/SearchPage";
 export default function init(routes) {
   const route = {
     path: "/",
-
     element: <PageFull />,
     // Element là AuthenLayout, các children muốn hiển thị được trong AuthenLayout thì trong Layout phải có outlet mới hiển thị được
     // outlet đóng vai trò tương tự children
@@ -20,19 +19,19 @@ export default function init(routes) {
     //       </Route>
     children: [
       {
-        index: true,
+        path: "home",
         element: <HomePage />,
       },
       {
-        path: "/search",
+        path: "search",
         element: <SearchPage />,
       },
       {
-        path: "/playlist",
+        path: "playlist",
         element: <PlaylistPage />,
       },
       {
-        path: "/detail/:id",
+        path: "detail/:id",
         element: <DetailPlaylist />,
       },
     ],

@@ -1,14 +1,59 @@
-import { Form, Input } from "antd";
-import { NavLink } from "react-router-dom";
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+/* eslint-disable no-unused-vars */
+import { DatePicker, Form, Input, message } from "antd";
+import axios from "axios";
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+
 const SignUpPage = () => {
+  // Fetch data from API
+  const [data, setData] = useState([]);
+  const [errorDetail, setErrorDetail] = useState();
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+
+  async function PostData(usn, email, password, bdate) {
+    try {
+      const response = await axios.post("http://localhost:8080/auth/register", {
+        username: usn,
+        email: email,
+        password: password,
+        birthDate: bdate,
+      });
+      setData(response.data);
+      if (response.data) {
+        messageApi.open({
+          type: "success",
+          content: "Sign Up Successfully",
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+      console.log("Respone Data Sign Up", response.data);
+    } catch (error) {
+      console.log("Error Post Data function:", error);
+      const errorName = error.response.data.detail;
+      setErrorDetail(errorName);
+      messageApi.open({
+        type: "error",
+        content: errorName,
+        duration: 1,
+      });
+      throw error;
+    }
+  }
+
+  const onFinish = (values) => {
+    console.log("Data inputed:", values);
+    const { username, email, password, birthDate } = values;
+    const data = PostData(username, email, password, birthDate);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
+      {contextHolder}
       <div className="flex flex-row flex-1 relative">
         <div className="hidden xl:block xl:w-1/2">
           <img
@@ -53,6 +98,27 @@ const SignUpPage = () => {
             >
               <Input />
             </Form.Item>
+            <Form.Item
+              label="Birthday"
+              name="birthDate"
+              rules={[
+                { required: true, message: "Please input your date of birth!" },
+              ]}
+            >
+              <DatePicker />
+            </Form.Item>
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your email!",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
 
             <Form.Item
               label="Password"
@@ -77,16 +143,14 @@ const SignUpPage = () => {
             ></Form.Item>
 
             <Form.Item
+              className="flex flex-row justify-center items-center"
               wrapperCol={{
                 offset: 8,
                 span: 16,
               }}
             >
-              <button
-                className="bg-[#38a870] text-white hover:bg-[#54ce91] hover:text-[#fff] px-3 py-2 rounded-lg font-semibold"
-                // htmlType="submit"
-              >
-                Submit
+              <button className="bg-[#38a870] text-white hover:bg-[#54ce91] hover:text-[#fff] py-2 px-3 w-max rounded-lg font-semibold">
+                Sign Up
               </button>
             </Form.Item>
           </Form>
