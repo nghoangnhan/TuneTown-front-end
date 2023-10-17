@@ -1,16 +1,18 @@
 /* eslint-disable no-unused-vars */
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import audioFile from "../assets/music/HappyNewYear.mp3";
 
 const DurationBar = () => {
-  var [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(300); // Giả sử bài hát có thời lượng 300 giây
+  // Current time when play a song
+  let [currentTime, setCurrentTime] = useState(0);
 
-  // When the seekbar is changed, the currentTime will be changed
-  const handleSeek = (e) => {
-    const newTime = e.target.value;
-    setCurrentTime(parseFloat(newTime));
-    // Điều hướng đến thời gian mới trong bài hát
-    // Ví dụ: audioElement.current.currentTime = newTime;
+  // Max time of the song
+  const [duration, setDuration] = useState(300);
+
+  const audioRef = useRef();
+  const SongDuration = () => {
+    // Get the max duration of the song
+    setDuration(audioRef.current.duration);
   };
 
   // Transform seconds to minutes:seconds
@@ -22,26 +24,61 @@ const DurationBar = () => {
   };
 
   const [isPlaying, setIsPlaying] = useState(false);
+
   // Update the currentTime every second
   useEffect(() => {
+    // Get the duration of the song
+    SongDuration();
+    // Count the currentTime every second
     let interval;
     if (isPlaying) {
+      // Update every second
       interval = setInterval(() => {
         setCurrentTime((prevTime) => prevTime + 1);
-      }, 1000); // Update every second
-      if (currentTime == duration) {
+      }, 1000);
+      // if max time is reached, stop the interval
+      if (currentTime == duration || currentTime > duration) {
         setIsPlaying(false);
         setCurrentTime(0);
         clearInterval(interval);
       }
-    } else {
+    }
+    // If the song is paused, stop the interval
+    else {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
   }, [isPlaying, currentTime, duration]);
+
+  // When the seekbar is changed by user, the currentTime will be changed
+  const handleSeek = (e) => {
+    const newTime = e.target.value;
+    setCurrentTime(parseFloat(newTime));
+    // Điều hướng đến thời gian mới trong bài hát
+    // Ví dụ: audioElement.current.currentTime = newTime;
+    audioRef.current.currentTime = newTime;
+    if (!isPlaying) {
+      setIsPlaying(true);
+    } else if (newTime == duration) {
+      setIsPlaying(false);
+    }
+  };
+
   // When click the play/pause button, the isPlaying state will be changed
   const handlePlayPause = () => {
+    /**
+     *Set the isPlaying state to the opposite value, then the useEffect will
+     *be triggered and the play/pause button will be changed
+     */
     setIsPlaying(!isPlaying);
+    // Pause the song
+    if (isPlaying) {
+      audioRef.current.pause();
+    }
+    // Play the song
+    else {
+      audioRef.current.play();
+    }
   };
 
   return (
@@ -95,6 +132,9 @@ const DurationBar = () => {
             <path d="M7 6v12l10-6z"></path>
           </svg>
         </button>
+
+        {/* // Audio element */}
+        <audio ref={audioRef} src={audioFile} autoPlay></audio>
 
         {/* // Skip next button  */}
         <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">

@@ -21,37 +21,35 @@ const LoginPage = () => {
           password: passwordInput,
         }
       );
-      console.log("Respone Data", response.data);
+      console.log("Respone Data Sign Up", response.data);
+      if (response.data && response.data.access_token) {
+        messageApi.open({
+          type: "success",
+          content: "Login Successfully",
+        });
+        setTimeout(() => {
+          navigate("/home");
+        }, 0);
+      }
       saveToken(response.data.access_token);
+      console.log("Token", response.data.access_token);
       return response.data;
     } catch (error) {
-      console.error("Error:", error);
+      console.log("Error:", error);
+      messageApi.open({
+        type: "error",
+        content: "Login Failed",
+      });
       throw error;
     }
   }
 
   // Login
   const onFinish = async (values) => {
-    console.log("Success:", values);
+    console.log("Data inputed:", values);
     const { email, password } = values;
-    try {
-      const data = await GetAccessToken(email, password);
-      if (data) {
-        messageApi.open({
-          type: "success",
-          content: "Login Successfully",
-        });
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      messageApi.open({
-        type: "error",
-        content: "Login Failed",
-      });
-    }
+
+    await GetAccessToken(email, password);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -121,12 +119,13 @@ const LoginPage = () => {
             ></Form.Item>
 
             <Form.Item
+              className="flex flex-row justify-center items-center"
               wrapperCol={{
                 offset: 8,
                 span: 16,
               }}
             >
-              <button className="bg-[#38a870] text-white hover:bg-[#54ce91] hover:text-[#fff] px-3 py-2 rounded-lg font-semibold">
+              <button className="bg-[#38a870] text-white hover:bg-[#54ce91] hover:text-[#fff] py-2 px-3 w-max rounded-lg font-semibold">
                 Submit
               </button>
             </Form.Item>
@@ -134,7 +133,7 @@ const LoginPage = () => {
 
           <div>
             <p className="text-[#2E3271]">
-              Dont have an account?
+              Don&apos;t have account?
               <NavLink to="/signup" className="text-[#34a56d] ml-1">
                 Sign up
               </NavLink>

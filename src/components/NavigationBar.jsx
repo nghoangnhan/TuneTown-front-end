@@ -1,6 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import UseCookie from "../hooks/useCookie";
 
 const NavigationBar = () => {
+  const navigate = useNavigate();
+  const { removeCookie } = UseCookie();
+  // Log Out
+  const LogOut = () => {
+    removeCookie();
+    navigate("/");
+  };
+
   return (
     <div>
       {/* Navigation Laptop  */}
@@ -20,7 +29,7 @@ const NavigationBar = () => {
             <div className="text-[#7C8DB5B8] ml-6">General</div>
             <div className="flex flex-col ml-6 mt-7 gap-2">
               <NavLink
-                to="/"
+                to="/home"
                 className={({ isActive }) =>
                   isActive
                     ? "h-10 w-48 bg-gradient-to-r from-[#7DC383] to-[#699C78] hover:text-[#e9e5e5] text-white flex justify-center items-center rounded-lg"
@@ -52,7 +61,10 @@ const NavigationBar = () => {
             </div>
             <div className="ml-6">
               <div className="text-[#7C8DB5B8] mt-6 ml-6">More</div>
-              <div className="h-10 w-48 flex justify-center items-center rounded-lg mt-4 bg-[#c1c3c8b8] hover:bg-[#7DC383] hover:text-white text-[#5a6680b8] font-bold cursor-pointer">
+              <div
+                onClick={() => LogOut()}
+                className="h-10 w-48 flex justify-center items-center rounded-lg mt-4 bg-[#c1c3c8b8] hover:bg-[#7DC383] hover:text-white text-[#5a6680b8] font-bold cursor-pointer"
+              >
                 Log Out
               </div>
             </div>
