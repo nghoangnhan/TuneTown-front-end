@@ -1,92 +1,96 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import audioFile from "../assets/music/HappyNewYear.mp3";
+import { useMediaQuery } from "react-responsive";
+import { useSelector, useDispatch } from "react-redux";
+import useSongDuration from "../utils/songUtils";
+import {
+  setCurrentSong,
+  setCurrentTime,
+  setDuration,
+  setIsPlaying,
+} from "../redux/slice/music";
+// import audioFile from "../assets/music/HappyNewYear.mp3";
 
 const DurationBar = () => {
-  // Current time when play a song
-  let [currentTime, setCurrentTime] = useState(0);
-
-  // Max time of the song
-  const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { TimeConvert, CheckPlaying } = useSongDuration(); // Song Function
+  const dispatch = useDispatch();
   const audioRef = useRef();
+  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  // const [duration, setDuration] = useState("0"); // Max time of the song
+  const duration = useSelector((state) => state.music.currentSong.songDuration);
+  const audioFile = useSelector((state) => state.music.currentSong.songLink);
+  const currentTime = useSelector((state) => state.music.currentTime); // Current time when play a song
+  const isPlaying = useSelector((state) => state.music.isPlaying); // Check if the song is playing
 
-  // Get the max duration of the song
-  const getSongDuration = () => {
+  // // Get the max duration of the song
+  const GetSongDuration = (audioRef) => {
     setDuration(audioRef.current.duration);
   };
+  // When the seekbar is changed by user
+  const handleSeek = (e) => {
+    const newTime = e.target.value; // newTime is the new value of the seekbar
+    dispatch(setCurrentTime(parseFloat(newTime)));
+    dispatch(setIsPlaying(true)); // When move the seekbar, the song will be played
+    audioRef.current.play();
+    audioRef.current.currentTime = newTime; // Set the currentTime of the song to the newTime
 
-  // Transform seconds to minutes:seconds
-  const TimeConvert = (sec) => {
-    const minutes = Math.floor(sec / 60);
-    const seconds = Math.floor(sec % 60);
-    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-    return `${minutes}:${formattedSeconds}`;
+    // If the song is paused, play the song
+    if (newTime > 0 && newTime < duration && isPlaying === false) {
+      dispatch(setIsPlaying(true));
+    }
+    // If the song is ended, stop the song
+    else if (newTime >= duration - 1) {
+      dispatch(setIsPlaying(false));
+    }
+  };
+  // When click the play/pause button
+  const handlePlayPause = () => {
+    /**
+    Set the isPlaying state to the opposite value, 
+    then the useEffect willbe triggered and the play/pause button will be changed
+     */
+    dispatch(setIsPlaying(!isPlaying));
+    // Pause the song
+    if (isPlaying == true && currentTime < duration) {
+      audioRef.current.pause();
+    }
+    // Play the song
+    else if (isPlaying == false && currentTime < duration) {
+      audioRef.current.play();
+    }
+
+    // If the song is ended, play the song from the beginning
+    else if (currentTime >= duration - 1) {
+      dispatch(setCurrentTime(0));
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
   };
 
   // Update the currentTime every second
   useEffect(() => {
-    // Get the duration of the song
-    getSongDuration();
-    // Count the currentTime every second
-    let interval;
-    if (isPlaying) {
+    GetSongDuration(audioRef); // Get the duration of the song
+    CheckPlaying(audioRef);
+    let interval; // Count the isPlaying
+    if (isPlaying == true && currentTime < duration) {
       // Update every second
       interval = setInterval(() => {
-        setCurrentTime((prevTime) => prevTime + 1);
+        dispatch(setCurrentTime(currentTime + 1));
+        audioRef.current.currentTime = currentTime + 1;
+        audioRef.current.play();
       }, 1000);
-      // if max time is reached, stop the interval
-      if (currentTime == duration || currentTime > duration) {
-        setIsPlaying(false);
-        setCurrentTime(0);
-        clearInterval(interval);
-      }
+      dispatch(setIsPlaying(true));
     }
-    // If the song is paused, stop the interval
-    else {
+    // if max time is reached, stop the interval
+    else if (currentTime >= duration && isPlaying == true) {
+      dispatch(setCurrentTime(0));
+      dispatch(setIsPlaying(!isPlaying));
       clearInterval(interval);
+    } else {
+      clearInterval(interval); // If the song is paused, stop the interval
     }
     return () => clearInterval(interval);
-  }, [isPlaying, currentTime, duration]);
-
-  // When the seekbar is changed by user
-  const handleSeek = (e) => {
-    // newTime is the new value of the seekbar
-    const newTime = e.target.value;
-    setCurrentTime(parseFloat(newTime));
-
-    // When move the seekbar, the song will be played
-    setIsPlaying(true);
-    audioRef.current.play();
-
-    // Điều hướng đến thời gian mới trong bài hát
-    audioRef.current.currentTime = newTime;
-    // if the song is paused, play the song
-    if (newTime < duration && newTime > 0 && isPlaying === false) {
-      setIsPlaying(true);
-    }
-    // If the song is ended, stop the song
-    else if (newTime === duration || newTime > duration) {
-      setIsPlaying(false);
-    }
-  };
-
-  // When click the play/pause button
-  const handlePlayPause = () => {
-    /**
-     *Set the isPlaying state to the opposite value, then the useEffect will
-     *be triggered and the play/pause button will be changed
-     */
-    setIsPlaying(!isPlaying);
-    // Pause the song
-    if (isPlaying === true) {
-      audioRef.current.pause();
-    }
-    // Play the song
-    else if (isPlaying === false) {
-      audioRef.current.play();
-    }
-  };
+  }, [isPlaying, currentTime, duration, dispatch, CheckPlaying]);
 
   return (
     <div className="flex flex-col">
@@ -141,7 +145,7 @@ const DurationBar = () => {
         </button>
 
         {/* // Audio element */}
-        <audio ref={audioRef} src={audioFile} autoPlay></audio>
+        <audio ref={audioRef} src={audioFile}></audio>
 
         {/* // Skip next button  */}
         <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">
@@ -157,18 +161,41 @@ const DurationBar = () => {
           </svg>
         </button>
       </div>
-      <div className="xl:flex flex-row justify-center items-center xl:relative hidden">
-        <span className="text-xs xl:text-base">{TimeConvert(currentTime)}</span>
-        <input
-          type="range"
-          min="0"
-          max={duration}
-          value={currentTime}
-          onChange={handleSeek}
-          className="bg-[#B9C0DE] w-32 xl:w-[400px] h-1 xl:h-1 mx-2 xl:mx-4 rounded-full"
-        />
-        <span className="text-xs xl:text-base">{TimeConvert(duration)}</span>
-      </div>
+
+      {/* // Seekbar Control Song */}
+      {isMobile && (
+        <div className="xl:flex flex-row justify-center items-center xl:relative max-sm:static max-sm:bottom-0 max-sm:w-screen ">
+          <span className="text-xs xl:text-base">
+            {TimeConvert(currentTime)}
+          </span>
+          <input
+            type="range"
+            min="0"
+            max={duration}
+            value={currentTime}
+            onChange={handleSeek}
+            className="bg-[#B9C0DE] max-sm:w-screen max-sm:px-5 xl:w-[400px] h-1 xl:h-1 mx-2 xl:mx-4 rounded-full"
+          />
+          <span className="text-xs xl:text-base">{TimeConvert(duration)}</span>
+        </div>
+      )}
+
+      {!isMobile && (
+        <div className="xl:flex flex-row justify-center items-center xl:relative">
+          <span className="text-xs xl:text-base">
+            {TimeConvert(currentTime)}
+          </span>
+          <input
+            type="range"
+            min="0"
+            max={duration}
+            value={currentTime}
+            onChange={handleSeek}
+            className="bg-[#B9C0DE] xl:w-[400px] h-1 xl:h-1 mx-2 xl:mx-4 rounded-full"
+          />
+          <span className="text-xs xl:text-base">{TimeConvert(duration)}</span>
+        </div>
+      )}
     </div>
   );
 };
