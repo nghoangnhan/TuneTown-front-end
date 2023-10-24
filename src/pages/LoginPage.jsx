@@ -23,19 +23,22 @@ const LoginPage = () => {
       );
       console.log("Respone Data Sign Up", response.data);
       if (response.data && response.data.access_token) {
+        // Notifactaion when login successfully
         messageApi.open({
           type: "success",
           content: "Login Successfully",
         });
         setTimeout(() => {
           navigate("/home");
-        }, 0);
+        }, 1000);
       }
+      // Save cookies and token
       saveToken(response.data.access_token);
       console.log("Token", response.data.access_token);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
+      // Notifactaion when login failed
       messageApi.open({
         type: "error",
         content: "Login Failed",
@@ -48,7 +51,6 @@ const LoginPage = () => {
   const onFinish = async (values) => {
     console.log("Data inputed:", values);
     const { email, password } = values;
-
     await GetAccessToken(email, password);
   };
   const onFinishFailed = (errorInfo) => {

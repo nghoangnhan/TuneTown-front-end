@@ -62,7 +62,7 @@ const NavigationBar = () => {
             <div className="ml-6">
               <div className="text-[#7C8DB5B8] mt-6 ml-6">More</div>
               <div
-                onClick={() => LogOut()}
+                onClick={LogOut}
                 className="h-10 w-48 flex justify-center items-center rounded-lg mt-4 bg-[#c1c3c8b8] hover:bg-[#7DC383] hover:text-white text-[#5a6680b8] font-bold cursor-pointer"
               >
                 Log Out
