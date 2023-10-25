@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const accountStore = createSlice({
   name: "account",
   initialState: {
-    usersInfo: {
+    usersInfor: {
       id: 505,
       userName: "Nguyen Hoang Nhan",
       email: "test@gmail.com",
@@ -33,10 +33,21 @@ const accountStore = createSlice({
         listAccount: action.payload,
       };
     },
+    setUserInfor: (state, action) => {
+      return {
+        ...state,
+        usersInfo: action.payload,
+      };
+    },
   },
 });
 //Action
-export const { authLogin, authRegister, setUser, setListAccount } =
-  accountStore.actions;
+export const {
+  authLogin,
+  authRegister,
+  setUser,
+  setListAccount,
+  setUserInfor,
+} = accountStore.actions;
 //Reducer
 export default accountStore.reducer;

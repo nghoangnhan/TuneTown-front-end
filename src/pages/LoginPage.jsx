@@ -1,19 +1,28 @@
 /* eslint-disable no-unused-vars */
+import { useEffect } from "react";
+import axios from "axios";
 import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import axios from "axios";
 import { NavLink, redirect, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
-import { useEffect } from "react";
 import { auth } from "../api/config";
+import { useDispatch } from "react-redux";
+import { setUserInfor } from "../redux/slice/account";
 
 const LoginPage = () => {
   const { removeToken } = UseCookie();
   const [form] = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { saveToken } = UseCookie();
   const [messageApi, contextHolder] = message.useMessage();
 
+  const handleUserData = (usersData) => {
+    console.log("Data", usersData);
+    const { id, userName, role } = usersData;
+    dispatch(setUserInfor(usersData));
+    console.log("User", userName);
+  };
   // Get access to the API
   async function GetAccessToken(emailInput, passwordInput) {
     try {
@@ -24,10 +33,11 @@ const LoginPage = () => {
           password: passwordInput,
         }
       );
-      console.log("Respone Data Sign Up", response.data);
+      console.log("Respone Data Sign in", response.data);
       if ((response.data && response.data.access_token) || response.data) {
         // Save cookies and token
         saveToken(response.data.access_token);
+        handleUserData(response.data);
         console.log("Token", response.data.access_token);
         // Notifactaion when login successfully
         messageApi.open({

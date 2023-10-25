@@ -9,6 +9,7 @@ import {
   setSongLinks,
 } from "../../redux/slice/music";
 import useSongDuration from "../../utils/songUtils";
+import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
 import MakeUBeauti from "../../assets/music/What_Makes_You_Beautiful.mp3";
 
 const SongItem = ({ song }) => {
@@ -46,11 +47,11 @@ const SongItem = ({ song }) => {
 
   return (
     <div>
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base">
+      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1">
         <img
-          className="ml-[15px] mt-[15px] mr-[15px] mb-[15px] w-[40px] h-[40px] xl:w-[50px] xl:h-[50px] rounded-lg object-cover"
+          className="mr-3 w-12 h-12 xl:w-14 xl:h-14 rounded-lg object-cover"
           alt="Album cover"
-          src={poster}
+          src={poster ? poster : DefaultArt}
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
