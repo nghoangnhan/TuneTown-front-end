@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { DatePicker, Form, Input, message } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
@@ -9,6 +9,8 @@ const SignUpPage = () => {
   const [data, setData] = useState([]);
   const [errorDetail, setErrorDetail] = useState();
   const [messageApi, contextHolder] = message.useMessage();
+  const passwordRef = useRef();
+  const repasswordRef = useRef();
   const navigate = useNavigate();
 
   async function PostData(usn, email, password, bdate) {
@@ -43,10 +45,23 @@ const SignUpPage = () => {
     }
   }
 
+  // post data to API
   const onFinish = (values) => {
     console.log("Data inputed:", values);
     const { username, email, password, birthDate } = values;
-    const data = PostData(username, email, password, birthDate);
+
+    PostData(username, email, password, birthDate);
+  };
+  const onCheckPassword = () => {
+    const password = passwordRef.current.value;
+    const repassword = repasswordRef.current.value;
+    if (password !== repassword) {
+      messageApi.open({
+        type: "error",
+        content: "Password not match",
+        duration: 1,
+      });
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -130,6 +145,33 @@ const SignUpPage = () => {
                 },
               ]}
             >
+              <Input.Password ref={passwordRef} />
+            </Form.Item>
+
+            <Form.Item
+              name="confirm"
+              label="Confirm Password"
+              dependencies={["password"]}
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "Please confirm your password!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(
+                        "The new password that you entered do not match!"
+                      )
+                    );
+                  },
+                }),
+              ]}
+            >
               <Input.Password />
             </Form.Item>
 
@@ -157,7 +199,7 @@ const SignUpPage = () => {
           <div>
             <p className="text-[#2E3271]">
               Have an account?
-              <NavLink to="/login" className="text-[#34a56d] ml-1">
+              <NavLink to="/" className="text-[#34a56d] ml-1">
                 Login
               </NavLink>
             </p>

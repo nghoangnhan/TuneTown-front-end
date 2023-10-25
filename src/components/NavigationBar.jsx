@@ -3,10 +3,10 @@ import UseCookie from "../hooks/useCookie";
 
 const NavigationBar = () => {
   const navigate = useNavigate();
-  const { removeCookie } = UseCookie();
+  const { removeToken } = UseCookie();
   // Log Out
   const LogOut = () => {
-    removeCookie();
+    removeToken();
     navigate("/");
   };
 
@@ -18,7 +18,7 @@ const NavigationBar = () => {
           <div className="text-center pt-6 uppercase font-bold text-lg flex flex-row justify-center items-center gap-5">
             <div>
               <img
-                src="https://source.unsplash.com/random"
+                src="src\assets\img\logo\logo.png"
                 className="h-12 rounded-lg"
                 alt=""
               />
@@ -56,7 +56,7 @@ const NavigationBar = () => {
                     : "h-10 w-48 hover:text-[#7DC383] text-[#2E327180] flex justify-center items-center rounded-lg"
                 }
               >
-                Playlists
+                My Playlists
               </NavLink>
             </div>
             <div className="ml-6">
