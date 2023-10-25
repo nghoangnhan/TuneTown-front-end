@@ -4,8 +4,11 @@ import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { NavLink, redirect, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
+import { useEffect } from "react";
+import { auth } from "../api/config";
 
 const LoginPage = () => {
+  const { removeToken } = UseCookie();
   const [form] = useForm();
   const navigate = useNavigate();
   const { saveToken } = UseCookie();
@@ -22,19 +25,21 @@ const LoginPage = () => {
         }
       );
       console.log("Respone Data Sign Up", response.data);
-      if (response.data && response.data.access_token) {
+      if ((response.data && response.data.access_token) || response.data) {
+        // Save cookies and token
+        saveToken(response.data.access_token);
+        console.log("Token", response.data.access_token);
         // Notifactaion when login successfully
         messageApi.open({
           type: "success",
           content: "Login Successfully",
         });
         setTimeout(() => {
-          navigate("/home");
+          // navigate("/home");
+          window.location.href = "/home";
         }, 1000);
       }
-      // Save cookies and token
-      saveToken(response.data.access_token);
-      console.log("Token", response.data.access_token);
+
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -46,6 +51,10 @@ const LoginPage = () => {
       throw error;
     }
   }
+  useEffect(() => {
+    console.log("Token removed", auth.access_token);
+    removeToken();
+  }, []);
 
   // Login
   const onFinish = async (values) => {

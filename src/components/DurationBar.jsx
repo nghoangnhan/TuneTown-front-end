@@ -164,7 +164,7 @@ const DurationBar = () => {
 
       {/* // Seekbar Control Song */}
       {isMobile && (
-        <div className="xl:flex flex-row justify-center items-center xl:relative max-sm:static max-sm:bottom-0 max-sm:w-screen ">
+        <div className="flex flex-row justify-center items-center xl:relative max-sm:static max-sm:bottom-0 max-sm:w-screen px-5">
           <span className="text-xs xl:text-base">
             {TimeConvert(currentTime)}
           </span>
@@ -174,7 +174,7 @@ const DurationBar = () => {
             max={duration}
             value={currentTime}
             onChange={handleSeek}
-            className="bg-[#B9C0DE] max-sm:w-screen max-sm:px-5 xl:w-[400px] h-1 xl:h-1 mx-2 xl:mx-4 rounded-full"
+            className="bg-[#B9C0DE] max-sm:w-screen max-sm:px-5 h-1  mx-2  rounded-full"
           />
           <span className="text-xs xl:text-base">{TimeConvert(duration)}</span>
         </div>

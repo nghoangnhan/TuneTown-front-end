@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,27 +8,32 @@ import {
   setIsPlaying,
   setSongLinks,
 } from "../../redux/slice/music";
-import MakeUBeauti from "../../assets/music/What_Makes_You_Beautiful.mp3";
 import useSongDuration from "../../utils/songUtils";
+import MakeUBeauti from "../../assets/music/What_Makes_You_Beautiful.mp3";
 
-const SongItem = () => {
+const SongItem = ({ song }) => {
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   const audioRef = useRef();
   const dispatch = useDispatch();
   const { showArtist, GetSongDuration, TimeConvert } = useSongDuration();
+  const { songName, artists, poster, songData } = song;
   // const songInfor = useSelector((state) => state.music.currentSong);
+  const artistArr = artists.map((artist) => artist.userName);
+  // const youtubeDuration = GetYoutubeVideoDuration(songData);
+
   const songInforObj = {
-    songName: songInfor.songName,
-    artistName: songInfor.artistName,
+    songName: songName,
+    artistName: artistArr,
     songDuration: songInfor.songDuration,
-    songCover: songInfor.songCover,
-    songLink: MakeUBeauti,
+    songCover: poster,
+    songLink: songData,
   };
 
   // When click to the song, save the current song to the context and play it
   const HandlePlay = () => {
     dispatch(setCurrentTime(0));
+    // dispatch(setCurrentSong(songInforObj));
     dispatch(setCurrentSong(songInforObj));
     // dispatch(setSongLinks(songInforObj.songLink));
     if (isPlaying == false) {
@@ -35,6 +41,8 @@ const SongItem = () => {
       // audioRef.current.play();
     }
   };
+  // const songDuration = GetSongDuration(songData);
+  const audio = document.getElementById("audio");
 
   return (
     <div>
@@ -42,14 +50,19 @@ const SongItem = () => {
         <img
           className="ml-[15px] mt-[15px] mr-[15px] mb-[15px] w-[40px] h-[40px] xl:w-[50px] xl:h-[50px] rounded-lg object-cover"
           alt="Album cover"
-          src={songInforObj.songCover}
+          src={poster}
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
         <div className="text-[#2E3271] xl:text-base font-semibold">
           <h2 className="">{songInforObj.songName}</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">
-            {showArtist(songInforObj.artistName)}
+            {artists && showArtist(artistArr)}
+            {/* {artists &&
+              artists.map((artist) => (
+                <span key={artist.id}>{artist.userName}</span>
+              ))} */}
+            {!artists && <span>Null</span>}
           </h2>
         </div>
         <div className="absolute right-4 flex flex-row items-center gap-1 xl:gap-10">
@@ -70,7 +83,8 @@ const SongItem = () => {
               />
             </svg>
           </button>
-          <div>{TimeConvert(songInforObj.songDuration)}</div>
+          {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
+          <div>{TimeConvert(234)}</div>
         </div>
       </div>
     </div>

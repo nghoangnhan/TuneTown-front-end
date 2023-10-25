@@ -1,4 +1,4 @@
-import { instance } from "../api/instance";
+import { instance } from "../api/config";
 import UseCookie from "./useCookie";
 
 function UseCallApi() {

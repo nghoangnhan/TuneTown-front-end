@@ -37,6 +37,10 @@ function UseCookie() {
       Cookies.set("refreshToken", refresh_token, {
         ...objCookies,
       });
+    } else if (access_token) {
+      Cookies.set("accessToken", access_token, {
+        ...objCookies,
+      });
     } else {
       Cookies.remove("accessToken", {
         ...objCookies,

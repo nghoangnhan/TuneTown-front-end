@@ -2,6 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 const accountStore = createSlice({
   name: "account",
   initialState: {
+    usersInfo: {
+      id: 505,
+      userName: "Nguyen Hoang Nhan",
+      email: "test@gmail.com",
+      password: "$2a$10$biLULL30K.AT7PFGM3in3OBAfP0HiYClyYOwtxNuNWAwvhv06S10.",
+      role: "USER",
+      birthDate: "2002-07-21",
+      userBio: null,
+      avatar: null,
+      history: [],
+      favoriteGenres: [],
+      followingArtists: [],
+    },
     account: [],
     listAccount: [],
   },

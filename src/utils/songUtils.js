@@ -31,7 +31,7 @@ const useSongDuration = () => {
   };
   // Acronym the name of the song
   const AcronymName = (nameLenght, length) => {
-    if (nameLenght.length > 10) {
+    if (nameLenght && nameLenght.length > 10) {
       return nameLenght.slice(0, length) + "...";
     } else {
       return nameLenght;
@@ -88,6 +88,14 @@ const useSongDuration = () => {
     console.log(`The duration of the song is ${duration} seconds`);
     dispatch(setDuration(audioElement.current.duration));
   };
+  // Get the youtube video duration
+  // const GetYoutubeVideoDuration = (videoId) => {
+  //   const videoElement = new HTMLVideoElement(videoId);
+  //   const duration = videoElement.current.duration;
+  //   console.log(`The duration of the song is ${duration} seconds`);
+  //   dispatch(setDuration(videoElement.current.duration));
+  // };
+
   return {
     TimeConvert,
     GetSongFragment,
@@ -95,6 +103,7 @@ const useSongDuration = () => {
     AcronymName,
     CheckPlaying,
     GetSongDuration,
+    // GetYoutubeVideoDuration,
   };
 };
 export default useSongDuration;
