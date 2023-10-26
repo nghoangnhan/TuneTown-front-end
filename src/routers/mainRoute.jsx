@@ -29,7 +29,7 @@ export default function init(routes) {
         element: <PlaylistPage />,
       },
       {
-        path: "detail/:id",
+        path: "detail/:playlistId",
         element: <DetailPlaylist />,
       },
     ],

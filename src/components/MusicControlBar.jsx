@@ -12,7 +12,7 @@ const MusicControlBar = () => {
   const { showArtist, AcronymName } = useSongDuration();
 
   return (
-    <div className="w-full fixed xl:bottom-0 bottom-12 bg-white h-20 xl:h-20 flex flex-row justify-center items-center">
+    <div className="w-full fixed xl:bottom-0 bottom-10 bg-white h-[88px] xl:h-20 flex flex-row justify-center items-center pt-2">
       <div className="flex flex-row absolute justify-center items-center inset-y-auto left-0 bottom-10 xl:bottom-3 ml-2 xl:ml-10">
         <img
           src={songInfor.songCover}

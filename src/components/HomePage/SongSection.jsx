@@ -6,25 +6,10 @@ import { Base_URL, auth } from "../../api/config";
 import SongItem from "./SongItem";
 import { setListSong } from "../../redux/slice/music";
 
+// eslint-disable-next-line react/prop-types
 const SongSection = () => {
-  // const { data: songList, refetch: getListSong } = useQuery({
-  //   queryKey: "songList",
-  //   queryFn: () => getSongListApi(),
-
-  //   // const response = await axios.get(`${Base_URL}/songs?page=1`, {
-  //   //   headers: {
-  //   //     Authorization: `Bearer ${auth.access_token}`,
-  //   //   },
-  //   // });
-  //   // return response.data;
-  //   onSuccess: () => {
-  //     message.success("Get list user success");
-  //   },
-  // });
-
   const dispatch = useDispatch();
   const [songList, setSongList] = useState();
-
   const getListSong = async () => {
     try {
       console.log("auth", auth.access_token);
@@ -47,11 +32,10 @@ const SongSection = () => {
   }, []);
   dispatch(setListSong(songList));
   if (!songList) return null;
-  console.log("songListtttt", songList);
 
   return (
     <div className="xl:w-full">
-      <div className="mt-5 flex flex-col gap-2">
+      <div className="mt-2 flex flex-col gap-2">
         {songList &&
           songList.map((songItem) => (
             <SongItem

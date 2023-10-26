@@ -81,8 +81,8 @@ const NavigationBar = () => {
                 to="/"
                 className={({ isActive }) =>
                   isActive
-                    ? "h-5 w-auto p-5 bg-gradient-to-r from-[#7DC383] to-[#699C78] hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                    : "h-5 w-auto p-5 hover:text-[#7DC383] text-[#2E327180] flex justify-center items-center rounded-lg"
+                    ? "h-2 w-auto p-4 bg-gradient-to-r from-[#7DC383] to-[#699C78] hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
+                    : "h-2 w-auto p-4 hover:text-[#7DC383] text-[#2E327180] flex justify-center items-center rounded-lg"
                 }
               >
                 Home
@@ -91,8 +91,8 @@ const NavigationBar = () => {
                 to="/search"
                 className={({ isActive }) =>
                   isActive
-                    ? "h-5 w-auto p-5 bg-gradient-to-r from-[#7DC383] to-[#699C78] hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                    : "h-5 w-auto p-5 hover:text-[#7DC383] text-[#2E327180] flex justify-center items-center rounded-lg"
+                    ? "h-2 w-auto p-4 bg-gradient-to-r from-[#7DC383] to-[#699C78] hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
+                    : "h-2 w-auto p-4 hover:text-[#7DC383] text-[#2E327180] flex justify-center items-center rounded-lg"
                 }
               >
                 Search
@@ -101,8 +101,8 @@ const NavigationBar = () => {
                 to="/playlist"
                 className={({ isActive }) =>
                   isActive
-                    ? "h-5 w-auto p-5 bg-gradient-to-r from-[#7DC383] to-[#699C78] hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                    : "h-5 w-auto p-5 hover:text-[#7DC383] text-[#2E327180] flex justify-center items-center rounded-lg"
+                    ? "h-2 w-auto p-4 bg-gradient-to-r from-[#7DC383] to-[#699C78] hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
+                    : "h-2 w-auto p-4 hover:text-[#7DC383] text-[#2E327180] flex justify-center items-center rounded-lg"
                 }
               >
                 Playlists

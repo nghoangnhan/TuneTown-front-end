@@ -21,7 +21,7 @@ const LoginPage = () => {
     console.log("Data", usersData);
     const { id, userName, role } = usersData;
     dispatch(setUserInfor(usersData));
-    console.log("User", userName);
+    console.log("User infor", id, userName, role);
   };
   // Get access to the API
   async function GetAccessToken(emailInput, passwordInput) {

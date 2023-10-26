@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-const PlaylistItem = () => {
+// eslint-disable-next-line react/prop-types, no-unused-vars
+const PlaylistItem = ({ id, playlistName, user, playlistType }) => {
   const navigate = useNavigate();
   return (
     <div
       className="w-fit border-[1px] rounded-xl border-solid border-[#4cd658] bg-white hover:bg-slate-200 cursor-pointer"
-      onClick={() => navigate("/detail/1")}
+      onClick={() => navigate(`/detail/${id}`)}
     >
       <div className="xl:w-[159px] xl:h-[204px] w-[130px] h-[170px] rounded-[12px] bg-transparent">
         <img
@@ -14,10 +15,10 @@ const PlaylistItem = () => {
           src="https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
         />
         <div className="ml-[13px] xl:ml-[15px] mt-[12px] text-[#2E3271] font-semibold text-lg">
-          Country
+          {playlistName}
         </div>
         <div className="ml-[13px] xl:ml-[15px] mt-2 text-[#7C8DB5BF]">
-          Top 50
+          {playlistType}
         </div>
       </div>
     </div>

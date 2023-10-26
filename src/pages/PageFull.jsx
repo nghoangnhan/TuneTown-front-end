@@ -11,12 +11,11 @@ const PageFull = () => {
   const { CheckCookie } = userUtils();
   const navigate = useNavigate();
   useEffect(() => {
-    if (CheckCookie() == true) {
-      console.log("CheckCookie", CheckCookie());
-      setOpen(false);
-    } else {
+    if (CheckCookie() == false) {
       // Message to navigate to login page
       setOpen(true);
+      console.log("CheckCookie", CheckCookie());
+    } else {
       console.log("CheckCookie", CheckCookie());
     }
   }, [CheckCookie]);
