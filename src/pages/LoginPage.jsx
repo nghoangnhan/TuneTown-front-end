@@ -61,11 +61,6 @@ const LoginPage = () => {
       throw error;
     }
   }
-  useEffect(() => {
-    console.log("Token removed", auth.access_token);
-    removeToken();
-  }, []);
-
   // Login
   const onFinish = async (values) => {
     console.log("Data inputed:", values);
@@ -75,6 +70,11 @@ const LoginPage = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    console.log("Token removed", auth.access_token);
+    removeToken();
+  }, []);
 
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">

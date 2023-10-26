@@ -39,38 +39,29 @@ const useSongDuration = () => {
   };
   // Get Song fragment
   const GetSongFragment = () => {
-    const btnPlay = document.getElementById("play");
-    const audio = document.getElementById("audio");
-    let arrayAudio = "";
-    let audioSrc =
-      "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/Nhói Lòng Thuyền Hoa Remix/Nhói Lòng Thuyền Hoa Remix_";
-    let loop = 2;
-    btnPlay.addEventListener("click", function () {
-      audio.src = audioSrc + 1 + ".mp3";
-      audio.play();
-    });
-
-    // function playNextAudio() {
-    //   if (loop <= 10) {
-    //     audio.src = audioSrc + loop + ".mp3";
-    //     audio.play();
-    //     loop++;
-    //   }
-    // }
-
-    audio.addEventListener("timeupdate", function () {
-      let currentTime = audio.currentTime;
-      if (audio.duration - currentTime >= 5) {
-        if (loop <= 10) {
-          arrayAudio = audioSrc + loop + ".mp3";
-        }
-      }
-    });
-    audio.addEventListener("ended", function () {
-      audio.src = arrayAudio;
-      audio.play();
-      loop++;
-    });
+    //  document.addEventListener("DOMContentLoaded", function () {
+    //    const btnPlay = document.getElementById("play");
+    //    const audio = document.getElementById("audio");
+    //    let arrayAudio = "";
+    //    let loop = 2;
+    //    btnPlay.addEventListener("click", function () {
+    //      audio.src = audioSrc + 1 + ".mp3";
+    //      audio.play();
+    //    });
+    //    audio.addEventListener("timeupdate", function () {
+    //      let currentTime = audio.currentTime;
+    //      if (audio.duration - currentTime >= 5) {
+    //        if (loop <= 10) {
+    //          arrayAudio = audioSrc + loop + ".mp3";
+    //        }
+    //      }
+    //    });
+    //    audio.addEventListener("ended", function () {
+    //      audio.src = arrayAudio;
+    //      audio.play();
+    //      loop++;
+    //    });
+    //  });
   };
 
   // Check if the song isPlaying

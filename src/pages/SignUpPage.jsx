@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { DatePicker, Form, Input, message } from "antd";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import UseCookie from "../hooks/useCookie";
 
 const SignUpPage = () => {
   // Fetch data from API
@@ -12,6 +13,7 @@ const SignUpPage = () => {
   const passwordRef = useRef();
   const repasswordRef = useRef();
   const navigate = useNavigate();
+  const { removeToken } = UseCookie();
 
   async function PostData(usn, email, password, bdate) {
     try {
@@ -52,20 +54,24 @@ const SignUpPage = () => {
 
     PostData(username, email, password, birthDate);
   };
-  const onCheckPassword = () => {
-    const password = passwordRef.current.value;
-    const repassword = repasswordRef.current.value;
-    if (password !== repassword) {
-      messageApi.open({
-        type: "error",
-        content: "Password not match",
-        duration: 1,
-      });
-    }
-  };
+  // const onCheckPassword = () => {
+  //   const password = passwordRef.current.value;
+  //   const repassword = repasswordRef.current.value;
+  //   if (password !== repassword) {
+  //     messageApi.open({
+  //       type: "error",
+  //       content: "Password not match",
+  //       duration: 1,
+  //     });
+  //   }
+  // };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    removeToken();
+  }, []);
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
       {contextHolder}
