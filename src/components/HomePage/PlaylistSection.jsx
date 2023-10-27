@@ -1,23 +1,24 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import PlaylistItem from "./PlaylistItem";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Base_URL, auth } from "../../api/config";
+import { Base_URL } from "../../api/config";
+import UseCookie from "../../hooks/useCookie";
 import axios from "axios";
 
 const PlaylistSection = () => {
-  //Fetch data from the server http://localhost:8080/playlists?userId=505
-  const userId = useSelector((state) => state.account.usersInfor.id);
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
+  const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState();
 
   const getListSong = async () => {
     try {
-      console.log("auth", auth.access_token);
+      console.log("auth", access_token);
       const response = await axios.get(
-        `${Base_URL}/playlists?userId=${userId ? userId : 505}`,
+        `${Base_URL}/playlists?userId=${userId}`,
         {
           headers: {
-            Authorization: `Bearer ${auth.access_token}`,
+            Authorization: `Bearer ${access_token}`,
           },
         }
       );

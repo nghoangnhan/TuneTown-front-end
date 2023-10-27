@@ -3,22 +3,14 @@ import { Outlet, useNavigate } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar";
 import TheHeader from "../components/Header/TheHeader";
 import MusicControlBar from "../components/MusicControlBar";
-import userUtils from "../utils/userUtils";
 import { Modal } from "antd";
+import UseCookie from "../hooks/useCookie";
 
 const PageFull = () => {
+  const { getToken } = UseCookie();
   const [open, setOpen] = useState(false);
-  const { CheckCookie } = userUtils();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (CheckCookie() == false) {
-      // Message to navigate to login page
-      setOpen(true);
-      console.log("CheckCookie", CheckCookie());
-    } else {
-      console.log("CheckCookie", CheckCookie());
-    }
-  }, [CheckCookie]);
+
   const handleOK = () => {
     navigate("/");
     setOpen(false);
@@ -29,6 +21,16 @@ const PageFull = () => {
   const handleCancel = () => {
     setOpen(false);
   };
+  useEffect(() => {
+    const { access_token } = getToken();
+    if (access_token == null) {
+      // Message to navigate to login page
+      setOpen(true);
+      console.log("CheckCookie", access_token);
+    } else {
+      console.log("CheckCookie", access_token);
+    }
+  }, [getToken]);
   return (
     <Fragment>
       <Modal

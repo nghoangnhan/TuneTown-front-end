@@ -1,28 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, Modal } from "antd";
 // import { NavLink } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import UseCookie from "../../hooks/useCookie";
+import { Base_Ava } from "../../api/config";
 
 const TheHeader = () => {
   const navigate = useNavigate();
-  const srcAva =
-    "https://i.pinimg.com/564x/08/e4/58/08e458a736a3c0365612771772fa4904.jpg";
-  const userRole = useSelector((state) => state.account.usersInfor.role);
-  const userName = useSelector((state) => state.account.usersInfor.userName);
   const [modalOpen, setModalOpen] = useState(false);
-  // Use ReactQuery to get user info
-  // const { data: user } = useQuery("user", () =>
-  //   axios.get(`${process.env.REACT_APP_API_URL}/api/v1/users/me`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  // );
-  // const srcAva = user?.data?.data?.user?.avatar;
-  // const name = user?.data?.data?.user?.name;
+  const { removeToken } = UseCookie();
+  const srcAva = Base_Ava;
 
+  const userId = localStorage.getItem("userId");
+  const userName = localStorage.getItem("userName");
+  const userRole = localStorage.getItem("userRole");
+
+  console.log("The Header || UserInfor", userId, userName, userRole);
+  // Log Out
+  const LogOut = () => {
+    removeToken();
+    navigate("/");
+  };
+  useEffect(() => {
+    // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
+  }, []);
   return (
     <header className="w-full xl:w-full py-5 pl-7 gap-x-7 flex justify-start items-center font-bold bg-[#B9C0DE]">
       <div className="xl:right-5 xl:mt-5 right-3 absolute flex flex-row justify-center items-center">
@@ -70,17 +72,26 @@ const TheHeader = () => {
         centered
         open={modalOpen}
         onOk={() => setModalOpen(false)}
+        okButtonProps={{ style: { backgroundColor: "#45cc79" } }}
         onCancel={() => setModalOpen(false)}
         className="text-[#359254] font-bold flex flex-row justify-center items-center"
       >
+        {userRole == "ARTIST" && (
+          <div
+            onClick={() => navigate("/upload")}
+            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
+          >
+            <button>Upload Song</button>
+          </div>
+        )}
         <div
-          onClick={() => navigate("/upload")}
-          className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
+          onClick={() => navigate("/editUser")}
+          className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  "
         >
-          <button>Upload Song</button>
+          <button>Edit User Information</button>
         </div>
         <div className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  ">
-          <button>Setting</button>
+          <button onClick={LogOut}>Log Out</button>
         </div>
       </Modal>
     </header>

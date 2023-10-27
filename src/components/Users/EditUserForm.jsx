@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Select, Upload } from "antd";
-import { Base_URL, auth } from "../../api/config";
+/* eslint-disable no-unused-vars */
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import ArtistInput from "./ArtistInput";
-import userUtils from "../../utils/userUtils";
+import { Base_URL } from "../../api/config";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
 import UseCookie from "../../hooks/useCookie";
-
 const { Option } = Select;
 
 const layout = {
@@ -24,31 +22,64 @@ const tailLayout = {
   },
 };
 
-const UploadSong = () => {
-  const formRef = React.useRef(null);
-  const { CheckCookie } = userUtils();
+const EditUserForm = () => {
   const { getToken } = UseCookie();
-  // Post Song to API
-  const postSong = async (values) => {
+  const { access_token } = getToken();
+  const userId = localStorage.getItem("userId");
+  const formRef = useRef(null);
+  const [userName, setUserName] = useState();
+  const [userEmail, setUserEmail] = useState();
+  const [userPassword, setUserPassword] = useState();
+  const [userRePassword, setUserRePassword] = useState();
+  const [userAva, setUserAva] = useState();
+  const [userBdate, setUserBdate] = useState();
+  const [userRole, setUserRole] = useState();
+
+  const passwordRef = useRef();
+  const repasswordRef = useRef();
+
+  // Get user information from API
+  const getUser = async () => {
     try {
-      const response = await axios.post(`${Base_URL}/songs/addSong`, values, {
+      const response = await axios.get(`${Base_URL}/users?id=${userId}`, {
         headers: {
-          Authorization: `Bearer ${auth.access_token}`,
+          Authorization: `Bearer ${access_token}`,
           // Add any other headers if required
         },
         body: {},
       });
+      console.log(response.data, response.status);
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("Error edited user:", error.message);
+    }
+  };
+
+  // Update user infor to API
+  const editUser = async (values) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/users?id=${userId}`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            // Add any other headers if required
+          },
+          body: {},
+        }
+      );
 
       if (response.status === 200) {
         // Handle success
-        console.log("Song posted successfully:", response.data);
+        console.log("User edited successfully:", response.data);
       } else {
         // Handle other status codes
-        console.error("Error posting song:", response.statusText);
+        console.error("Error edited user:", response.statusText);
       }
     } catch (error) {
       // Handle network errors or other exceptions
-      console.error("Error posting song:", error.message);
+      console.error("Error edited user:", error.message);
     }
   };
 
@@ -67,7 +98,7 @@ const UploadSong = () => {
     };
     console.log("Posting Data", postData);
     // const artists = {};
-    postSong(postData); // Call the function to post the song data
+    editUser(postData); // Call the function to post the song data
   };
 
   //Upload
@@ -89,7 +120,7 @@ const UploadSong = () => {
       console.log("CheckCookie", getToken());
       window.location.href = "/";
     }
-  }, [CheckCookie]);
+  }, []);
   return (
     <section className="w-full h-screen">
       <div className="flex justify-center items-center absolute left-3  top-3">
@@ -111,12 +142,12 @@ const UploadSong = () => {
         >
           <div className="w-full text-center mb-5">
             <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
-              Upload Your Masterpeice
+              Edit Information
             </h2>
           </div>
           <Form.Item
-            name="songName"
-            label="Song Name"
+            name="userName"
+            label="Name"
             rules={[
               {
                 required: true,
@@ -126,7 +157,65 @@ const UploadSong = () => {
             <Input />
           </Form.Item>
 
-          <ArtistInput></ArtistInput>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password ref={passwordRef} />
+          </Form.Item>
+
+          <Form.Item
+            name="confirm"
+            label="Confirm Password"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("The new password that you entered do not match!")
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            label="Birthday"
+            name="birthDate"
+            rules={[
+              { required: true, message: "Please input your date of birth!" },
+            ]}
+          >
+            <DatePicker />
+          </Form.Item>
 
           {/* Cover Image */}
           <Form.Item
@@ -135,24 +224,6 @@ const UploadSong = () => {
             valuePropName="fileList"
             getValueFromEvent={normFile}
             extra="Upload your cover image png, jpg, jpeg"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Upload name="logo" action="/" listType="picture">
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
-
-          {/* MP3 File */}
-          <Form.Item
-            name="songData"
-            label="Upload File"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            extra="Upload your audio file mp3, wav"
             rules={[
               {
                 required: true,
@@ -216,4 +287,4 @@ const UploadSong = () => {
   );
 };
 
-export default UploadSong;
+export default EditUserForm;

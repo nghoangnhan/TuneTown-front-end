@@ -1,8 +1,10 @@
-import { auth } from "../api/config";
+import UseCookie from "../hooks/useCookie";
 
 const userUtils = () => {
+  const { getToken } = UseCookie();
   const CheckCookie = () => {
-    if (auth.access_token) {
+    const { access_token } = getToken();
+    if (access_token) {
       return true;
     }
     return false;

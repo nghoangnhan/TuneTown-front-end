@@ -3,11 +3,16 @@ import { useEffect } from "react";
 import axios from "axios";
 import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { NavLink, redirect, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
 import { auth } from "../api/config";
 import { useDispatch } from "react-redux";
-import { setUserInfor } from "../redux/slice/account";
+import {
+  setUserId,
+  setUserInfor,
+  setUserName,
+  setUserRole,
+} from "../redux/slice/account";
 
 const LoginPage = () => {
   const { removeToken } = UseCookie();
@@ -17,11 +22,13 @@ const LoginPage = () => {
   const { saveToken } = UseCookie();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleUserData = (usersData) => {
+  const handleUserData = async (usersData) => {
     console.log("Data", usersData);
-    const { id, userName, role } = usersData;
     dispatch(setUserInfor(usersData));
-    console.log("User infor", id, userName, role);
+    localStorage.setItem("userId", usersData.id);
+    localStorage.setItem("userName", usersData.userName);
+    localStorage.setItem("userRole", usersData.role);
+    console.log("User infor", usersData);
   };
   // Get access to the API
   async function GetAccessToken(emailInput, passwordInput) {
@@ -37,6 +44,7 @@ const LoginPage = () => {
       if ((response.data && response.data.access_token) || response.data) {
         // Save cookies and token
         saveToken(response.data.access_token);
+
         handleUserData(response.data);
         console.log("Token", response.data.access_token);
         // Notifactaion when login successfully
@@ -45,8 +53,8 @@ const LoginPage = () => {
           content: "Login Successfully",
         });
         setTimeout(() => {
-          // navigate("/home");
-          window.location.href = "/home";
+          // window.location.href = "/home";
+          navigate("/home");
         }, 1000);
       }
 
@@ -63,7 +71,6 @@ const LoginPage = () => {
   }
   // Login
   const onFinish = async (values) => {
-    console.log("Data inputed:", values);
     const { email, password } = values;
     await GetAccessToken(email, password);
   };
