@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Base_URL, auth } from "../api/config";
-import axios from "axios";
 import { useParams } from "react-router-dom";
-import SongPlaylist from "../components/Playlist/SongPlaylist";
+import axios from "axios";
+import { Base_URL, auth } from "../../api/config";
+import SongPlaylist from "./SongPlaylist";
 
 const DetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102

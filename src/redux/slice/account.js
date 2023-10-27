@@ -3,14 +3,14 @@ const accountStore = createSlice({
   name: "account",
   initialState: {
     usersInfor: {
-      id: 505,
-      userName: "Nguyen Hoang Nhan",
-      email: "test@gmail.com",
-      password: "$2a$10$biLULL30K.AT7PFGM3in3OBAfP0HiYClyYOwtxNuNWAwvhv06S10.",
-      role: "USER",
-      birthDate: "2002-07-21",
-      userBio: null,
-      avatar: null,
+      id: 0,
+      userName: "",
+      email: "",
+      password: null,
+      role: "",
+      birthDate: "",
+      userBio: "",
+      avatar: "",
       history: [],
       favoriteGenres: [],
       followingArtists: [],
@@ -21,7 +21,7 @@ const accountStore = createSlice({
   reducers: {
     authLogin: () => {},
     authRegister: () => {},
-    setUser: (state, action) => {
+    setListUser: (state, action) => {
       return {
         ...state,
         account: action.payload,
@@ -36,8 +36,17 @@ const accountStore = createSlice({
     setUserInfor: (state, action) => {
       return {
         ...state,
-        usersInfo: action.payload,
+        usersInfor: action.payload,
       };
+    },
+    setUserId: (state, action) => {
+      state.usersInfor.id = action.payload;
+    },
+    setUserName: (state, action) => {
+      state.usersInfor.userName = action.payload;
+    },
+    setUserRole: (state, action) => {
+      state.usersInfor.role = action.payload;
     },
   },
 });
@@ -48,6 +57,9 @@ export const {
   setUser,
   setListAccount,
   setUserInfor,
+  setUserId,
+  setUserName,
+  setUserRole,
 } = accountStore.actions;
 //Reducer
 export default accountStore.reducer;

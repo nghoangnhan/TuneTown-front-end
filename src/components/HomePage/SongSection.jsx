@@ -2,20 +2,23 @@
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Base_URL, auth } from "../../api/config";
+import { Base_URL } from "../../api/config";
 import SongItem from "./SongItem";
 import { setListSong } from "../../redux/slice/music";
+import UseCookie from "../../hooks/useCookie";
 
 // eslint-disable-next-line react/prop-types
 const SongSection = () => {
   const dispatch = useDispatch();
   const [songList, setSongList] = useState();
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
   const getListSong = async () => {
     try {
-      console.log("auth", auth.access_token);
+      console.log("auth", access_token);
       const response = await axios.get(`${Base_URL}/songs?page=1`, {
         headers: {
-          Authorization: `Bearer ${auth.access_token}`,
+          Authorization: `Bearer ${access_token}`,
         },
       });
       const { songList } = response.data;
