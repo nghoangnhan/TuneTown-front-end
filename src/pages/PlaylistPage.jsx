@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Base_URL } from "../api/config";
 import PlaylistSection from "../components/HomePage/PlaylistSection";
 import UseCookie from "../hooks/useCookie";
+import { useEffect } from "react";
 
 const PlaylistPage = () => {
   // const [playlistList, setPlaylistList] = useState();
@@ -30,6 +31,7 @@ const PlaylistPage = () => {
       console.log("Error:", error);
     }
   };
+  useEffect(() => {}, []);
   return (
     <div className="bg-[#B9C0DE] h-full mb-20 pt-16 px-1 xl:px-5 py-5">
       <h1 className="text-[#2E3271]  text-2xl font-bold mb-5">Playlist Page</h1>

@@ -79,9 +79,6 @@ const UploadSong = () => {
     return e?.fileList;
   };
 
-  const onReset = () => {
-    formRef.current?.resetFields();
-  };
   useEffect(() => {
     getToken();
     const { access_token } = getToken();
@@ -202,12 +199,9 @@ const UploadSong = () => {
             <Button
               type="primary"
               htmlType="submit"
-              className="bg-[green] mr-3"
+              className="bg-[green] absolute right-2"
             >
               Submit
-            </Button>
-            <Button htmlType="button" onClick={onReset}>
-              Reset
             </Button>
           </Form.Item>
         </Form>
