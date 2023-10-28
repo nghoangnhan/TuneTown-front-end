@@ -17,6 +17,7 @@ const TheHeader = () => {
   const userRole = localStorage.getItem("userRole");
 
   console.log("The Header || UserInfor", userId, userName, userRole);
+
   // Log Out
   const LogOut = () => {
     removeToken();
