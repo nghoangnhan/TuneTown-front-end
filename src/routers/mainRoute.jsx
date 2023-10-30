@@ -33,23 +33,25 @@ export default function init(routes) {
         path: "detail/:playlistId",
         element: <DetailPlaylist />,
       },
+      {
+        path: "upload",
+        element: <UploadSong />,
+      },
+      {
+        path: "editUser",
+        element: <EditUserForm />,
+      },
     ],
   };
-  // Add the new route
-  const uploadRoute = {
-    path: "upload",
-    element: <UploadSong />,
-  };
 
-  // Add the new route
-  const editUserRoute = {
-    path: "editUser",
-    element: <EditUserForm />,
-  };
+  // // Add the new route
+  // const editUserRoute = {
+  //   path: "editUser",
+  //   element: <EditUserForm />,
+  // };
+
   // push route
   routes.push(route);
   // Push the new route
-  routes.push(uploadRoute);
-  // Push the new route
-  routes.push(editUserRoute);
+  // routes.push(editUserRoute);
 }

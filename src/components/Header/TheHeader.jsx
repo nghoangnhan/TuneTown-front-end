@@ -5,19 +5,27 @@ import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
 import { Base_Ava } from "../../api/config";
+import { setUserId } from "../../redux/slice/account";
+import { useDispatch } from "react-redux";
 
 const TheHeader = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const { removeToken } = UseCookie();
   const srcAva = Base_Ava;
 
   const userId = localStorage.getItem("userId");
+  dispatch(setUserId(userId));
   const userName = localStorage.getItem("userName");
   const userRole = localStorage.getItem("userRole");
 
   console.log("The Header || UserInfor", userId, userName, userRole);
 
+  const handleOnclick = (direction) => {
+    navigate(`/${direction}`);
+    setModalOpen(false);
+  };
   // Log Out
   const LogOut = () => {
     removeToken();
@@ -27,7 +35,7 @@ const TheHeader = () => {
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, []);
   return (
-    <header className="w-full xl:w-full py-5 pl-7 gap-x-7 flex justify-start items-center font-bold bg-[#B9C0DE]">
+    <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-[#ecf2fd]">
       <div className="xl:right-5 xl:mt-5 right-3 absolute flex flex-row justify-center items-center">
         {
           <div>
@@ -79,14 +87,14 @@ const TheHeader = () => {
       >
         {userRole == "ARTIST" && (
           <div
-            onClick={() => navigate("/upload")}
+            onClick={() => handleOnclick("upload")}
             className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
           >
             <button>Upload Song</button>
           </div>
         )}
         <div
-          onClick={() => navigate("/editUser")}
+          onClick={() => handleOnclick("editUser")}
           className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  "
         >
           <button>Edit User Information</button>

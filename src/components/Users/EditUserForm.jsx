@@ -54,11 +54,11 @@ const EditUserForm = () => {
   // Update user infor to API
   const editUser = async (values) => {
     try {
-      const response = await axios.put(`${Base_URL}/users`, {
+      const response = await axios.put(`${Base_URL}/users`, values, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-        body: { values },
+        // body: { values },
       });
       if (response.status === 200) {
         // Handle success
@@ -85,7 +85,7 @@ const EditUserForm = () => {
       email: email,
       birthDate: birthDate.format("YYYY-MM-DD"),
     };
-    console.log("TOken", access_token);
+    console.log("Token", access_token);
     console.log("Posting Data", postData);
     editUser(postData); // Call the function to post the song data
   };
@@ -116,24 +116,15 @@ const EditUserForm = () => {
     // console.log("userName", userName);
   }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
   return (
-    <section className="w-full h-screen">
-      <div className="flex justify-center items-center absolute left-3  top-3">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md "
-        >
-          <div className="text-white font-bold px-2 py-2">{"<"} TuneTown</div>
-        </button>
-      </div>
-
-      <div className="flex justify-center items-center h-full">
+    <section className="w-full h-screen relative flex flex-col xl:pt-12 pt-6 bg-[#ecf2fd] px-1">
+      <div className="flex justify-center items-center h-fit">
         <Form
           {...layout}
           ref={formRef}
           name="control-ref"
           form={form}
           onFinish={onFinish}
-          className="w-[500px] border rounded-md mx-auto p-5 mt-10 bg-[#f9f9f9]"
+          className="xl:w-[500px] relative w-fit border rounded-md mx-auto p-5 bg-[#f9f9f9]"
           // initialValues={{ userName: userInfor.userName }}
         >
           <div className="w-full text-center mb-5">
@@ -257,12 +248,9 @@ const EditUserForm = () => {
           >
             <Input.Password />
           </Form.Item> */}
-          <Form.Item {...tailLayout}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="bg-[green] absolute right-2"
-            >
+
+          <Form.Item {...tailLayout} className="left-0">
+            <Button type="primary" htmlType="submit" className="bg-[green] ">
               Submit
             </Button>
           </Form.Item>

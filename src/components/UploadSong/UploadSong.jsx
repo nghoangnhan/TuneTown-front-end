@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select, Upload } from "antd";
-import { Base_URL, auth } from "../../api/config";
+import { Base_URL } from "../../api/config";
 import axios from "axios";
 import ArtistInput from "./ArtistInput";
-import userUtils from "../../utils/userUtils";
 import UseCookie from "../../hooks/useCookie";
 
 const { Option } = Select;
-
 const layout = {
   labelCol: {
     span: 8,
@@ -26,19 +24,18 @@ const tailLayout = {
 
 const UploadSong = () => {
   const formRef = React.useRef(null);
-  const { CheckCookie } = userUtils();
   const { getToken } = UseCookie();
+  const { access_token } = getToken();
+
   // Post Song to API
   const postSong = async (values) => {
     try {
       const response = await axios.post(`${Base_URL}/songs/addSong`, values, {
         headers: {
-          Authorization: `Bearer ${auth.access_token}`,
+          Authorization: `Bearer ${access_token}`,
           // Add any other headers if required
         },
-        body: {},
       });
-
       if (response.status === 200) {
         // Handle success
         console.log("Song posted successfully:", response.data);
@@ -70,45 +67,131 @@ const UploadSong = () => {
     postSong(postData); // Call the function to post the song data
   };
 
-  //Upload
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
+  // //Upload
+  // const normFile = (e) => {
+  //   console.log("Upload event:", e);
+  //   if (Array.isArray(e)) {
+  //     return e;
+  //   }
+  //   return e?.fileList;
+  // };
+
+  const UploadImage = async (formData) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/songs/addSongFile  `,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status == 200) {
+        console.log("Files posted successfully:", response.data);
+      } else {
+        console.error("Error posting files:", response.data);
+      }
+    } catch (error) {
+      console.error("Error posting files:", error.message);
     }
-    return e?.fileList;
+  };
+  const onFinishData = (values) => {
+    // Ensure that both poster and songData are arrays
+    console.log("OnFinishData values:", values);
+    const posterFile = values.poster; // Lấy file đầu tiên trong mảng
+    const songFile = values.songData; // Lấy file đầu tiên trong mảng
+
+    // Create a new FormData instance
+
+    const formDataArray = [];
+    formDataArray.push(posterFile);
+    formDataArray.push(songFile);
+
+    const formData = new FormData();
+    // Append the files to the FormData instance
+    formData.append("poster", posterFile);
+    formData.append("songData", songFile);
+
+    console.log("OnFinishData values Data Array:", formDataArray);
+    console.log("OnFinishData values object:", formData);
+
+    UploadImage(formData);
   };
 
   useEffect(() => {
-    getToken();
-    const { access_token } = getToken();
     if (access_token == null) {
       console.log("CheckCookie", getToken());
       window.location.href = "/";
     }
-  }, [CheckCookie]);
+  }, [access_token]);
   return (
-    <section className="w-full h-screen">
-      <div className="flex justify-center items-center absolute left-3  top-3">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md "
+    <section className="w-full h-fit relative flex flex-col xl:pt-12 pt-6  bg-[#ecf2fd]">
+      <div className="flex justify-center items-center h-fit">
+        {/*DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/}
+        <Form
+          onFinish={onFinishData}
+          className="relative flex flex-col justify-center items-center mb-5 rounded-md mx-auto p-5 bg-[#f9f9f9]"
         >
-          <div className="text-white font-bold px-2 py-2">{"<"} TuneTown</div>
-        </button>
-      </div>
+          {/* Cover Image */}
+          <Form.Item
+            name="poster"
+            label="Upload Cover Art"
+            extra="Upload your cover image png, jpg, jpeg"
+            getValueFromEvent={(e) => e && e.fileList}
+            valuePropName="fileList"
+          >
+            <Upload
+              name="poster"
+              action="/"
+              listType="picture"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+            >
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
+          {/* MP3 File */}
+          <Form.Item
+            name="songData"
+            label="Upload File"
+            extra="Upload your audio file mp3, wav"
+            getValueFromEvent={(e) => e && e.fileList}
+            valuePropName="fileList"
+            rules={[
+              {
+                required: false,
+              },
+            ]}
+          >
+            <Upload name="songData" action="/" listType="picture">
+              <Button icon={<UploadOutlined />}>Click to upload</Button>
+            </Upload>
+          </Form.Item>
 
-      <div className="flex justify-center items-center h-full">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="bg-[#41a546] right-2"
+          >
+            Submit Song Data
+          </Button>
+        </Form>
+
         <Form
           {...layout}
           ref={formRef}
           name="control-ref"
           onFinish={onFinish}
-          className="w-[500px] border rounded-md mx-auto p-5 mt-10 bg-[#f9f9f9]"
+          className="w-[500px] border rounded-md mx-auto p-5 mb-28 bg-[#f9f9f9]"
         >
           <div className="w-full text-center mb-5">
             <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
-              Upload Your Masterpeice
+              Upload Your Masterpiece
             </h2>
           </div>
           <Form.Item
@@ -124,42 +207,6 @@ const UploadSong = () => {
           </Form.Item>
 
           <ArtistInput></ArtistInput>
-
-          {/* Cover Image */}
-          <Form.Item
-            name="poster"
-            label="Upload Cover Art"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            extra="Upload your cover image png, jpg, jpeg"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Upload name="logo" action="/" listType="picture">
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
-
-          {/* MP3 File */}
-          <Form.Item
-            name="songData"
-            label="Upload File"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            extra="Upload your audio file mp3, wav"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Upload name="logo" action="/" listType="picture">
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
 
           {/* Genre  */}
           <Form.Item

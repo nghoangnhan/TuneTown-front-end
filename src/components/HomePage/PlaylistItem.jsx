@@ -1,8 +1,34 @@
 import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-const PlaylistItem = ({ id, playlistName, user, playlistType }) => {
+const PlaylistItem = ({ id, playlistName, playlistType }) => {
   const navigate = useNavigate();
+
+  // const showPopconfirm = () => {
+  //   setOpen(true);
+  // };
+  // const deletePlaylist = async (playlistId) => {
+  //   try {
+  //     confirm(`Are you sure you want to delete this playlist?`);
+  //     if (confirm) {
+  //       console.log("auth", access_token);
+  //       const response = await axios.delete(
+  //         `${Base_URL}/playlists?playlistId=${playlistId}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${access_token}`,
+  //           },
+  //         }
+  //       );
+  //       console.log("songList Response", response.data);
+  //       setRefresh(true);
+  //       return response.data;
+  //     }
+  //   } catch (error) {
+  //     console.log("Error:", error);
+  //   }
+  // };
+
   return (
     <div
       className="w-fit border-[1px] rounded-xl border-solid border-[#4cd658] bg-white hover:bg-slate-200 cursor-pointer"

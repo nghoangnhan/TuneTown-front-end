@@ -191,7 +191,7 @@ const DurationBar = () => {
             max={duration}
             value={currentTime}
             onChange={handleSeek}
-            className="bg-[#B9C0DE] xl:w-[400px] h-1 xl:h-1 mx-2 xl:mx-4 rounded-full"
+            className="bg-[#B9C0DE] w-[400px] h-1 xl:h-1 mx-2 xl:mx-4 rounded-full"
           />
           <span className="text-xs xl:text-base">{TimeConvert(duration)}</span>
         </div>
