@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
+import { Base_URL } from "../api/config";
 
 const SignUpPage = () => {
   // Fetch data from API
@@ -17,8 +18,8 @@ const SignUpPage = () => {
 
   async function PostData(usn, email, password, bdate) {
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", {
-        username: usn,
+      const response = await axios.post(`${Base_URL}/auth/register`, {
+        userName: usn,
         email: email,
         password: password,
         birthDate: bdate,

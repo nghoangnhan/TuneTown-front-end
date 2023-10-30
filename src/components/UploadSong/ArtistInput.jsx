@@ -1,13 +1,14 @@
-/* eslint-disable no-unused-vars */
-import { Form, Input, Select } from "antd";
+import { Form, Select } from "antd";
 import axios from "axios";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Base_URL, auth } from "../../api/config";
+import { useEffect, useState } from "react";
+import { Base_URL } from "../../api/config";
 import useDebounce from "../../hooks/useDebounce";
-import debounce from "lodash.debounce";
+import UseCookie from "../../hooks/useCookie";
 
 const ArtistInput = () => {
   // Get the users name from API
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
   const [nameRS, setNameRS] = useState([]);
   const [emailRS, setEmailRS] = useState([]); // Update to initialize emailRS as an empty array
   const [emailInput, setEmailInput] = useState("");
@@ -24,10 +25,9 @@ const ArtistInput = () => {
           email: emailInput,
         },
         headers: {
-          Authorization: `Bearer ${auth.access_token}`,
+          Authorization: `Bearer ${access_token}`,
         },
       });
-      const { email, userName } = response.data;
       response.data.forEach((user) => {
         console.log("email", user.email);
         // Check if email existed and email not changed

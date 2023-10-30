@@ -31,7 +31,7 @@ const DetailPlaylist = () => {
     getListSongPlaylist();
   }, []);
   return (
-    <div className="xl:p-5 bg-[#B9C0DE] mb-20">
+    <div className="xl:p-5 bg-[#ecf2fd] mb-20">
       <div className="text-4xl font-bold text-center mb-5">
         Playlist Detail <span className="">{playlistId}</span>
       </div>
