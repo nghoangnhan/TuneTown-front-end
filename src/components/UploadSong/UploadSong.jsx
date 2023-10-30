@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Select, Upload } from "antd";
-import { Base_URL } from "../../api/config";
+/* eslint-disable react/prop-types */
+import React, { useEffect, useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import axios from "axios";
+import { Button, Form, Input, Select, message } from "antd";
+import { Base_URL } from "../../api/config";
 import ArtistInput from "./ArtistInput";
 import UseCookie from "../../hooks/useCookie";
 
@@ -22,11 +23,107 @@ const tailLayout = {
   },
 };
 
+function UploadFileDropZone(props) {
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = () => {
+        // Do whatever you want with the file contents
+        const binaryStr = reader.result;
+        console.log(binaryStr);
+        props.setUploadedFile(file);
+      };
+      reader.readAsArrayBuffer(file);
+      props.handleUploadFile(file);
+    });
+  }, []);
+
+  const { getRootProps, getInputProps, open } = useDropzone({
+    noClick: true,
+    onDrop,
+    maxSize: 10485760,
+    maxFiles: 1,
+  });
+
+  return (
+    <div {...getRootProps()}>
+      <input {...getInputProps()} />
+      <Button
+        type="button"
+        onClick={open}
+        variant="contained"
+        className="border border-solid border-[#42ae49] bg-white hover:bg-[#42ae49] hover:text-white text-[#42ae49]"
+        sx={{ width: "100%", height: 24 }}
+      >
+        Select file
+      </Button>
+    </div>
+  );
+}
+
 const UploadSong = () => {
   const formRef = React.useRef(null);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const [uploadedFile, setUploadedFile] = useState({});
+  const [fileIMG, setFileIMG] = useState();
+  const [fileMP3, setFileMP3] = useState();
 
+  //drop-zone
+  const handleUploadFileIMG = async (file) => {
+    let formData = new FormData();
+    formData.append("image", file);
+    console.log("handleUploadFile FileIMG", formData);
+    try {
+      const response = await axios.post(
+        `${Base_URL}/file/uploadImage`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status == 200) {
+        console.log("Files posted successfully:", response.data);
+        setFileIMG(response.data);
+        console.log("FileIMG", fileIMG);
+      } else {
+        console.error("Error posting files:", response.data);
+      }
+    } catch (error) {
+      console.error("Error posting files:", error.message);
+    }
+  };
+  const handleUploadFileMP3 = async (file) => {
+    let formData = new FormData();
+    formData.append("mp3File", file);
+    console.log("handleUploadFile FileMP3", formData);
+    try {
+      const response = await axios.post(
+        `${Base_URL}/file/uploadMp3`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status == 200) {
+        console.log("Files posted successfully:", response.data);
+        setFileMP3(response.data);
+        console.log("FileMP3", fileMP3);
+      } else {
+        console.error("Error posting files:", response.data);
+      }
+    } catch (error) {
+      console.error("Error posting files:", error.message);
+    }
+  };
   // Post Song to API
   const postSong = async (values) => {
     try {
@@ -39,6 +136,7 @@ const UploadSong = () => {
       if (response.status === 200) {
         // Handle success
         console.log("Song posted successfully:", response.data);
+        message.success("Song posted successfully");
       } else {
         // Handle other status codes
         console.error("Error posting song:", response.statusText);
@@ -48,76 +146,22 @@ const UploadSong = () => {
       console.error("Error posting song:", error.message);
     }
   };
-
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Received values:", values);
-    const { songName, artists, poster, songData, genre } = values;
-
+    const { songName, artists, genre } = values;
     const postData = {
       songName: songName,
-      poster: poster,
-      songData: songData,
+      poster: fileIMG,
+      songData: fileMP3,
       genre: genre,
+      status: 1,
       artist: artists.map((artist) => {
-        return { userName: artist };
+        return { email: artist };
       }),
     };
     console.log("Posting Data", postData);
     // const artists = {};
-    postSong(postData); // Call the function to post the song data
-  };
-
-  // //Upload
-  // const normFile = (e) => {
-  //   console.log("Upload event:", e);
-  //   if (Array.isArray(e)) {
-  //     return e;
-  //   }
-  //   return e?.fileList;
-  // };
-
-  const UploadImage = async (formData) => {
-    try {
-      const response = await axios.post(
-        `${Base_URL}/songs/addSongFile  `,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.status == 200) {
-        console.log("Files posted successfully:", response.data);
-      } else {
-        console.error("Error posting files:", response.data);
-      }
-    } catch (error) {
-      console.error("Error posting files:", error.message);
-    }
-  };
-  const onFinishData = (values) => {
-    // Ensure that both poster and songData are arrays
-    console.log("OnFinishData values:", values);
-    const posterFile = values.poster; // Lấy file đầu tiên trong mảng
-    const songFile = values.songData; // Lấy file đầu tiên trong mảng
-
-    // Create a new FormData instance
-
-    const formDataArray = [];
-    formDataArray.push(posterFile);
-    formDataArray.push(songFile);
-
-    const formData = new FormData();
-    // Append the files to the FormData instance
-    formData.append("poster", posterFile);
-    formData.append("songData", songFile);
-
-    console.log("OnFinishData values Data Array:", formDataArray);
-    console.log("OnFinishData values object:", formData);
-
-    UploadImage(formData);
+    await postSong(postData); // Call the function to post the song data
   };
 
   useEffect(() => {
@@ -129,59 +173,6 @@ const UploadSong = () => {
   return (
     <section className="w-full h-fit relative flex flex-col xl:pt-12 pt-6  bg-[#ecf2fd]">
       <div className="flex justify-center items-center h-fit">
-        {/*DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/}
-        <Form
-          onFinish={onFinishData}
-          className="relative flex flex-col justify-center items-center mb-5 rounded-md mx-auto p-5 bg-[#f9f9f9]"
-        >
-          {/* Cover Image */}
-          <Form.Item
-            name="poster"
-            label="Upload Cover Art"
-            extra="Upload your cover image png, jpg, jpeg"
-            getValueFromEvent={(e) => e && e.fileList}
-            valuePropName="fileList"
-          >
-            <Upload
-              name="poster"
-              action="/"
-              listType="picture"
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-            >
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
-          {/* MP3 File */}
-          <Form.Item
-            name="songData"
-            label="Upload File"
-            extra="Upload your audio file mp3, wav"
-            getValueFromEvent={(e) => e && e.fileList}
-            valuePropName="fileList"
-            rules={[
-              {
-                required: false,
-              },
-            ]}
-          >
-            <Upload name="songData" action="/" listType="picture">
-              <Button icon={<UploadOutlined />}>Click to upload</Button>
-            </Upload>
-          </Form.Item>
-
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="bg-[#41a546] right-2"
-          >
-            Submit Song Data
-          </Button>
-        </Form>
-
         <Form
           {...layout}
           ref={formRef}
@@ -208,6 +199,38 @@ const UploadSong = () => {
 
           <ArtistInput></ArtistInput>
 
+          <Form.Item
+            name="poster"
+            label="Upload Cover Art"
+            extra="Upload your cover image png, jpg, jpeg"
+            getValueFromEvent={(e) => e && e.fileList}
+            valuePropName="fileList"
+          >
+            <UploadFileDropZone
+              uploadedFile={uploadedFile}
+              setUploadedFile={setUploadedFile}
+              handleUploadFile={handleUploadFileIMG}
+            />
+          </Form.Item>
+          {/* MP3 File */}
+          <Form.Item
+            name="songData"
+            label="Upload File"
+            extra="Upload your audio file mp3, wav"
+            getValueFromEvent={(e) => e && e.fileList}
+            valuePropName="fileList"
+            rules={[
+              {
+                required: false,
+              },
+            ]}
+          >
+            <UploadFileDropZone
+              uploadedFile={uploadedFile}
+              setUploadedFile={setUploadedFile}
+              handleUploadFile={handleUploadFileMP3}
+            />
+          </Form.Item>
           {/* Genre  */}
           <Form.Item
             name="genre"

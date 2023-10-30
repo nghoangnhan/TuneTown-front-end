@@ -1,21 +1,90 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useState } from "react";
-const UploadAvatar = () => {
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { Base_URL } from "../../api/config";
+import axios from "axios";
+import UseCookie from "../../hooks/useCookie";
+
+function UploadFileDropZone(props) {
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((file) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = () => {
+        // Do whatever you want with the file contents
+        const binaryStr = reader.result;
+        console.log(binaryStr);
+        props.setUploadedFile(file);
+      };
+      reader.readAsArrayBuffer(file);
+      props.handleUploadFile(file);
     });
+  }, []);
+
+  const { getRootProps, getInputProps, open } = useDropzone({
+    noClick: true,
+    onDrop,
+    maxSize: 10485760,
+    maxFiles: 1,
+  });
+
   return (
-    <Upload name="avatar" action="/" listType="picture">
-      <Button icon={<UploadOutlined />}>Click to upload</Button>
-    </Upload>
+    <div {...getRootProps()}>
+      <input {...getInputProps()} />
+      <Button
+        type="button"
+        onClick={open}
+        variant="contained"
+        className="border border-solid border-[#42ae49] bg-white hover:bg-[#42ae49] hover:text-white text-[#42ae49]"
+        sx={{ width: "100%", height: 24 }}
+      >
+        Select file
+      </Button>
+    </div>
+  );
+}
+
+const UploadAvatar = ({ setFileIMG }) => {
+  const [uploadedFile, setUploadedFile] = useState({});
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
+
+  //drop-zone
+  const handleUploadFileIMG = async (file) => {
+    let formData = new FormData();
+    formData.append("image", file);
+    console.log("handleUploadFile FileIMG", formData);
+    try {
+      const response = await axios.post(
+        `${Base_URL}/file/uploadImage`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status == 200) {
+        console.log("Files posted successfully:", response.data);
+        setFileIMG(response.data);
+      } else {
+        console.error("Error posting files:", response.data);
+      }
+    } catch (error) {
+      console.error("Error posting files:", error.message);
+    }
+  };
+  return (
+    <UploadFileDropZone
+      uploadedFile={uploadedFile}
+      setUploadedFile={setUploadedFile}
+      handleUploadFile={handleUploadFileIMG}
+    />
   );
 };
 
