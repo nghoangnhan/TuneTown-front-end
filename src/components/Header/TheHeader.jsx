@@ -1,26 +1,43 @@
 import { useEffect, useState } from "react";
 import { Avatar, Modal } from "antd";
-// import { NavLink } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
-import { Base_Ava } from "../../api/config";
+import { Base_URL } from "../../api/config";
 import { setUserId } from "../../redux/slice/account";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const TheHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [modalOpen, setModalOpen] = useState(false);
-  const { removeToken } = UseCookie();
-  const srcAva = Base_Ava;
-
-  const userId = localStorage.getItem("userId");
-  dispatch(setUserId(userId));
+  const { removeToken, getToken } = UseCookie();
   const userName = localStorage.getItem("userName");
   const userRole = localStorage.getItem("userRole");
-
+  const userId = localStorage.getItem("userId");
+  const { access_token } = getToken();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [userInfor, setUserInfor] = useState({});
+  dispatch(setUserId(userId));
   console.log("The Header || UserInfor", userId, userName, userRole);
+
+  // Get user information from API
+  const getUserInfor = async () => {
+    try {
+      const response = await axios.get(`${Base_URL}/users?userId=${userId}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        body: {},
+      });
+      console.log("TheHeader || GetUserInfor", response.data, response.status);
+      setUserInfor(response.data.user);
+      // setUserName(response.data.user.userName);
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("Error edited user:", error.message);
+    }
+  };
 
   const handleOnclick = (direction) => {
     navigate(`/${direction}`);
@@ -32,8 +49,9 @@ const TheHeader = () => {
     navigate("/");
   };
   useEffect(() => {
+    getUserInfor();
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
-  }, []);
+  }, [userId]);
   return (
     <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-[#ecf2fd]">
       <div className="xl:right-5 xl:mt-5 right-3 absolute flex flex-row justify-center items-center">
@@ -60,17 +78,17 @@ const TheHeader = () => {
           {userName ? userName : "Unknown User"}
         </span>
 
-        {srcAva && (
+        {userInfor.avatar && (
           <button className="cursor-pointer" onClick={() => setModalOpen(true)}>
             <Avatar
               icon={<UserOutlined />}
               className="border-[3px] border-[#2c2a2a] "
               size="large"
-              src={<img src={srcAva} alt="avatar" />}
+              src={<img src={userInfor.avatar} alt="avatar" />}
             />
           </button>
         )}
-        {!srcAva && (
+        {!userInfor.avatar && (
           <button className="cursor-pointer" onClick={() => setModalOpen(true)}>
             <Avatar icon={<UserOutlined />} size="large" />
           </button>

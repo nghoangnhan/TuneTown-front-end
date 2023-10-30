@@ -8,6 +8,7 @@ import UseCookie from "../../hooks/useCookie";
 import UploadAvatar from "./UploadAvatar";
 import moment from "moment/moment";
 import dayjs from "dayjs";
+import userUtils from "../../utils/userUtils";
 const { Option } = Select;
 
 const layout = {
@@ -32,7 +33,8 @@ const EditUserForm = () => {
   const [form] = Form.useForm();
   const formRef = useRef(null);
   const [userInfor, setUserInfor] = useState({});
-
+  const [fileIMG, setFileIMG] = useState();
+  // const { getUserInfor } = userUtils();
   // Get user information from API
   const getUserInfor = async () => {
     try {
@@ -58,7 +60,6 @@ const EditUserForm = () => {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-        // body: { values },
       });
       if (response.status === 200) {
         // Handle success
@@ -75,11 +76,12 @@ const EditUserForm = () => {
 
   const onFinish = (values) => {
     console.log("Received values:", values);
+    console.log("FileIMG", fileIMG);
     // Value in Inpurt
-    const { userName, avatar, userBio, email, birthDate } = values;
+    const { userName, userBio, email, birthDate } = values;
     const postData = {
       id: userId,
-      avatar: avatar,
+      avatar: fileIMG,
       userName: userName,
       userBio: userBio,
       email: email,
@@ -91,13 +93,6 @@ const EditUserForm = () => {
   };
 
   //Upload
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
 
   useEffect(() => {
     if (access_token == null) {
@@ -137,7 +132,6 @@ const EditUserForm = () => {
             name="avatar"
             label="Upload Avatar"
             valuePropName="fileList"
-            getValueFromEvent={normFile}
             extra="Upload your cover image png, jpg, jpeg"
             rules={[
               {
@@ -145,7 +139,7 @@ const EditUserForm = () => {
               },
             ]}
           >
-            <UploadAvatar></UploadAvatar>
+            <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
           </Form.Item>
           <Form.Item
             name="userName"
