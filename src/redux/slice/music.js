@@ -7,6 +7,7 @@ const musicStore = createSlice({
   name: "music",
   initialState: {
     currentSong: {
+      id: null,
       songName: "What make you beautiful",
       artistName: ["One Direction", "Two Direction", "Three Direction"],
       songDuration: 214,
