@@ -13,17 +13,17 @@ import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
 import MakeUBeauti from "../../assets/music/What_Makes_You_Beautiful.mp3";
 
 const SongItem = ({ song }) => {
-  const isPlaying = useSelector((state) => state.music.isPlaying);
-  const songInfor = useSelector((state) => state.music.currentSong);
   const audioRef = useRef();
   const dispatch = useDispatch();
-  const { showArtist, GetSongDuration, TimeConvert } = useSongDuration();
-  const { songName, artists, poster, songData } = song;
+  const isPlaying = useSelector((state) => state.music.isPlaying);
+  const songInfor = useSelector((state) => state.music.currentSong);
+  const { showArtist, TimeConvert } = useSongDuration();
+  const { id, songName, artists, poster, songData } = song;
   // const songInfor = useSelector((state) => state.music.currentSong);
   const artistArr = artists.map((artist) => artist.userName);
-  // const youtubeDuration = GetYoutubeVideoDuration(songData);
 
   const songInforObj = {
+    id: id,
     songName: songName,
     artistName: artistArr,
     songDuration: songInfor.songDuration,
@@ -34,12 +34,11 @@ const SongItem = ({ song }) => {
   // When click to the song, save the current song to the context and play it
   const HandlePlay = () => {
     dispatch(setCurrentTime(0));
-    // dispatch(setCurrentSong(songInforObj));
+    // Send Song information to the store
     dispatch(setCurrentSong(songInforObj));
     // dispatch(setSongLinks(songInforObj.songLink));
     if (isPlaying == false) {
       dispatch(setIsPlaying(!isPlaying));
-      // audioRef.current.play();
     }
   };
   // const songDuration = GetSongDuration(songData);

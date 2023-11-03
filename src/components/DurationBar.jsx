@@ -9,19 +9,43 @@ import {
   setDuration,
   setIsPlaying,
 } from "../redux/slice/music";
+import axios from "axios";
+import { Base_URL } from "../api/config";
+import UseCookie from "../hooks/useCookie";
 // import audioFile from "../assets/music/HappyNewYear.mp3";
 
 const DurationBar = () => {
   const { TimeConvert, CheckPlaying } = useSongDuration(); // Song Function
   const dispatch = useDispatch();
   const audioRef = useRef();
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   // const [duration, setDuration] = useState("0"); // Max time of the song
+  const songObj = useSelector((state) => state.music.currentSong); // Get song information from the store
+  console.log("file: DurationBar.jsx:21 || DurationBar || songObj:", songObj);
   const duration = useSelector((state) => state.music.currentSong.songDuration);
   const audioFile = useSelector((state) => state.music.currentSong.songLink);
   const currentTime = useSelector((state) => state.music.currentTime); // Current time when play a song
   const isPlaying = useSelector((state) => state.music.isPlaying); // Check if the song is playing
 
+  const GetSongById = async (id) => {
+    try {
+      console.log("auth", access_token);
+      const response = await axios.get(
+        `${Base_URL}/songs/getSongById?songId=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
   // // Get the max duration of the song
   const GetSongDuration = (audioRef) => {
     setDuration(audioRef.current.duration);
@@ -69,6 +93,7 @@ const DurationBar = () => {
 
   // Update the currentTime every second
   useEffect(() => {
+    GetSongById(songObj.id);
     GetSongDuration(audioRef); // Get the duration of the song
     CheckPlaying(audioRef);
     let interval; // Count the isPlaying

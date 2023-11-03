@@ -94,7 +94,7 @@ const PlaylistSection = () => {
     <div className="playlist-section xl:w-full py-2">
       <button
         onClick={CreateNewPlaylist}
-        className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 ml-3"
+        className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 mt-3 ml-3"
       >
         <div className="font-bold px-2 py-2">+ Create New Playlist</div>
       </button>

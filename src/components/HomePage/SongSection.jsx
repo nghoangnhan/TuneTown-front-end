@@ -10,29 +10,44 @@ import UseCookie from "../../hooks/useCookie";
 // eslint-disable-next-line react/prop-types
 const SongSection = () => {
   const dispatch = useDispatch();
-  const [songList, setSongList] = useState();
+  const [songList, setSongList] = useState([]);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const getListSong = async () => {
+  const [hasMoreSongs, setHasMoreSongs] = useState(false);
+  const [songPage, setSongPage] = useState(1);
+  const [totalPages, setTotalPages] = useState();
+  const getListSong = async (songPage) => {
     try {
       console.log("auth", access_token);
-      const response = await axios.get(`${Base_URL}/songs?page=1`, {
+      const response = await axios.get(`${Base_URL}/songs?page=${songPage}`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      const { songList } = response.data;
-      console.log("songList Response", songList);
-      setSongList(songList);
+      const { songList, currentPage, totalPages } = response.data;
+      console.log("songList Response", songList, currentPage, totalPages);
+      setSongList((prevSongList) => [...prevSongList, ...songList]);
+      setTotalPages(totalPages);
+      setSongPage(currentPage);
+      if (currentPage >= totalPages) {
+        setHasMoreSongs(false);
+      }
+      dispatch(setListSong([...songList]));
       return response.data;
     } catch (error) {
       console.log("Error:", error);
     }
   };
+  const handleLoadMore = () => {
+    setSongPage((prevPage) => prevPage + 1);
+    if (hasMoreSongs) {
+      getListSong(songPage);
+    }
+  };
 
   useEffect(() => {
-    getListSong();
-  }, []);
+    getListSong(songPage);
+  }, [songPage]);
   dispatch(setListSong(songList));
   if (!songList) return null;
 
@@ -51,6 +66,16 @@ const SongSection = () => {
               song={songItem}
             />
           ))}
+        {songPage < totalPages && (
+          <div className="flex justify-center items-center   ">
+            <button
+              onClick={handleLoadMore}
+              className="border border-solid py-2 px-2 w-fit text-[#399f39] border-[#399f39] hover:text-white hover:bg-[#399f39] rounded-md"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
