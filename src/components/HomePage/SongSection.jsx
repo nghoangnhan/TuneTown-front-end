@@ -16,6 +16,12 @@ const SongSection = () => {
   const [hasMoreSongs, setHasMoreSongs] = useState(false);
   const [songPage, setSongPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
+  const [refresh, setRefresh] = useState(false);
+  // Call this function when you want to refresh the playlist
+  const refreshPlaylist = () => {
+    setRefresh(!refresh);
+  };
+
   const getListSong = async (songPage) => {
     try {
       console.log("auth", access_token);
@@ -26,14 +32,35 @@ const SongSection = () => {
       });
       const { songList, currentPage, totalPages } = response.data;
       console.log("songList Response", songList, currentPage, totalPages);
+
       setSongList((prevSongList) => [...prevSongList, ...songList]);
       setTotalPages(totalPages);
       setSongPage(currentPage);
       if (currentPage >= totalPages) {
         setHasMoreSongs(false);
       }
-      dispatch(setListSong([...songList]));
       return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  const deleteSong = async (songId) => {
+    try {
+      confirm(`Are you sure you want to delete this playlist?`);
+      if (confirm) {
+        console.log("auth", access_token);
+        const response = await axios.delete(
+          `${Base_URL}/songs/deleteSong?songId=${songId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
+        // Refresh the component
+        refreshPlaylist();
+        return response.data;
+      }
     } catch (error) {
       console.log("Error:", error);
     }
@@ -47,6 +74,11 @@ const SongSection = () => {
 
   useEffect(() => {
     getListSong(songPage);
+    // .then((songs) => {
+    // setSongList((prevSongList) => [...prevSongList, ...songs.songList]);
+    // setTotalPages(songs.totalPages);
+    // setHasMoreSongs(songs.currentPage < songs.totalPages);
+    // });
   }, [songPage]);
   dispatch(setListSong(songList));
   if (!songList) return null;
@@ -56,15 +88,32 @@ const SongSection = () => {
       <div className="mt-2 flex flex-col gap-2">
         {songList &&
           songList.map((songItem) => (
-            <SongItem
+            <div
+              onContextMenu={(event) => {
+                event.preventDefault();
+                deleteSong(songItem.id);
+              }}
               key={songItem.id}
+            >
+              <SongItem
+                // songName={songItem.songName}
+                // poster={songItem.poster}
+                // genres={songItem.genres}
+                // artists={songItem.artists}
+                // songData={songItem.songData}
+                song={songItem}
+              />
+            </div>
+
+            /* <SongItem
               // songName={songItem.songName}
               // poster={songItem.poster}
               // genres={songItem.genres}
               // artists={songItem.artists}
               // songData={songItem.songData}
               song={songItem}
-            />
+              key={songItem.id} 
+            />*/
           ))}
         {songPage < totalPages && (
           <div className="flex justify-center items-center   ">
