@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Base_URL } from "../../api/config";
 import { Button, DatePicker, Form, Input } from "antd";
-import UseCookie from "../../hooks/useCookie";
-import UploadAvatar from "./UploadAvatar";
 import dayjs from "dayjs";
+import { Base_URL } from "../../../api/config";
+import UseCookie from "../../../hooks/useCookie";
+import UploadAvatar from "../../Users/UploadAvatar";
 
 const layout = {
   labelCol: {
@@ -21,7 +21,7 @@ const tailLayout = {
   },
 };
 
-const EditUserForm = () => {
+const EditInfor = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const userId = localStorage.getItem("userId");
@@ -248,4 +248,4 @@ const EditUserForm = () => {
   );
 };
 
-export default EditUserForm;
+export default EditInfor;
