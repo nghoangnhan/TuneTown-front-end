@@ -1,14 +1,12 @@
-/* eslint-disable no-unused-vars */
-import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import UseCookie from "../../../hooks/useCookie";
+import { Base_URL } from "../../../api/config";
 import axios from "axios";
-import { Base_URL } from "../../api/config";
-import SongItem from "./SongItem";
-import { setListSong } from "../../redux/slice/music";
-import UseCookie from "../../hooks/useCookie";
+import SongItem from "../../HomePage/SongItem";
 
-// eslint-disable-next-line react/prop-types
-const SongSection = () => {
+/* eslint-disable no-unused-vars */
+const SongListCMS = () => {
   const dispatch = useDispatch();
   const [songList, setSongList] = useState([]);
   const { getToken } = UseCookie();
@@ -65,19 +63,10 @@ const SongSection = () => {
       console.log("Error:", error);
     }
   };
-  const handleLoadMore = () => {
-    setSongPage((prevPage) => prevPage + 1);
-    if (hasMoreSongs) {
-      getListSong(songPage);
-    }
-  };
-
   useEffect(() => {
     getListSong(songPage);
   }, [songPage]);
-  dispatch(setListSong(songList));
   if (!songList) return null;
-
   return (
     <div className="xl:w-full">
       <div className="mt-2 flex flex-col gap-2">
@@ -92,30 +81,10 @@ const SongSection = () => {
             >
               <SongItem song={songItem} />
             </div>
-
-            /* <SongItem
-              // songName={songItem.songName}
-              // poster={songItem.poster}
-              // genres={songItem.genres}
-              // artists={songItem.artists}
-              // songData={songItem.songData}
-              song={songItem}
-              key={songItem.id} 
-            />*/
           ))}
-        {songPage < totalPages && (
-          <div className="flex justify-center items-center   ">
-            <button
-              onClick={handleLoadMore}
-              className="border border-solid py-2 px-2 w-fit text-[#399f39] border-[#399f39] hover:text-white hover:bg-[#399f39] rounded-md"
-            >
-              Load More
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
 };
 
-export default SongSection;
+export default SongListCMS;

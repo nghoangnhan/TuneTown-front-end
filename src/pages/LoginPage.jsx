@@ -44,7 +44,6 @@ const LoginPage = () => {
       if ((response.data && response.data.access_token) || response.data) {
         // Save cookies and token
         saveToken(response.data.access_token);
-
         handleUserData(response.data);
         console.log("Token", response.data.access_token);
         // Notifactaion when login successfully
@@ -54,10 +53,17 @@ const LoginPage = () => {
         });
         setTimeout(() => {
           // window.location.href = "/home";
-          navigate("/home");
+          // navigate("/home");
+          if (response.data.role === "ADMIN") {
+            navigate("/cms/usermanagement");
+          } else if (
+            response.data.role === "USER" ||
+            response.data.role === "ARTIST"
+          ) {
+            navigate("/home");
+          }
         }, 1000);
       }
-
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -167,12 +173,10 @@ const LoginPage = () => {
               </NavLink>
             </p>
           </div>
-
           <footer className="bottom-5 absolute ">
             <p className="text-[#8d8d8d]">© 2023 TuneTown</p>
           </footer>
         </div>
-
         <div className="hidden xl:block xl:w-1/2">
           <img
             src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
