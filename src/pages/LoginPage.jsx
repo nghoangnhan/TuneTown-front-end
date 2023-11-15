@@ -1,18 +1,12 @@
-/* eslint-disable no-unused-vars */
 import { useEffect } from "react";
 import axios from "axios";
 import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { NavLink, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
-import { auth } from "../api/config";
+import { Base_URL, auth } from "../api/config";
 import { useDispatch } from "react-redux";
-import {
-  setUserId,
-  setUserInfor,
-  setUserName,
-  setUserRole,
-} from "../redux/slice/account";
+import { setUserInfor } from "../redux/slice/account";
 
 const LoginPage = () => {
   const { removeToken } = UseCookie();
@@ -33,13 +27,10 @@ const LoginPage = () => {
   // Get access to the API
   async function GetAccessToken(emailInput, passwordInput) {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/authenticate",
-        {
-          email: emailInput,
-          password: passwordInput,
-        }
-      );
+      const response = await axios.post(`${Base_URL}/auth/authenticate`, {
+        email: emailInput,
+        password: passwordInput,
+      });
       console.log("Respone Data Sign in", response.data);
       if ((response.data && response.data.access_token) || response.data) {
         // Save cookies and token
@@ -144,15 +135,6 @@ const LoginPage = () => {
             </Form.Item>
 
             <Form.Item
-              name="remember"
-              valuePropName="checked"
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            ></Form.Item>
-
-            <Form.Item
               className="flex flex-row justify-center items-center"
               wrapperCol={{
                 offset: 8,
@@ -165,11 +147,17 @@ const LoginPage = () => {
             </Form.Item>
           </Form>
 
-          <div>
+          <div className="flex flex-col items-center">
             <p className="text-[#2E3271]">
               Don&apos;t have account?
-              <NavLink to="/signup" className="text-[#34a56d] ml-1">
+              <NavLink to="/signup" className="text-[#34a56d] ml-1 text-sm">
                 Sign up
+              </NavLink>
+            </p>
+            <p className="text-[#2E3271]">
+              Forget Your Password?
+              <NavLink to="/forgotpass" className="text-[#34a56d] ml-1 text-sm">
+                Forget Password
               </NavLink>
             </p>
           </div>

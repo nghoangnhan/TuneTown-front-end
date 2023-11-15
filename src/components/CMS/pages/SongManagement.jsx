@@ -50,7 +50,7 @@ const SongManagement = () => {
   };
   const deleteSong = async (songId) => {
     try {
-      confirm(`Are you sure you want to delete this playlist?`);
+      confirm(`Are you sure you want to delete this song?`);
       if (confirm) {
         console.log("auth", access_token);
         const response = await axios.delete(

@@ -206,7 +206,7 @@ const SignUpPage = () => {
           <div>
             <p className="text-[#2E3271]">
               Have an account?
-              <NavLink to="/" className="text-[#34a56d] ml-1">
+              <NavLink to="/" className="text-[#34a56d] ml-1 text-sm">
                 Login
               </NavLink>
             </p>
