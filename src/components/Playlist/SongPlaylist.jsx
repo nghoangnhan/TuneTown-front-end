@@ -13,7 +13,7 @@ const SongPlaylist = (props) => {
   }, [props.songData]);
   if (!songList) return null;
   return (
-    <div className="xl:w-full w-full bg-[#B9C0DE]">
+    <div className="xl:w-full w-full bg-[#ecf2fd]">
       <div className="mt-2 flex flex-col gap-1">
         {songList &&
           songList.map((songItem) => (

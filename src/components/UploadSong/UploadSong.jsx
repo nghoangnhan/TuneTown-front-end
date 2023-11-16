@@ -76,6 +76,11 @@ const UploadSong = () => {
     let formData = new FormData();
     formData.append("image", file);
     console.log("handleUploadFile FileIMG", formData);
+    message.open({
+      type: "loading",
+      content: "Uploading Image",
+      duration: 1,
+    });
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadImage`,
@@ -87,10 +92,15 @@ const UploadSong = () => {
           },
         }
       );
+
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
         setFileIMG(response.data);
-        console.log("FileIMG", fileIMG);
+        message.open({
+          type: "success",
+          content: "Image Uploaded Successfully",
+          duration: 2,
+        });
       } else {
         console.error("Error posting files:", response.data);
       }
@@ -102,6 +112,11 @@ const UploadSong = () => {
     let formData = new FormData();
     formData.append("mp3File", file);
     console.log("handleUploadFile FileMP3", formData);
+    message.open({
+      type: "loading",
+      content: "Uploading Song File",
+      duration: 1,
+    });
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadMp3`,
@@ -113,10 +128,15 @@ const UploadSong = () => {
           },
         }
       );
+
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
         setFileMP3(response.data);
-        console.log("FileMP3", fileMP3);
+        message.open({
+          type: "success",
+          content: "Song File Uploaded Successfully",
+          duration: 2,
+        });
       } else {
         console.error("Error posting files:", response.data);
       }

@@ -97,6 +97,7 @@ const TheHeader = () => {
       <Modal
         title="Options"
         centered
+        style={{ top: 20 }}
         open={modalOpen}
         onOk={() => setModalOpen(false)}
         okButtonProps={{ style: { backgroundColor: "#45cc79" } }}
