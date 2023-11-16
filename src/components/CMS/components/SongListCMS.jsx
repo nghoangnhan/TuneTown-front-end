@@ -18,6 +18,7 @@ const SongListCMS = () => {
   // Call this function when you want to refresh the playlist
   const refreshPlaylist = () => {
     setRefresh(!refresh);
+    getListSong(songPage);
   };
 
   const getListSong = async (songPage) => {
@@ -30,12 +31,13 @@ const SongListCMS = () => {
       });
       const { songList, currentPage, totalPages } = response.data;
       console.log("songList Response", songList, currentPage, totalPages);
-
-      setSongList((prevSongList) => [...prevSongList, ...songList]);
-      setTotalPages(totalPages);
-      setSongPage(currentPage);
-      if (currentPage >= totalPages) {
-        setHasMoreSongs(false);
+      if (response.data) {
+        setSongList((prevSongList) => [...prevSongList, ...songList]);
+        setTotalPages(totalPages);
+        setSongPage(currentPage);
+        if (currentPage >= totalPages) {
+          setHasMoreSongs(false);
+        }
       }
       return response.data;
     } catch (error) {
