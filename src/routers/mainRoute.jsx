@@ -4,9 +4,9 @@ import PageFull from "../pages/PageFull";
 import PlaylistPage from "../pages/PlaylistPage";
 import SearchPage from "../pages/SearchPage";
 import UploadSong from "../components/UploadSong/UploadSong";
-import EditUserForm from "../components/Users/EditUserForm";
 import CMSPage from "../pages/CMSPage";
-import EditInfor from "../components/CMS/pages/EditInfor";
+import EditUserForm from "../components/Users/EditUserForm";
+import EditInforCMS from "../components/CMS/pages/EditInforCMS";
 import SongManagement from "../components/CMS/pages/SongManagement";
 import UserManagement from "../components/CMS/pages/UserManagement";
 
@@ -56,7 +56,7 @@ export default function init(routes) {
       {
         index: true,
         path: "profile",
-        element: <EditInfor />,
+        element: <EditInforCMS />,
       },
       {
         path: "usermanagement",

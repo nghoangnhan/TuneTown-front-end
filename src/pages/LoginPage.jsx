@@ -43,14 +43,13 @@ const LoginPage = () => {
           content: "Login Successfully",
         });
         setTimeout(() => {
-          // window.location.href = "/home";
-          // navigate("/home");
           if (response.data.role === "ADMIN") {
             navigate("/cms/usermanagement");
           } else if (
             response.data.role === "USER" ||
             response.data.role === "ARTIST"
           ) {
+            // window.location.href = "/home";
             navigate("/home");
           }
         }, 1000);

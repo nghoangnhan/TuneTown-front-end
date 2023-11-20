@@ -1,15 +1,31 @@
-import { Table, Tag } from "antd";
+import { Button, Form, Input, Modal, Space, Table, Tag } from "antd";
 import { Base_URL } from "../../../api/config";
 import axios from "axios";
 import UseCookie from "../../../hooks/useCookie";
 import { useEffect, useState } from "react";
+import EditUserForm from "../../Users/EditUserForm";
 
 /* eslint-disable no-unused-vars */
 const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [userList, setUserList] = useState([]);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState();
+  const [form] = Form.useForm();
+  // Call this function when you want to refresh the playlist
+  const showModal = (id) => {
+    setIsModalOpen(true);
+    setUserId(id);
+    console.log("id", id);
+  };
+  const handleOk = () => {
+    form.submit();
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   // http://localhost:8080/users
   const GetListUser = async () => {
     try {
@@ -26,6 +42,8 @@ const UserManagement = () => {
       console.log("Error:", error);
     }
   };
+
+  // Data Test
   const data = [
     {
       id: 1,
@@ -136,7 +154,7 @@ const UserManagement = () => {
           color = "purple";
         }
         if (role.toLowerCase() === "admin") {
-          color = "blue"; // Correct the color value
+          color = "red"; // Correct the color value
         }
         return (
           <Tag color={color} key={role}>
@@ -145,14 +163,74 @@ const UserManagement = () => {
         );
       },
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            className="py-1 px-2 rounded-lg"
+            onClick={() => showModal(record.id)}
+          >
+            Edit
+          </Button>
+          <Button
+            className="py-1 px-2 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
+            // onClick={() => deleteSong(record.key)}
+          >
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
   ];
   useEffect(() => {
     GetListUser();
-  }, []);
+  }, [isModalOpen]);
   return (
     <div>
       <div className="text-2xl font-bold">User Management</div>
-      <Table columns={columns} dataSource={userList} />
+      <div className=" flex flex-col gap-3">
+        <div className=" flex flex-row justify-between">
+          <div className="">
+            <Form
+              name="basic"
+              labelCol={{
+                span: 8,
+              }}
+              wrapperCol={{
+                span: 16,
+              }}
+              layout="inline"
+              initialValues={{
+                remember: true,
+              }}
+              // onFinish={onFinish}
+              // onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item label="Name" name="majorName">
+                <Input placeholder="majorName" />
+              </Form.Item>
+              <Form.Item>
+                <Button type="default" htmlType="submit">
+                  Search
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </div>
+        <Table columns={columns} dataSource={userList} />
+        <Modal
+          title="Edit User"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[]}
+        >
+          <EditUserForm editUserId={userId}></EditUserForm>
+        </Modal>
+      </div>
     </div>
   );
 };
