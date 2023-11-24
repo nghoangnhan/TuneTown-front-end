@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Base_URL } from "../../api/config";
 import SongPlaylist from "./SongPlaylist";
@@ -11,7 +11,6 @@ const DetailPlaylist = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { playlistId } = useParams();
-  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
@@ -102,7 +101,7 @@ const DetailPlaylist = () => {
       </div>
       <div className="flex flex-row gap-4">
         <button
-          onClick={() => navigate("/home")}
+          onClick={() => window.history.back()}
           className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md mb-5"
         >
           <div className="text-white font-bold px-2 py-1">{"<"} Back</div>

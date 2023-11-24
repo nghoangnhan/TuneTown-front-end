@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const playlistStore = createSlice({
   name: "playlist",
   initialState: {
+    myPlaylistLists: [],
     id: 0,
     playlistName: "",
     user: {
@@ -26,8 +27,11 @@ const playlistStore = createSlice({
     setPlaylist: (state, action) => {
       state.playlist = action.payload;
     },
+    setMyPLaylistList: (state, action) => {
+      state.myPlaylistLists = action.payload;
+    },
   },
 });
 
-export const { setPlaylist } = playlistStore.actions;
+export const { setPlaylist, setMyPLaylistList } = playlistStore.actions;
 export default playlistStore.reducer;

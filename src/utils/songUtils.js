@@ -2,8 +2,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setDuration } from "../redux/slice/music";
 import { useRef } from "react";
+import axios from "axios";
+import { Base_URL } from "../api/config";
+import UseCookie from "../hooks/useCookie";
 
-const useSongDuration = () => {
+export const useSongDuration = () => {
   const dispatch = useDispatch();
 
   //     const { setDuration } = useMusicSlice();
@@ -79,13 +82,6 @@ const useSongDuration = () => {
     console.log(`The duration of the song is ${duration} seconds`);
     dispatch(setDuration(audioElement.current.duration));
   };
-  // Get the youtube video duration
-  // const GetYoutubeVideoDuration = (videoId) => {
-  //   const videoElement = new HTMLVideoElement(videoId);
-  //   const duration = videoElement.current.duration;
-  //   console.log(`The duration of the song is ${duration} seconds`);
-  //   dispatch(setDuration(videoElement.current.duration));
-  // };
 
   return {
     TimeConvert,
@@ -94,7 +90,104 @@ const useSongDuration = () => {
     AcronymName,
     CheckPlaying,
     GetSongDuration,
-    // GetYoutubeVideoDuration,
   };
 };
 export default useSongDuration;
+
+export const useMusicAPI = () => {
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
+
+  const getUserPlaylist = async (userId) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/playlists?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("songList Response", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const deletePlaylist = async (playlistId) => {
+    try {
+      if (
+        confirm(
+          `Are you sure you want to delete this playlist? id: ${playlistId}`
+        ) == true
+      ) {
+        const response = await axios.delete(
+          `${Base_URL}/playlists?playlistId=${playlistId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
+        console.log("songList Response", response.data);
+        // Refresh the component
+        return response.data;
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  // http://localhost:8080/playlists?songId=1&playlistId=343
+  const addSongToPlaylist = async (songId, playlistId) => {
+    try {
+      const response = await axios.put(
+        `${Base_URL}/playlists?songId=${songId}&playlistId=${playlistId}`,
+        {
+          songId: songId,
+          playlistId: playlistId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("songList Response", response.data);
+      if (response.status === 200) {
+        // Return a success flag or any relevant data
+        return { success: true, data: response.data };
+      } else {
+        // Return an error flag or relevant error data
+        return { success: false, error: response.data };
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      // Return an error flag or relevant error data
+      return { success: false, error: error.message };
+    }
+  };
+  const deleteSong = async (songId) => {
+    try {
+      if (confirm(`Are you sure you want to delete this song?`) == true) {
+        const response = await axios.delete(
+          `${Base_URL}/songs/deleteSong?songId=${songId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          return { success: true, data: response.data };
+        } else {
+          return { success: false, error: response.data };
+        }
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      return { success: false, error: error.message };
+    }
+  };
+  return { getUserPlaylist, deletePlaylist, addSongToPlaylist, deleteSong };
+};

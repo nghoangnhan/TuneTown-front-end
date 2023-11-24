@@ -1,12 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
+  const navigate = useNavigate();
   return (
     <div>
       {/* Navigation Laptop  */}
       <div className="hidden xl:flex h-screen bg-[#FFFFFFCC] justify-center">
         <div className="max-xl:w-64">
-          <div className="text-center pt-6 uppercase font-bold text-lg flex flex-row justify-center items-center gap-5">
+          <div
+            className="text-center pt-6 uppercase font-bold text-lg flex flex-row justify-center items-center gap-5 cursor-pointer"
+            onClick={() => navigate("/home")}
+          >
             <div>
               <img
                 src="src\assets\img\logo\logo.png"

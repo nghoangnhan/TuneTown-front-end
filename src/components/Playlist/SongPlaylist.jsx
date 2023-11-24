@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import SongItem from "../HomePage/SongItem";
+import SongItemPlaylist from "../Song/SongItemPlaylist";
 // import { useDispatch } from "react-redux";
 
 const SongPlaylist = (props) => {
@@ -17,7 +17,7 @@ const SongPlaylist = (props) => {
       <div className="mt-2 flex flex-col gap-1">
         {songList &&
           songList.map((songItem) => (
-            <SongItem key={songItem.id} song={songItem.song} />
+            <SongItemPlaylist key={songItem.id} song={songItem.song} />
           ))}
       </div>
     </div>

@@ -31,7 +31,6 @@ const DurationBar = () => {
 
   const GetSongById = async (id) => {
     try {
-      console.log("auth", access_token);
       const response = await axios.get(
         `${Base_URL}/songs/getSongById?songId=${id}`,
         {

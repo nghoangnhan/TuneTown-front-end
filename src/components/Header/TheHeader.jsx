@@ -112,12 +112,21 @@ const TheHeader = () => {
             <button>Upload Song</button>
           </div>
         )}
+
         {userRole != "ADMIN" && (
           <div
             onClick={() => handleOnclick("editUser")}
             className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  "
           >
             <button>Edit User Information</button>
+          </div>
+        )}
+        {userRole != "ADMIN" && (
+          <div
+            onClick={() => handleOnclick("history")}
+            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  "
+          >
+            <button>Listen History</button>
           </div>
         )}
         <div className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  ">
