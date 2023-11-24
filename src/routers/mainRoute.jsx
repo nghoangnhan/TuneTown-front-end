@@ -9,6 +9,7 @@ import EditUserForm from "../components/Users/EditUserForm";
 import EditInforCMS from "../components/CMS/pages/EditInforCMS";
 import SongManagement from "../components/CMS/pages/SongManagement";
 import UserManagement from "../components/CMS/pages/UserManagement";
+import HistoryPage from "../pages/HistoryPage";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -44,6 +45,10 @@ export default function init(routes) {
       {
         path: "editUser",
         element: <EditUserForm />,
+      },
+      {
+        path: "history",
+        element: <HistoryPage />,
       },
     ],
   };

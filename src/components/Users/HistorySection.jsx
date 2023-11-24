@@ -1,25 +1,18 @@
 /* eslint-disable no-unused-vars */
-import { Button, Form, Input, Modal, Space, Table, Tag } from "antd";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Base_URL } from "../../../api/config";
-import UseCookie from "../../../hooks/useCookie";
-import UploadSong from "../../UploadSong/UploadSong";
+import { Button, Form, Input, Space, Table } from "antd";
+import axios from "axios";
+import { Base_URL } from "../../api/config";
+import UseCookie from "../../hooks/useCookie";
 
-const SongManagement = () => {
+const HistorySection = () => {
   const { getToken } = UseCookie();
-  const [form] = Form.useForm();
   const { access_token } = getToken();
   const [songList, setSongList] = useState([]);
   const [hasMoreSongs, setHasMoreSongs] = useState(false);
   const [songPage, setSongPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [refresh, setRefresh] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  // Call this function when you want to refresh the playlist
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
   const refreshPlaylist = () => {
     setRefresh(!refresh);
@@ -74,14 +67,6 @@ const SongManagement = () => {
     } catch (error) {
       console.log("Error:", error);
     }
-  };
-
-  const handleOk = () => {
-    form.submit();
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   // Song Data {id,artists, genres, listens, poster, songData, songName, status}
@@ -150,56 +135,40 @@ const SongManagement = () => {
   console.log("dataSongs", dataSongs);
   useEffect(() => {
     getListSong(songPage);
-  }, [isModalOpen]);
+  }, []);
 
   if (!songList) return null;
   return (
     <div>
       <div className="text-2xl font-bold">Song Management</div>
       <div className=" flex flex-row justify-between mb-5 mt-5">
-        <div className="">
-          <Form
-            name="basic"
-            labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 16,
-            }}
-            layout="inline"
-            initialValues={{
-              remember: true,
-            }}
-            autoComplete="off"
-          >
-            <Form.Item label="Name" name="majorName">
-              <Input placeholder="majorName" />
-            </Form.Item>
-            <Form.Item>
-              <Button type="default" htmlType="submit">
-                Search
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-        <div className="">
-          <Button type="default" onClick={() => showModal()}>
-            Create New Song
-          </Button>
-        </div>
+        <Form
+          name="basic"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          layout="inline"
+          initialValues={{
+            remember: true,
+          }}
+          autoComplete="off"
+        >
+          <Form.Item label="Name" name="majorName">
+            <Input placeholder="majorName" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="default" htmlType="submit">
+              Search
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
       <Table columns={columnsSong} dataSource={dataSongs} />
-      <Modal
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[null, null]}
-        className="w-fit h-fit "
-      >
-        <UploadSong></UploadSong>
-      </Modal>
     </div>
   );
 };
 
-export default SongManagement;
+export default HistorySection;

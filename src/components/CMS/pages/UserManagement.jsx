@@ -191,7 +191,7 @@ const UserManagement = () => {
     <div>
       <div className="text-2xl font-bold">User Management</div>
       <div className=" flex flex-col gap-3">
-        <div className=" flex flex-row justify-between">
+        <div className=" flex flex-row justify-between mb-5 mt-5">
           <div className="">
             <Form
               name="basic"

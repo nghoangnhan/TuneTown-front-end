@@ -162,7 +162,7 @@ const ForgotPass = () => {
             </Form.Item>
 
             <Form.Item
-              label="CAPTCHA"
+              label="OTP"
               name="captcha"
               className=""
               rules={[

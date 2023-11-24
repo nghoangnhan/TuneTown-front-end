@@ -1,26 +1,37 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setCurrentSong,
   setCurrentTime,
   setIsPlaying,
-  setSongLinks,
 } from "../../redux/slice/music";
-import useSongDuration from "../../utils/songUtils";
+import useSongDuration, { useMusicAPI } from "../../utils/songUtils";
 import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
-import MakeUBeauti from "../../assets/music/What_Makes_You_Beautiful.mp3";
+import {
+  Menu,
+  Item,
+  Separator,
+  Submenu,
+  useContextMenu,
+} from "react-contexify";
+import { message } from "antd";
 
 const SongItem = ({ song }) => {
+  const { id, songName, artists, poster, songData } = song;
   const audioRef = useRef();
+  const { show } = useContextMenu();
+  const { addSongToPlaylist, getUserPlaylist } = useMusicAPI();
+  const userId = localStorage.getItem("userId");
+  const { showArtist, TimeConvert } = useSongDuration();
   const dispatch = useDispatch();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
-  const { showArtist, TimeConvert } = useSongDuration();
-  const { id, songName, artists, poster, songData } = song;
-  // const songInfor = useSelector((state) => state.music.currentSong);
   const artistArr = artists.map((artist) => artist.userName);
+  const audio = document.getElementById("audio");
+  const [playlistList, setPlaylistList] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const songInforObj = {
     id: id,
@@ -42,11 +53,61 @@ const SongItem = ({ song }) => {
     }
   };
   // const songDuration = GetSongDuration(songData);
-  const audio = document.getElementById("audio");
 
+  function displayMenu(e, songId) {
+    console.log("PlaylistList", playlistList);
+    e.preventDefault();
+    show({
+      position: { x: e.clientX, y: e.clientY },
+      event: e,
+      id: `songOption_${songId}`,
+    });
+  }
+
+  // Call this function when you want to refresh the playlist
+  const refreshPlaylist = () => {
+    setRefresh(!refresh);
+  };
+  useEffect(() => {
+    getUserPlaylist(userId).then((data) => setPlaylistList(data));
+  }, []);
   return (
-    <div>
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1">
+    <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
+      {contextHolder}
+      {/* Context Menu */}
+      <Menu id={`songOption_${songInforObj.id}`}>
+        <Item onClick={refreshPlaylist}>Refresh</Item>
+        <Separator />
+        <Submenu label="Add to playlist">
+          {playlistList.map((playlist) => (
+            <Item
+              key={playlist.id}
+              onClick={() => {
+                addSongToPlaylist(songInforObj.id, playlist.id).then(
+                  (result) => {
+                    if (result.success) {
+                      messageApi.open({
+                        type: "success",
+                        content: `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`,
+                      });
+                    } else {
+                      messageApi.open({
+                        type: "error",
+                        content: `Failed to add song: ${result.error}`,
+                      });
+                    }
+                  }
+                );
+              }}
+            >
+              {playlist.playlistName}{" "}
+              <span className="text-[#938e8e] ml-1"> #{playlist.id}</span>
+            </Item>
+          ))}
+        </Submenu>
+      </Menu>
+
+      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer">
         <img
           className="mr-3 w-12 h-12 xl:w-14 xl:h-14 rounded-lg object-cover"
           alt="Album cover"
@@ -58,10 +119,6 @@ const SongItem = ({ song }) => {
           <h2 className="">{songInforObj.songName}</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">
             {artists && showArtist(artistArr)}
-            {/* {artists &&
-              artists.map((artist) => (
-                <span key={artist.id}>{artist.userName}</span>
-              ))} */}
             {!artists && <span>Null</span>}
           </h2>
         </div>
