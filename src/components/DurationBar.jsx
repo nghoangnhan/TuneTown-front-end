@@ -69,24 +69,30 @@ const DurationBar = () => {
 
   // HANLDE PLAYING AUDIO FILES WITH BUFFER
   const [audioContext, setAudioContext] = useState(null);
-  const [sourceNode, setSourceNode] = useState([]);
+  const sourceNode = useRef([]);
   const [isAudioPlayed, setIsAudioPlayed] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   // const [currentPartIndex, setCurrentPartIndex] = useState(0);
 
-  const audioArray = [
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_1.mp3?alt=media&token=29b10cca-12b3-492f-a316-642e6d897396",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_2.mp3?alt=media&token=edf54995-84e8-46a9-a342-8378fcdd76ae",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_3.mp3?alt=media&token=74385b3f-3085-4f01-aad5-c741cfba4556",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_4.mp3?alt=media&token=86bd1c56-83f2-46d0-b0f4-388ab395efd8",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_5.mp3?alt=media&token=7ffb8f6c-f7ea-4e32-8c25-33b5c222c4ae",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_6.mp3?alt=media&token=0ad2bd34-54b7-47b4-a2e7-ac34ba227e5d",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_7.mp3?alt=media&token=9f48f901-69c5-4174-b16c-3e1bcdd43745",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_8.mp3?alt=media&token=46e7f688-65f8-4463-829a-ece0e295741f",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_9.mp3?alt=media&token=efe48b6d-68c7-4a97-b695-6e9f56ace32e",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_10.mp3?alt=media&token=e39ad2bf-72c6-47c9-8b6c-38fe0ebad2e2",
-  ];
+  // const audioArray = [
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_1.mp3?alt=media&token=29b10cca-12b3-492f-a316-642e6d897396",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_2.mp3?alt=media&token=edf54995-84e8-46a9-a342-8378fcdd76ae",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_3.mp3?alt=media&token=74385b3f-3085-4f01-aad5-c741cfba4556",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_4.mp3?alt=media&token=86bd1c56-83f2-46d0-b0f4-388ab395efd8",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_5.mp3?alt=media&token=7ffb8f6c-f7ea-4e32-8c25-33b5c222c4ae",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_6.mp3?alt=media&token=0ad2bd34-54b7-47b4-a2e7-ac34ba227e5d",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_7.mp3?alt=media&token=9f48f901-69c5-4174-b16c-3e1bcdd43745",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_8.mp3?alt=media&token=46e7f688-65f8-4463-829a-ece0e295741f",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_9.mp3?alt=media&token=efe48b6d-68c7-4a97-b695-6e9f56ace32e",
+  //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_10.mp3?alt=media&token=e39ad2bf-72c6-47c9-8b6c-38fe0ebad2e2",
+  // ];
 
+  const audioArray = [
+    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2F50%20Feet%20-%20Somo%2F50%20Feet%20-%20Somo_1.mp3?alt=media&token=3b6bac15-c14b-43b0-9b51-257aa4a5582a",
+    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2F50%20Feet%20-%20Somo%2F50%20Feet%20-%20Somo_2.mp3?alt=media&token=c379a880-1478-4348-832e-c1b1790ae4dc",
+    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2F50%20Feet%20-%20Somo%2F50%20Feet%20-%20Somo_3.mp3?alt=media&token=40795bcb-f4e6-4321-aee2-7d7fa57cc6e2",
+  ];
   useEffect(() => {
     const initAudioContext = async () => {
       try {
@@ -108,54 +114,25 @@ const DurationBar = () => {
   }, []);
 
   useEffect(() => {
-    console.log(sourceNode);
-    const logSourceNode = () => {
-      if (!isAudioPlayed && sourceNode.length > 0) {
-        console.log("Part: " + currentIndex);
-        console.log(sourceNode);
+    console.log(sourceNode.current[currentIndex]);
+    if (!isAudioPlayed && sourceNode.current.length > 0) {
+      setIsAudioPlayed(true);
+      sourceNode.current[currentIndex].start();
 
-        setIsAudioPlayed(true);
-        sourceNode[currentIndex].start();
-        if (currentIndex < audioArray.length - 1) {
-          // setTimeout(() => {
-          //   setIsAudioPlayed(false);
-          //   setCurrentIndex((prev) => prev + 1);
-          // }, (sourceNode[currentIndex].duration - 0.1) * 1000);
-
-          sourceNode[currentIndex].onended = () => {
-            setCurrentIndex((prev) => prev + 1);
-            setIsAudioPlayed(false);
-          };
-        }
-      }
-    };
-    logSourceNode();
-  }, [sourceNode]);
+      setTimeout(() => {
+        sourceNode.current[currentIndex + 1].start();
+        setCurrentIndex(currentIndex + 1);
+      }, (sourceNode.current[currentIndex].buffer.duration - 0.05) * 1000);
+    }
+  }, [isLoaded]);
 
   useEffect(() => {
-    const logSourceNode = () => {
-      // console.log(sourceNode);
-
-      if (sourceNode.length > 0) {
-        console.log("Part: " + currentIndex);
-        console.log(sourceNode);
-
-        setIsAudioPlayed(true);
-        sourceNode[currentIndex].start();
-        if (currentIndex < audioArray.length - 1) {
-          // setTimeout(() => {
-          //   setIsAudioPlayed(false);
-          //   setCurrentIndex((prev) => prev + 1);
-          // }, (sourceNode[currentIndex].duration - 0.005) * 1000);
-
-          sourceNode[currentIndex].onended = () => {
-            setCurrentIndex((prev) => prev + 1);
-            setIsAudioPlayed(false);
-          };
-        }
-      }
-    };
-    logSourceNode();
+    if (currentIndex + 1 < sourceNode.current.length) {
+      setTimeout(() => {
+        sourceNode.current[currentIndex + 1].start();
+        setCurrentIndex(currentIndex + 1);
+      }, (sourceNode.current[currentIndex].buffer.duration - 0.05) * 1000);
+    }
   }, [currentIndex]);
 
   const loadAudio = async (currentPartIndex) => {
@@ -177,7 +154,8 @@ const DurationBar = () => {
         source.connect(audioContext.destination);
 
         // Set the source node in the state
-        setSourceNode((prevArray) => [...prevArray, source]);
+        sourceNode.current.push(source);
+        setIsLoaded(true);
       } catch (error) {
         console.error("Error loading or playing audio:", error);
       }
