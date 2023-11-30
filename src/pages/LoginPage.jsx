@@ -7,6 +7,10 @@ import UseCookie from "../hooks/useCookie";
 import { Base_URL, auth } from "../api/config";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../redux/slice/account";
+import GoogleLoginButton from "../components/AuthGoogle/AuthGoogleLogin";
+import { gapi } from 'gapi-script';
+
+const clientId = "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
 
 const LoginPage = () => {
   const { removeToken } = UseCookie();
@@ -78,6 +82,17 @@ const LoginPage = () => {
     console.log("Token removed", auth.access_token);
     removeToken();
   }, []);
+
+  useEffect(() =>{
+    function start(){
+      gapi.client.init({
+        clientId: clientId,
+        scope: ""
+      })
+    };
+
+    gapi.load('client:auth2', start);
+  })
 
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
@@ -159,6 +174,11 @@ const LoginPage = () => {
                 Forget Password
               </NavLink>
             </p>
+
+            <div>
+              <GoogleLoginButton/>
+            </div>
+
           </div>
           <footer className="bottom-5 absolute ">
             <p className="text-[#8d8d8d]">© 2023 TuneTown</p>
