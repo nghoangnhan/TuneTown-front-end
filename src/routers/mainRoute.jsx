@@ -10,6 +10,7 @@ import EditInforCMS from "../components/CMS/pages/EditInforCMS";
 import SongManagement from "../components/CMS/pages/SongManagement";
 import UserManagement from "../components/CMS/pages/UserManagement";
 import HistoryPage from "../pages/HistoryPage";
+import MyDetailPlaylist from "../components/Users/MyDetailPlaylist";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -37,6 +38,10 @@ export default function init(routes) {
       {
         path: "detail/:playlistId",
         element: <DetailPlaylist />,
+      },
+      {
+        path: "mydetail/:playlistId",
+        element: <MyDetailPlaylist />,
       },
       {
         path: "upload",

@@ -21,8 +21,7 @@ const NavigationBar = () => {
             <div className="text-[#2E3271]">TuneTown</div>
           </div>
           <div className="mt-8">
-            <div className="text-[#7C8DB5B8] ">General</div>
-            <div className="flex flex-col  mt-7 gap-2">
+            <div className="flex flex-col mt-7 gap-2">
               <NavLink
                 to="/home"
                 className={({ isActive }) =>

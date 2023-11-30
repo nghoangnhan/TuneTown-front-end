@@ -28,7 +28,7 @@ const SongItem = ({ song }) => {
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   const artistArr = artists.map((artist) => artist.userName);
-  const audio = document.getElementById("audio");
+  // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -71,6 +71,7 @@ const SongItem = ({ song }) => {
   useEffect(() => {
     getUserPlaylist(userId).then((data) => setPlaylistList(data));
   }, []);
+
   return (
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
       {contextHolder}
@@ -79,31 +80,32 @@ const SongItem = ({ song }) => {
         <Item onClick={refreshPlaylist}>Refresh</Item>
         <Separator />
         <Submenu label="Add to playlist">
-          {playlistList.map((playlist) => (
-            <Item
-              key={playlist.id}
-              onClick={() => {
-                addSongToPlaylist(songInforObj.id, playlist.id).then(
-                  (result) => {
-                    if (result.success) {
-                      messageApi.open({
-                        type: "success",
-                        content: `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`,
-                      });
-                    } else {
-                      messageApi.open({
-                        type: "error",
-                        content: `Failed to add song: ${result.error}`,
-                      });
+          {playlistList &&
+            playlistList.map((playlist) => (
+              <Item
+                key={playlist.id}
+                onClick={() => {
+                  addSongToPlaylist(songInforObj.id, playlist.id).then(
+                    (result) => {
+                      if (result.success) {
+                        messageApi.open({
+                          type: "success",
+                          content: `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`,
+                        });
+                      } else {
+                        messageApi.open({
+                          type: "error",
+                          content: `Failed to add song: ${result.error}`,
+                        });
+                      }
                     }
-                  }
-                );
-              }}
-            >
-              {playlist.playlistName}{" "}
-              <span className="text-[#938e8e] ml-1"> #{playlist.id}</span>
-            </Item>
-          ))}
+                  );
+                }}
+              >
+                {playlist.playlistName}{" "}
+                <span className="text-[#938e8e] ml-1"> #{playlist.id}</span>
+              </Item>
+            ))}
         </Submenu>
       </Menu>
 

@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
 import axios from "axios";
-import PlaylistItem from "../Playlist/PlaylistItem";
 import { useMusicAPI } from "../../utils/songUtils";
 import { useDispatch } from "react-redux";
 import { setMyPLaylistList } from "../../redux/slice/playlist";
+import MyPlaylistItem from "./MyPlaylistItem";
 
 const MyPlaylistSection = () => {
   const { getToken } = UseCookie();
-  // const { deletePlaylist } = useMusicAPI();
   const { getUserPlaylist } = useMusicAPI();
   const { access_token } = getToken();
   const dispatch = useDispatch();
@@ -107,14 +106,14 @@ const MyPlaylistSection = () => {
                 deletePlaylist(playlistItem.id);
               }}
             >
-              <PlaylistItem
+              <MyPlaylistItem
                 key={playlistItem.id}
                 id={playlistItem.id}
                 playlistName={playlistItem.playlistName}
                 playlistType={playlistItem.playlistType}
                 users={playlistItem.users}
                 coverArt={playlistItem.coverArt}
-              ></PlaylistItem>
+              ></MyPlaylistItem>
             </SwiperSlide>
           ))}
       </Swiper>

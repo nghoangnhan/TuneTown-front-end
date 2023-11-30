@@ -7,6 +7,7 @@ import { setListSong } from "../../redux/slice/music";
 import UseCookie from "../../hooks/useCookie";
 import SongItem from "../Song/SongItem";
 
+// eslint-disable-next-line react/prop-types
 const SongSection = ({ titleSong }) => {
   const dispatch = useDispatch();
   const { getToken } = UseCookie();
