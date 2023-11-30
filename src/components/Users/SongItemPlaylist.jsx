@@ -6,7 +6,6 @@ import {
   setCurrentSong,
   setCurrentTime,
   setIsPlaying,
-  setSongLinks,
 } from "../../redux/slice/music";
 import useSongDuration, { useMusicAPI } from "../../utils/songUtils";
 import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
@@ -18,23 +17,25 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
-
-const SongItemPlaylist = ({ song }) => {
+import { setRefresh } from "../../redux/slice/playlist";
+const SongItemPlaylist = ({ song, songId }) => {
   const { id, songName, artists, poster, songData } = song;
-  const audioRef = useRef();
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
-  const { addSongToPlaylist, getUserPlaylist, deleteSong } = useMusicAPI();
+  const { addSongToPlaylist, getUserPlaylist, deleteSongInPlaylist } =
+    useMusicAPI();
   const { showArtist, TimeConvert } = useSongDuration();
   const dispatch = useDispatch();
+  const audioRef = useRef();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   const artistArr = artists.map((artist) => artist.userName);
   const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-
+  const refreshPlaylist = useSelector(
+    (state) => state.playlist.refreshPlaylist
+  );
   const songInforObj = {
     id: id,
     songName: songName,
@@ -65,14 +66,35 @@ const SongItemPlaylist = ({ song }) => {
       id: `songOption_${songId}`,
     });
   }
-
   // Call this function when you want to refresh the playlist
-  const refreshPlaylist = () => {
-    setRefresh(!refresh);
+  const HandleRefreshPlaylist = () => {
+    dispatch(setRefresh(!refreshPlaylist));
   };
+
+  // When the song is deleted, refresh the playlist
+  const handleDeleteSong = () => {
+    deleteSongInPlaylist(songId, localStorage.getItem("myPlaylistId")).then(
+      (response) => {
+        console.log("Delete song response", response);
+        if (response === 200) {
+          messageApi.success(
+            `Deleted ${songInforObj.songName} #${songId} ##${
+              songInforObj.id
+            } in playlist ${localStorage.getItem("myPlaylistId")}`
+          );
+          // Trigger a re-render by updating the refresh state
+          HandleRefreshPlaylist();
+        } else {
+          messageApi.error(`Failed to delete song: ${response.error}`);
+        }
+      }
+    );
+  };
+
   useEffect(() => {
+    console.log("SongId", songId);
     getUserPlaylist(userId).then((data) => setPlaylistList(data));
-  }, []);
+  }, [refreshPlaylist]);
   return (
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
       {contextHolder}
@@ -81,19 +103,7 @@ const SongItemPlaylist = ({ song }) => {
         <Item onClick={refreshPlaylist}>Refresh</Item>
         <Item
           onClick={() => {
-            // deleteSong(songInforObj.id).then((result) => {
-            //   if (result.success) {
-            //     messageApi.open({
-            //       type: "success",
-            //       content: `Deleted ${songInforObj.songName} #${songInforObj.id}`,
-            //     });
-            //   } else {
-            //     messageApi.open({
-            //       type: "error",
-            //       content: `Failed to delete song: ${result.error}`,
-            //     });
-            //   }
-            // });
+            handleDeleteSong();
           }}
         >
           Delete Song
@@ -107,15 +117,11 @@ const SongItemPlaylist = ({ song }) => {
                 addSongToPlaylist(songInforObj.id, playlist.id).then(
                   (result) => {
                     if (result.success) {
-                      messageApi.open({
-                        type: "success",
-                        content: `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`,
-                      });
+                      messageApi.success(
+                        `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`
+                      );
                     } else {
-                      messageApi.open({
-                        type: "error",
-                        content: `Failed to add song: ${result.error}`,
-                      });
+                      messageApi.error(`Failed to add song: ${result.error}`);
                     }
                   }
                 );

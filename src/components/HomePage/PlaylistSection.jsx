@@ -1,42 +1,19 @@
+/* eslint-disable react/prop-types */
 import { Swiper, SwiperSlide } from "swiper/react";
 import PlaylistItem from "../Playlist/PlaylistItem";
 import { useEffect, useState } from "react";
-import { Base_URL } from "../../api/config";
-import UseCookie from "../../hooks/useCookie";
-import axios from "axios";
+import { useMusicAPI } from "../../utils/songUtils";
 
 const PlaylistSection = ({ playlistTitle }) => {
-  const { getToken } = UseCookie();
-  const { access_token } = getToken();
+  const { getUserPlaylist } = useMusicAPI();
   const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState();
-  const [refresh, setRefresh] = useState(false);
-
-  // Call this function when you want to refresh the playlist
-  const refreshPlaylist = () => {
-    setRefresh(!refresh);
-  };
-
-  const getListSong = async () => {
-    try {
-      const response = await axios.get(
-        `${Base_URL}/playlists?userId=${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-      console.log("songList Response", response.data);
-      return response.data;
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
 
   useEffect(() => {
-    getListSong().then((data) => setPlaylistList(data));
-  }, [refresh]);
+    getUserPlaylist(userId).then((data) => {
+      setPlaylistList(data);
+    });
+  }, []);
 
   return (
     <div className="bg-[#FFFFFFCC] rounded-2xl max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-5 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">

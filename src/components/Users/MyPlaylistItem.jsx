@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-const PlaylistItem = ({ id, playlistName, playlistType }) => {
+const MyPlaylistItem = ({ id, playlistName, playlistType }) => {
   const navigate = useNavigate();
 
   return (
     <div
       className="w-fit border-[1px] rounded-xl border-solid border-[#4cd658] bg-white hover:bg-slate-200 cursor-pointer"
-      onClick={() => navigate(`/detail/${id}`)}
+      onClick={() => {
+        navigate(`/mydetail/${id}`);
+        localStorage.setItem("myPlaylistId", id);
+      }}
     >
       <div className="xl:w-fit xl:h-fit pb-3 w-fit h-fit rounded-[12px] bg-transparent">
         <img
@@ -26,4 +29,4 @@ const PlaylistItem = ({ id, playlistName, playlistType }) => {
   );
 };
 
-export default PlaylistItem;
+export default MyPlaylistItem;
