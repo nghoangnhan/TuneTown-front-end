@@ -31,7 +31,7 @@ const TheHeader = () => {
         body: {},
       });
       console.log("TheHeader || GetUserInfor", response.data, response.status);
-      setUserInfor(response.data.user);
+
       // setUserName(response.data.user.userName);
     } catch (error) {
       // Handle network errors or other exceptions
@@ -49,7 +49,9 @@ const TheHeader = () => {
     navigate("/");
   };
   useEffect(() => {
-    getUserInfor();
+    getUserInfor().then((res) => {
+      setUserInfor(res.data.user);
+    });
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
   return (

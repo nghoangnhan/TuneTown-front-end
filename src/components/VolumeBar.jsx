@@ -1,23 +1,37 @@
 import { useRef } from "react";
-import { setVolume } from "../redux/slice/volume";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setVolume } from "../redux/slice/volume";
 
 const VolumeBar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const volume = useSelector((state) => state.volume.volumeValue); // Giả sử âm lượng mặc định là 50%
   const audioRef = useRef();
   const changeVolume = (e) => {
+    console.log(volume);
     const newVolume = e.target.value;
     dispatch(setVolume(newVolume));
-    console.log(volume);
-    // Điều hướng đến âm lượng mới trong bài hát
-    // Ví dụ: audioElement.current.volume = newVolume;
   };
-  // Change volume in the system
 
   return (
     <div className="hidden xl:flex flex-row absolute justify-center items-center inset-y-auto right-0 mr-5">
+      <button className="mr-2" onClick={() => navigate("/queue")}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="#887D7D"
+          className="w-5 h-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"
+          />
+        </svg>
+      </button>
       <button>
         <svg
           fill="#887D7D"
@@ -31,9 +45,9 @@ const VolumeBar = () => {
       </button>
       <input
         type="range"
-        min="0"
-        ref={audioRef}
+        min={0}
         max={100}
+        ref={audioRef}
         value={volume}
         onChange={changeVolume}
         className="w-16 xl:w-20 h-1 xl:h-1 bg-[#B9C0DE] mx-2 xl:mx-4 rounded-full"
