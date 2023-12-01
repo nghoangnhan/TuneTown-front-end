@@ -8,6 +8,7 @@ import UseCookie from "../hooks/useCookie";
 
 const PageFull = () => {
   const { getToken } = UseCookie();
+  const { access_token } = getToken();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -22,7 +23,6 @@ const PageFull = () => {
     setOpen(false);
   };
   useEffect(() => {
-    const { access_token } = getToken();
     if (access_token == null) {
       // Message to navigate to login page
       setOpen(true);
@@ -30,11 +30,11 @@ const PageFull = () => {
     } else {
       console.log("CheckCookie", access_token);
     }
-  }, [getToken]);
+  }, [access_token]);
   return (
     <Fragment>
       <Modal
-        title="Warning Authorization"
+        title="Authorization Error"
         open={open}
         okButtonProps={{
           onClick: handleOK,

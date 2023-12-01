@@ -16,13 +16,14 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const { removeToken } = UseCookie();
 
-  async function PostData(usn, email, password, bdate) {
+  async function PostData(usn, email, password, bdate, method) {
     try {
       const response = await axios.post(`${Base_URL}/auth/register`, {
         userName: usn,
         email: email,
         password: password,
         birthDate: bdate,
+        method: "REGISTER",
       });
       setData(response.data);
       if (response.data) {
@@ -51,9 +52,9 @@ const SignUpPage = () => {
   // post data to API
   const onFinish = (values) => {
     console.log("Data inputed:", values);
-    const { username, email, password, birthDate } = values;
+    const { username, email, password, birthDate, method } = values;
 
-    PostData(username, email, password, birthDate);
+    PostData(username, email, password, birthDate, method);
   };
   // const onCheckPassword = () => {
   //   const password = passwordRef.current.value;
@@ -206,7 +207,7 @@ const SignUpPage = () => {
           <div>
             <p className="text-[#2E3271]">
               Have an account?
-              <NavLink to="/" className="text-[#34a56d] ml-1">
+              <NavLink to="/" className="text-[#34a56d] ml-1 text-sm">
                 Login
               </NavLink>
             </p>

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { Button, Upload } from "antd";
+import { Button, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -49,15 +49,20 @@ function UploadFileDropZone(props) {
 }
 
 const UploadAvatar = ({ setFileIMG }) => {
-  const [uploadedFile, setUploadedFile] = useState({});
+  const [messageApi, contextHolder] = message.useMessage();
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-
+  const [uploadedFile, setUploadedFile] = useState({});
   //drop-zone
   const handleUploadFileIMG = async (file) => {
     let formData = new FormData();
     formData.append("image", file);
     console.log("handleUploadFile FileIMG", formData);
+    messageApi.open({
+      type: "loading",
+      content: "Uploading file...",
+      duration: 2,
+    });
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadImage`,
@@ -69,9 +74,15 @@ const UploadAvatar = ({ setFileIMG }) => {
           },
         }
       );
+
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
         setFileIMG(response.data);
+        messageApi.open({
+          type: "success",
+          content: "Upload file successfully",
+          duration: 2,
+        });
       } else {
         console.error("Error posting files:", response.data);
       }
@@ -84,7 +95,9 @@ const UploadAvatar = ({ setFileIMG }) => {
       uploadedFile={uploadedFile}
       setUploadedFile={setUploadedFile}
       handleUploadFile={handleUploadFileIMG}
-    />
+    >
+      {contextHolder}
+    </UploadFileDropZone>
   );
 };
 
