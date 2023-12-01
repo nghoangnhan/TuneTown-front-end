@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import SongPlaylist from "./SongSectionPlaylist";
-import { Form } from "antd";
+import SongPlaylist from "../Playlist/SongSectionPlaylist";
 import { useMusicAPI } from "../../utils/songUtils";
+import { useEffect, useState } from "react";
+import { Form } from "antd";
+import SongItem from "../Song/SongItem";
 
-const DetailPlaylist = () => {
-  //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
-  const { playlistId } = useParams();
+const QueueSection = () => {
+  const playlistId = 405;
   const { getListSongPlaylist, getPlaylistByPlaylistId } = useMusicAPI();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
@@ -29,7 +28,7 @@ const DetailPlaylist = () => {
     }
   };
   useEffect(() => {
-    fetchDataPlaylistInfor(playlistId);
+    fetchDataPlaylistInfor(405);
   }, [playlistId]);
 
   return (
@@ -40,9 +39,6 @@ const DetailPlaylist = () => {
           : "min-h-screen"
       } xl:p-5 bg-[#ecf2fd] mb-20`}
     >
-      <div className="text-4xl text-[#4b4848] font-bold text-center mb-5">
-        {playlistDetail.playlistName} <span className="">#{playlistId}</span>
-      </div>
       <div className="flex flex-row gap-4">
         <button
           onClick={() => window.history.back()}
@@ -51,11 +47,37 @@ const DetailPlaylist = () => {
           <div className="text-white font-bold px-2 py-1">{"<"} Back</div>
         </button>
       </div>
+      <div className="text-4xl text-[#2d2c2c] font-bold text-start mb-5">
+        Your Queue
+      </div>
       <div className="flex flex-row justify-center items-center mt-5 mb-5 text-[#4b4848]">
         <div className="w-1/4 text-center font-bold">ID</div>
         <div className="w-1/4 text-center font-bold">Song Name</div>
         <div className="w-1/4 text-center font-bold">Artist</div>
         <div className="w-1/4 text-center font-bold">Duration</div>
+      </div>
+      <div className="text-2xl text-[#5d5c5c] font-bold text-start mb-5">
+        Now Playing
+      </div>
+      <SongItem
+        song={{
+          id: 1,
+          songName: "Hello",
+          artists: [
+            {
+              id: 1,
+              artistName: "Adele",
+            },
+          ],
+          songLink:
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+          songImage:
+            "https://i.pinimg.com/originals/6b/7a/6e/6b7a6e0b8b1a8d8c9a2e0c0c2d4a4a9a.jpg",
+          songLength: 100,
+        }}
+      ></SongItem>
+      <div className="text-2xl text-[#5d5c5c] font-bold text-start mt-5 mb-5">
+        Next Up
       </div>
       <SongPlaylist
         playlistId={playlistId}
@@ -65,4 +87,4 @@ const DetailPlaylist = () => {
   );
 };
 
-export default DetailPlaylist;
+export default QueueSection;

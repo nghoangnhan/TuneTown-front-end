@@ -11,6 +11,8 @@ import SongManagement from "../components/CMS/pages/SongManagement";
 import UserManagement from "../components/CMS/pages/UserManagement";
 import HistoryPage from "../pages/HistoryPage";
 import MyDetailPlaylist from "../components/Users/MyDetailPlaylist";
+import ArtistDetail from "../pages/ArtistDetail";
+import QueueSection from "../components/HomePage/QueueSection";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -27,6 +29,7 @@ export default function init(routes) {
         path: "home",
         element: <HomePage />,
       },
+
       {
         path: "search",
         element: <SearchPage />,
@@ -54,6 +57,14 @@ export default function init(routes) {
       {
         path: "history",
         element: <HistoryPage />,
+      },
+      {
+        path: "artist/:artistId",
+        element: <ArtistDetail />,
+      },
+      {
+        path: "queue",
+        element: <QueueSection />,
       },
     ],
   };
