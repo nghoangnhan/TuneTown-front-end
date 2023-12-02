@@ -1,31 +1,83 @@
-import { Button, Form, Input, Modal, Space, Table, Tag } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Table,
+  Tag,
+  message,
+} from "antd";
 import { Base_URL } from "../../../api/config";
 import axios from "axios";
 import UseCookie from "../../../hooks/useCookie";
 import { useEffect, useState } from "react";
 import EditUserForm from "../../Users/EditUserForm";
-
+import defaultAva from "../../../assets/img/logo/logo.png";
+import { useForm } from "antd/es/form/Form";
 /* eslint-disable no-unused-vars */
 const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const [formRole] = useForm();
   const [userList, setUserList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [userId, setUserId] = useState();
-  const [form] = Form.useForm();
+
   // Call this function when you want to refresh the playlist
-  const showModal = (id) => {
+  const showModalEdit = (id) => {
     setIsModalOpen(true);
     setUserId(id);
     console.log("id", id);
   };
-  const handleOk = () => {
-    form.submit();
-    setIsModalOpen(false);
+  const showModalEditRole = (id, role) => {
+    setIsModalOpenUpdate(true);
+    setUserId(id);
+    // set value for the field
+    formRole.setFieldsValue({
+      role: role,
+    });
+    console.log("id", id);
+  };
+  const handleOkRole = () => {
+    changeUserRole(userId, formRole.getFieldValue("role"));
+    setIsModalOpenUpdate(false);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsModalOpenUpdate(false);
   };
+
+  // Change user role by API
+  const changeUserRole = async (userId, role) => {
+    try {
+      const response = await axios.put(
+        `${Base_URL}/users/switchUserRole`,
+        {
+          id: userId,
+          role: role,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("changeUserRole Response", response.data);
+      if (response.status === 200) {
+        // Return a success flag or any relevant data
+        message.success("Change role successfully");
+        return { success: true, data: response.data };
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      message.error("Change role failed");
+      return { success: false, error: error.message };
+    }
+  };
+
   // http://localhost:8080/users
   const GetListUser = async () => {
     try {
@@ -44,61 +96,61 @@ const UserManagement = () => {
   };
 
   // Data Test
-  const data = [
-    {
-      id: 1,
-      userName: null,
-      email: "nam@gmail.com",
-      password: "$2a$10$N6GkJoW2TfhsSRAW4Z4csOtYLFfGdQcJI0kETDFgrIdP.PEgBjMf.",
-      role: "USER",
-      birthDate: "2023-10-23",
-      userBio: null,
-      avatar:
-        "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Flogo.png?alt=media&token=bf46ca20-ec6b-42b6-a330-a77663b450de",
-      history: [],
-      favoriteGenres: [],
-      followingArtists: [],
-    },
-    {
-      id: 2,
-      userName: null,
-      email: "test3@gmail.com",
-      password: "$2a$10$GGZ1GbbSI5a.Ns0OHR.BM.L/U9UHl7BhxhUmRPvOPMU3ZOjiyDAJm",
-      role: "USER",
-      birthDate: "2000-08-01",
-      userBio: null,
-      avatar: null,
-      history: [],
-      favoriteGenres: [],
-      followingArtists: [],
-    },
-    {
-      id: 504,
-      userName: "Nguyen Hoang Nhan",
-      email: "nguyen.hngnhan21@gmail.com",
-      password: "$2a$10$JUp.tzHb6H816tt1IyICe.hNisd/93uJQPI0LN1PXeorOv/njV.ay",
-      role: "ARTIST",
-      birthDate: "2002-07-21",
-      userBio: null,
-      avatar: null,
-      history: [],
-      favoriteGenres: [],
-      followingArtists: [],
-    },
-    {
-      id: 505,
-      userName: "Nguyen Hoang Nhan",
-      email: "test@gmail.com",
-      password: "$2a$10$biLULL30K.AT7PFGM3in3OBAfP0HiYClyYOwtxNuNWAwvhv06S10.",
-      role: "ADMIN",
-      birthDate: "2002-07-21",
-      userBio: "asds",
-      avatar: null,
-      history: [],
-      favoriteGenres: [],
-      followingArtists: [],
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     userName: null,
+  //     email: "nam@gmail.com",
+  //     password: "$2a$10$N6GkJoW2TfhsSRAW4Z4csOtYLFfGdQcJI0kETDFgrIdP.PEgBjMf.",
+  //     role: "USER",
+  //     birthDate: "2023-10-23",
+  //     userBio: null,
+  //     avatar:
+  //       "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Flogo.png?alt=media&token=bf46ca20-ec6b-42b6-a330-a77663b450de",
+  //     history: [],
+  //     favoriteGenres: [],
+  //     followingArtists: [],
+  //   },
+  //   {
+  //     id: 2,
+  //     userName: null,
+  //     email: "test3@gmail.com",
+  //     password: "$2a$10$GGZ1GbbSI5a.Ns0OHR.BM.L/U9UHl7BhxhUmRPvOPMU3ZOjiyDAJm",
+  //     role: "USER",
+  //     birthDate: "2000-08-01",
+  //     userBio: null,
+  //     avatar: null,
+  //     history: [],
+  //     favoriteGenres: [],
+  //     followingArtists: [],
+  //   },
+  //   {
+  //     id: 504,
+  //     userName: "Nguyen Hoang Nhan",
+  //     email: "nguyen.hngnhan21@gmail.com",
+  //     password: "$2a$10$JUp.tzHb6H816tt1IyICe.hNisd/93uJQPI0LN1PXeorOv/njV.ay",
+  //     role: "ARTIST",
+  //     birthDate: "2002-07-21",
+  //     userBio: null,
+  //     avatar: null,
+  //     history: [],
+  //     favoriteGenres: [],
+  //     followingArtists: [],
+  //   },
+  //   {
+  //     id: 505,
+  //     userName: "Nguyen Hoang Nhan",
+  //     email: "test@gmail.com",
+  //     password: "$2a$10$biLULL30K.AT7PFGM3in3OBAfP0HiYClyYOwtxNuNWAwvhv06S10.",
+  //     role: "ADMIN",
+  //     birthDate: "2002-07-21",
+  //     userBio: "asds",
+  //     avatar: null,
+  //     history: [],
+  //     favoriteGenres: [],
+  //     followingArtists: [],
+  //   },
+  // ];
   const columns = [
     {
       title: "Id",
@@ -111,11 +163,17 @@ const UserManagement = () => {
       dataIndex: "avatar",
       key: "avatar",
       render: (avatar) => {
-        return (
+        return avatar ? (
           <img
             src={avatar}
             alt="avatar"
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-11 h-11 rounded-full object-cover"
+          />
+        ) : (
+          <img
+            src={defaultAva}
+            alt="avatar"
+            className="w-11 h-11 rounded-full object-cover"
           />
         );
       },
@@ -140,6 +198,14 @@ const UserManagement = () => {
       title: "Birthday",
       dataIndex: "birthDate",
       key: "birthDate",
+      render: (birthDate) => {
+        const date = new Date(birthDate);
+        return (
+          <div>
+            {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
+          </div>
+        );
+      },
     },
     {
       title: "Role",
@@ -167,26 +233,38 @@ const UserManagement = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Space size="middle">
-          <Button
-            className="py-1 px-2 rounded-lg"
-            onClick={() => showModal(record.id)}
+        <Space
+          size="middle"
+          className="
+        flex flex-row gap-2
+        "
+        >
+          <button
+            className="py-1 px-2 h-8 w-14 bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
+            onClick={() => showModalEdit(record.id)}
           >
             Edit
-          </Button>
-          <Button
-            className="py-1 px-2 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
+          </button>
+          <button
+            className="py-1 px-2 h-8 w-full border border-solid border-[#955ec9] hover:bg-[#6947c0] hover:text-white rounded-lg"
+            onClick={() => showModalEditRole(record.id, record.role)}
+          >
+            Change Role
+          </button>
+          <button
+            className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
             // onClick={() => deleteSong(record.key)}
           >
             Delete
-          </Button>
+          </button>
         </Space>
       ),
     },
+    {},
   ];
   useEffect(() => {
     GetListUser();
-  }, [isModalOpen]);
+  }, [isModalOpen, isModalOpenUpdate]);
   return (
     <div>
       <div className="text-2xl font-bold">User Management</div>
@@ -224,11 +302,35 @@ const UserManagement = () => {
         <Modal
           title="Edit User"
           open={isModalOpen}
-          onOk={handleOk}
           onCancel={handleCancel}
           footer={[]}
         >
           <EditUserForm editUserId={userId}></EditUserForm>
+        </Modal>
+        <Modal
+          title="Edit User Role"
+          open={isModalOpenUpdate}
+          onCancel={handleCancel}
+          centered
+          footer={[]}
+        >
+          <Form form={formRole}>
+            <Form.Item label="Role" name="role">
+              <Select
+                placeholder="Role"
+                options={[
+                  { label: "USER", value: "USER" },
+                  { label: "ARTIST", value: "ARTIST" },
+                  { label: "ADMIN", value: "ADMIN" },
+                ]}
+              />
+            </Form.Item>
+            <Form.Item className="right-0">
+              <Button type="default" htmlType="submit" onClick={handleOkRole}>
+                Update
+              </Button>
+            </Form.Item>
+          </Form>
         </Modal>
       </div>
     </div>
