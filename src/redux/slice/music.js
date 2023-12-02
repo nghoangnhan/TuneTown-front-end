@@ -16,22 +16,25 @@ const musicStore = createSlice({
       songLink: MakeUBeauti,
     },
     playlist: [],
-    listSong: [
+    songQueue: [
       {
+        id: 1,
         songName: "What make you beautiful",
-        artistName: ["One Direction", "Two Direction", "Three Direction"],
+        artistName: [
+          {
+            userName: "One Direction",
+          },
+          {
+            userName: "Two Direction",
+          },
+          {
+            userName: "Three Direction",
+          },
+        ],
         songDuration: 214,
         songCover:
           "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
         songLink: MakeUBeauti,
-      },
-      {
-        songName: "Happy New Year",
-        artistName: ["ABBA"],
-        songDuration: 214,
-        songCover:
-          "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
-        songLink: HappyNewYear,
       },
     ],
     isPlaying: false,

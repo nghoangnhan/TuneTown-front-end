@@ -42,7 +42,6 @@ const ArtistInput = () => {
       });
 
       setUserData(response.data); // Lưu dữ liệu vào state userData
-      console.log("userData", userData);
       console.log("response", response.data);
 
       console.log("nameRS", nameRS);

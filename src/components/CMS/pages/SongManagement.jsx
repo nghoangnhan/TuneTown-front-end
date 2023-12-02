@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Base_URL } from "../../../api/config";
 import UseCookie from "../../../hooks/useCookie";
 import UploadSong from "../../UploadSong/UploadSong";
+import UpdateSong from "../../UploadSong/UpdateSong";
+import defaultAva from "../../../assets/img/logo/logo.png";
 
 const SongManagement = () => {
   const { getToken } = UseCookie();
@@ -15,10 +17,12 @@ const SongManagement = () => {
   const [songPage, setSongPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [refresh, setRefresh] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [songData, setSongData] = useState({});
+  const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   // Call this function when you want to refresh the playlist
   const showModal = () => {
-    setIsModalOpen(true);
+    setIsModalOpenUpload(true);
   };
 
   const refreshPlaylist = () => {
@@ -35,26 +39,22 @@ const SongManagement = () => {
       });
       const { songList, currentPage, totalPages } = response.data;
       console.log("songList Response", songList, currentPage, totalPages);
-      setSongList((prevSongList) => {
-        if (currentPage === 1) {
-          // If it's the first page, replace the existing list
-          return [...songList];
-        } else {
-          // If it's not the first page, append the new songs
-          return [...prevSongList, ...songList];
-        }
-      });
-      refreshPlaylist();
-      setTotalPages(totalPages);
-      setSongPage(currentPage);
-      if (currentPage >= totalPages) {
-        setHasMoreSongs(false);
-      }
+      setSongList(songList);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
     }
   };
+  // Update Song
+  const handUpdateSong = (songId, songName) => {
+    const songData = {
+      songId: songId,
+      songName: songName,
+    };
+    setIsModalOpenUpdate(true);
+  };
+
+  // Delete Song
   const deleteSong = async (songId) => {
     try {
       if (confirm(`Are you sure you want to delete this song?`) == true) {
@@ -78,10 +78,11 @@ const SongManagement = () => {
 
   const handleOk = () => {
     form.submit();
-    setIsModalOpen(false);
+    setIsModalOpenUpload(false);
   };
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setIsModalOpenUpload(false);
+    setIsModalOpenUpdate(false);
   };
 
   // Song Data {id,artists, genres, listens, poster, songData, songName, status}
@@ -89,7 +90,27 @@ const SongManagement = () => {
   // 1: {id: 5, songName: 'Starboy', poster: 'https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png', artists: Array(1), genres: Array(0), …}
 
   const columnsSong = [
-    { title: "Poster", dataIndex: "poster", key: "poster" },
+    {
+      title: "ID",
+      dataIndex: "key",
+      key: "key",
+    },
+    {
+      title: "Poster",
+      dataIndex: "poster",
+      key: "poster",
+      render: (poster) => {
+        return poster.props.src ? (
+          <img
+            src={poster.props.src}
+            alt="poster"
+            className="w-12 h-12 rounded-lg"
+          />
+        ) : (
+          <img src={defaultAva} alt="poster" className="w-12 h-12 rounded-lg" />
+        );
+      },
+    },
     {
       title: "Song Name",
       dataIndex: "songName",
@@ -120,10 +141,15 @@ const SongManagement = () => {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Space size="middle">
-          {/* <button className="py-1 px-2 bg-slate-800 rounded-lg">Edit</button> */}
+        <Space>
           <button
-            className="py-1 px-2 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
+            className="py-1 px-2 h-8 w-14  bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
+            onClick={() => handUpdateSong(record.key, record.songName)}
+          >
+            Edit
+          </button>
+          <button
+            className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
             onClick={() => deleteSong(record.key)}
           >
             Delete
@@ -132,6 +158,7 @@ const SongManagement = () => {
       ),
     },
   ];
+
   const dataSongs = songList.map((songItem) => ({
     key: songItem.id.toString(), // Assuming id is unique
     poster: (
@@ -150,7 +177,7 @@ const SongManagement = () => {
   console.log("dataSongs", dataSongs);
   useEffect(() => {
     getListSong(songPage);
-  }, [isModalOpen]);
+  }, [isModalOpenUpload, isModalOpenUpdate]);
 
   if (!songList) return null;
   return (
@@ -188,15 +215,34 @@ const SongManagement = () => {
           </Button>
         </div>
       </div>
-      <Table columns={columnsSong} dataSource={dataSongs} />
+      <Table
+        columns={columnsSong}
+        dataSource={dataSongs}
+        pagination={{
+          total: totalPages,
+          pageSize: 10,
+          onChange: (page) => {
+            getListSong(page);
+          },
+        }}
+      />
       <Modal
-        open={isModalOpen}
+        open={isModalOpenUpload}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[null, null]}
         className="w-fit h-fit "
       >
         <UploadSong></UploadSong>
+      </Modal>
+      <Modal
+        open={isModalOpenUpdate}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[null, null]}
+        className="w-fit h-fit "
+      >
+        <UpdateSong songData={songData}></UpdateSong>
       </Modal>
     </div>
   );
