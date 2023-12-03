@@ -21,10 +21,10 @@ const SongItem = ({ song }) => {
   const { id, songName, artists, poster, songData } = song;
   const audioRef = useRef();
   const { show } = useContextMenu();
-  const { addSongToPlaylist, getUserPlaylist } = useMusicAPI();
-  const userId = localStorage.getItem("userId");
-  const { showArtist, TimeConvert } = useSongDuration();
   const dispatch = useDispatch();
+  const userId = localStorage.getItem("userId");
+  const { addSongToPlaylist, getUserPlaylist } = useMusicAPI();
+  const { showArtist, TimeConvert } = useSongDuration();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   const artistArr = artists.map((artist) => artist.userName);

@@ -52,6 +52,7 @@ const DetailPlaylist = () => {
         </button>
       </div>
       <div className="flex flex-row justify-center items-center mt-5 mb-5 text-[#4b4848]">
+        <div className="w-1/4 text-center font-bold">ID</div>
         <div className="w-1/4 text-center font-bold">Song Name</div>
         <div className="w-1/4 text-center font-bold">Artist</div>
         <div className="w-1/4 text-center font-bold">Duration</div>

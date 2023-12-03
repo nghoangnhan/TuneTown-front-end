@@ -29,6 +29,8 @@ const DurationBar = () => {
   const currentTime = useSelector((state) => state.music.currentTime); // Current time when play a song
   const isPlaying = useSelector((state) => state.music.isPlaying); // Check if the song is playing
 
+  const volume = useSelector((state) => state.volume.volumeValue); // Get the volume from the store
+
   // // Get the max duration of the song
   const GetSongDuration = (audioRef) => {
     setDuration(audioRef.current.duration);

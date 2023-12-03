@@ -125,7 +125,6 @@ export const useMusicAPI = () => {
           },
         }
       );
-      console.log("UserPlaylist Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);

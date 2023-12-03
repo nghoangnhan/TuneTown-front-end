@@ -8,9 +8,10 @@ import { Base_URL, auth } from "../api/config";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../redux/slice/account";
 import GoogleLoginButton from "../components/AuthGoogle/AuthGoogleLogin";
-import { gapi } from 'gapi-script';
+import { gapi } from "gapi-script";
 
-const clientId = "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
+const clientId =
+  "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
 
 const LoginPage = () => {
   const { removeToken } = UseCookie();
@@ -83,16 +84,16 @@ const LoginPage = () => {
     removeToken();
   }, []);
 
-  useEffect(() =>{
-    function start(){
+  useEffect(() => {
+    function start() {
       gapi.client.init({
         clientId: clientId,
-        scope: ""
-      })
-    };
+        scope: "",
+      });
+    }
 
-    gapi.load('client:auth2', start);
-  })
+    gapi.load("client:auth2", start);
+  });
 
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
@@ -168,17 +169,15 @@ const LoginPage = () => {
                 Sign up
               </NavLink>
             </p>
-            <p className="text-[#2E3271]">
+            <p className="text-[#2E3271] mb-3">
               Forget Your Password?
               <NavLink to="/forgotpass" className="text-[#34a56d] ml-1 text-sm">
                 Forget Password
               </NavLink>
             </p>
-
-            <div>
-              <GoogleLoginButton/>
+            <div className="">
+              <GoogleLoginButton />
             </div>
-
           </div>
           <footer className="bottom-5 absolute ">
             <p className="text-[#8d8d8d]">© 2023 TuneTown</p>
