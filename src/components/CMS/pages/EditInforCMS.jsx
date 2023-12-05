@@ -16,7 +16,7 @@ const layout = {
 };
 const tailLayout = {
   wrapperCol: {
-    offset: 8,
+    offset: 20,
     span: 16,
   },
 };
@@ -106,7 +106,7 @@ const EditInfor = () => {
     // console.log("userName", userName);
   }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
   return (
-    <section className="w-full h-screen relative flex flex-col xl:pt-12 pt-6 bg-[#ecf2fd] px-1">
+    <section className="w-full h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
       <div className="flex justify-center items-center h-fit">
         <Form
           {...layout}

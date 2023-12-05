@@ -13,7 +13,7 @@ const MySongSectionPlaylist = ({ songData }) => {
   //   dispatch(setSongList(songList));
   useEffect(() => {
     setSongList(songData);
-    console.log("songPlaylsit || SongList", songList);
+    console.log("MySongSectionPlaylist || SongList", songList);
   }, [songData, refreshPlaylist]);
   if (!songList) return null;
   return (
@@ -24,6 +24,7 @@ const MySongSectionPlaylist = ({ songData }) => {
             <SongItemPlaylist
               key={songItem.id}
               songId={songItem.id}
+              songOrder={songItem.orderSong}
               song={songItem.song}
             />
           ))}

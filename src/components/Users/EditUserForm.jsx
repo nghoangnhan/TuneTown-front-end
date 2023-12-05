@@ -115,83 +115,84 @@ const EditUserForm = ({ editUserId }) => {
     userId,
   ]);
   return (
-    <Form
-      {...layout}
-      ref={formRef}
-      name="control-ref"
-      form={form}
-      onFinish={onFinish}
-      className="relative w-fit border rounded-md mx-auto p-5 bg-[#f9f9f9]"
-      // initialValues={{ userName: userInfor.userName }}
-    >
-      {contextHolder}
-      <div className="w-full text-center mb-5">
-        <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
-          Edit User Information
-        </h2>
-      </div>
-      {/* Avatar Image */}
-      <Form.Item
-        name="avatar"
-        label="Upload Avatar"
-        valuePropName="fileList"
-        extra="Upload your cover image png, jpg, jpeg"
-        rules={[
-          {
-            required: false,
-          },
-        ]}
+    <section className="w-full min-h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
+      <Form
+        {...layout}
+        ref={formRef}
+        name="control-ref"
+        form={form}
+        onFinish={onFinish}
+        className="relative w-fit border rounded-md mx-auto p-5 bg-[#f9f9f9]"
+        // initialValues={{ userName: userInfor.userName }}
       >
-        <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
-      </Form.Item>
-      <Form.Item
-        name="userName"
-        label="Name"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-        // initialValue={userInfor.userName}
-      >
-        <Input />
-      </Form.Item>
+        {contextHolder}
+        <div className="w-full text-center mb-5">
+          <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
+            Edit User Information
+          </h2>
+        </div>
+        {/* Avatar Image */}
+        <Form.Item
+          name="avatar"
+          label="Upload Avatar"
+          valuePropName="fileList"
+          extra="Upload your cover image png, jpg, jpeg"
+          rules={[
+            {
+              required: false,
+            },
+          ]}
+        >
+          <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
+        </Form.Item>
+        <Form.Item
+          name="userName"
+          label="Name"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          // initialValue={userInfor.userName}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        name="userBio"
-        label="Bio"
-        rules={[
-          {
-            required: false,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          name="userBio"
+          label="Bio"
+          rules={[
+            {
+              required: false,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        name="email"
-        label="Email"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Birthday"
-        name="birthDate"
-        rules={[
-          { required: true, message: "Please input your date of birth!" },
-        ]}
-      >
-        <DatePicker />
-      </Form.Item>
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Birthday"
+          name="birthDate"
+          rules={[
+            { required: true, message: "Please input your date of birth!" },
+          ]}
+        >
+          <DatePicker />
+        </Form.Item>
 
-      {/* Genre */}
-      {/* <Form.Item
+        {/* Genre */}
+        {/* <Form.Item
             name="genre"
             label="Song Genre"
             extra={"Select your song genre, CHOOSE ONE"}
@@ -209,7 +210,7 @@ const EditUserForm = ({ editUserId }) => {
           </Form.Item>  
           */}
 
-      {/* <Form.Item
+        {/* <Form.Item
             label="Password"
             name="password"
             rules={[
@@ -246,12 +247,13 @@ const EditUserForm = ({ editUserId }) => {
             <Input.Password />
           </Form.Item> */}
 
-      <Form.Item {...tailLayout} className="left-0">
-        <Button type="primary" htmlType="submit" className="bg-[green] ">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item {...tailLayout} className="left-0">
+          <Button type="primary" htmlType="submit" className="bg-[green] ">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </section>
   );
 };
 

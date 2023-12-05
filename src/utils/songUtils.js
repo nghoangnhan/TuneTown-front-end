@@ -25,11 +25,33 @@ export const useSongDuration = () => {
     const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
     return `${minutes}:${formattedSeconds}`;
   };
+  // Show artist name
   const showArtist = (artistName) => {
+    console.log("showArtist", artistName);
     if (artistName.length > 1) {
       return artistName.join(", ");
     } else {
       return artistName[0];
+    }
+  };
+  const showArtistV2 = (artistName) => {
+    // artists: [
+    //   {
+    //     userName: "One Direction",
+    //   },
+    //   {
+    //     userName: "Two Direction",
+    //   },
+    //   {
+    //     userName: "Three Direction",
+    //   },
+    // ],
+    if (artistName.length > 1) {
+      return artistName.map((artist) => artist.userName).join(", ");
+    } else if (artistName.length == 1) {
+      return artistName[0].userName;
+    } else {
+      return "Unknown Artist";
     }
   };
   // Acronym the name of the song
@@ -87,6 +109,7 @@ export const useSongDuration = () => {
     TimeConvert,
     GetSongFragment,
     showArtist,
+    showArtistV2,
     AcronymName,
     CheckPlaying,
     GetSongDuration,

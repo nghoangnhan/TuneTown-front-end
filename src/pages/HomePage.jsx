@@ -3,7 +3,7 @@ import SongSection from "../components/HomePage/SongSection";
 
 const HomePage = () => {
   return (
-    <div className={`h-auto text-[#2E3271] bg-[#ecf2fd]  pt-5 pb-20 px-1`}>
+    <div className={`h-auto text-[#2E3271] bg-[#ecf2fd] pt-5 pb-24 px-1`}>
       <div>
         <PlaylistSection playlistTitle="Chart: Top 50"></PlaylistSection>
         <PlaylistSection playlistTitle="Christmas is coming"></PlaylistSection>

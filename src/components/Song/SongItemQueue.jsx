@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  addSongToQueue,
+  removeSongFromQueue,
   setCurrentSong,
   setCurrentTime,
   setIsPlaying,
@@ -18,28 +18,28 @@ import {
 } from "react-contexify";
 import { message } from "antd";
 
-const SongItem = ({ song, songOrder }) => {
-  const { id, songName, artists, poster, songData } = song;
+const SongItemQueue = ({ song, isPlaying, order }) => {
+  const { id, songName, artists, songCover, songLink } = song;
   const audioRef = useRef();
   const { show } = useContextMenu();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist } = useMusicAPI();
   const { showArtistV2, TimeConvert } = useSongDuration();
-  const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
+  // This song will be send to duration bar if it is playing
   const songInforObj = {
     id: id,
     songName: songName,
     artists: artists.map((artist) => artist),
     songDuration: songInfor.songDuration,
-    songCover: poster,
-    songLink: songData,
+    songCover: songCover,
+    songLink: songLink,
   };
 
   // When click to the song, save the current song to the context and play it
@@ -52,7 +52,7 @@ const SongItem = ({ song, songOrder }) => {
       dispatch(setIsPlaying(!isPlaying));
     }
   };
-  // const songDuration = GetSongDuration(songData);
+  // const songDuration = GetSongDuration(songLink);
 
   function displayMenu(e, songId) {
     console.log("PlaylistList", playlistList);
@@ -81,10 +81,10 @@ const SongItem = ({ song, songOrder }) => {
         <Item onClick={refreshPlaylist}>Refresh</Item>
         <Item
           onClick={() => {
-            dispatch(addSongToQueue(songInforObj));
+            dispatch(removeSongFromQueue(songInforObj.id));
           }}
         >
-          Add to Queue
+          Remove from Queue
         </Item>
         <Separator />
         <Submenu label="Add to playlist">
@@ -118,19 +118,36 @@ const SongItem = ({ song, songOrder }) => {
       </Menu>
 
       <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-md text-sm xl:text-base p-2 my-1 cursor-pointer">
-        {
-          <div
-            className="xl:w-12 xl:h-12
+        <div
+          className="xl:w-12 xl:h-12
         mx-2 xl:mx-3  flex justify-center items-center text-[#464444] font-bold
         "
-          >
-            <span>{songOrder}</span>
-          </div>
-        }
+        >
+          <span>
+            {order && isPlaying == false ? (
+              order
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"
+                />
+              </svg>
+            )}
+          </span>
+        </div>
         <img
           className="mr-3 w-12 h-12 xl:w-14 xl:h-14 rounded-lg object-cover"
           alt="Album cover"
-          src={poster ? poster : DefaultArt}
+          src={songCover ? songCover : DefaultArt}
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
@@ -167,4 +184,4 @@ const SongItem = ({ song, songOrder }) => {
   );
 };
 
-export default SongItem;
+export default SongItemQueue;

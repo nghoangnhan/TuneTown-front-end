@@ -9,16 +9,15 @@ const ArtistInput = () => {
   // Get the users name from API
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const [nameRS, setNameRS] = useState([]);
-  const [emailRS, setEmailRS] = useState([]); // Update to initialize emailRS as an empty array
+  const [emailRS, setEmailRS] = useState([]);
+  const [artistRS, setArtistRS] = useState([]); // [{id:"",name: "", email: ""}]
   const [emailInput, setEmailInput] = useState("");
-  const [userData, setUserData] = useState();
   const inputDebounce = useDebounce(emailInput, 500);
   const handleEmailChange = (value) => {
     // setEmailInput(e.target.value);
     setEmailInput(value);
   };
-  const getName = async (emailInput) => {
+  const getArtist = async (emailInput) => {
     try {
       const response = await axios.get(`${Base_URL}/users/getUsers`, {
         params: {
@@ -28,40 +27,40 @@ const ArtistInput = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      response.data.forEach((user) => {
-        console.log("email", user.email);
-        // Check if email existed and email not changed
-        if (user.email && user.userName) {
-          if (!nameRS.includes(user.userName)) {
-            setNameRS((prevNames) => [...prevNames, user.userName]);
-          }
-          if (!emailRS.includes(user.email)) {
-            setEmailRS((prevEmails) => [...prevEmails, user.email]);
-          }
-        }
-      });
-
-      setUserData(response.data); // Lưu dữ liệu vào state userData
-      console.log("response", response.data);
-
-      console.log("nameRS", nameRS);
-      console.log("emailRS", emailRS);
-      return response.data;
+      return response.data.filter((user) => user.role === "ARTIST");
+      // return response.data;
     } catch (error) {
       console.log("Error:", error);
     }
   };
   useEffect(() => {
     console.log("emailInput", emailInput);
-    if (inputDebounce) {
-      getName(emailInput);
-    } else {
-      getName();
+    if (inputDebounce === "") {
+      setEmailRS([]);
+      setArtistRS([]);
+    } else if (inputDebounce !== "") {
+      getArtist(emailInput).then((response) => {
+        response.forEach((user) => {
+          // Check if email existed and email not changed
+          if (user.id != null && user.email != null && user.userName != null) {
+            if (!artistRS.includes(user) && !emailRS.includes(user.email)) {
+              setEmailRS((prevEmails) => [...prevEmails, user.email]);
+              setArtistRS((prevArtists) => [
+                ...prevArtists,
+                { id: user.id, name: user.userName, email: user.email },
+              ]);
+            }
+          }
+        });
+
+        console.log("ArtistRS", artistRS);
+        console.log("emailRS", emailRS);
+      });
     }
   }, [emailInput, inputDebounce]);
 
   const filterOption = (input, option) =>
-    (option?.value ?? "").toLowerCase().includes(input.toLowerCase());
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <Form.Item
       name="artists"
@@ -78,10 +77,13 @@ const ArtistInput = () => {
         mode="multiple"
         placeholder="Select Artist Email"
         optionFilterProp="children"
-        onChange={handleEmailChange}
+        // onChange={handleEmailChange}
         onSearch={handleEmailChange}
         filterOption={filterOption}
-        options={emailRS.map((email) => ({ key: email, value: email }))}
+        options={artistRS.map((artist) => {
+          console.log("artist", artist);
+          return { id: artist.id, value: artist.id, label: artist.email };
+        })}
       />
     </Form.Item>
   );

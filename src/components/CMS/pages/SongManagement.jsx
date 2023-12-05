@@ -178,7 +178,11 @@ const SongManagement = () => {
   useEffect(() => {
     getListSong(songPage);
   }, [isModalOpenUpload, isModalOpenUpdate]);
-
+  const [searchValue, setSearchValue] = useState("");
+  const handSearch = (e) => {
+    console.log("value", e.target.value);
+    setSearchValue(e.target.value);
+  };
   if (!songList) return null;
   return (
     <div>
@@ -199,25 +203,21 @@ const SongManagement = () => {
             }}
             autoComplete="off"
           >
-            <Form.Item label="Name" name="majorName">
-              <Input placeholder="majorName" />
-            </Form.Item>
-            <Form.Item>
-              <Button type="default" htmlType="submit">
-                Search
-              </Button>
+            <Form.Item label="name" name="songName">
+              <Input placeholder="Search Song" onChange={handSearch} />
             </Form.Item>
           </Form>
-        </div>
-        <div className="">
-          <Button type="default" onClick={() => showModal()}>
-            Create New Song
-          </Button>
         </div>
       </div>
       <Table
         columns={columnsSong}
-        dataSource={dataSongs}
+        dataSource={
+          searchValue
+            ? dataSongs.filter((song) =>
+                song.songName.toLowerCase().includes(searchValue.toLowerCase())
+              )
+            : dataSongs
+        }
         pagination={{
           total: totalPages,
           pageSize: 10,

@@ -9,7 +9,7 @@ const MusicControlBar = () => {
   const songInfor = useSelector((state) => state.music.currentSong);
   // Check Screen Size Mobile
   const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
-  const { showArtist, AcronymName } = useSongDuration();
+  const { showArtistV2, AcronymName } = useSongDuration();
 
   return (
     <div className="w-full fixed xl:bottom-0 bottom-10 bg-white h-[88px] xl:h-20 flex flex-row justify-center items-center pt-2">
@@ -25,9 +25,8 @@ const MusicControlBar = () => {
             {!isSmallScreen && songInfor.songName}
           </div>
           <div className="text-xs xl:text-base text-[#7C8DB5B8]">
-            {isSmallScreen && AcronymName(showArtist(songInfor.artistName), 15)}
-            {!isSmallScreen &&
-              AcronymName(showArtist(songInfor.artistName), 28)}
+            {isSmallScreen && AcronymName(showArtistV2(songInfor.artists), 15)}
+            {!isSmallScreen && AcronymName(showArtistV2(songInfor.artists), 28)}
           </div>
         </div>
       </div>

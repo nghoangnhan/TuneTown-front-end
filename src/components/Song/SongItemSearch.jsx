@@ -18,7 +18,7 @@ import {
 } from "react-contexify";
 import { message } from "antd";
 
-const SongItem = ({ song, songOrder }) => {
+const SongItemSearch = ({ song, songOrder }) => {
   const { id, songName, artists, poster, songData } = song;
   const audioRef = useRef();
   const { show } = useContextMenu();
@@ -117,7 +117,7 @@ const SongItem = ({ song, songOrder }) => {
         </Submenu>
       </Menu>
 
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-md text-sm xl:text-base p-2 my-1 cursor-pointer">
+      <div className="flex flex-row relative hover:bg-slate-200 bg-white text-[#464444] items-center rounded-md text-sm xl:text-base p-2 my-1 cursor-pointer">
         {
           <div
             className="xl:w-12 xl:h-12
@@ -167,4 +167,4 @@ const SongItem = ({ song, songOrder }) => {
   );
 };
 
-export default SongItem;
+export default SongItemSearch;

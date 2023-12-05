@@ -173,8 +173,8 @@ const UpdateSong = ({ songData }) => {
       songData: fileMP3,
       genre: genre,
       status: 1,
-      artist: artists.map((artist) => {
-        return { email: artist };
+      artists: artists.map((artist) => {
+        return { id: artist };
       }),
     };
     console.log("Posting Data", postData);

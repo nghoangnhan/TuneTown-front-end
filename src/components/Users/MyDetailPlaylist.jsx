@@ -58,7 +58,7 @@ const MyDetailPlaylist = () => {
     <div
       className={`${
         songPlaylistList != null && songPlaylistList.length > 0
-          ? "h-screen"
+          ? "min-h-screen h-full"
           : "min-h-screen"
       } xl:p-5 bg-[#ecf2fd] mb-20`}
     >
@@ -79,11 +79,14 @@ const MyDetailPlaylist = () => {
           <div className="font-bold px-2 py-1">Edit Playlist Information</div>
         </button>
       </div>
-      <div className="flex flex-row justify-center items-center mt-5 mb-5 text-[#4b4848]">
-        <div className="w-1/4 text-center font-bold">ID</div>
-        <div className="w-1/4 text-center font-bold">Song Name</div>
-        <div className="w-1/4 text-center font-bold">Artist</div>
-        <div className="w-1/4 text-center font-bold">Duration</div>
+      <div className="flex flex-row justify-between items-center mt-5 mb-5 text-[#4b4848]">
+        <div className="flex flex-row gap-8 ml-8">
+          <div className=" text-center font-bold">ID</div>
+          <div className=" text-center font-bold">Song Details</div>
+        </div>
+        <div>
+          <div className=" text-center font-bold">Duration</div>
+        </div>
       </div>
       <MySongSectionPlaylist
         playlistId={playlistId}

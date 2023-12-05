@@ -10,7 +10,7 @@ const ContentPage = () => {
   const params = useParams();
   return (
     <Content
-      className="min-h-fit"
+      className="min-h-screen "
       style={{
         background: "#ecf2fd",
       }}
