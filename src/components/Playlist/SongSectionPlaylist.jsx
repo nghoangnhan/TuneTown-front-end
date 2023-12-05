@@ -17,7 +17,11 @@ const SongPlaylist = (props) => {
       <div className="mt-2 flex flex-col gap-1">
         {songList &&
           songList.map((songItem) => (
-            <SongItem key={songItem.id} song={songItem.song} />
+            <SongItem
+              key={songItem.id}
+              songOrder={songItem.orderSong}
+              song={songItem.song}
+            />
           ))}
       </div>
     </div>

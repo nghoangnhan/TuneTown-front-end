@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  addSongToQueue,
   setCurrentSong,
   setCurrentTime,
   setIsPlaying,
@@ -18,18 +19,17 @@ import {
 } from "react-contexify";
 import { message } from "antd";
 import { setRefresh } from "../../redux/slice/playlist";
-const SongItemPlaylist = ({ song, songId }) => {
+const SongItemPlaylist = ({ song, songId, songOrder }) => {
   const { id, songName, artists, poster, songData } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, deleteSongInPlaylist } =
     useMusicAPI();
-  const { showArtist, TimeConvert } = useSongDuration();
+  const { showArtistV2, TimeConvert } = useSongDuration();
   const dispatch = useDispatch();
   const audioRef = useRef();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
-  const artistArr = artists.map((artist) => artist.userName);
   const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
@@ -39,7 +39,7 @@ const SongItemPlaylist = ({ song, songId }) => {
   const songInforObj = {
     id: id,
     songName: songName,
-    artistName: artistArr,
+    artists: artists.map((artist) => artist),
     songDuration: songInfor.songDuration,
     songCover: poster,
     songLink: songData,
@@ -103,6 +103,13 @@ const SongItemPlaylist = ({ song, songId }) => {
         <Item onClick={refreshPlaylist}>Refresh</Item>
         <Item
           onClick={() => {
+            dispatch(addSongToQueue(songInforObj));
+          }}
+        >
+          Add to Queue
+        </Item>
+        <Item
+          onClick={() => {
             handleDeleteSong();
           }}
         >
@@ -135,6 +142,15 @@ const SongItemPlaylist = ({ song, songId }) => {
       </Menu>
 
       <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer">
+        {
+          <div
+            className=" xl:w-12 xl:h-12
+        mx-2 xl:mx-3  flex justify-center items-center text-[#464444] font-bold
+        "
+          >
+            <span>{songOrder}</span>
+          </div>
+        }
         <img
           className="mr-3 w-12 h-12 xl:w-14 xl:h-14 rounded-lg object-cover"
           alt="Album cover"
@@ -145,7 +161,7 @@ const SongItemPlaylist = ({ song, songId }) => {
         <div className="text-[#2E3271] xl:text-base font-semibold">
           <h2 className="">{songInforObj.songName}</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">
-            {artists && showArtist(artistArr)}
+            {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}
           </h2>
         </div>

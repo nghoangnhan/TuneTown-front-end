@@ -141,8 +141,8 @@ const UploadSong = () => {
       songData: fileMP3,
       genre: genre,
       status: 1,
-      artist: artists.map((artist) => {
-        return { email: artist };
+      artists: artists.map((artist) => {
+        return { id: artist };
       }),
     };
     console.log("Posting Data", postData);
@@ -157,7 +157,7 @@ const UploadSong = () => {
     }
   }, [access_token]);
   return (
-    <section className="w-full h-full relative flex flex-col ">
+    <section className="w-full min-h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
       <Form
         {...layout}
         ref={formRef}
@@ -207,7 +207,7 @@ const UploadSong = () => {
         <Form.Item
           name="songData"
           label="Upload File"
-          extra="Upload your audio file mp3, wav"
+          extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
           getValueFromEvent={(e) => e && e.fileList}
           valuePropName="fileList"
           rules={[

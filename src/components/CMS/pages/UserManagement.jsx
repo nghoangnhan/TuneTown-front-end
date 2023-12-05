@@ -25,7 +25,11 @@ const UserManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [userId, setUserId] = useState();
-
+  const [searchValue, setSearchValue] = useState("");
+  const handSearch = (e) => {
+    console.log("value", e.target.value);
+    setSearchValue(e.target.value);
+  };
   // Call this function when you want to refresh the playlist
   const showModalEdit = (id) => {
     setIsModalOpen(true);
@@ -287,18 +291,24 @@ const UserManagement = () => {
               // onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
-              <Form.Item label="Name" name="majorName">
-                <Input placeholder="majorName" />
-              </Form.Item>
-              <Form.Item>
-                <Button type="default" htmlType="submit">
-                  Search
-                </Button>
+              <Form.Item label="name" name="userName">
+                <Input placeholder="Search User Name" onChange={handSearch} />
               </Form.Item>
             </Form>
           </div>
         </div>
-        <Table columns={columns} dataSource={userList} />
+        <Table
+          columns={columns}
+          dataSource={
+            searchValue
+              ? userList.filter((user) =>
+                  user.userName
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                )
+              : userList
+          }
+        />
         <Modal
           title="Edit User"
           open={isModalOpen}

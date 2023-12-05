@@ -7,11 +7,10 @@ import { Modal } from "antd";
 import UseCookie from "../hooks/useCookie";
 
 const PageFull = () => {
-  const { getToken } = UseCookie();
-  const { access_token } = getToken();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
   const handleOK = () => {
     navigate("/");
     setOpen(false);
