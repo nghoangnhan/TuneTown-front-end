@@ -18,8 +18,15 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
-import { setRefresh } from "../../redux/slice/playlist";
-const SongItemPlaylist = ({ song, songId, songOrder }) => {
+import playlist, { setRefresh } from "../../redux/slice/playlist";
+import axios from "axios";
+import { Base_URL } from "../../api/config";
+import UseCookie from "../../hooks/useCookie";
+
+
+const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) => {
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
   const { id, songName, artists, poster, songData } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
@@ -91,6 +98,27 @@ const SongItemPlaylist = ({ song, songId, songOrder }) => {
     );
   };
 
+  const [dragOver, setDragOver] = useState(null);
+
+  async function handleSort(item, over){
+    const response = await axios.post(`${Base_URL}/playlistSongs/orderSong?songOrder=${item}&playlistId=${playlistId}
+    &anotherSongOrder=${over}`,{},
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      }
+    })
+    if (response.status === 200) {
+      messageApi.success(
+        `Order ${item} to ${over}`
+      );
+      getUserPlaylist(userId).then((data) => setPlaylistList(data));
+    } else {
+      messageApi.error(`Failed to order song: ${response.error}`);
+    }
+
+  }
+
   useEffect(() => {
     console.log("SongId", songId);
     getUserPlaylist(userId).then((data) => setPlaylistList(data));
@@ -141,7 +169,21 @@ const SongItemPlaylist = ({ song, songId, songOrder }) => {
         </Submenu>
       </Menu>
 
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer">
+      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer"
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData('text/plain', songOrder);}}
+
+      onDragEnter={() => {
+        setDragOver(songIndex + 1);
+      }}
+
+      onDragOver={(e) => {e.preventDefault()}}
+      onDrop={(e) => {
+        e.preventDefault();
+        const draggedItem = e.dataTransfer.getData('text/plain');
+        handleSort(draggedItem, dragOver)}}
+      >
         {
           <div
             className=" xl:w-12 xl:h-12
@@ -185,6 +227,9 @@ const SongItemPlaylist = ({ song, songId, songOrder }) => {
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           <div>{TimeConvert(234)}</div>
+          <button>
+            =
+          </button>
         </div>
       </div>
     </div>
