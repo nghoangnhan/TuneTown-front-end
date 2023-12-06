@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { Form, Input, Modal, Space, Table } from "antd";
-import axios from "axios";
+import UpdateSong from "../../UploadSong/UpdateSong";
+import UploadSong from "../../UploadSong/UploadSong";
 import { useEffect, useState } from "react";
 import { Base_URL } from "../../../api/config";
+import axios from "axios";
 import UseCookie from "../../../hooks/useCookie";
-import UploadSong from "../../UploadSong/UploadSong";
-import UpdateSong from "../../UploadSong/UpdateSong";
 import defaultAva from "../../../assets/img/logo/logo.png";
 
-const SongManagement = () => {
+const PlaylistManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
   const { access_token } = getToken();
@@ -19,13 +19,7 @@ const SongManagement = () => {
   const [songData, setSongData] = useState({});
   const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const handSearch = (e) => {
-    console.log("value", e.target.value);
-    setSearchValue(e.target.value);
-  };
 
-  // Call this function when you want to refresh the playlist
   const refreshPlaylist = () => {
     setRefresh(!refresh);
   };
@@ -52,13 +46,9 @@ const SongManagement = () => {
       songId: songId,
       songName: songName,
     };
-    setSongData(songData);
     setIsModalOpenUpdate(true);
   };
-  // Call this function when you want to refresh the playlist
-  const showModal = () => {
-    setIsModalOpenUpload(true);
-  };
+
   // Delete Song
   const deleteSong = async (songId) => {
     try {
@@ -183,7 +173,11 @@ const SongManagement = () => {
   useEffect(() => {
     getListSong(songPage);
   }, [isModalOpenUpload, isModalOpenUpdate]);
-
+  const [searchValue, setSearchValue] = useState("");
+  const handSearch = (e) => {
+    console.log("value", e.target.value);
+    setSearchValue(e.target.value);
+  };
   if (!songList) return null;
   return (
     <div>
@@ -208,14 +202,6 @@ const SongManagement = () => {
               <Input placeholder="Search Song" onChange={handSearch} />
             </Form.Item>
           </Form>
-        </div>
-        <div>
-          <button
-            className="py-1 px-2  bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
-            onClick={showModal}
-          >
-            Create New Song
-          </button>
         </div>
       </div>
       <Table
@@ -257,4 +243,4 @@ const SongManagement = () => {
   );
 };
 
-export default SongManagement;
+export default PlaylistManagement;

@@ -27,10 +27,11 @@ const musicStore = createSlice({
       songLink: MakeUBeauti,
     },
     playlist: [],
+    // Song will be played next
     songQueue: [
       {
         id: 1,
-        songName: "What make you beautiful",
+        songName: "What make you beautiful 2",
         artists: [
           {
             userName: "One Direction",
@@ -74,6 +75,8 @@ const musicStore = createSlice({
         songLink: BlindingLight,
       },
     ],
+    // Song has been played
+    songQueuePlayed: [],
     isPlaying: false,
     currentTime: 0,
     // ... other state properties
@@ -113,6 +116,25 @@ const musicStore = createSlice({
         (song) => song.id !== action.payload
       );
     },
+    playNextSong: (state) => {
+      if (state.songQueue.length > 0) {
+        state.songQueuePlayed.push(state.currentSong);
+        state.currentSong = state.songQueue[0];
+        state.songQueue.shift();
+      } else {
+        state.currentSong = null;
+      }
+    },
+    playPreviousSong: (state) => {
+      if (state.songQueuePlayed.length > 0) {
+        state.songQueue.unshift(state.currentSong);
+        state.currentSong =
+          state.songQueuePlayed[state.songQueuePlayed.length - 1];
+        state.songQueuePlayed.pop();
+      } else {
+        state.currentSong = null;
+      }
+    },
   },
 });
 
@@ -126,6 +148,8 @@ export const {
   setListSong,
   addSongToQueue,
   removeSongFromQueue,
+  playNextSong,
+  playPreviousSong,
 } = musicStore.actions;
 
 export default musicStore.reducer;

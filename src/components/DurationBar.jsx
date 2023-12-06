@@ -4,9 +4,13 @@ import { useMediaQuery } from "react-responsive";
 import { useSelector, useDispatch } from "react-redux";
 import useSongDuration from "../utils/songUtils";
 import {
+  playNextSong,
+  playPreviousSong,
+  setCurrentSong,
   setCurrentTime,
   setDuration,
   setIsPlaying,
+  setSongLinks,
 } from "../redux/slice/music";
 import axios from "axios";
 import { Base_URL } from "../api/config";
@@ -23,6 +27,8 @@ const DurationBar = () => {
   // const [duration, setDuration] = useState("0"); // Max time of the song
   const songObj = useSelector((state) => state.music.currentSong); // Get song information from the store
   console.log("file: DurationBar.jsx:21 || DurationBar || songObj:", songObj);
+  const songQueuePlayed = useSelector((state) => state.music.songQueuePlayed);
+  const songQueue = useSelector((state) => state.music.songQueue); // Get song queue from the store
   const duration = useSelector((state) => state.music.currentSong.songDuration);
   const audioFile = useSelector((state) => state.music.currentSong.songLink);
   const currentTime = useSelector((state) => state.music.currentTime); // Current time when play a song
@@ -131,7 +137,24 @@ const DurationBar = () => {
           </svg>
         </button>
         {/* Skip previous button */}
-        <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">
+        <button
+          className="bg-white hover:bg-[#c8c7c7] rounded-xl"
+          onClick={
+            // Play previous song in queue
+            () => {
+              if (songQueuePlayed.length > 0) {
+                dispatch(setIsPlaying(true));
+                dispatch(setCurrentTime(0));
+                dispatch(playPreviousSong());
+              } else if (songQueuePlayed.length == 0) {
+                dispatch(setIsPlaying(false));
+                dispatch(setCurrentTime(0));
+                dispatch(setCurrentSong(null));
+                dispatch(setSongLinks(null));
+              }
+            }
+          }
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -183,7 +206,24 @@ const DurationBar = () => {
         <audio ref={audioRef} src={audioFile}></audio>
 
         {/* Skip next button  */}
-        <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">
+        <button
+          className="bg-white hover:bg-[#c8c7c7] rounded-xl"
+          onClick={
+            // Play next song in queue
+            () => {
+              if (songQueue.length > 0) {
+                dispatch(setIsPlaying(true));
+                dispatch(setCurrentTime(0));
+                dispatch(playNextSong());
+              } else if (songQueue.length == 0) {
+                dispatch(setIsPlaying(false));
+                dispatch(setCurrentTime(0));
+                dispatch(setCurrentSong(null));
+                dispatch(setSongLinks(null));
+              }
+            }
+          }
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -216,6 +256,7 @@ const DurationBar = () => {
       </div>
 
       {/* Seekbar Control Song */}
+      {/* Mobile  */}
       {isMobile && (
         <div className="flex flex-row justify-center items-center xl:relative max-sm:static max-sm:bottom-0 max-sm:w-screen px-5">
           <span className="text-xs xl:text-base">
@@ -233,6 +274,7 @@ const DurationBar = () => {
         </div>
       )}
 
+      {/* Desktop  */}
       {!isMobile && (
         <div className="xl:flex flex-row justify-center items-center xl:relative">
           <span className="text-xs xl:text-base">

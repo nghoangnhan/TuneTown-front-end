@@ -19,7 +19,7 @@ const QueueSection = () => {
   return (
     <div
       className={`${
-        songQueue != null && songQueue.length > 0 ? "h-fit" : "min-h-screen"
+        songQueue != null && songQueue.length > 0 ? "min-h-screen" : "h-screen"
       } xl:p-6 bg-[#ecf2fd] mb-20`}
     >
       <div className="flex flex-row gap-4">
@@ -52,6 +52,11 @@ const QueueSection = () => {
               isPlaying={false}
             ></SongItemQueue>
           ))}
+        {songQueue != null && songQueue.length === 0 && (
+          <div className="text-center text-2xl font-bold text-[#5d5c5c] font-boldmt-5 mb-5">
+            No song in queue!
+          </div>
+        )}
       </div>
     </div>
   );
