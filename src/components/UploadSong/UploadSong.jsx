@@ -139,7 +139,7 @@ const UploadSong = () => {
       songName: songName,
       poster: fileIMG,
       songData: fileMP3,
-      genre: genre,
+      genres: genre,
       status: 1,
       artists: artists.map((artist) => {
         return { id: artist };
@@ -157,117 +157,115 @@ const UploadSong = () => {
     }
   }, [access_token]);
   return (
-    <section className="w-full min-h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
-      <Form
-        {...layout}
-        ref={formRef}
-        name="control-ref"
-        onFinish={onFinish}
-        className="border rounded-md mx-auto p-5 bg-[#f9f9f9]"
+    <Form
+      {...layout}
+      ref={formRef}
+      name="control-ref"
+      onFinish={onFinish}
+      className="border rounded-md mx-auto p-5 bg-[#f9f9f9]"
+    >
+      <div className="w-full text-center mb-5">
+        <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
+          Upload Your Masterpiece
+        </h2>
+      </div>
+      <Form.Item
+        name="songName"
+        label="Song Name"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
       >
-        <div className="w-full text-center mb-5">
-          <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
-            Upload Your Masterpiece
-          </h2>
-        </div>
-        <Form.Item
-          name="songName"
-          label="Song Name"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+        <Input />
+      </Form.Item>
 
-        <ArtistInput></ArtistInput>
+      <ArtistInput></ArtistInput>
 
-        <Form.Item
-          name="poster"
-          label="Upload Cover Art"
-          extra="Upload your cover image png, jpg, jpeg"
-          getValueFromEvent={(e) => e && e.fileList}
-          valuePropName="fileList"
-          rules={[
-            {
-              required: false,
-            },
-          ]}
+      <Form.Item
+        name="poster"
+        label="Upload Cover Art"
+        extra="Upload your cover image png, jpg, jpeg"
+        getValueFromEvent={(e) => e && e.fileList}
+        valuePropName="fileList"
+        rules={[
+          {
+            required: false,
+          },
+        ]}
+      >
+        <UploadFileDropZone
+          uploadedFile={uploadedFile}
+          setUploadedFile={setUploadedFile}
+          handleUploadFile={handleUploadFileIMG}
+          accept="image/jpeg, image/png"
+        />
+      </Form.Item>
+      {/* MP3 File */}
+      <Form.Item
+        name="songData"
+        label="Upload File"
+        extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
+        getValueFromEvent={(e) => e && e.fileList}
+        valuePropName="fileList"
+        rules={[
+          {
+            required: false,
+          },
+        ]}
+      >
+        <UploadFileDropZone
+          uploadedFile={uploadedFile}
+          setUploadedFile={setUploadedFile}
+          handleUploadFile={handleUploadFileMP3}
+          accept="audio/mp3"
+        />
+      </Form.Item>
+      {/* Genre  */}
+      <Form.Item
+        name="genre"
+        label="Song Genre"
+        extra={"Select your song genre, CHOOSE ONE"}
+      >
+        <Select
+          placeholder="Select a option and change input text above"
+          allowClear
         >
-          <UploadFileDropZone
-            uploadedFile={uploadedFile}
-            setUploadedFile={setUploadedFile}
-            handleUploadFile={handleUploadFileIMG}
-            accept="image/jpeg, image/png"
-          />
-        </Form.Item>
-        {/* MP3 File */}
-        <Form.Item
-          name="songData"
-          label="Upload File"
-          extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
-          getValueFromEvent={(e) => e && e.fileList}
-          valuePropName="fileList"
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
-          <UploadFileDropZone
-            uploadedFile={uploadedFile}
-            setUploadedFile={setUploadedFile}
-            handleUploadFile={handleUploadFileMP3}
-            accept="audio/mp3"
-          />
-        </Form.Item>
-        {/* Genre  */}
-        <Form.Item
-          name="genre"
-          label="Song Genre"
-          extra={"Select your song genre, CHOOSE ONE"}
-        >
-          <Select
-            placeholder="Select a option and change input text above"
-            allowClear
-          >
-            <Option value="Pop">Pop</Option>
-            <Option value="Jazz">Jazz</Option>
-            <Option value="EDM">EDM</Option>
-            <Option value="Trap">Trap</Option>
-            <Option value="other">other</Option>
-          </Select>
-        </Form.Item>
+          <Option value="Pop">Pop</Option>
+          <Option value="Jazz">Jazz</Option>
+          <Option value="EDM">EDM</Option>
+          <Option value="Trap">Trap</Option>
+          <Option value="other">other</Option>
+        </Select>
+      </Form.Item>
 
-        <Form.Item
-          noStyle
-          shouldUpdate={(prevValues, currentValues) =>
-            prevValues.genre !== currentValues.genre
-          }
+      <Form.Item
+        noStyle
+        shouldUpdate={(prevValues, currentValues) =>
+          prevValues.genre !== currentValues.genre
+        }
+      >
+        {({ getFieldValue }) =>
+          /* lấy giá trị trong field gender xem có phải other không */
+          getFieldValue("genre") === "other" ? (
+            /* Nếu chọn other thì hiện ra cái này */
+            <Form.Item name="customizeGenre" label="Customize Genre">
+              <Input />
+            </Form.Item>
+          ) : null
+        }
+      </Form.Item>
+      <Form.Item {...tailLayout}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="bg-[green] absolute right-2"
         >
-          {({ getFieldValue }) =>
-            /* lấy giá trị trong field gender xem có phải other không */
-            getFieldValue("genre") === "other" ? (
-              /* Nếu chọn other thì hiện ra cái này */
-              <Form.Item name="customizeGenre" label="Customize Genre">
-                <Input />
-              </Form.Item>
-            ) : null
-          }
-        </Form.Item>
-        <Form.Item {...tailLayout}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="bg-[green] absolute right-2"
-          >
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </section>
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

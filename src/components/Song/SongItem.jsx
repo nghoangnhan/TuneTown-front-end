@@ -8,7 +8,7 @@ import {
   setIsPlaying,
 } from "../../redux/slice/music";
 import useSongDuration, { useMusicAPI } from "../../utils/songUtils";
-import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
+import DefaultArt from "../../assets/img/logo/logo.png";
 import {
   Menu,
   Item,

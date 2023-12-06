@@ -1,18 +1,49 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Base_URL } from "../api/config";
+import UseCookie from "../hooks/useCookie";
 
 const ArtistDetail = () => {
   const { artistId } = useParams();
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
+  const [artistDetail, setArtistDetail] = useState({});
+
   const [songPlaylistList, setSongPlaylistList] = useState([]);
   const [follow, setFollow] = useState(false);
   const handleFollow = () => {
     setFollow(!follow);
   };
-  const artistDetail = {
-    artistName: "One Direction",
-    artistAvatar:
-      "https://upload.wikimedia.org/wikipedia/commons/e/e1/One_Direction_2015.jpg",
+  const getArtistByArtistId = async (artistId) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/artists/getArtistByArtistId?artistId=${artistId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("artist Response", response.data);
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
+
+  const getArtistDetail = async (artistId) => {
+    // Fetch data from API and set for Edit Modal
+    const detailData = await getArtistByArtistId(artistId);
+    if (detailData) {
+      setArtistDetail(detailData);
+    }
+  };
+  // const artistDetailTest = {
+  //   artistName: "One Direction",
+  //   artistAvatar:
+  //     "https://upload.wikimedia.org/wikipedia/commons/e/e1/One_Direction_2015.jpg",
+  // };
 
   useEffect(() => {
     setSongPlaylistList([
@@ -81,6 +112,7 @@ const ArtistDetail = () => {
         songLink: "MakeUBeauti",
       },
     ]);
+    getArtistDetail(artistId);
   }, []);
   return (
     <div
