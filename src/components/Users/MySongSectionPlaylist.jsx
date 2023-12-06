@@ -4,7 +4,7 @@ import SongItemPlaylist from "./SongItemPlaylist";
 import { useSelector } from "react-redux";
 // import { useDispatch } from "react-redux";
 
-const MySongSectionPlaylist = ({ songData }) => {
+const MySongSectionPlaylist = ({ songData, playlistId }) => {
   const [songList, setSongList] = useState();
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
@@ -45,11 +45,13 @@ const MySongSectionPlaylist = ({ songData }) => {
       </div>
       <div className="mt-2 flex flex-col gap-1">
         {songList &&
-          songList.map((songItem) => (
+          songList.map((songItem, index) => (
             <SongItemPlaylist
               key={songItem.id}
+              playlistId={playlistId}
               songId={songItem.id}
               songOrder={songItem.orderSong}
+              songIndex={index}
               song={songItem.song}
             />
           ))}
