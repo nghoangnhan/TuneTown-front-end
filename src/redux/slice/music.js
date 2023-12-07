@@ -25,6 +25,8 @@ const musicStore = createSlice({
       songCover:
         "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
       songLink: MakeUBeauti,
+      songData:
+        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/HIGHEST IN THE ROOM - Travis Scott/HIGHEST IN THE ROOM - Travis Scott_",
     },
     playlist: [],
     // Song will be played next
