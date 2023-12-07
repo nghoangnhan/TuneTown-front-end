@@ -1,18 +1,17 @@
-/* eslint-disable no-unused-vars */
 import { useEffect } from "react";
 import axios from "axios";
 import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { NavLink, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
-import { auth } from "../api/config";
+import { Base_URL, auth } from "../api/config";
 import { useDispatch } from "react-redux";
-import {
-  setUserId,
-  setUserInfor,
-  setUserName,
-  setUserRole,
-} from "../redux/slice/account";
+import { setUserInfor } from "../redux/slice/account";
+import GoogleLoginButton from "../components/AuthGoogle/AuthGoogleLogin";
+import { gapi } from "gapi-script";
+
+const clientId =
+  "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
 
 const LoginPage = () => {
   const { removeToken } = UseCookie();
@@ -20,7 +19,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { saveToken } = UseCookie();
-  const [messageApi, contextHolder] = message.useMessage();
 
   const handleUserData = async (usersData) => {
     console.log("Data", usersData);
@@ -33,39 +31,35 @@ const LoginPage = () => {
   // Get access to the API
   async function GetAccessToken(emailInput, passwordInput) {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/authenticate",
-        {
-          email: emailInput,
-          password: passwordInput,
-        }
-      );
+      const response = await axios.post(`${Base_URL}/auth/authenticate`, {
+        email: emailInput,
+        password: passwordInput,
+      });
       console.log("Respone Data Sign in", response.data);
       if ((response.data && response.data.access_token) || response.data) {
         // Save cookies and token
         saveToken(response.data.access_token);
-
         handleUserData(response.data);
         console.log("Token", response.data.access_token);
         // Notifactaion when login successfully
-        messageApi.open({
-          type: "success",
-          content: "Login Successfully",
-        });
+        message.success("Login Successfully");
         setTimeout(() => {
-          // window.location.href = "/home";
-          navigate("/home");
+          if (response.data.role === "ADMIN") {
+            navigate("/cms/usermanagement");
+          } else if (
+            response.data.role === "USER" ||
+            response.data.role === "ARTIST"
+          ) {
+            // window.location.href = "/home";
+            navigate("/home");
+          }
         }, 1000);
       }
-
       return response.data;
     } catch (error) {
       console.log("Error:", error);
       // Notifactaion when login failed
-      messageApi.open({
-        type: "error",
-        content: "Login Failed",
-      });
+      message.error("Login Failed");
       throw error;
     }
   }
@@ -83,9 +77,19 @@ const LoginPage = () => {
     removeToken();
   }, []);
 
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: "",
+      });
+    }
+
+    gapi.load("client:auth2", start);
+  });
+
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
-      {contextHolder}
       <div className="flex flex-row flex-1 relative">
         <div className="flex flex-col justify-center items-center min-h-screen xl:w-1/2">
           <div className="mb-20">
@@ -138,15 +142,6 @@ const LoginPage = () => {
             </Form.Item>
 
             <Form.Item
-              name="remember"
-              valuePropName="checked"
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            ></Form.Item>
-
-            <Form.Item
               className="flex flex-row justify-center items-center"
               wrapperCol={{
                 offset: 8,
@@ -159,20 +154,27 @@ const LoginPage = () => {
             </Form.Item>
           </Form>
 
-          <div>
+          <div className="flex flex-col items-center">
             <p className="text-[#2E3271]">
               Don&apos;t have account?
-              <NavLink to="/signup" className="text-[#34a56d] ml-1">
+              <NavLink to="/signup" className="text-[#34a56d] ml-1 text-sm">
                 Sign up
               </NavLink>
             </p>
+            <p className="text-[#2E3271] mb-3">
+              Forget Your Password?
+              <NavLink to="/forgotpass" className="text-[#34a56d] ml-1 text-sm">
+                Forget Password
+              </NavLink>
+            </p>
+            <div className="">
+              <GoogleLoginButton />
+            </div>
           </div>
-
           <footer className="bottom-5 absolute ">
             <p className="text-[#8d8d8d]">© 2023 TuneTown</p>
           </footer>
         </div>
-
         <div className="hidden xl:block xl:w-1/2">
           <img
             src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"

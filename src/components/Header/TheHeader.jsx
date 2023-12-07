@@ -31,7 +31,7 @@ const TheHeader = () => {
         body: {},
       });
       console.log("TheHeader || GetUserInfor", response.data, response.status);
-      setUserInfor(response.data.user);
+      return response.data;
       // setUserName(response.data.user.userName);
     } catch (error) {
       // Handle network errors or other exceptions
@@ -49,7 +49,9 @@ const TheHeader = () => {
     navigate("/");
   };
   useEffect(() => {
-    getUserInfor();
+    getUserInfor().then((res) => {
+      setUserInfor(res.user);
+    });
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
   return (
@@ -97,28 +99,52 @@ const TheHeader = () => {
       <Modal
         title="Options"
         centered
+        style={{ top: 20 }}
         open={modalOpen}
         onOk={() => setModalOpen(false)}
         okButtonProps={{ style: { backgroundColor: "#45cc79" } }}
         onCancel={() => setModalOpen(false)}
+        footer={null}
         className="text-[#359254] font-bold flex flex-row justify-center items-center"
       >
         {userRole == "ARTIST" && (
+          <div>
+            <div
+              onClick={() => handleOnclick("upload")}
+              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
+            >
+              <button>Upload Song</button>
+            </div>
+            <div
+              onClick={() => handleOnclick("artistCMS")}
+              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
+            >
+              <button>Song Management</button>
+            </div>
+          </div>
+        )}
+
+        {userRole != "ADMIN" && (
           <div
-            onClick={() => handleOnclick("upload")}
-            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
+            onClick={() => handleOnclick("editUser")}
+            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
           >
-            <button>Upload Song</button>
+            <button>Edit User Information</button>
+          </div>
+        )}
+        {userRole != "ADMIN" && (
+          <div
+            onClick={() => handleOnclick("history")}
+            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
+          >
+            <button>Listen History</button>
           </div>
         )}
         <div
-          onClick={() => handleOnclick("editUser")}
-          className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  "
+          onClick={LogOut}
+          className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
         >
-          <button>Edit User Information</button>
-        </div>
-        <div className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10  ">
-          <button onClick={LogOut}>Log Out</button>
+          <button>Log Out</button>
         </div>
       </Modal>
     </header>

@@ -1,15 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Base_URL } from "../../api/config";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Form, Input, Select, Upload } from "antd";
+import { Button, DatePicker, Form, Input, message } from "antd";
 import UseCookie from "../../hooks/useCookie";
 import UploadAvatar from "./UploadAvatar";
-import moment from "moment/moment";
 import dayjs from "dayjs";
-import userUtils from "../../utils/userUtils";
-const { Option } = Select;
 
 const layout = {
   labelCol: {
@@ -26,10 +21,12 @@ const tailLayout = {
   },
 };
 
-const EditUserForm = () => {
+// eslint-disable-next-line react/prop-types
+const EditUserForm = ({ editUserId }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const userId = localStorage.getItem("userId");
+  const [messageApi, contextHolder] = message.useMessage();
+  const userId = editUserId || localStorage.getItem("userId");
   const [form] = Form.useForm();
   const formRef = useRef(null);
   const [userInfor, setUserInfor] = useState({});
@@ -42,7 +39,6 @@ const EditUserForm = () => {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-        body: {},
       });
       console.log(response.data, response.status);
       setUserInfor(response.data.user);
@@ -64,6 +60,7 @@ const EditUserForm = () => {
       if (response.status === 200) {
         // Handle success
         console.log("User edited successfully:", response.data);
+        messageApi.success("User edited successfully");
       } else {
         // Handle other status codes
         console.error("Error edited user:", response.statusText);
@@ -109,86 +106,93 @@ const EditUserForm = () => {
     console.log("userName", userInfor);
     console.log("userNameeee", userInfor.userName);
     // console.log("userName", userName);
-  }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
+  }, [
+    access_token,
+    userInfor.userName,
+    userInfor.email,
+    userInfor.userBio,
+    editUserId,
+    userId,
+  ]);
   return (
-    <section className="w-full h-screen relative flex flex-col xl:pt-12 pt-6 bg-[#ecf2fd] px-1">
-      <div className="flex justify-center items-center h-fit">
-        <Form
-          {...layout}
-          ref={formRef}
-          name="control-ref"
-          form={form}
-          onFinish={onFinish}
-          className="xl:w-[500px] relative w-fit border rounded-md mx-auto p-5 bg-[#f9f9f9]"
-          // initialValues={{ userName: userInfor.userName }}
+    <section className="w-full min-h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
+      <Form
+        {...layout}
+        ref={formRef}
+        name="control-ref"
+        form={form}
+        onFinish={onFinish}
+        className="relative w-fit border rounded-md mx-auto p-5 bg-[#f9f9f9]"
+        // initialValues={{ userName: userInfor.userName }}
+      >
+        {contextHolder}
+        <div className="w-full text-center mb-5">
+          <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
+            Edit User Information
+          </h2>
+        </div>
+        {/* Avatar Image */}
+        <Form.Item
+          name="avatar"
+          label="Upload Avatar"
+          valuePropName="fileList"
+          extra="Upload your cover image png, jpg, jpeg"
+          rules={[
+            {
+              required: false,
+            },
+          ]}
         >
-          <div className="w-full text-center mb-5">
-            <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
-              Edit Information
-            </h2>
-          </div>
-          {/* Avatar Image */}
-          <Form.Item
-            name="avatar"
-            label="Upload Avatar"
-            valuePropName="fileList"
-            extra="Upload your cover image png, jpg, jpeg"
-            rules={[
-              {
-                required: false,
-              },
-            ]}
-          >
-            <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
-          </Form.Item>
-          <Form.Item
-            name="userName"
-            label="Name"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-            // initialValue={userInfor.userName}
-          >
-            <Input />
-          </Form.Item>
+          <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
+        </Form.Item>
+        <Form.Item
+          name="userName"
+          label="Name"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          // initialValue={userInfor.userName}
+        >
+          <Input />
+        </Form.Item>
 
-          <Form.Item
-            name="userBio"
-            label="Bio"
-            rules={[
-              {
-                required: false,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+        <Form.Item
+          name="userBio"
+          label="Bio"
+          rules={[
+            {
+              required: false,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
 
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Birthday"
-            name="birthDate"
-            rules={[
-              { required: true, message: "Please input your date of birth!" },
-            ]}
-          >
-            <DatePicker />
-          </Form.Item>
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Birthday"
+          name="birthDate"
+          rules={[
+            { required: true, message: "Please input your date of birth!" },
+          ]}
+        >
+          <DatePicker />
+        </Form.Item>
 
-          {/* Genre */}
-          {/* <Form.Item
+        {/* Genre */}
+        {/* <Form.Item
             name="genre"
             label="Song Genre"
             extra={"Select your song genre, CHOOSE ONE"}
@@ -206,7 +210,7 @@ const EditUserForm = () => {
           </Form.Item>  
           */}
 
-          {/* <Form.Item
+        {/* <Form.Item
             label="Password"
             name="password"
             rules={[
@@ -243,13 +247,12 @@ const EditUserForm = () => {
             <Input.Password />
           </Form.Item> */}
 
-          <Form.Item {...tailLayout} className="left-0">
-            <Button type="primary" htmlType="submit" className="bg-[green] ">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+        <Form.Item {...tailLayout} className="left-0">
+          <Button type="primary" htmlType="submit" className="bg-[green] ">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </section>
   );
 };
