@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -18,31 +17,22 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
-import playlist, { setRefresh } from "../../redux/slice/playlist";
-import axios from "axios";
-import { Base_URL } from "../../api/config";
-import UseCookie from "../../hooks/useCookie";
 
-
-const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) => {
-  const { getToken } = UseCookie();
-  const { access_token } = getToken();
+const SongItemSearch = ({ song, songOrder }) => {
   const { id, songName, artists, poster, songData } = song;
-  const { show } = useContextMenu();
-  const userId = localStorage.getItem("userId");
-  const { addSongToPlaylist, getUserPlaylist, deleteSongInPlaylist } =
-    useMusicAPI();
-  const { showArtistV2, TimeConvert } = useSongDuration();
-  const dispatch = useDispatch();
   const audioRef = useRef();
+  const { show } = useContextMenu();
+  const dispatch = useDispatch();
+  const userId = localStorage.getItem("userId");
+  const { addSongToPlaylist, getUserPlaylist } = useMusicAPI();
+  const { showArtistV2, TimeConvert } = useSongDuration();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
-  const audio = document.getElementById("audio");
+  // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const refreshPlaylist = useSelector(
-    (state) => state.playlist.refreshPlaylist
-  );
+
   const songInforObj = {
     id: id,
     songName: songName,
@@ -73,56 +63,16 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
       id: `songOption_${songId}`,
     });
   }
+
   // Call this function when you want to refresh the playlist
-  const HandleRefreshPlaylist = () => {
-    dispatch(setRefresh(!refreshPlaylist));
+  const refreshPlaylist = () => {
+    setRefresh(!refresh);
   };
-
-  // When the song is deleted, refresh the playlist
-  const handleDeleteSong = () => {
-    deleteSongInPlaylist(songId, localStorage.getItem("myPlaylistId")).then(
-      (response) => {
-        console.log("Delete song response", response);
-        if (response === 200) {
-          messageApi.success(
-            `Deleted ${songInforObj.songName} #${songId} ##${
-              songInforObj.id
-            } in playlist ${localStorage.getItem("myPlaylistId")}`
-          );
-          // Trigger a re-render by updating the refresh state
-          HandleRefreshPlaylist();
-        } else {
-          messageApi.error(`Failed to delete song: ${response.error}`);
-        }
-      }
-    );
-  };
-
-  const [dragOver, setDragOver] = useState(null);
-
-  async function handleSort(item, over){
-    const response = await axios.post(`${Base_URL}/playlistSongs/orderSong?songOrder=${item}&playlistId=${playlistId}
-    &anotherSongOrder=${over}`,{},
-    {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      }
-    })
-    if (response.status === 200) {
-      messageApi.success(
-        `Order ${item} to ${over}`
-      );
-      getUserPlaylist(userId).then((data) => setPlaylistList(data));
-    } else {
-      messageApi.error(`Failed to order song: ${response.error}`);
-    }
-
-  }
-
   useEffect(() => {
-    console.log("SongId", songId);
+    // Add list playlist to context menu
     getUserPlaylist(userId).then((data) => setPlaylistList(data));
-  }, [refreshPlaylist]);
+  }, []);
+
   return (
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
       {contextHolder}
@@ -136,57 +86,41 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
         >
           Add to Queue
         </Item>
-        <Item
-          onClick={() => {
-            handleDeleteSong();
-          }}
-        >
-          Delete Song
-        </Item>
         <Separator />
         <Submenu label="Add to playlist">
-          {playlistList.map((playlist) => (
-            <Item
-              key={playlist.id}
-              onClick={() => {
-                addSongToPlaylist(songInforObj.id, playlist.id).then(
-                  (result) => {
-                    if (result.success) {
-                      messageApi.success(
-                        `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`
-                      );
-                    } else {
-                      messageApi.error(`Failed to add song: ${result.error}`);
+          {playlistList &&
+            playlistList.map((playlist) => (
+              <Item
+                key={playlist.id}
+                onClick={() => {
+                  addSongToPlaylist(songInforObj.id, playlist.id).then(
+                    (result) => {
+                      if (result.success) {
+                        messageApi.open({
+                          type: "success",
+                          content: `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`,
+                        });
+                      } else {
+                        messageApi.open({
+                          type: "error",
+                          content: `Failed to add song: ${result.error}`,
+                        });
+                      }
                     }
-                  }
-                );
-              }}
-            >
-              {playlist.playlistName}{" "}
-              <span className="text-[#938e8e] ml-1"> #{playlist.id}</span>
-            </Item>
-          ))}
+                  );
+                }}
+              >
+                {playlist.playlistName}{" "}
+                <span className="text-[#938e8e] ml-1"> #{playlist.id}</span>
+              </Item>
+            ))}
         </Submenu>
       </Menu>
 
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer"
-      draggable
-      onDragStart={(e) => {
-        e.dataTransfer.setData('text/plain', songOrder);}}
-
-      onDragEnter={() => {
-        setDragOver(songIndex + 1);
-      }}
-
-      onDragOver={(e) => {e.preventDefault()}}
-      onDrop={(e) => {
-        e.preventDefault();
-        const draggedItem = e.dataTransfer.getData('text/plain');
-        handleSort(draggedItem, dragOver)}}
-      >
+      <div className="flex flex-row relative hover:bg-slate-200 bg-white text-[#464444] items-center rounded-md text-sm xl:text-base p-2 my-1 cursor-pointer">
         {
           <div
-            className=" xl:w-12 xl:h-12
+            className="xl:w-12 xl:h-12
         mx-2 xl:mx-3  flex justify-center items-center text-[#464444] font-bold
         "
           >
@@ -227,13 +161,10 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           <div>{TimeConvert(234)}</div>
-          <button>
-            =
-          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default SongItemPlaylist;
+export default SongItemSearch;

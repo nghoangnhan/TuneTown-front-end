@@ -110,27 +110,14 @@ const UpdateSong = ({ songData }) => {
   const getSongById = async (songId) => {
     try {
       console.log("auth", access_token);
-      const response = await axios.get(`${Base_URL}/songs/${songId}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-      const { songName, artists, poster, songData, genre } = response.data;
-      console.log(
-        "songList Response",
-        songName,
-        artists,
-        poster,
-        songData,
-        genre
+      const response = await axios.get(
+        `${Base_URL}/songs/getSongById?songId=${songId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
       );
-      form.setFieldsValue({
-        songName,
-        artists,
-        poster,
-        songData,
-        genre,
-      });
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -138,14 +125,19 @@ const UpdateSong = ({ songData }) => {
   };
 
   // Post Song to API
-  const updateSong = async (songId, songName) => {
+  const updateSong = async (data) => {
     try {
       console.log("auth", access_token);
       const response = await axios.put(
-        `${Base_URL}/songs`,
+        `${Base_URL}/songs?accessToken=${access_token}`,
         {
-          songId: songId,
-          songName: songName,
+          id: data.id,
+          songName: data.songName,
+          poster: data.poster,
+          songData: data.songData,
+          genres: data.genre,
+          status: 1,
+          artists: data.artists,
         },
         {
           headers: {
@@ -168,13 +160,14 @@ const UpdateSong = ({ songData }) => {
       return;
     }
     const postData = {
+      id: songData.songId,
       songName: songName,
       poster: fileIMG,
       songData: fileMP3,
-      genre: genre,
+      genres: genre,
       status: 1,
-      artist: artists.map((artist) => {
-        return { email: artist };
+      artists: artists.map((artist) => {
+        return { id: artist };
       }),
     };
     console.log("Posting Data", postData);
@@ -183,7 +176,18 @@ const UpdateSong = ({ songData }) => {
   };
 
   useEffect(() => {
-    getSongById(songData.songId);
+    getSongById(songData.songId).then((data) => {
+      console.log("songData", data);
+      form.setFieldsValue({
+        songName: data.songName,
+        artists: data.artists.map((artist) => {
+          return artist.id;
+        }),
+        genre: data.genre,
+        poster: data.poster,
+        songData: data.songData,
+      });
+    });
   }, [songData.songId]);
 
   useEffect(() => {
@@ -198,6 +202,7 @@ const UpdateSong = ({ songData }) => {
         {...layout}
         ref={formRef}
         name="control-ref"
+        form={form}
         onFinish={onFinish}
         className="border rounded-md mx-auto p-5 bg-[#f9f9f9]"
       >

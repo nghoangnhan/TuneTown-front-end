@@ -1,45 +1,26 @@
-import { useMusicAPI } from "../../utils/songUtils";
 import { useEffect, useState } from "react";
-import { Form } from "antd";
-import SongItem from "../Song/SongItem";
 import { useSelector } from "react-redux";
+import SongItemQueue from "../Song/SongItemQueue";
 
 const QueueSection = () => {
-  const playlistId = 405;
-  const { getListSongPlaylist, getPlaylistByPlaylistId } = useMusicAPI();
-  const [songPlaylistList, setSongPlaylistList] = useState();
-  const [playlistDetail, setPlaylistDetail] = useState({});
-  const songQueue = useSelector((state) => state.music.songQueue);
+  const [songQueue, setSongQueue] = useState([]);
+  const songQueueStore = useSelector((state) => state.music.songQueue);
+  const playingSong = useSelector((state) => state.music.currentSong);
+  console.log("playingSong", playingSong);
   console.log("songQueue", songQueue);
-  const [form] = Form.useForm();
 
-  const fetchDataPlaylistInfor = async (playlistId) => {
-    const detailData = await getPlaylistByPlaylistId(playlistId);
-    if (detailData) {
-      setPlaylistDetail(detailData);
-      const { playlistName, playlistType } = detailData;
-      form.setFieldsValue({
-        playlistName,
-        playlistType,
-      });
-    }
-    const data = await getListSongPlaylist(playlistId);
-    if (data) {
-      setSongPlaylistList(data);
-      console.log("data", data);
-    }
-  };
   useEffect(() => {
-    fetchDataPlaylistInfor(405);
-  }, [playlistId]);
+    if (songQueueStore != null) {
+      setSongQueue(songQueueStore);
+    }
+    console.log("songQueueStore", songQueueStore);
+  }, [songQueueStore]);
 
   return (
     <div
       className={`${
-        songPlaylistList != null && songPlaylistList.length > 0
-          ? "h-screen"
-          : "min-h-screen"
-      } xl:p-5 bg-[#ecf2fd] mb-20`}
+        songQueue != null && songQueue.length > 0 ? "min-h-screen" : "h-screen"
+      } xl:p-6 bg-[#ecf2fd] mb-20`}
     >
       <div className="flex flex-row gap-4">
         <button
@@ -56,32 +37,27 @@ const QueueSection = () => {
       <div className="text-2xl text-[#5d5c5c] font-bold text-start mt-10 mb-5">
         Now Playing
       </div>
-      <SongItem
-        song={{
-          id: 1,
-          songName: "What make you beautiful",
-          artistName: ["One Direction", "Two Direction", "Three Direction"],
-          songDuration: 214,
-          songCover:
-            "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
-          songLink: "https://www.youtube.com/watch?v=QJO3ROT-A4E",
-        }}
-      ></SongItem>
+      <SongItemQueue song={playingSong} isPlaying={true}></SongItemQueue>
 
       <div className="text-2xl text-[#5d5c5c] font-bold text-start mt-5 mb-5">
         Next Up
       </div>
-      {songQueue != null ? (
-        songQueue.map((songItem) => (
-          <div key={songItem.id}>
-            <SongItem song={songItem} />
+      <div className="flex flex-col gap-1">
+        {songQueue != null &&
+          songQueue.map((song, index) => (
+            <SongItemQueue
+              key={song.id}
+              order={index + 1}
+              song={song}
+              isPlaying={false}
+            ></SongItemQueue>
+          ))}
+        {songQueue != null && songQueue.length === 0 && (
+          <div className="text-center text-2xl font-bold text-[#5d5c5c] font-boldmt-5 mb-5">
+            No song in queue!
           </div>
-        ))
-      ) : (
-        <div className="text-2xl text-[#5d5c5c] font-bold text-start mt-5 mb-5">
-          No song in queue
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

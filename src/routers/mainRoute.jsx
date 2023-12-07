@@ -3,7 +3,6 @@ import HomePage from "../pages/HomePage";
 import PageFull from "../pages/PageFull";
 import PlaylistPage from "../pages/PlaylistPage";
 import SearchPage from "../pages/SearchPage";
-import UploadSong from "../components/UploadSong/UploadSong";
 import CMSPage from "../pages/CMSPage";
 import EditUserForm from "../components/Users/EditUserForm";
 import EditInforCMS from "../components/CMS/pages/EditInforCMS";
@@ -13,6 +12,8 @@ import HistoryPage from "../pages/HistoryPage";
 import MyDetailPlaylist from "../components/Users/MyDetailPlaylist";
 import ArtistDetail from "../pages/ArtistDetail";
 import QueueSection from "../components/HomePage/QueueSection";
+import PlaylistManagement from "../components/CMS/pages/PlaylistManagement";
+import UploadSongPage from "../pages/UploadSongPage";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -48,7 +49,7 @@ export default function init(routes) {
       },
       {
         path: "upload",
-        element: <UploadSong />,
+        element: <UploadSongPage />,
       },
       {
         path: "editUser",
@@ -57,6 +58,10 @@ export default function init(routes) {
       {
         path: "history",
         element: <HistoryPage />,
+      },
+      {
+        path: "home/artist/:artistId",
+        element: <ArtistDetail />,
       },
       {
         path: "artist/:artistId",
@@ -86,6 +91,10 @@ export default function init(routes) {
       {
         path: "songmanagement",
         element: <SongManagement />,
+      },
+      {
+        path: "playlistmanagement",
+        element: <PlaylistManagement />,
       },
     ],
   };

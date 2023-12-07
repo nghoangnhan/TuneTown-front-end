@@ -7,7 +7,7 @@ import TheHeader from "../components/Header/TheHeader";
 
 const CMSPage = () => {
   return (
-    <div>
+    <div className="">
       <Layout className="">
         <Sider
           breakpoint="lg"

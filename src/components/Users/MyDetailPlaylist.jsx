@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Form, Input, Modal, Select } from "antd";
-import { useMusicAPI } from "../../utils/songUtils";
+import { useDataAPI, useMusicAPI } from "../../utils/songUtils";
 import MySongSectionPlaylist from "./MySongSectionPlaylist";
 import { useDispatch, useSelector } from "react-redux";
 import { setRefresh } from "../../redux/slice/playlist";
+import UploadFileDropZone from "../UploadSong/UploadFileDropZone";
 
 const MyDetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
@@ -13,58 +14,76 @@ const MyDetailPlaylist = () => {
   const { editPlaylist, getListSongPlaylist, getPlaylistByPlaylistId } =
     useMusicAPI();
   const dispatch = useDispatch();
-  const refreshPlaylist = useSelector(
-    (state) => state.playlist.refreshPlaylist
-  );
+  const { handleUploadFileIMG } = useDataAPI();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState({});
+  const [coverArt, setCoverArt] = useState();
 
+  const refreshPlaylist = useSelector(
+    (state) => state.playlist.refreshPlaylist
+  );
+
+  // Get data from API and set for Edit Modal
   const fetchDataPlaylistInfor = async (playlistId) => {
     // Fetch data from API and set for Edit Modal
     const detailData = await getPlaylistByPlaylistId(playlistId);
     if (detailData) {
       setPlaylistDetail(detailData);
-      const { playlistName, playlistType } = detailData;
+      const { playlistName, playlistType, coverArt } = detailData;
       form.setFieldsValue({
         playlistName,
         playlistType,
+        baseAva: coverArt,
       });
     }
-    // Fetch data from API and set for Song List
+    // Fetch data from API and set for SongList
     const data = await getListSongPlaylist(playlistId);
     if (data) {
       setSongPlaylistList(data);
-      console.log("getListSongPlaylist", data);
+      console.log("GetListSong in Playlist", data);
     }
   };
+
+  // Edit Playlist API
   const handleOnclickEditForm = async (
     playlistId,
     playlistName,
-    playlistType
+    playlistType,
+    coverArt
   ) => {
-    await editPlaylist(playlistId, playlistName, playlistType).then(() => {
-      fetchDataPlaylistInfor(playlistId);
-      dispatch(setRefresh(!refreshPlaylist));
-    });
+    await editPlaylist(playlistId, playlistName, playlistType, coverArt).then(
+      () => {
+        fetchDataPlaylistInfor(playlistId);
+        dispatch(setRefresh(!refreshPlaylist));
+      }
+    );
     setModalOpen(false);
   };
 
+  // Reload data when refreshPlaylist is changed
   useEffect(() => {
     fetchDataPlaylistInfor(playlistId);
   }, [playlistId, refreshPlaylist]);
 
+  // Set new baseAva when uploadedFile is changed
+  useEffect(() => {
+    if (uploadedFile) {
+      form.setFieldsValue({
+        baseAva: uploadedFile,
+      });
+    }
+  }, [uploadedFile]);
   return (
     <div
       className={`${
         songPlaylistList != null && songPlaylistList.length > 0
-          ? "h-screen"
+          ? "min-h-screen h-full"
           : "min-h-screen"
       } xl:p-5 bg-[#ecf2fd] mb-20`}
     >
-      <div className="text-4xl text-[#4b4848] font-bold text-center mb-5">
-        {playlistDetail.playlistName} <span className="">#{playlistId}</span>
-      </div>
+      {/* Button  */}
       <div className="flex flex-row gap-4">
         <button
           onClick={() => window.history.back()}
@@ -79,12 +98,21 @@ const MyDetailPlaylist = () => {
           <div className="font-bold px-2 py-1">Edit Playlist Information</div>
         </button>
       </div>
-      <div className="flex flex-row justify-center items-center mt-5 mb-5 text-[#4b4848]">
-        <div className="w-1/4 text-center font-bold">ID</div>
-        <div className="w-1/4 text-center font-bold">Song Name</div>
-        <div className="w-1/4 text-center font-bold">Artist</div>
-        <div className="w-1/4 text-center font-bold">Duration</div>
+      <div className="flex flex-row items-start text-7xl text-[#4b4848] font-bold text-center mb-5 gap-4">
+        <div className="flex flex-row items-start relative">
+          <img
+            className="w-20 h-20 xl:w-56 xl:h-56 rounded-md"
+            src={
+              playlistDetail.coverArt
+                ? playlistDetail.coverArt
+                : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
+            }
+            alt="artist-avatar"
+          />
+        </div>
+        {playlistDetail.playlistName} <span className="">#{playlistId}</span>
       </div>
+
       <MySongSectionPlaylist
         playlistId={playlistId}
         songData={songPlaylistList}
@@ -99,7 +127,8 @@ const MyDetailPlaylist = () => {
           handleOnclickEditForm(
             playlistId,
             form.getFieldValue("playlistName"),
-            form.getFieldValue("playlistType")
+            form.getFieldValue("playlistType"),
+            coverArt
           )
         }
         onCancel={() => setModalOpen(false)}
@@ -137,6 +166,42 @@ const MyDetailPlaylist = () => {
               ]}
             ></Select>
           </Form.Item>
+          <div className="flex flex-col gap-2">
+            <Form.Item name="baseAva">
+              <img
+                className="ml-10 w-40 h-40 rounded-md"
+                src={
+                  playlistDetail.coverArt
+                    ? playlistDetail.coverArt
+                    : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
+                }
+                alt=""
+              />
+            </Form.Item>
+            <Form.Item
+              name="coverArt"
+              label="Upload Cover Art"
+              extra="Upload your cover image png, jpg, jpeg"
+              getValueFromEvent={(e) => e && e.fileList}
+              valuePropName="fileList"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+            >
+              <UploadFileDropZone
+                uploadedFile={uploadedFile}
+                setUploadedFile={setUploadedFile}
+                handleUploadFile={(uploadedFile) =>
+                  handleUploadFileIMG(uploadedFile).then((res) =>
+                    setCoverArt(res)
+                  )
+                }
+                accept="image/jpeg, image/png"
+              />
+            </Form.Item>
+          </div>
         </Form>
       </Modal>
     </div>

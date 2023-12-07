@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from "react-redux";
 import { setDuration } from "../redux/slice/music";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { Base_URL } from "../api/config";
 import UseCookie from "../hooks/useCookie";
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export const useSongDuration = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   //     const { setDuration } = useMusicSlice();
   //   // Get the duration of the song
   //   const getSongDuration = (songTime) => {
@@ -25,11 +27,53 @@ export const useSongDuration = () => {
     const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
     return `${minutes}:${formattedSeconds}`;
   };
+  // Show artist name
   const showArtist = (artistName) => {
+    console.log("showArtist", artistName);
     if (artistName.length > 1) {
       return artistName.join(", ");
     } else {
       return artistName[0];
+    }
+  };
+  const showArtistV2 = (artistName) => {
+    // artists: [
+    //   {
+    //     id: 1,
+    //     userName: "One Direction",
+    //   },
+    //   {
+    //     id: 2,
+    //     userName: "Two Direction",
+    //   },
+    //   {
+    //     id: 3,
+    //     userName: "Three Direction",
+    //   },
+    // ],
+    if (artistName.length > 1) {
+      return artistName.map((artist) => (
+        <span
+          key={artist.id}
+          className="cursor-pointe hover:underline"
+          onClick={() => navigate(`artist/${artist.id}`)}
+        >
+          {artist.userName}, &nbsp;
+        </span>
+      ));
+    } else if (artistName.length == 1) {
+      let artist = artistName[0];
+      return (
+        <span
+          key={artist.id}
+          className="cursor-pointe hover:underline"
+          onClick={() => navigate(`artist/${artist.id}`)}
+        >
+          {artist.userName}
+        </span>
+      );
+    } else {
+      return "Unknown Artist";
     }
   };
   // Acronym the name of the song
@@ -87,6 +131,7 @@ export const useSongDuration = () => {
     TimeConvert,
     GetSongFragment,
     showArtist,
+    showArtistV2,
     AcronymName,
     CheckPlaying,
     GetSongDuration,
@@ -125,6 +170,7 @@ export const useMusicAPI = () => {
           },
         }
       );
+      console.log("My PlaylistList Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -171,7 +217,12 @@ export const useMusicAPI = () => {
     }
   };
   // Edit playlist of user
-  const editPlaylist = async (playlistId, playlistName, playlistType) => {
+  const editPlaylist = async (
+    playlistId,
+    playlistName,
+    playlistType,
+    coverArt
+  ) => {
     try {
       const response = await axios.put(
         `${Base_URL}/playlists/editPlaylist`,
@@ -179,6 +230,7 @@ export const useMusicAPI = () => {
           id: playlistId,
           playlistName: playlistName,
           playlistType: playlistType,
+          coverArt: coverArt,
           playlistSongsList: [],
         },
         {
@@ -321,4 +373,81 @@ export const useMusicAPI = () => {
     deleteSongInPlaylist,
     deleteSong,
   };
+};
+export const useDataAPI = () => {
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
+
+  //drop-zone
+  const handleUploadFileIMG = async (file) => {
+    let formData = new FormData();
+    formData.append("image", file);
+    console.log("handleUploadFile FileIMG", formData);
+    message.open({
+      type: "loading",
+      content: "Uploading Image",
+      duration: 1,
+    });
+    try {
+      const response = await axios.post(
+        `${Base_URL}/file/uploadImage`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.status == 200) {
+        console.log("Files posted successfully:", response.data);
+        message.open({
+          type: "success",
+          content: "Image Uploaded Successfully",
+          duration: 2,
+        });
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error posting files:", error.message);
+    }
+  };
+
+  const handleUploadFileMP3 = async (file) => {
+    let formData = new FormData();
+    formData.append("mp3File", file);
+    console.log("handleUploadFile FileMP3", formData);
+    message.open({
+      type: "loading",
+      content: "Uploading Song File",
+      duration: 1,
+    });
+    try {
+      const response = await axios.post(
+        `${Base_URL}/file/uploadMp3`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status == 200) {
+        console.log("Files posted successfully:", response.data);
+        message.open({
+          type: "success",
+          content: "Song File Uploaded Successfully",
+          duration: 2,
+        });
+      } else {
+        console.error("Error posting files:", response.data);
+      }
+    } catch (error) {
+      console.error("Error posting files:", error.message);
+    }
+  };
+
+  return { handleUploadFileIMG, handleUploadFileMP3 };
 };

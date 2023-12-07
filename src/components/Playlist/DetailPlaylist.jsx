@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SongPlaylist from "./SongSectionPlaylist";
-import { Form } from "antd";
 import { useMusicAPI } from "../../utils/songUtils";
 
 const DetailPlaylist = () => {
@@ -10,17 +9,11 @@ const DetailPlaylist = () => {
   const { getListSongPlaylist, getPlaylistByPlaylistId } = useMusicAPI();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
-  const [form] = Form.useForm();
 
   const fetchDataPlaylistInfor = async (playlistId) => {
     const detailData = await getPlaylistByPlaylistId(playlistId);
     if (detailData) {
       setPlaylistDetail(detailData);
-      const { playlistName, playlistType } = detailData;
-      form.setFieldsValue({
-        playlistName,
-        playlistType,
-      });
     }
     const data = await getListSongPlaylist(playlistId);
     if (data) {
@@ -36,13 +29,10 @@ const DetailPlaylist = () => {
     <div
       className={`${
         songPlaylistList != null && songPlaylistList.length > 0
-          ? "h-screen"
+          ? "min-h-screen h-full"
           : "min-h-screen"
       } xl:p-5 bg-[#ecf2fd] mb-20`}
     >
-      <div className="text-4xl text-[#4b4848] font-bold text-center mb-5">
-        {playlistDetail.playlistName} <span className="">#{playlistId}</span>
-      </div>
       <div className="flex flex-row gap-4">
         <button
           onClick={() => window.history.back()}
@@ -51,12 +41,21 @@ const DetailPlaylist = () => {
           <div className="text-white font-bold px-2 py-1">{"<"} Back</div>
         </button>
       </div>
-      <div className="flex flex-row justify-center items-center mt-5 mb-5 text-[#4b4848]">
-        <div className="w-1/4 text-center font-bold">ID</div>
-        <div className="w-1/4 text-center font-bold">Song Name</div>
-        <div className="w-1/4 text-center font-bold">Artist</div>
-        <div className="w-1/4 text-center font-bold">Duration</div>
+      <div className="flex flex-row items-start text-7xl text-[#4b4848] font-bold text-center mb-5 gap-4">
+        <div className="flex flex-row items-start relative">
+          <img
+            className="w-20 h-20 xl:w-56 xl:h-56 rounded-md"
+            src={
+              playlistDetail.coverArt
+                ? playlistDetail.coverArt
+                : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
+            }
+            alt="artist-avatar"
+          />
+        </div>
+        {playlistDetail.playlistName} <span className="">#{playlistId}</span>
       </div>
+
       <SongPlaylist
         playlistId={playlistId}
         songData={songPlaylistList}
