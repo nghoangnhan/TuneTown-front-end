@@ -28,20 +28,32 @@ const DurationBar = () => {
   const audioFile = useSelector((state) => state.music.currentSong.songLink);
   const currentTime = useSelector((state) => state.music.currentTime); // Current time when play a song
   const isPlaying = useSelector((state) => state.music.isPlaying); // Check if the song is playing
-
+  const audioArray = useSelector(
+    (state) => state.music.currentSong.songLinkArray
+  );
   const volume = useSelector((state) => state.volume.volumeValue); // Get the volume from the store
 
   // // Get the max duration of the song
   const GetSongDuration = (audioRef) => {
-    setDuration(audioRef.current.duration);
+    // setDuration(audioRef.current.duration);
+    // setDuration(sourceNode.current[currentIndex].buffer.duration * 10);
   };
   // When the seekbar is changed by user
   const handleSeek = (e) => {
     const newTime = e.target.value; // newTime is the new value of the seekbar
     dispatch(setCurrentTime(parseFloat(newTime)));
     dispatch(setIsPlaying(true)); // When move the seekbar, the song will be played
-    audioRef.current.play();
+    // audioRef.current.play();
     audioRef.current.currentTime = newTime; // Set the currentTime of the song to the newTime
+
+    isLoaded.current = false;
+    sourceNode.current.forEach((item) => item.disconnect());
+    timeOutArray.current.forEach((item) => clearTimeout(item));
+    const partIndex = ~~(newTime / audioBufferArray.current[0].duration);
+    const currentStartTime = newTime % audioBufferArray.current[0].duration;
+    setCurrentIndex(partIndex);
+    setStartTime(currentStartTime);
+    isLoaded.current = true;
 
     // If the song is paused, play the song
     if (newTime > 0 && newTime < duration && isPlaying === false) {
@@ -53,26 +65,68 @@ const DurationBar = () => {
     }
   };
 
+  // Update the currentTime every second
+  useEffect(() => {
+    GetSongDuration(audioRef); // Get the duration of the song
+    // CheckPlaying(audioRef);
+    let interval; // Count the isPlaying
+    if (isPlaying == true && currentTime < duration) {
+      // Update every second
+      interval = setInterval(() => {
+        dispatch(setCurrentTime(currentTime + 1));
+        audioRef.current.currentTime = currentTime + 1;
+        // audioRef.current.play();
+      }, 1000);
+      dispatch(setIsPlaying(true));
+    }
+    // if max time is reached, stop the interval
+    else if (currentTime >= duration && isPlaying == true) {
+      dispatch(setCurrentTime(0));
+      dispatch(setIsPlaying(!isPlaying));
+      clearInterval(interval);
+    } else {
+      clearInterval(interval); // If the song is paused, stop the interval
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, currentTime, duration, dispatch, CheckPlaying]);
+
+  // When click the play/pause button
+  const handlePlayPause = () => {
+    /**
+      Set the isPlaying state to the opposite value, 
+      then the useEffect willbe triggered and the play/pause button will be changed
+       */
+    dispatch(setIsPlaying(!isPlaying));
+    if (sourceNode.current.length == 0) {
+      loadAndPlayAudio();
+    } else {
+      // Pause the song
+      if (isPlaying == true && currentTime < duration) {
+        audioContext.suspend();
+      }
+      // Play the song
+      else if (isPlaying == false && currentTime < duration) {
+        audioContext.resume();
+      }
+      // // If the song is ended, play the song from the beginning
+      // else if (currentTime >= duration - 1) {
+      //   dispatch(setCurrentTime(0));
+      //   audioRef.current.currentTime = 0;
+      //   audioRef.current.play();
+      // }
+    }
+  };
+
   // HANLDE PLAYING AUDIO FILES WITH BUFFER
   const [audioContext, setAudioContext] = useState(null);
+  const audioBufferArray = useRef([]);
   const sourceNode = useRef([]);
+  const timeOutArray = useRef([]);
   const [isAudioPlayed, setIsAudioPlayed] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const isLoaded = useRef(false);
+  const [startTime, setStartTime] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const [currentPartIndex, setCurrentPartIndex] = useState(0);
-
-  const audioArray = [
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_1.mp3?alt=media&token=29b10cca-12b3-492f-a316-642e6d897396",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_2.mp3?alt=media&token=edf54995-84e8-46a9-a342-8378fcdd76ae",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_3.mp3?alt=media&token=74385b3f-3085-4f01-aad5-c741cfba4556",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_4.mp3?alt=media&token=86bd1c56-83f2-46d0-b0f4-388ab395efd8",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_5.mp3?alt=media&token=7ffb8f6c-f7ea-4e32-8c25-33b5c222c4ae",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_6.mp3?alt=media&token=0ad2bd34-54b7-47b4-a2e7-ac34ba227e5d",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_7.mp3?alt=media&token=9f48f901-69c5-4174-b16c-3e1bcdd43745",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_8.mp3?alt=media&token=46e7f688-65f8-4463-829a-ece0e295741f",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_9.mp3?alt=media&token=efe48b6d-68c7-4a97-b695-6e9f56ace32e",
-    "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2Fbabe%20kajima%2Fbabe%20kajima_10.mp3?alt=media&token=e39ad2bf-72c6-47c9-8b6c-38fe0ebad2e2",
-  ];
+  const gainVolume = useRef();
 
   // const audioArray = [
   //   "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/audios%2F50%20Feet%20-%20Somo%2F50%20Feet%20-%20Somo_1.mp3?alt=media&token=3b6bac15-c14b-43b0-9b51-257aa4a5582a",
@@ -89,9 +143,7 @@ const DurationBar = () => {
         console.error("Error initializing AudioContext:", error);
       }
     };
-
     initAudioContext();
-
     return () => {
       if (audioContext) {
         audioContext.close();
@@ -100,37 +152,61 @@ const DurationBar = () => {
   }, []);
 
   useEffect(() => {
-    console.log(sourceNode.current[currentIndex]);
-    console.log("activate effect");
-    if (sourceNode.current.length > 0) {
+    console.log(audioBufferArray.current[currentIndex]);
+    if (audioBufferArray.current.length > 0 && isLoaded.current) {
+      console.log("seeking");
+      // Create a new source node
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBufferArray.current[currentIndex];
+      // Connect the source node to the audio context's destination
+      source.connect(audioContext.destination);
+      source.connect(gainVolume.current);
+      // Set the source node in the state
+      sourceNode.current.push(source);
+
+      // setting songDuration
+      dispatch(
+        setDuration(sourceNode.current[currentIndex].buffer.duration * 10)
+      );
+
       console.log("Play", currentIndex);
       setIsAudioPlayed(true);
-      sourceNode.current[currentIndex].start();
+      sourceNode.current[currentIndex].start(0, startTime);
 
-      sourceNode.current[currentIndex].onended = () => {
-        sourceNode.current[currentIndex + 1].start(audioContext.currentTime);
+      const timeOut = setTimeout(() => {
+        // Create a new source node
+        const source = audioContext.createBufferSource();
+        source.buffer = audioBufferArray.current[currentIndex + 1];
+        // Connect the source node to the audio context's destination
+        source.connect(audioContext.destination);
+        source.connect(gainVolume.current);
+        // Set the source node in the state
+        sourceNode.current.push(source);
+
+        sourceNode.current[currentIndex + 1].start();
         setCurrentIndex(currentIndex + 1);
-      };
-
-      // setTimeout(() => {
-      //   sourceNode.current[currentIndex + 1].start();
-      //   setCurrentIndex(currentIndex + 1);
-      // }, (sourceNode.current[currentIndex].buffer.duration - 0.05) * 1000);
+      }, (audioBufferArray.current[currentIndex].duration - 0.05) * 1000);
+      timeOutArray.current.push(timeOut);
     }
-  }, [isLoaded]);
+  }, [isLoaded.current]);
 
   useEffect(() => {
-    if (currentIndex + 1 < sourceNode.current.length) {
+    if (currentIndex + 1 < audioBufferArray.current.length) {
       console.log(sourceNode.current[currentIndex]);
-      sourceNode.current[currentIndex].onended = () => {
+
+      const timeOut = setTimeout(() => {
+        // Create a new source node
+        const source = audioContext.createBufferSource();
+        source.buffer = audioBufferArray.current[currentIndex + 1];
+        // Connect the source node to the audio context's destination
+        source.connect(audioContext.destination);
+        source.connect(gainVolume.current);
+        sourceNode.current.push(source);
+
         sourceNode.current[currentIndex + 1].start(audioContext.currentTime);
         setCurrentIndex(currentIndex + 1);
-      };
-
-      // setTimeout(() => {
-      //   sourceNode.current[currentIndex + 1].start();
-      //   setCurrentIndex(currentIndex + 1);
-      // }, (sourceNode.current[currentIndex].buffer.duration - 0.05) * 1000);
+      }, (audioBufferArray.current[currentIndex].duration - 0.05) * 1000);
+      timeOutArray.current.push(timeOut);
     }
   }, [currentIndex]);
 
@@ -144,17 +220,20 @@ const DurationBar = () => {
 
         // Decode the audio data
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        audioBufferArray.current.push(audioBuffer);
 
-        // Create a new source node
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
+        // // Create a new source node
+        // const source = audioContext.createBufferSource();
+        // source.buffer = audioBuffer;
 
-        // Connect the source node to the audio context's destination
-        source.connect(audioContext.destination);
+        // // Connect the source node to the audio context's destination
+        // source.connect(audioContext.destination);
+        // source.connect(gainVolume.current);
 
-        // Set the source node in the state
-        sourceNode.current.push(source);
-        setIsLoaded(true);
+        // // Set the source node in the state
+        // sourceNode.current.push(source);
+
+        isLoaded.current = true;
       } catch (error) {
         console.error("Error loading or playing audio:", error);
       }
@@ -162,6 +241,10 @@ const DurationBar = () => {
   };
 
   const loadAndPlayAudio = async () => {
+    gainVolume.current = audioContext.createGain();
+    gainVolume.current.connect(audioContext.destination);
+    gainVolume.current.gain.setValueAtTime(volume, audioContext.currentTime);
+    console.log(audioArray);
     for (let i = 0; i < audioArray.length; i++) {
       await loadAudio(i);
     }
@@ -185,54 +268,11 @@ const DurationBar = () => {
     }
   };
 
-  // When click the play/pause button
-  const handlePlayPause = () => {
-    /**
-    Set the isPlaying state to the opposite value, 
-    then the useEffect willbe triggered and the play/pause button will be changed
-     */
-    dispatch(setIsPlaying(!isPlaying));
-    // Pause the song
-    if (isPlaying == true && currentTime < duration) {
-      audioRef.current.pause();
-    }
-    // Play the song
-    else if (isPlaying == false && currentTime < duration) {
-      audioRef.current.play();
-    }
-
-    // If the song is ended, play the song from the beginning
-    else if (currentTime >= duration - 1) {
-      dispatch(setCurrentTime(0));
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-    }
-  };
-
-  // Update the currentTime every second
   useEffect(() => {
-    GetSongDuration(audioRef); // Get the duration of the song
-    CheckPlaying(audioRef);
-    let interval; // Count the isPlaying
-    if (isPlaying == true && currentTime < duration) {
-      // Update every second
-      interval = setInterval(() => {
-        dispatch(setCurrentTime(currentTime + 1));
-        audioRef.current.currentTime = currentTime + 1;
-        audioRef.current.play();
-      }, 1000);
-      dispatch(setIsPlaying(true));
+    if (sourceNode.current.length > 0) {
+      gainVolume.current.gain.setValueAtTime(volume, audioContext.currentTime);
     }
-    // if max time is reached, stop the interval
-    else if (currentTime >= duration && isPlaying == true) {
-      dispatch(setCurrentTime(0));
-      dispatch(setIsPlaying(!isPlaying));
-      clearInterval(interval);
-    } else {
-      clearInterval(interval); // If the song is paused, stop the interval
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, currentTime, duration, dispatch, CheckPlaying]);
+  }, [volume]);
 
   return (
     <div className="flex flex-col">
@@ -285,11 +325,6 @@ const DurationBar = () => {
             <path d="M7 6v12l10-6z"></path>
           </svg>
         </button>
-
-        <div>
-          <button onClick={(e) => playPauseAudio()}>Play</button>
-        </div>
-
         {/* // Audio element */}
         <audio ref={audioRef} src={audioFile}></audio>
 

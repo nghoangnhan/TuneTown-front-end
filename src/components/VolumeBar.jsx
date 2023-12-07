@@ -9,7 +9,6 @@ const VolumeBar = () => {
   const volume = useSelector((state) => state.volume.volumeValue); // Giả sử âm lượng mặc định là 50%
   const audioRef = useRef();
   const changeVolume = (e) => {
-    console.log(volume);
     const newVolume = e.target.value;
     dispatch(setVolume(newVolume));
   };
@@ -45,8 +44,9 @@ const VolumeBar = () => {
       </button>
       <input
         type="range"
-        min={0}
-        max={100}
+        min={-1}
+        max={1}
+        step={0.02}
         ref={audioRef}
         value={volume}
         onChange={changeVolume}
