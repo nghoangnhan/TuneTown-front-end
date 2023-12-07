@@ -3,10 +3,8 @@ import { useEffect, useState } from "react";
 import SongItem from "../Song/SongItem";
 // import { useDispatch } from "react-redux";
 
-const SongPlaylist = (props) => {
+const SongSectionPlaylist = (props) => {
   const [songList, setSongList] = useState();
-  //   const dispatch = useDispatch();
-  //   dispatch(setSongList(songList));
   useEffect(() => {
     setSongList(props.songData);
     console.log("songPlaylsit || SongList", songList);
@@ -37,4 +35,4 @@ const SongPlaylist = (props) => {
   );
 };
 
-export default SongPlaylist;
+export default SongSectionPlaylist;

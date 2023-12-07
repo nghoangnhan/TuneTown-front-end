@@ -12,8 +12,6 @@ import {
   setIsPlaying,
   setSongLinks,
 } from "../redux/slice/music";
-import axios from "axios";
-import { Base_URL } from "../api/config";
 import UseCookie from "../hooks/useCookie";
 // import audioFile from "../assets/music/HappyNewYear.mp3";
 

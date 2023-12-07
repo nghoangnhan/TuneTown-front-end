@@ -26,6 +26,7 @@ const UserManagement = () => {
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [userId, setUserId] = useState();
   const [searchValue, setSearchValue] = useState("");
+  const [refresh, setRefresh] = useState(false);
   const handSearch = (e) => {
     console.log("value", e.target.value);
     setSearchValue(e.target.value);
@@ -98,7 +99,29 @@ const UserManagement = () => {
       console.log("Error:", error);
     }
   };
-
+  // Delete User
+  const deleteUser = async (userId) => {
+    try {
+      if (confirm(`Are you sure you want to delete this User?`) == true) {
+        const response = await axios.delete(
+          `${Base_URL}/users?userId=${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          message.success("Delete User successfully!");
+        }
+        // Refresh the component
+        setRefresh(false);
+        return response.status;
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
   // Data Test
   // const data = [
   //   {
@@ -257,7 +280,7 @@ const UserManagement = () => {
           </button>
           <button
             className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
-            // onClick={() => deleteSong(record.key)}
+            onClick={() => deleteUser(record.id)}
           >
             Delete
           </button>
@@ -267,8 +290,9 @@ const UserManagement = () => {
     {},
   ];
   useEffect(() => {
+    setRefresh(true);
     GetListUser();
-  }, [isModalOpen, isModalOpenUpdate]);
+  }, [isModalOpen, isModalOpenUpdate, refresh]);
   return (
     <div>
       <div className="text-2xl font-bold">User Management</div>

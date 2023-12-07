@@ -55,7 +55,7 @@ export const useSongDuration = () => {
       return artistName.map((artist) => (
         <span
           key={artist.id}
-          className="cursor-pointe hover:underline"
+          className="cursor-pointe hover:underline cursor-pointer"
           onClick={() => navigate(`artist/${artist.id}`)}
         >
           {artist.userName}, &nbsp;
@@ -66,7 +66,7 @@ export const useSongDuration = () => {
       return (
         <span
           key={artist.id}
-          className="cursor-pointe hover:underline"
+          className="cursor-pointe hover:underline cursor-pointer"
           onClick={() => navigate(`artist/${artist.id}`)}
         >
           {artist.userName}

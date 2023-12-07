@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Form, Input } from "antd";
 import { useEffect, useState } from "react";
 import { Base_URL } from "../api/config";
@@ -87,7 +88,6 @@ const SearchPage = () => {
       <Form className="flex flex-col justify-center" form={form}>
         <Form.Item
           name="search"
-          label="Search Song"
           rules={[
             {
               required: false,
@@ -98,21 +98,17 @@ const SearchPage = () => {
             name="keywords"
             placeholder="Search..."
             onChange={(e) => setKeywordsInput(e.target.value)}
-            className="rounded-md bg-[#FFFFFFCC] w-full h-24 text-lg"
+            className="rounded-md bg-[#FFFFFFCC] w-full h-14 text-lg"
           />
         </Form.Item>
       </Form>
-      <div className="bg-[#FFFFFFCC] rounded-xl max-xl:w-full m-auto xl:h-fit ml-2 mr-2 mt-2 pt-5 pl-5 pr-5 pb-5">
-        {songRs != null ? (
-          songRs.map((song, index) => (
+      {songRs != null && (
+        <div className="bg-[#FFFFFFCC] rounded-xl m-auto ml-2 mr-2 mt-2 pt-5 pl-5 pr-5 pb-5">
+          {songRs.map((song, index) => (
             <SongItemSearch key={song.id} songOrder={index + 1} song={song} />
-          ))
-        ) : (
-          <div className="h-screen flex justify-center items-start text-[#2E3271] text-xl font-bold">
-            No result found!
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

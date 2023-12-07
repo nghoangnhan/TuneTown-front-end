@@ -7,8 +7,7 @@ import axios from "axios";
 const ForgotPass = () => {
   const [form] = useForm();
   const navigate = useNavigate();
-  const [messageApi, contextHolder] = message.useMessage();
-
+  // Get OTP
   const GetOTP = async (emailInput) => {
     try {
       const response = await axios.post(`${Base_URL}/auth/forgetPassword`, {
@@ -17,7 +16,21 @@ const ForgotPass = () => {
         type: "getOTP",
         newPassword: "",
       });
-      console.log("Respone GetOTP data", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // Change Password
+  const ChangePassword = async (emailInput, otpInput, newPasswordInput) => {
+    try {
+      const response = await axios.post(`${Base_URL}/auth/forgetPassword`, {
+        email: emailInput,
+        otp: otpInput,
+        type: "changePassword",
+        newPassword: newPasswordInput,
+      });
+      console.log("Respone changePassword data", response.data);
     } catch (error) {
       console.error(error);
     }
@@ -40,73 +53,53 @@ const ForgotPass = () => {
       console.error(error);
     }
   };
-  const ChangePassword = async (emailInput, otpInput, newPasswordInput) => {
-    try {
-      const response = await axios.post(`${Base_URL}/auth/forgetPassword`, {
-        email: emailInput,
-        otp: otpInput,
-        type: "changePassword",
-        newPassword: newPasswordInput,
-      });
-      console.log("Respone changePassword data", response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
-  // Pass the email value directly to GetOTP
+  // Handle the send OTP
   const handleSendOTP = () => {
     const emailValue = form.getFieldValue("email");
     if (emailValue) {
-      messageApi.open({
-        type: "loading",
-        content: "Sending OTP, please wait...",
+      message.loading("Sending OTP, please wait...", 1);
+
+      GetOTP(emailValue).then((response) => {
+        if (response) {
+          message.success(response, 2);
+        } else {
+          message.error(response, 2);
+        }
       });
-      GetOTP(emailValue);
     } else {
-      messageApi.error("Please input your email."); // Notify the user that the email is required
+      message.error("Please input your email."); // Notify the user that the email is required
     }
   };
 
   // Change Password
   const handleChangePassword = async () => {
     const emailValue = form.getFieldValue("email");
-    const OTPValue = form.getFieldValue("captcha");
+    const OTPValue = form.getFieldValue("OTP");
     try {
       if (emailValue && OTPValue) {
-        messageApi.open({
-          type: "loading",
-          content: "Checking OTP, please wait...",
-          duration: 1,
-        });
+        message.loading("Checking OTP, please wait...", 1);
         const checkOTP = await CheckOTP(emailValue, OTPValue);
         if (checkOTP == true) {
           const newPasswordValue = form.getFieldValue("newPassword");
           if (newPasswordValue && newPasswordValue.length >= 0) {
             ChangePassword(emailValue, OTPValue, newPasswordValue);
             setTimeout(() => {
-              messageApi.open({
-                type: "success",
-                content: "Change password successfully.",
-              });
+              message.success("Change password successfully.");
             }, 1000);
             setTimeout(() => {
               navigate("/");
             }, 2000);
           } else {
-            messageApi.error("Please input your new password.");
+            message.error("Please input your new password.");
           }
         } else {
           setTimeout(() => {
-            messageApi.open({
-              type: "error",
-              content: "OTP is not correct.",
-              duration: 2,
-            });
+            message.error("OTP is not correct.", 2);
           }, 1000);
         }
       } else {
-        messageApi.error("Please input your email and OTP.");
+        message.error("Please input your email and OTP.");
       }
     } catch (error) {
       console.error(error);
@@ -115,7 +108,6 @@ const ForgotPass = () => {
 
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
-      {contextHolder}
       <div className="flex flex-col flex-1 items-center relative">
         <div className="hidden xl:block mt-10 mb-5">
           <img
@@ -146,7 +138,6 @@ const ForgotPass = () => {
             initialValues={{
               remember: true,
             }}
-            autoComplete="off"
           >
             <Form.Item
               label="Email"
@@ -163,12 +154,12 @@ const ForgotPass = () => {
 
             <Form.Item
               label="OTP"
-              name="captcha"
+              name="OTP"
               className=""
               rules={[
                 {
                   required: true,
-                  message: "Please input your CAPTCHA!",
+                  message: "Please input your OTP!",
                 },
               ]}
             >
@@ -176,7 +167,7 @@ const ForgotPass = () => {
                 <Input />
                 <button
                   className="w-28 h-12 rounded-md py-1 px-1 bg-green-500 text-white"
-                  onClick={handleSendOTP}
+                  onClick={() => handleSendOTP()}
                 >
                   Get OTP
                 </button>

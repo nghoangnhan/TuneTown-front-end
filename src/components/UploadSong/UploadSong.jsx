@@ -36,11 +36,7 @@ const UploadSong = () => {
     let formData = new FormData();
     formData.append("image", file);
     console.log("handleUploadFile FileIMG", formData);
-    message.open({
-      type: "loading",
-      content: "Uploading Image",
-      duration: 1,
-    });
+    message.loading("Uploading Image", 1);
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadImage`,
@@ -56,11 +52,7 @@ const UploadSong = () => {
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
         setFileIMG(response.data);
-        message.open({
-          type: "success",
-          content: "Image Uploaded Successfully",
-          duration: 2,
-        });
+        message.success("Image Uploaded Successfully", 2);
       } else {
         console.error("Error posting files:", response.data);
       }
@@ -129,10 +121,16 @@ const UploadSong = () => {
   const onFinish = async (values) => {
     console.log("Received values:", values);
     const { songName, artists, genre } = values;
-    if (!fileIMG && !fileMP3) {
-      message.error(
-        "Please upload either an image (JPG, JPEG, PNG) or an MP3 file."
-      );
+    if (artists == null) {
+      message.error("Please select at least one artist");
+      return;
+    }
+    if (fileIMG == null) {
+      message.error("Please upload a cover image");
+      return;
+    }
+    if (fileMP3 == null) {
+      message.error("Please upload a song file");
       return;
     }
     const postData = {
