@@ -84,11 +84,7 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
       (response) => {
         console.log("Delete song response", response);
         if (response === 200) {
-          messageApi.success(
-            `Deleted ${songInforObj.songName} #${songId} ##${
-              songInforObj.id
-            } in playlist ${localStorage.getItem("myPlaylistId")}`
-          );
+          messageApi.success(`Deleted ${songInforObj.songName} in playlist`);
           // Trigger a re-render by updating the refresh state
           HandleRefreshPlaylist();
         } else {

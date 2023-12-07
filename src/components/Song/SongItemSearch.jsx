@@ -18,6 +18,7 @@ import {
 } from "react-contexify";
 import { message } from "antd";
 
+// Different from SongItem.jsx, this component is used for search page and the color of attribute is different
 const SongItemSearch = ({ song, songOrder }) => {
   const { id, songName, artists, poster, songData } = song;
   const audioRef = useRef();
@@ -31,7 +32,6 @@ const SongItemSearch = ({ song, songOrder }) => {
   // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
 
   const songInforObj = {
     id: id,
@@ -75,7 +75,6 @@ const SongItemSearch = ({ song, songOrder }) => {
 
   return (
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
-      {contextHolder}
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`}>
         <Item onClick={refreshPlaylist}>Refresh</Item>
@@ -96,15 +95,11 @@ const SongItemSearch = ({ song, songOrder }) => {
                   addSongToPlaylist(songInforObj.id, playlist.id).then(
                     (result) => {
                       if (result.success) {
-                        messageApi.open({
-                          type: "success",
-                          content: `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`,
-                        });
+                        message.success(
+                          `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`
+                        );
                       } else {
-                        messageApi.open({
-                          type: "error",
-                          content: `Failed to add song: ${result.error}`,
-                        });
+                        message.error(`Failed to add song: ${result.error}`);
                       }
                     }
                   );
