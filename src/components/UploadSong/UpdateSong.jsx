@@ -137,7 +137,9 @@ const UpdateSong = ({ songData }) => {
           songData: data.songData,
           genres: data.genre,
           status: 1,
-          artists: data.artists,
+          artists: data.artists.map((artist) => {
+            return { id: artist };
+          }),
         },
         {
           headers: {
@@ -153,10 +155,16 @@ const UpdateSong = ({ songData }) => {
   const onFinish = async (values) => {
     console.log("Received values:", values);
     const { songName, artists, genre } = values;
-    if (!fileIMG && !fileMP3) {
-      message.error(
-        "Please upload either an image (JPG, JPEG, PNG) or an MP3 file."
-      );
+    if (artists == null) {
+      message.error("Please select at least one artist");
+      return;
+    }
+    if (fileIMG == null) {
+      message.error("Please upload a cover image");
+      return;
+    }
+    if (fileMP3 == null) {
+      message.error("Please upload a song file");
       return;
     }
     const postData = {
@@ -181,7 +189,7 @@ const UpdateSong = ({ songData }) => {
       form.setFieldsValue({
         songName: data.songName,
         artists: data.artists.map((artist) => {
-          return artist.id;
+          return { value: artist.id, label: artist.userName };
         }),
         genre: data.genre,
         poster: data.poster,

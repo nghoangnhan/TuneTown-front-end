@@ -19,7 +19,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { saveToken } = UseCookie();
-  const [messageApi, contextHolder] = message.useMessage();
 
   const handleUserData = async (usersData) => {
     console.log("Data", usersData);
@@ -43,10 +42,7 @@ const LoginPage = () => {
         handleUserData(response.data);
         console.log("Token", response.data.access_token);
         // Notifactaion when login successfully
-        messageApi.open({
-          type: "success",
-          content: "Login Successfully",
-        });
+        message.success("Login Successfully");
         setTimeout(() => {
           if (response.data.role === "ADMIN") {
             navigate("/cms/usermanagement");
@@ -63,10 +59,7 @@ const LoginPage = () => {
     } catch (error) {
       console.log("Error:", error);
       // Notifactaion when login failed
-      messageApi.open({
-        type: "error",
-        content: "Login Failed",
-      });
+      message.error("Login Failed");
       throw error;
     }
   }
@@ -97,7 +90,6 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
-      {contextHolder}
       <div className="flex flex-row flex-1 relative">
         <div className="flex flex-col justify-center items-center min-h-screen xl:w-1/2">
           <div className="mb-20">

@@ -5,8 +5,8 @@ const NavigationBar = () => {
   return (
     <div>
       {/* Navigation Laptop  */}
-      <div className="hidden xl:flex h-screen bg-[#FFFFFFCC] justify-center">
-        <div className="max-xl:w-64">
+      <div className=" hidden xl:flex h-screen bg-[#FFFFFFCC] justify-center ">
+        <div className="max-xl:w-64 xl:fixed">
           <div
             className="text-center pt-6 uppercase font-bold text-lg flex flex-row justify-center items-center gap-5 cursor-pointer"
             onClick={() => navigate("/home")}

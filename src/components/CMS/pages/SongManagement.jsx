@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Form, Input, Modal, Space, Table } from "antd";
+import { Form, Input, Modal, Space, Table, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Base_URL } from "../../../api/config";
@@ -27,7 +27,7 @@ const SongManagement = () => {
 
   // Call this function when you want to refresh the playlist
   const refreshPlaylist = () => {
-    setRefresh(!refresh);
+    setRefresh(false);
   };
 
   const getListSong = async (songPage) => {
@@ -41,6 +41,7 @@ const SongManagement = () => {
       const { songList, currentPage, totalPages } = response.data;
       console.log("songList Response", songList, currentPage, totalPages);
       setSongList(songList);
+
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -72,9 +73,12 @@ const SongManagement = () => {
             },
           }
         );
+        if (response.status === 200) {
+          message.success("Delete song successfully!");
+        }
         // Refresh the component
-        refreshPlaylist();
-        return response.data;
+        setRefresh(false);
+        return response.status;
       }
     } catch (error) {
       console.log("Error:", error);
@@ -181,8 +185,9 @@ const SongManagement = () => {
   }));
   console.log("dataSongs", dataSongs);
   useEffect(() => {
+    setRefresh(true);
     getListSong(songPage);
-  }, [isModalOpenUpload, isModalOpenUpdate]);
+  }, [isModalOpenUpload, isModalOpenUpdate, refresh]);
 
   if (!songList) return null;
   return (

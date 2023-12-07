@@ -18,7 +18,7 @@ const BannerSection = () => {
   }, []);
   return (
     <div className="max-w-7xl max-h-80 overflow-hidden rounded-md mx-2">
-      <Carousel autoplay>
+      <Carousel autoplay autoplaySpeed={3000}>
         {
           // Get First 4 playlist
           playlistList &&
@@ -28,7 +28,7 @@ const BannerSection = () => {
                 key={playlistItem.id}
               >
                 <img
-                  className="w-fit h-full m-auto object-cover rounded-lg cursor-pointer"
+                  className="w-fit h-full m-auto object-cover rounded-lg cursor-pointer relative"
                   onClick={() => navigateToPlaylist(playlistItem.id)}
                   src={
                     playlistItem.coverArt
@@ -37,6 +37,13 @@ const BannerSection = () => {
                   }
                   alt="playlist-cover"
                 />
+
+                <div className="text-white text-2xl font-bold absolute bottom-10 left-10">
+                  {playlistItem.playlistName}
+                </div>
+                <div className="text-white text-sm font-bold absolute bottom-2 left-10">
+                  {playlistItem.artistName}
+                </div>
               </div>
             ))
         }
