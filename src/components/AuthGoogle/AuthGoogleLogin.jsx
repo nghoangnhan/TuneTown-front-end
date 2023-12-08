@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../../redux/slice/account";
+import { message } from "antd";
 
 const clientId =
   "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
@@ -90,7 +91,7 @@ function LoginGoogle() {
           },
         }
       );
-      console.log("ALO", response.data, response.status);
+      console.log("editUser", response.data, response.status);
     } catch (error) {
       console.error("Error update user:", error.message);
     }
@@ -103,7 +104,10 @@ function LoginGoogle() {
     }
     const getAccessToken = await GetAccessToken(values.email, "GOOGLE");
     await editUser(values, getAccessToken.access_token);
-    navigate("/home");
+    message.success("Login Successfully");
+    setTimeout(() => {
+      navigate("/home");
+    }, 1000);
   };
   const onFailure = (res) => {
     console.log("LOGIN failed! res:", res);
