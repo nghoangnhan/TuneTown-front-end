@@ -17,12 +17,12 @@ const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
     ? titleSong
     : `${
         new Date().getMonth() < 3
-          ? "Top Song in Spring"
+          ? "Top Songs in Spring"
           : new Date().getMonth() < 6
-          ? "Top Song in Summer"
+          ? "Top Songs in Summer"
           : new Date().getMonth() < 9
-          ? "Top Song in Autumn"
-          : "Top Song in Winter"
+          ? "Top Songs in Autumn"
+          : "Top Songs in Winter"
       }`;
 
   const currentYear = new Date().getFullYear();
@@ -95,7 +95,7 @@ const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
         </div>
         <div className="mt-2 flex flex-col gap-2">
           {Array.isArray(songList) &&
-            songList.slice(0, 9).map((songItem, index) => (
+            songList.slice(0, 10).map((songItem, index) => (
               <div key={index}>
                 <SongItem
                   song={songItem.song}
