@@ -170,7 +170,7 @@ export const useMusicAPI = () => {
           },
         }
       );
-      console.log("My PlaylistList Response", response.data);
+      // console.log("My PlaylistList Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -249,6 +249,24 @@ export const useMusicAPI = () => {
       }
     } catch (error) {
       console.error("Error edited playlist:", error.message);
+    }
+  };
+  // http://localhost:8080/users/addToHistory?userId=702&songId=607
+  const addSongToHistory = async (userId, songId) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/users/addToHistory?userId=${userId}&songId=${songId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("addSongToHistory Response", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
     }
   };
 
@@ -369,6 +387,7 @@ export const useMusicAPI = () => {
     getListSongPlaylist,
     getPlaylistByPlaylistId,
     editPlaylist,
+    addSongToHistory,
     deletePlaylist,
     deleteSongInPlaylist,
     deleteSong,

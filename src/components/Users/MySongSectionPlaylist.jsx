@@ -2,10 +2,13 @@
 import { useEffect, useState } from "react";
 import SongItemPlaylist from "./SongItemPlaylist";
 import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setDraggable } from "../../redux/slice/playlist";
 
 const MySongSectionPlaylist = ({ songData, playlistId }) => {
   const [songList, setSongList] = useState();
+  const dispatch = useDispatch();
+  const draggable = useSelector((state) => state.playlist.draggable);
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
   );
@@ -17,7 +20,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
   if (!songList) return null;
   return (
     <div className="xl:w-full w-full bg-[#ecf2fd]">
-      <div className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md mb-5 px-2 py-1 text-white font-bold w-fit h-fit flex flex-row gap-2">
+      <div className="border-solid border border-[#44c261] hover:border-[#d5ddd7] hover:bg-[#40cf62] rounded-md mb-5 px-2 py-1 text-[#44c261] hover:text-white font-bold w-fit h-fit flex flex-row gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -32,7 +35,9 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
             d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
           />
         </svg>
-        <button className="">Edit Order Song</button>
+        <button className="" onClick={() => dispatch(setDraggable(!draggable))}>
+          Edit Order Song
+        </button>
       </div>
       <div className="flex flex-row justify-between items-center mt-5 mb-5 text-[#4b4848]">
         <div className="flex flex-row gap-8 ml-8">

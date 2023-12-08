@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios";
 import "../../assets/CSS/ReactContexify.css";
 import { Base_URL } from "../../api/config";

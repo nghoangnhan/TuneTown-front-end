@@ -23,15 +23,24 @@ import axios from "axios";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
 
-
-const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) => {
+const SongItemPlaylist = ({
+  song,
+  songId,
+  songOrder,
+  songIndex,
+  playlistId,
+}) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { id, songName, artists, poster, songData } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
-  const { addSongToPlaylist, getUserPlaylist, deleteSongInPlaylist } =
-    useMusicAPI();
+  const {
+    addSongToPlaylist,
+    getUserPlaylist,
+    deleteSongInPlaylist,
+    addSongToHistory,
+  } = useMusicAPI();
   const { showArtistV2, TimeConvert } = useSongDuration();
   const dispatch = useDispatch();
   const audioRef = useRef();
@@ -40,6 +49,9 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
   const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
+  const draggableSong = useSelector((state) => state.playlist.draggable);
+  const [dragOver, setDragOver] = useState(null);
+
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
   );
@@ -54,6 +66,7 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
 
   // When click to the song, save the current song to the context and play it
   const HandlePlay = () => {
+    addSongToHistory(userId, songInforObj.id);
     dispatch(setCurrentTime(0));
     // Send Song information to the store
     dispatch(setCurrentSong(songInforObj));
@@ -94,25 +107,24 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
     );
   };
 
-  const [dragOver, setDragOver] = useState(null);
-
-  async function handleSort(item, over){
-    const response = await axios.post(`${Base_URL}/playlistSongs/orderSong?songOrder=${item}&playlistId=${playlistId}
-    &anotherSongOrder=${over}`,{},
-    {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
+  // Sort
+  async function handleSort(item, over) {
+    const response = await axios.post(
+      `${Base_URL}/playlistSongs/orderSong?songOrder=${item}&playlistId=${playlistId}
+    &anotherSongOrder=${over}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
       }
-    })
+    );
     if (response.status === 200) {
-      messageApi.success(
-        `Order ${item} to ${over}`
-      );
+      messageApi.success(`Order ${item} to ${over}`);
       getUserPlaylist(userId).then((data) => setPlaylistList(data));
     } else {
       messageApi.error(`Failed to order song: ${response.error}`);
     }
-
   }
 
   useEffect(() => {
@@ -165,20 +177,23 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
         </Submenu>
       </Menu>
 
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer"
-      draggable
-      onDragStart={(e) => {
-        e.dataTransfer.setData('text/plain', songOrder);}}
-
-      onDragEnter={() => {
-        setDragOver(songIndex + 1);
-      }}
-
-      onDragOver={(e) => {e.preventDefault()}}
-      onDrop={(e) => {
-        e.preventDefault();
-        const draggedItem = e.dataTransfer.getData('text/plain');
-        handleSort(draggedItem, dragOver)}}
+      <div
+        className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer"
+        draggable={draggableSong}
+        onDragStart={(e) => {
+          e.dataTransfer.setData("text/plain", songOrder);
+        }}
+        onDragEnter={() => {
+          setDragOver(songIndex + 1);
+        }}
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          const draggedItem = e.dataTransfer.getData("text/plain");
+          handleSort(draggedItem, dragOver);
+        }}
       >
         {
           <div
@@ -223,9 +238,7 @@ const SongItemPlaylist = ({ song, songId, songOrder, songIndex, playlistId }) =>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           <div>{TimeConvert(234)}</div>
-          <button>
-            =
-          </button>
+          {draggableSong == true && <button>=</button>}
         </div>
       </div>
     </div>

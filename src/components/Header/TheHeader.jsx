@@ -107,6 +107,14 @@ const TheHeader = () => {
         footer={null}
         className="text-[#359254] font-bold flex flex-row justify-center items-center"
       >
+        {userRole != "ADMIN" && (
+          <div
+            onClick={() => handleOnclick("editUser")}
+            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
+          >
+            <button>Edit User Information</button>
+          </div>
+        )}
         {userRole == "ARTIST" && (
           <div>
             <div
@@ -124,14 +132,6 @@ const TheHeader = () => {
           </div>
         )}
 
-        {userRole != "ADMIN" && (
-          <div
-            onClick={() => handleOnclick("editUser")}
-            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
-          >
-            <button>Edit User Information</button>
-          </div>
-        )}
         {userRole != "ADMIN" && (
           <div
             onClick={() => handleOnclick("history")}

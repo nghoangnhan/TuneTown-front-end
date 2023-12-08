@@ -1,5 +1,6 @@
 import BannerSection from "../components/HomePage/BannerSection";
 import PlaylistSection from "../components/HomePage/PlaylistSection";
+import SongPeriodSection from "../components/HomePage/SongPeriodSection";
 import SongSection from "../components/HomePage/SongSection";
 
 const HomePage = () => {
@@ -22,9 +23,13 @@ const HomePage = () => {
         <BannerSection></BannerSection>
       </div>
       <div>
-        <PlaylistSection playlistTitle="Chart: Top 50"></PlaylistSection>
-        <PlaylistSection playlistTitle="Christmas is coming"></PlaylistSection>
+        <SongPeriodSection></SongPeriodSection>
       </div>
+      <div>
+        <PlaylistSection playlistTitle="Christmas is coming"></PlaylistSection>
+        <PlaylistSection playlistTitle="Happy New Year"></PlaylistSection>
+      </div>
+
       <div>
         <SongSection titleSong="Made for you"></SongSection>
         <SongSection titleSong="For you soul"></SongSection>

@@ -24,7 +24,8 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
   const { show } = useContextMenu();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
-  const { addSongToPlaylist, getUserPlaylist } = useMusicAPI();
+  const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
+    useMusicAPI();
   const { showArtistV2, TimeConvert } = useSongDuration();
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
@@ -44,6 +45,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
 
   // When click to the song, save the current song to the context and play it
   const HandlePlay = () => {
+    addSongToHistory(userId, songInforObj.id);
     dispatch(setCurrentTime(0));
     // Send Song information to the store
     dispatch(setCurrentSong(songInforObj));

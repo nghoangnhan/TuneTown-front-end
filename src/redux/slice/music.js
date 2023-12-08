@@ -24,7 +24,7 @@ const musicStore = createSlice({
       songDuration: 214,
       songCover:
         "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
-      songLink: MakeUBeauti,
+
       songData:
         "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/HIGHEST IN THE ROOM - Travis Scott/HIGHEST IN THE ROOM - Travis Scott_",
     },
@@ -48,7 +48,7 @@ const musicStore = createSlice({
       //   songDuration: 214,
       //   songCover:
       //     "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
-      //   songLink: MakeUBeauti,
+      //   songData: MakeUBeauti,
       // },
       // {
       //   id: 2,
@@ -61,7 +61,7 @@ const musicStore = createSlice({
       //   songDuration: 214,
       //   songCover:
       //     "https://img.freepik.com/free-vector/happy-new-year-2020-lettering-greeting-inscription-vector-illustration-eps10_87521-3994.jpg?size=626&ext=jpg&ga=GA1.1.1803636316.1701561600&semt=ais",
-      //   songLink: HappyNewYear,
+      //   songData: HappyNewYear,
       // },
       // {
       //   id: 3,
@@ -74,7 +74,7 @@ const musicStore = createSlice({
       //   songDuration: 214,
       //   songCover:
       //     "https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png",
-      //   songLink: BlindingLight,
+      //   songData: BlindingLight,
       // },
     ],
     // Song has been played
@@ -102,7 +102,7 @@ const musicStore = createSlice({
       state.currentTime = action.payload;
     },
     setSongLinks: (state, action) => {
-      state.currentSong.songLink = action.payload;
+      state.currentSong.songData = action.payload;
     },
     setDuration: (state, action) => {
       state.currentSong.songDuration = action.payload;

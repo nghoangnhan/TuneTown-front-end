@@ -23,6 +23,7 @@ const playlistStore = createSlice({
     playlistType: "",
     coverArt: null,
     playlistSongsList: null,
+    draggable: false,
   },
   reducers: {
     setPlaylist: (state, action) => {
@@ -34,9 +35,12 @@ const playlistStore = createSlice({
     setRefresh: (state, action) => {
       state.refreshPlaylist = action.payload;
     },
+    setDraggable: (state, action) => {
+      state.draggable = action.payload;
+    },
   },
 });
 
-export const { setPlaylist, setMyPLaylistList, setRefresh } =
+export const { setPlaylist, setMyPLaylistList, setRefresh, setDraggable } =
   playlistStore.actions;
 export default playlistStore.reducer;
