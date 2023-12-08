@@ -15,6 +15,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
 
   useEffect(() => {
     setSongList(songData);
+    if (refreshPlaylist == true) setSongList(songData);
     console.log("MySongSectionPlaylist || SongList", songList);
   }, [songData, refreshPlaylist]);
   if (!songList) return null;

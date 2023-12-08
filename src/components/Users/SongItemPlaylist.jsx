@@ -18,7 +18,7 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
-import playlist, { setRefresh } from "../../redux/slice/playlist";
+import playlist, { setRefreshPlaylist } from "../../redux/slice/playlist";
 import axios from "axios";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
@@ -50,11 +50,11 @@ const SongItemPlaylist = ({
   const [playlistList, setPlaylistList] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   const draggableSong = useSelector((state) => state.playlist.draggable);
-  const [dragOver, setDragOver] = useState(null);
-
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
   );
+  const [dragOver, setDragOver] = useState(null);
+
   const songInforObj = {
     id: id,
     songName: songName,
@@ -88,7 +88,7 @@ const SongItemPlaylist = ({
   }
   // Call this function when you want to refresh the playlist
   const HandleRefreshPlaylist = () => {
-    dispatch(setRefresh(!refreshPlaylist));
+    dispatch(setRefreshPlaylist(!refreshPlaylist));
   };
 
   // When the song is deleted, refresh the playlist
@@ -99,7 +99,7 @@ const SongItemPlaylist = ({
         if (response === 200) {
           messageApi.success(`Deleted ${songInforObj.songName} in playlist`);
           // Trigger a re-render by updating the refresh state
-          HandleRefreshPlaylist();
+          dispatch(setRefreshPlaylist(true));
         } else {
           messageApi.error(`Failed to delete song: ${response.error}`);
         }
@@ -121,6 +121,7 @@ const SongItemPlaylist = ({
     );
     if (response.status === 200) {
       messageApi.success(`Order ${item} to ${over}`);
+      dispatch(setRefreshPlaylist(true));
       getUserPlaylist(userId).then((data) => setPlaylistList(data));
     } else {
       messageApi.error(`Failed to order song: ${response.error}`);
@@ -130,6 +131,12 @@ const SongItemPlaylist = ({
   useEffect(() => {
     console.log("SongId", songId);
     getUserPlaylist(userId).then((data) => setPlaylistList(data));
+    if (refreshPlaylist == true) {
+      getUserPlaylist(userId).then((data) => {
+        setPlaylistList(data);
+        dispatch(setRefreshPlaylist(false));
+      });
+    }
   }, [refreshPlaylist]);
   return (
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>

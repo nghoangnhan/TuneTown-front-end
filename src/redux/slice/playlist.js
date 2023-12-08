@@ -32,7 +32,7 @@ const playlistStore = createSlice({
     setMyPLaylistList: (state, action) => {
       state.myPlaylistLists = action.payload;
     },
-    setRefresh: (state, action) => {
+    setRefreshPlaylist: (state, action) => {
       state.refreshPlaylist = action.payload;
     },
     setDraggable: (state, action) => {
@@ -41,6 +41,10 @@ const playlistStore = createSlice({
   },
 });
 
-export const { setPlaylist, setMyPLaylistList, setRefresh, setDraggable } =
-  playlistStore.actions;
+export const {
+  setPlaylist,
+  setMyPLaylistList,
+  setRefreshPlaylist,
+  setDraggable,
+} = playlistStore.actions;
 export default playlistStore.reducer;

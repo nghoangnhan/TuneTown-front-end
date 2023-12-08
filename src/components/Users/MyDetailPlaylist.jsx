@@ -4,7 +4,7 @@ import { Form, Input, Modal, Select } from "antd";
 import { useDataAPI, useMusicAPI } from "../../utils/songUtils";
 import MySongSectionPlaylist from "./MySongSectionPlaylist";
 import { useDispatch, useSelector } from "react-redux";
-import { setRefresh } from "../../redux/slice/playlist";
+import { setRefreshPlaylist } from "../../redux/slice/playlist";
 import UploadFileDropZone from "../UploadSong/UploadFileDropZone";
 
 const MyDetailPlaylist = () => {
@@ -20,7 +20,6 @@ const MyDetailPlaylist = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState({});
   const [coverArt, setCoverArt] = useState();
-
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
   );
@@ -44,6 +43,7 @@ const MyDetailPlaylist = () => {
       setSongPlaylistList(data);
       console.log("GetListSong in Playlist", data);
     }
+    dispatch(setRefreshPlaylist(false));
   };
 
   // Edit Playlist API
@@ -56,7 +56,7 @@ const MyDetailPlaylist = () => {
     await editPlaylist(playlistId, playlistName, playlistType, coverArt).then(
       () => {
         fetchDataPlaylistInfor(playlistId);
-        dispatch(setRefresh(!refreshPlaylist));
+        dispatch(setRefreshPlaylist(true));
       }
     );
     setModalOpen(false);
@@ -65,6 +65,7 @@ const MyDetailPlaylist = () => {
   // Reload data when refreshPlaylist is changed
   useEffect(() => {
     fetchDataPlaylistInfor(playlistId);
+    if (refreshPlaylist == true) fetchDataPlaylistInfor(playlistId);
   }, [playlistId, refreshPlaylist]);
 
   // Set new baseAva when uploadedFile is changed
