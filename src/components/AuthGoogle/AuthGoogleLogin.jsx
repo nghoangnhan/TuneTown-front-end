@@ -1,4 +1,3 @@
-import { GoogleLogin } from "react-google-login";
 import axios from "axios";
 import { Base_URL } from "../../api/config";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +5,9 @@ import UseCookie from "../../hooks/useCookie";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../../redux/slice/account";
 import { message } from "antd";
-
-const clientId =
-  "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { cliendId } from "../../api/config";
+import { jwtDecode } from "jwt-decode";
 
 function LoginGoogle() {
   const { saveToken } = UseCookie();
@@ -36,16 +35,6 @@ function LoginGoogle() {
         // Save cookies and token
         saveToken(response.data.access_token);
         handleUserData(response.data);
-        setTimeout(() => {
-          if (response.data.role === "ADMIN") {
-            navigate("/cms/usermanagement");
-          } else if (
-            response.data.role === "USER" ||
-            response.data.role === "ARTIST"
-          ) {
-            // navigate("/home");
-          }
-        }, 1000);
       }
       return response.data;
     } catch (error) {
@@ -77,7 +66,7 @@ function LoginGoogle() {
     return response.data;
   }
 
-  // Edit user
+  // Edit user to update avatar and name from google to the header
   async function editUser(values, access_token) {
     try {
       const response = await axios.put(
@@ -85,7 +74,7 @@ function LoginGoogle() {
         {
           id: userId,
           userName: values.name,
-          avatar: values.imageUrl,
+          avatar: values.picture,
         },
         {
           headers: {
@@ -100,33 +89,31 @@ function LoginGoogle() {
   }
 
   const onSuccess = async (res) => {
-    const values = res.profileObj;
-    const isEmailExisted = await checkEmailExisted(values.email);
+    console.log("Login Success: currentUser:", res);
+    const account = jwtDecode(res.credential);
+    console.log("value", account);
+    // const values = res.profileObj;
+    const isEmailExisted = await checkEmailExisted(account.email);
     if (!isEmailExisted) {
-      await Register(values.name, values.email, "GOOGLE", values.imageUrl);
+      await Register(account.name, account.email, "GOOGLE", account.picture);
     }
-    const getAccessToken = await GetAccessToken(values.email, "GOOGLE");
-    await editUser(values, getAccessToken.access_token);
+    const getAccessToken = await GetAccessToken(account.email, "GOOGLE");
+    await editUser(account, getAccessToken.access_token);
     message.success("Login Successfully");
     setTimeout(() => {
       navigate("/home");
     }, 1000);
   };
   const onFailure = (res) => {
-    console.log("LOGIN failed! res:", res);
+    console.log("Login failed! res:", res);
+    message.error("Login Failed");
   };
 
   return (
-    <div id="btn-auth-google-login">
-      <GoogleLogin
-        clientId={clientId}
-        buttonText="Login with Google"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        cookiePolicy={"single_host_origin"}
-        className="!rounded-lg !shadow-lg !bg-[#fff] !text-[#3e3c3c] !hover:bg-[#f1f1f1] !transition-all !duration-300 !ease-in-out !cursor-pointer
-        "
-      />
+    <div id="btn-auth-google-login" className="rounded-lg px-2 py-1">
+      <GoogleOAuthProvider clientId={cliendId}>
+        <GoogleLogin onSuccess={onSuccess} locale="en" onFailure={onFailure} />
+      </GoogleOAuthProvider>
     </div>
   );
 }

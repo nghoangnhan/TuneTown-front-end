@@ -6,6 +6,8 @@ export const Base_URL = "http://localhost:8080";
 export const Base_Ava =
   "https://i.pinimg.com/564x/08/e4/58/08e458a736a3c0365612771772fa4904.jpg";
 // token return an object {access_token, refress_Token}
+export const cliendId =
+  "295516651084-5baqm2houfs6u6voha4a8s66j8ga6fru.apps.googleusercontent.com";
 const token = getToken();
 export const auth = {
   access_token: token.access_token,
