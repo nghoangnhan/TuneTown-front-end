@@ -69,6 +69,7 @@ function LoginGoogle() {
     }
   }
 
+  // Check email
   async function checkEmailExisted(userEmail) {
     const response = await axios.post(
       `${Base_URL}/auth/checkEmailExisted?userEmail=${userEmail}`
@@ -76,6 +77,7 @@ function LoginGoogle() {
     return response.data;
   }
 
+  // Edit user
   async function editUser(values, access_token) {
     try {
       const response = await axios.put(
@@ -96,6 +98,7 @@ function LoginGoogle() {
       console.error("Error update user:", error.message);
     }
   }
+
   const onSuccess = async (res) => {
     const values = res.profileObj;
     const isEmailExisted = await checkEmailExisted(values.email);

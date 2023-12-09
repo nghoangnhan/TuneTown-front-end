@@ -121,7 +121,7 @@ const UploadSong = () => {
   };
   const onFinish = async (values) => {
     console.log("Received values:", values);
-    const { songName, artists, genre } = values;
+    const { songName, artists, genres } = values;
     if (artists == null) {
       message.error("Please select at least one artist");
       return;
@@ -138,7 +138,9 @@ const UploadSong = () => {
       songName: songName,
       poster: fileIMG,
       songData: fileMP3,
-      genres: genre,
+      genres: genres.map((item) => {
+        return { id: item };
+      }),
       status: 1,
       artists: artists.map((artist) => {
         return { id: artist };
@@ -223,7 +225,7 @@ const UploadSong = () => {
       </Form.Item>
       {/* Genre  */}
       <Form.Item
-        name="genre"
+        name="genres"
         label="Song Genre"
         extra={"Select your song genre, CHOOSE ONE"}
       >
@@ -231,11 +233,14 @@ const UploadSong = () => {
           placeholder="Select a option and change input text above"
           allowClear
         >
-          <Option value="Pop">Pop</Option>
-          <Option value="Jazz">Jazz</Option>
-          <Option value="EDM">EDM</Option>
-          <Option value="Trap">Trap</Option>
-          <Option value="other">other</Option>
+          <Option value="1">Pop</Option>
+          <Option value="2">Jazz</Option>
+          <Option value="3">EDM</Option>
+          <Option value="4">Rap</Option>
+          <Option value="5">Country</Option>
+          <Option value="6">Classic</Option>
+          <Option value="7">Rock</Option>
+          <Option value="8">Indie</Option>
         </Select>
       </Form.Item>
 

@@ -103,20 +103,22 @@ const SongManagement = () => {
       title: "ID",
       dataIndex: "key",
       key: "key",
+      align: "center",
     },
     {
       title: "Poster",
       dataIndex: "poster",
       key: "poster",
+      align: "center",
       render: (poster) => {
-        return poster.props.src ? (
-          <img
-            src={poster.props.src}
-            alt="poster"
-            className="w-12 h-12 rounded-lg"
-          />
-        ) : (
-          <img src={defaultAva} alt="poster" className="w-12 h-12 rounded-lg" />
+        return (
+          <div className="flex items-center justify-center">
+            <img
+              src={poster.props.src ? poster.props.src : defaultAva}
+              alt="poster"
+              className="w-12 h-12 rounded-lg"
+            />
+          </div>
         );
       },
     },
@@ -124,31 +126,37 @@ const SongManagement = () => {
       title: "Song Name",
       dataIndex: "songName",
       key: "songName",
+      align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Artist",
       dataIndex: "artists", // key in dataSongs
       key: "artists", // key in columnsSong
+      align: "center",
     },
     {
       title: "Genres",
       dataIndex: "genres",
       key: "genres",
+      align: "center",
     },
     {
       title: "Listens",
       dataIndex: "listens",
       key: "listens",
+      align: "center",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      align: "center",
     },
     {
       title: "Action",
       key: "action",
+      align: "center",
       render: (_, record) => (
         <Space>
           <button
@@ -209,7 +217,7 @@ const SongManagement = () => {
             }}
             autoComplete="off"
           >
-            <Form.Item label="name" name="songName">
+            <Form.Item label="" name="songName">
               <Input placeholder="Search Song" onChange={handSearch} />
             </Form.Item>
           </Form>
@@ -232,13 +240,7 @@ const SongManagement = () => {
               )
             : dataSongs
         }
-        pagination={{
-          total: totalPages,
-          pageSize: 10,
-          onChange: (page) => {
-            getListSong(page);
-          },
-        }}
+        pagination={{ pageSize: 8 }}
       />
       <Modal
         open={isModalOpenUpload}

@@ -21,7 +21,6 @@ const LeftSideBar = () => {
   const siderItems = [
     getItem("Profile Edit", "profile", <UploadOutlined />),
     getItem("User Management", "usermanagement", <UserOutlined />),
-    getItem("Playlist Management", "playlistmanagement", <UserOutlined />),
     getItem("Song Management", "songmanagement", <UserOutlined />),
   ];
   const handleContents = (data) => {
@@ -32,9 +31,7 @@ const LeftSideBar = () => {
       case "usermanagement":
         navigate(`/cms/${data.key}`);
         break;
-      case "playlistmanagement":
-        navigate(`/cms/${data.key}`);
-        break;
+
       case "songmanagement":
         navigate(`/cms/${data.key}`);
         break;

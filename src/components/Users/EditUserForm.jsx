@@ -22,16 +22,15 @@ const tailLayout = {
 };
 
 // eslint-disable-next-line react/prop-types
-const EditUserForm = ({ editUserId }) => {
+const EditUserForm = ({ editUserId, isAdmin }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const [messageApi, contextHolder] = message.useMessage();
   const userId = editUserId || localStorage.getItem("userId");
   const [form] = Form.useForm();
   const formRef = useRef(null);
   const [userInfor, setUserInfor] = useState({});
   const [fileIMG, setFileIMG] = useState();
-  // const { getUserInfor } = userUtils();
+
   // Get user information from API
   const getUserInfor = async () => {
     try {
@@ -60,14 +59,12 @@ const EditUserForm = ({ editUserId }) => {
       if (response.status === 200) {
         // Handle success
         console.log("User edited successfully:", response.data);
-        messageApi.success("User edited successfully");
-      } else {
-        // Handle other status codes
-        console.error("Error edited user:", response.statusText);
+        message.success("User edited successfully");
       }
     } catch (error) {
       // Handle network errors or other exceptions
       console.error("Error edited user:", error.message);
+      message.error(`Error edited user ${error.message}`);
     }
   };
 
@@ -76,6 +73,10 @@ const EditUserForm = ({ editUserId }) => {
     console.log("FileIMG", fileIMG);
     // Value in Inpurt
     const { userName, userBio, email, birthDate } = values;
+    if (fileIMG === null || fileIMG === undefined) {
+      message.error("Please upload jpg, jpeg or png");
+      return;
+    }
     const postData = {
       id: userId,
       avatar: fileIMG,
@@ -99,13 +100,11 @@ const EditUserForm = ({ editUserId }) => {
     form.setFieldsValue({
       userName: userInfor.userName,
       email: userInfor.email,
-      birthDate: dayjs(userInfor.birthDate),
+      ...(userInfor.birthDate && { birthDate: dayjs(userInfor.birthDate) }),
       userBio: userInfor.userBio,
     });
 
     console.log("userName", userInfor);
-    console.log("userNameeee", userInfor.userName);
-    // console.log("userName", userName);
   }, [
     access_token,
     userInfor.userName,
@@ -115,17 +114,21 @@ const EditUserForm = ({ editUserId }) => {
     userId,
   ]);
   return (
-    <section className="w-full min-h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
+    <section
+      className={`${
+        isAdmin ? "justify-center" : " pt-10 w-full min-h-screen"
+      } relative flex flex-col  items-center bg-[#ecf2fd]`}
+    >
       <Form
         {...layout}
         ref={formRef}
         name="control-ref"
         form={form}
         onFinish={onFinish}
-        className="relative w-fit border rounded-md mx-auto p-5 bg-[#f9f9f9]"
-        // initialValues={{ userName: userInfor.userName }}
+        className={`relative  border ${
+          isAdmin ? "mx-auto w-full rounded-md" : ""
+        } p-5 bg-[#f9f9f9]`}
       >
-        {contextHolder}
         <div className="w-full text-center mb-5">
           <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
             Edit User Information
@@ -143,7 +146,10 @@ const EditUserForm = ({ editUserId }) => {
             },
           ]}
         >
-          <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
+          <UploadAvatar
+            setFileIMG={setFileIMG}
+            accept="image/jpeg, image/png"
+          ></UploadAvatar>
         </Form.Item>
         <Form.Item
           name="userName"
@@ -190,62 +196,6 @@ const EditUserForm = ({ editUserId }) => {
         >
           <DatePicker />
         </Form.Item>
-
-        {/* Genre */}
-        {/* <Form.Item
-            name="genre"
-            label="Song Genre"
-            extra={"Select your song genre, CHOOSE ONE"}
-          >
-            <Select
-              placeholder="Select a option and change input text above"
-              allowClear
-            >
-              <Option value="Pop">Pop</Option>
-              <Option value="Jazz">Jazz</Option>
-              <Option value="EDM">EDM</Option>
-              <Option value="Trap">Trap</Option>
-              <Option value="other">other</Option>
-            </Select>
-          </Form.Item>  
-          */}
-
-        {/* <Form.Item
-            label="Password"
-            name="password"
-            rules={[
-              {
-                required: false,
-                message: "Please input your password!",
-              },
-            ]}
-          >
-            <Input.Password ref={passwordRef} />
-          </Form.Item>
-          <Form.Item
-            name="confirm"
-            label="Confirm Password"
-            dependencies={["password"]}
-            hasFeedback
-            rules={[
-              {
-                required: false,
-                message: "Please confirm your password!",
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    new Error("The new password that you entered do not match!")
-                  );
-                },
-              }),
-            ]}
-          >
-            <Input.Password />
-          </Form.Item> */}
 
         <Form.Item {...tailLayout} className="left-0">
           <Button type="primary" htmlType="submit" className="bg-[green] ">

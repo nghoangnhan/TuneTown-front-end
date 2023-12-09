@@ -180,25 +180,21 @@ const UserManagement = () => {
   // ];
   const columns = [
     {
-      title: "Id",
+      title: "ID",
       dataIndex: "id",
       key: "id",
+      align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Avatar",
       dataIndex: "avatar",
       key: "avatar",
+      align: "center",
       render: (avatar) => {
-        return avatar ? (
+        return (
           <img
-            src={avatar}
-            alt="avatar"
-            className="w-11 h-11 rounded-full object-cover"
-          />
-        ) : (
-          <img
-            src={defaultAva}
+            src={avatar ? avatar : defaultAva}
             alt="avatar"
             className="w-11 h-11 rounded-full object-cover"
           />
@@ -209,22 +205,26 @@ const UserManagement = () => {
       title: "Name",
       dataIndex: "userName",
       key: "userName",
+      align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "email",
       dataIndex: "email",
       key: "email",
+      align: "center",
     },
     {
       title: "Bio",
       dataIndex: "userBio",
       key: "userBio",
+      align: "center",
     },
     {
       title: "Birthday",
       dataIndex: "birthDate",
       key: "birthDate",
+      align: "center",
       render: (birthDate) => {
         const date = new Date(birthDate);
         return (
@@ -238,6 +238,7 @@ const UserManagement = () => {
       title: "Role",
       key: "role",
       dataIndex: "role",
+      align: "center",
       render: (role) => {
         let color = role.length > 5 ? "geekblue" : "green";
         if (role.toLowerCase() === "user") {
@@ -259,6 +260,7 @@ const UserManagement = () => {
     {
       title: "Action",
       key: "action",
+      align: "center",
       render: (_, record) => (
         <Space
           size="middle"
@@ -276,7 +278,7 @@ const UserManagement = () => {
             className="py-1 px-2 h-8 w-full border border-solid border-[#955ec9] hover:bg-[#6947c0] hover:text-white rounded-lg"
             onClick={() => showModalEditRole(record.id, record.role)}
           >
-            Change Role
+            Role
           </button>
           <button
             className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
@@ -315,7 +317,7 @@ const UserManagement = () => {
               // onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
-              <Form.Item label="name" name="userName">
+              <Form.Item label="" name="userName" className="">
                 <Input placeholder="Search User Name" onChange={handSearch} />
               </Form.Item>
             </Form>
@@ -332,6 +334,7 @@ const UserManagement = () => {
                 )
               : userList
           }
+          pagination={{ pageSize: 8 }}
         />
         <Modal
           title="Edit User"
@@ -339,7 +342,7 @@ const UserManagement = () => {
           onCancel={handleCancel}
           footer={[]}
         >
-          <EditUserForm editUserId={userId}></EditUserForm>
+          <EditUserForm editUserId={userId} isAdmin={true}></EditUserForm>
         </Modal>
         <Modal
           title="Edit User Role"

@@ -103,20 +103,22 @@ const CMSArtist = () => {
       title: "ID",
       dataIndex: "key",
       key: "key",
+      align: "center",
     },
     {
       title: "Poster",
       dataIndex: "poster",
       key: "poster",
+      align: "center",
       render: (poster) => {
-        return poster.props.src ? (
-          <img
-            src={poster.props.src}
-            alt="poster"
-            className="w-12 h-12 rounded-lg"
-          />
-        ) : (
-          <img src={defaultAva} alt="poster" className="w-12 h-12 rounded-lg" />
+        return (
+          <div className="flex items-center justify-center">
+            <img
+              src={poster.props.src ? poster.props.src : defaultAva}
+              alt="poster"
+              className="w-12 h-12 rounded-lg"
+            />
+          </div>
         );
       },
     },
@@ -124,12 +126,14 @@ const CMSArtist = () => {
       title: "Song Name",
       dataIndex: "songName",
       key: "songName",
+      align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Artist",
       dataIndex: "artists", // key in dataSongs
       key: "artists", // key in columnsSong
+      align: "center",
       render: (artists) => {
         if (artists.length > 1) {
           return artists.map((artist, index) => (
@@ -143,20 +147,51 @@ const CMSArtist = () => {
       title: "Genres",
       dataIndex: "genres",
       key: "genres",
+      align: "center",
     },
     {
       title: "Listens",
       dataIndex: "listens",
       key: "listens",
+      align: "center",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      align: "center",
+      render: (status) => {
+        if (status === 0) {
+          return (
+            <div className="flex justify-center items-center">
+              <div
+                className="
+          bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg w-fit h-fit px-2 py-1
+          "
+              >
+                Deleted
+              </div>
+            </div>
+          );
+        } else if (status === 1) {
+          return (
+            <div className="flex justify-center items-center">
+              <div
+                className="
+          bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg w-fit h-fit px-2 py-1
+          "
+              >
+                Public
+              </div>
+            </div>
+          );
+        }
+      },
     },
     {
       title: "Action",
       key: "action",
+      align: "center",
       render: (_, record) => (
         <Space>
           <button
@@ -216,7 +251,7 @@ const CMSArtist = () => {
           }}
           autoComplete="off"
         >
-          <Form.Item label="name" name="songName">
+          <Form.Item label="" name="songName" className="ml-1">
             <Input placeholder="Search Song" onChange={handSearch} />
           </Form.Item>
         </Form>

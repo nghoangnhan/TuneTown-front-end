@@ -12,14 +12,12 @@ const TheHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { removeToken, getToken } = UseCookie();
-  const userName = localStorage.getItem("userName");
   const userRole = localStorage.getItem("userRole");
   const userId = localStorage.getItem("userId");
   const { access_token } = getToken();
   const [modalOpen, setModalOpen] = useState(false);
   const [userInfor, setUserInfor] = useState({});
   dispatch(setUserId(userId));
-  console.log("The Header || UserInfor", userId, userName, userRole);
 
   // Get user information from API
   const getUserInfor = async () => {
@@ -46,11 +44,14 @@ const TheHeader = () => {
   // Log Out
   const LogOut = () => {
     removeToken();
+    localStorage.clear();
     navigate("/");
   };
   useEffect(() => {
     getUserInfor().then((res) => {
       setUserInfor(res.user);
+      localStorage.setItem("userName", res.user.userName);
+      console.log("The Header || UserInfor", res.user);
     });
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
@@ -77,7 +78,7 @@ const TheHeader = () => {
           </div>
         }
         <span className="xl:block hidden mr-3 text-[#505050] cursor-default">
-          {userName ? userName : "Unknown User"}
+          {userInfor.userName ? userInfor.userName : "Unknown User"}
         </span>
 
         {userInfor.avatar && (

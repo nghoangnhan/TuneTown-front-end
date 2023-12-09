@@ -30,6 +30,11 @@ function UploadFileDropZone(props) {
     onDrop,
     maxSize: 10485760,
     maxFiles: 1,
+
+    accept: {
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+    },
   });
 
   return (
