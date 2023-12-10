@@ -13,10 +13,13 @@ const GenreInput = () => {
   const [genreRS, setGenreRS] = useState([]); // [{id:"",name: "", email: ""}]
   const [genreNameInput, setGenreNameInput] = useState("");
   const inputDebounce = useDebounce(genreNameInput, 500);
+
+  // Genre Name Input
   const handleGenreNameChange = (value) => {
-    // setEmailInput(e.target.value);
     setGenreNameInput(value);
   };
+
+  // Get Genre from API
   const getGenre = async () => {
     try {
       const response = await axios.get(`${Base_URL}/songs/getAllGenres`, {
@@ -31,28 +34,35 @@ const GenreInput = () => {
     }
   };
 
-    getGenre().then((response) => {
-    response.forEach((genre) => {
-        // Check if email existed and email not changed
-        if (genre.id != null && genre.genreName != null) {
-        if (!genreRS.includes(genre) && !genreNameRS.includes(genre.genreName)) {
-            setGenreNameRS((prevGenreNames) => [...prevGenreNames, genre.genreName]);
-            setGenreRS((prevGenres) => [
-            ...prevGenres,
-            { id: genre.id, genreName: genre.genreName},
-            ]);
-        }
-        }
-    });
-
-    console.log("GenreRS", genreRS);
-    console.log("genreNameRS", genreNameRS);
-    });
-    
-
-
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  useEffect(() => {
+    if (inputDebounce) {
+      getGenre().then((response) => {
+        response.forEach((genre) => {
+          if (genre.id != null && genre.genreName != null) {
+            if (
+              !genreRS.includes(genre) &&
+              !genreNameRS.includes(genre.genreName)
+            ) {
+              setGenreNameRS((prevGenreNames) => [
+                ...prevGenreNames,
+                genre.genreName,
+              ]);
+              setGenreRS((prevGenres) => [
+                ...prevGenres,
+                { id: genre.id, genreName: genre.genreName },
+              ]);
+            }
+          }
+        });
+
+        console.log("GenreRS", genreRS);
+        console.log("genreNameRS", genreNameRS);
+      });
+    }
+  }, [inputDebounce]);
   return (
     <Form.Item
       name="genres"

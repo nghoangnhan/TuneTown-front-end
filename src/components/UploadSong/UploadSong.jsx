@@ -2,13 +2,12 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import { Button, Form, Input, Select, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Base_URL } from "../../api/config";
 import ArtistInput from "./ArtistInput";
 import GenreInput from "./GenreInput";
 import UseCookie from "../../hooks/useCookie";
 
-const { Option } = Select;
 const layout = {
   labelCol: {
     span: 8,
@@ -113,11 +112,13 @@ const UploadSong = () => {
         formRef.current.resetFields();
       } else {
         // Handle other status codes
+        message.error("Error posting song:", response.data);
         console.error("Error posting song:", response.data);
       }
     } catch (error) {
       // Handle network errors or other exceptions
       console.error("Error posting song:", error.message);
+      message.error("Error posting song:", error.message);
     }
   };
   const onFinish = async (values) => {
@@ -227,7 +228,6 @@ const UploadSong = () => {
       {/* Genre  */}
       <GenreInput></GenreInput>
 
-      
       <Form.Item {...tailLayout}>
         <Button
           type="primary"
