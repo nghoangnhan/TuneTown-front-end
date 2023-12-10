@@ -110,10 +110,6 @@ const UploadSong = () => {
         console.log("Song posted successfully:", response.data);
         message.success("Song posted successfully");
         formRef.current.resetFields();
-      } else {
-        // Handle other status codes
-        message.error("Error posting song:", response.data);
-        console.error("Error posting song:", response.data);
       }
     } catch (error) {
       // Handle network errors or other exceptions
