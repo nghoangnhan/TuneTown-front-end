@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button, Form, Input, Select, message } from "antd";
 import { Base_URL } from "../../api/config";
 import ArtistInput from "./ArtistInput";
+import GenreInput from "./GenreInput";
 import UseCookie from "../../hooks/useCookie";
 
 const { Option } = Select;
@@ -224,42 +225,9 @@ const UploadSong = () => {
         />
       </Form.Item>
       {/* Genre  */}
-      <Form.Item
-        name="genres"
-        label="Song Genre"
-        extra={"Select your song genre, CHOOSE ONE"}
-      >
-        <Select
-          placeholder="Select a option and change input text above"
-          allowClear
-        >
-          <Option value="1">Pop</Option>
-          <Option value="2">Jazz</Option>
-          <Option value="3">EDM</Option>
-          <Option value="4">Rap</Option>
-          <Option value="5">Country</Option>
-          <Option value="6">Classic</Option>
-          <Option value="7">Rock</Option>
-          <Option value="8">Indie</Option>
-        </Select>
-      </Form.Item>
+      <GenreInput></GenreInput>
 
-      <Form.Item
-        noStyle
-        shouldUpdate={(prevValues, currentValues) =>
-          prevValues.genre !== currentValues.genre
-        }
-      >
-        {({ getFieldValue }) =>
-          /* lấy giá trị trong field gender xem có phải other không */
-          getFieldValue("genre") === "other" ? (
-            /* Nếu chọn other thì hiện ra cái này */
-            <Form.Item name="customizeGenre" label="Customize Genre">
-              <Input />
-            </Form.Item>
-          ) : null
-        }
-      </Form.Item>
+      
       <Form.Item {...tailLayout}>
         <Button
           type="primary"
