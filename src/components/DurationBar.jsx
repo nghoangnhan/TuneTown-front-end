@@ -55,6 +55,7 @@ const DurationBar = () => {
       // play next song
       if (songQueue.length > 0) {
         dispatch(setCurrentTime(0));
+        dispatch(setIsPlaying(true));
         dispatch(playNextSong());
       } else if (songQueue.length == 0) {
         dispatch(setIsPlaying(false));
@@ -90,7 +91,6 @@ const DurationBar = () => {
   };
 
   useEffect(() => {
-    console.log("SongData changed");
     const loadCurrentSong = async () => {
       const clearCurrentSourceNode = async () => {
         for (let i = 0; i < 10; i++) {
