@@ -113,6 +113,10 @@ const musicStore = createSlice({
     addSongToQueue: (state, action) => {
       state.songQueue.push(action.payload);
     },
+    addPlaylistSongToQueue: (state, action) => {
+      state.songQueue.push(...action.payload);
+    },
+
     removeSongFromQueue: (state, action) => {
       state.songQueue = state.songQueue.filter(
         (song) => song.id !== action.payload
@@ -149,6 +153,7 @@ export const {
   setDuration,
   setListSong,
   addSongToQueue,
+  addPlaylistSongToQueue,
   removeSongFromQueue,
   playNextSong,
   playPreviousSong,

@@ -6,14 +6,13 @@ const QueueSection = () => {
   const [songQueue, setSongQueue] = useState([]);
   const songQueueStore = useSelector((state) => state.music.songQueue);
   const playingSong = useSelector((state) => state.music.currentSong);
-  console.log("playingSong", playingSong);
-  console.log("songQueue", songQueue);
+  console.log("QueueSection || playingSong", playingSong);
 
   useEffect(() => {
     if (songQueueStore != null) {
       setSongQueue(songQueueStore);
     }
-    console.log("songQueueStore", songQueueStore);
+    console.log("QueueSection || songQueueStore", songQueueStore);
   }, [songQueueStore]);
 
   return (

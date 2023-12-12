@@ -4,6 +4,7 @@ const playlistStore = createSlice({
   name: "playlist",
   initialState: {
     refreshPlaylist: false,
+    playlistIsPlaying: false,
     myPlaylistLists: [],
     id: 0,
     playlistName: "",
@@ -38,6 +39,9 @@ const playlistStore = createSlice({
     setDraggable: (state, action) => {
       state.draggable = action.payload;
     },
+    setPlaylistIsPlaying: (state, action) => {
+      state.playlistIsPlaying = action.payload;
+    },
   },
 });
 
@@ -45,6 +49,7 @@ export const {
   setPlaylist,
   setMyPLaylistList,
   setRefreshPlaylist,
+  setPlaylistIsPlaying,
   setDraggable,
 } = playlistStore.actions;
 export default playlistStore.reducer;
