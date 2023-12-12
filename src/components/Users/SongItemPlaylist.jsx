@@ -18,7 +18,7 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
-import playlist, { setRefreshPlaylist } from "../../redux/slice/playlist";
+import { setRefreshPlaylist } from "../../redux/slice/playlist";
 import axios from "axios";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
