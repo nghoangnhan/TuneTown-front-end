@@ -33,14 +33,8 @@ const DurationBar = () => {
   const songData = useSelector((state) => state.music.currentSong.songData);
   const volume = useSelector((state) => state.volume.volumeValue); // Get the volume from the store
 
-  // // Get the max duration of the song
-  const GetSongDuration = (audioRef) => {
-    // setDuration(audioRef.current.duration);
-    // setDuration(sourceNode.current[currentIndex].buffer.duration * 10);
-  };
   // Update the currentTime every second
   useEffect(() => {
-    GetSongDuration(audioRef); // Get the duration of the song
     // CheckPlaying(audioRef);
     let interval; // Count the isPlaying
     if (isPlaying == true && currentTime < duration) {
@@ -57,6 +51,17 @@ const DurationBar = () => {
       dispatch(setCurrentTime(0));
       dispatch(setIsPlaying(!isPlaying));
       clearInterval(interval);
+
+      // play next song
+      if (songQueue.length > 0) {
+        dispatch(setCurrentTime(0));
+        dispatch(playNextSong());
+      } else if (songQueue.length == 0) {
+        dispatch(setIsPlaying(false));
+        dispatch(setCurrentTime(0));
+        // dispatch(setCurrentSong(null));
+        dispatch(setSongLinks(null));
+      }
     } else {
       clearInterval(interval); // If the song is paused, stop the interval
     }
@@ -81,14 +86,33 @@ const DurationBar = () => {
       else if (isPlaying == false && currentTime < duration) {
         audioContext.resume();
       }
-      // // If the song is ended, play the song from the beginning
-      // else if (currentTime >= duration - 1) {
-      //   dispatch(setCurrentTime(0));
-      //   audioRef.current.currentTime = 0;
-      //   audioRef.current.play();
-      // }
     }
   };
+
+  useEffect(() => {
+    console.log("SongData changed");
+    const loadCurrentSong = async () => {
+      const clearCurrentSourceNode = async () => {
+        for (let i = 0; i < 10; i++) {
+          audioBufferArray.current = [];
+          if (sourceNode.current[i] != null) {
+            sourceNode.current[i].disconnect();
+            sourceNode.current[i] = null;
+          }
+          if (timeOutArray.current[i] != null)
+            clearTimeout(timeOutArray.current[i]);
+        }
+        isLoaded.current = false;
+      };
+      await clearCurrentSourceNode();
+
+      if (sourceNode.current[0] == null) {
+        setCurrentIndex(0);
+        loadAndPlayAudio();
+      }
+    };
+    loadCurrentSong();
+  }, [songData]);
 
   // HANLDE PLAYING AUDIO FILES WITH BUFFER
   const [audioContext, setAudioContext] = useState(null);
@@ -169,13 +193,13 @@ const DurationBar = () => {
       setCurrentIndex(currentIndex + 1);
     }, (audioBufferArray.current[currentIndex].duration - startTime - 0.05) * 1000);
     timeOutArray.current[currentIndex] = timeOut;
-    setStartTime(0);
   };
 
   /**
    * Play the audio right after the first part is processed
    */
   useEffect(() => {
+    console.log("Loaded changed " + isLoaded.current);
     const onLoaded = async () => {
       if (audioBufferArray.current.length > 0 && isLoaded.current) {
         await createSourceForPlaying(currentIndex);
@@ -197,9 +221,7 @@ const DurationBar = () => {
    */
   useEffect(() => {
     const playNext = async () => {
-      console.log(sourceNode.current[currentIndex]);
       if (sourceNode.current[currentIndex] != null) {
-        console.log(sourceNode.current);
         sourceNode.current[currentIndex].start(0, startTime);
       }
       // if (timeOutArray.current[currentIndex] != null) {
@@ -209,6 +231,7 @@ const DurationBar = () => {
       if (currentIndex + 1 < audioBufferArray.current.length) {
         await setOnEnded();
       }
+      setStartTime(0);
     };
     playNext();
   }, [currentIndex, isSeeked.current]);
@@ -281,6 +304,7 @@ const DurationBar = () => {
     gainVolume.current.gain.setValueAtTime(volume, audioContext.currentTime);
     for (let i = 1; i <= 10; i++) {
       await loadAudio(i);
+      isLoaded.current = true;
     }
   };
 
@@ -320,10 +344,10 @@ const DurationBar = () => {
                 dispatch(setCurrentTime(0));
                 dispatch(playPreviousSong());
               } else if (songQueuePlayed.length == 0) {
-                dispatch(setIsPlaying(false));
-                dispatch(setCurrentTime(0));
-                dispatch(setCurrentSong(null));
-                dispatch(setSongLinks(null));
+                // dispatch(setIsPlaying(false));
+                // dispatch(setCurrentTime(0));
+                // dispatch(setCurrentSong(null));
+                // dispatch(setSongLinks(null));
               }
             }
           }
@@ -388,10 +412,10 @@ const DurationBar = () => {
                 dispatch(setCurrentTime(0));
                 dispatch(playNextSong());
               } else if (songQueue.length == 0) {
-                dispatch(setIsPlaying(false));
-                dispatch(setCurrentTime(0));
-                dispatch(setCurrentSong(null));
-                dispatch(setSongLinks(null));
+                // dispatch(setIsPlaying(false));
+                // dispatch(setCurrentTime(0));
+                // dispatch(setCurrentSong(null));
+                // dispatch(setSongLinks(null));
               }
             }
           }
