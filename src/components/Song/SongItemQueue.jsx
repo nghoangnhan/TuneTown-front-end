@@ -19,7 +19,7 @@ import {
 import { message } from "antd";
 
 const SongItemQueue = ({ song, isPlaying, order }) => {
-  const { id, songName, artists, songCover, songLink } = song;
+  const { id, songName, artists, songCover, songData } = song;
   const audioRef = useRef();
   const { show } = useContextMenu();
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
     artists: artists.map((artist) => artist),
     songDuration: songInfor.songDuration,
     songCover: songCover,
-    songLink: songLink,
+    songData: songData,
   };
 
   // When click to the song, save the current song to the context and play it
@@ -152,7 +152,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
           src={songCover ? songCover : DefaultArt}
         />
         {/* // Audio element */}
-        <audio ref={audioRef} src={songInforObj.songLink}></audio>
+        <audio ref={audioRef} src={songInforObj.songData}></audio>
         <div className="text-[#2E3271] xl:text-base font-semibold">
           <h2 className="">{songInforObj.songName}</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">
