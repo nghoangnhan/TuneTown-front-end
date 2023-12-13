@@ -26,7 +26,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
     useMusicAPI();
-  const { showArtistV2, TimeConvert } = useSongDuration();
+  const { showArtistV2 } = useSongDuration();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
@@ -170,7 +170,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
             </svg>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
-          <div>{TimeConvert(234)}</div>
+          {/* <div>{TimeConvert(234)}</div> */}
         </div>
       </div>
     </div>
