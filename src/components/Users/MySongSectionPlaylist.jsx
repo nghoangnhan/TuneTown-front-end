@@ -18,19 +18,21 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
   );
+
   const handleAddSongToQueue = (songList) => {
+    dispatch(setCurrentTime(0));
     dispatch(
       setCurrentSong({
         id: songList[0].song.id,
         songName: songList[0].song.songName,
         artists: songList[0].song.artists.map((artist) => artist),
-        songDuration: songList[0].song.songDuration,
+        songDuration: songList[0].song.songDuration || 200,
         songCover: songList[0].song.poster,
         songData: songList[0].song.songData,
       })
     );
+
     dispatch(setIsPlaying(true));
-    dispatch(setCurrentTime(0));
     const queueSongs = songList.slice(1, songList.length).map((song) => ({
       id: song.song.id,
       songName: song.song.songName,

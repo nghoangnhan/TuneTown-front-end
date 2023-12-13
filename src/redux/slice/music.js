@@ -9,24 +9,18 @@ const musicStore = createSlice({
   initialState: {
     currentSong: {
       id: null,
-      songName: "What make you beautiful",
+      songName: "What Make You Beautiful",
       artists: [
         {
           userName: "One Direction",
         },
-        {
-          userName: "Two Direction",
-        },
-        {
-          userName: "Three Direction",
-        },
       ],
       songDuration: 214,
       songCover:
-        "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
+        "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2F1direction.jpg?alt=media&token=c62c84bd-3b36-45b2-844a-f7c4f236fe01",
 
       songData:
-        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/HIGHEST IN THE ROOM - Travis Scott/HIGHEST IN THE ROOM - Travis Scott_",
+        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/What_Makes_You_Beautiful/What_Makes_You_Beautiful_",
     },
     playlist: [],
     // Song will be played next
