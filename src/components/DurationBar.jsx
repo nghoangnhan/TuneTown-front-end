@@ -6,10 +6,11 @@ import useSongDuration from "../utils/songUtils";
 import {
   playNextSong,
   playPreviousSong,
-  setCurrentSong,
   setCurrentTime,
   setDuration,
   setIsPlaying,
+  setRepeat,
+  setShuffle,
   setSongLinks,
 } from "../redux/slice/music";
 
@@ -27,12 +28,14 @@ const DurationBar = () => {
   const songQueuePlayed = useSelector((state) => state.music.songQueuePlayed);
   const songQueue = useSelector((state) => state.music.songQueue); // Get song queue from the store
   const duration = useSelector((state) => state.music.currentSong.songDuration);
+  const songCover = useSelector((state) => state.music.currentSong.songCover);
   const audioFile = useSelector((state) => state.music.currentSong.songLink);
+  const songData = useSelector((state) => state.music.currentSong.songData);
   const currentTime = useSelector((state) => state.music.currentTime); // Current time when play a song
   const isPlaying = useSelector((state) => state.music.isPlaying); // Check if the song is playing
-  const songData = useSelector((state) => state.music.currentSong.songData);
   const volume = useSelector((state) => state.volume.volumeValue); // Get the volume from the store
-
+  const repeat = useSelector((state) => state.music.repeat); // Get the repeat state from the store
+  const shuffle = useSelector((state) => state.music.shuffle); // Get the shuffle state from the store
   // Update the currentTime every second
   useEffect(() => {
     // CheckPlaying(audioRef);
@@ -88,6 +91,14 @@ const DurationBar = () => {
         audioContext.resume();
       }
     }
+  };
+
+  // When click the repeat button
+  const handleRepeat = () => {
+    dispatch(setRepeat(!repeat));
+  };
+  const handleShuffle = () => {
+    dispatch(setShuffle(!shuffle));
   };
 
   useEffect(() => {
@@ -322,11 +333,14 @@ const DurationBar = () => {
     <div className="flex flex-col">
       <div className="flex flex-row justify-center items-center gap-3">
         {/* Shuffle button */}
-        <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">
+        <button
+          className="bg-white hover:bg-[#c8c7c7] rounded-xl"
+          onClick={() => handleShuffle()}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 25 24"
-            fill="#887D7D"
+            fill={`${shuffle ? "#44c261" : "#887D7D"}`}
             className="w-5 h-5"
           >
             <path d="M22.25 17.98C22.25 17.96 22.24 17.94 22.24 17.92C22.23 17.84 22.22 17.76 22.19 17.69C22.15 17.6 22.1 17.53 22.04 17.46C22.04 17.46 22.04 17.45 22.03 17.45C21.96 17.38 21.88 17.33 21.79 17.29C21.7 17.25 21.6 17.23 21.5 17.23L16.83 17.25C16.83 17.25 16.83 17.25 16.82 17.25C16.22 17.25 15.64 16.97 15.28 16.49L14.06 14.92C13.81 14.59 13.34 14.53 13.01 14.79C12.68 15.05 12.62 15.51 12.88 15.84L14.1 17.41C14.75 18.25 15.77 18.75 16.83 18.75H16.84L19.69 18.74L18.98 19.45C18.69 19.74 18.69 20.22 18.98 20.51C19.13 20.66 19.32 20.73 19.51 20.73C19.7 20.73 19.89 20.66 20.04 20.51L22.04 18.51C22.11 18.44 22.16 18.36 22.2 18.27C22.23 18.17 22.25 18.07 22.25 17.98Z" />
@@ -434,11 +448,14 @@ const DurationBar = () => {
         </button>
 
         {/* Repeat button */}
-        <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">
+        <button
+          className="bg-white hover:bg-[#c8c7c7] rounded-xl"
+          onClick={() => handleRepeat()}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            fill="#887D7D"
+            fill={`${repeat ? "#44c261" : "#887D7D"}`}
             className="w-5 h-5"
           >
             <path

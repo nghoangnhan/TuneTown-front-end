@@ -29,6 +29,8 @@ const musicStore = createSlice({
     songQueuePlayed: [],
     isPlaying: false,
     currentTime: 0,
+    repeat: false,
+    shuffle: false,
     // ... other state properties
   },
   // type action
@@ -58,13 +60,43 @@ const musicStore = createSlice({
     setListSong: (state, action) => {
       state.listSong = action.payload;
     },
+    setRepeat: (state, action) => {
+      state.repeat = action.payload;
+      if (state.repeat === true) {
+        const currentSongCopy = { ...state.currentSong }; // Tạo bản sao của currentSong
+        state.songQueue = [currentSongCopy, ...state.songQueue]; // Thêm bản sao vào đầu mảng
+      }
+      if (state.repeat === false) {
+        // Xóa bản sao của currentSong khỏi đầu mảng songQueue
+        state.songQueue.shift();
+      }
+    },
+    setShuffle: (state, action) => {
+      state.shuffle = action.payload;
+      if (state.shuffle === true) {
+        // Tạo một bản sao của mảng songQueue
+        const shuffledQueue = [...state.songQueue];
+
+        // Sử dụng thuật toán xáo trộn Fisher-Yates
+        for (let i = shuffledQueue.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledQueue[i], shuffledQueue[j]] = [
+            shuffledQueue[j],
+            shuffledQueue[i],
+          ];
+        }
+
+        // Gán mảng đã xáo trộn vào state
+        state.songQueue = shuffledQueue;
+      }
+    },
+
     addSongToQueue: (state, action) => {
       state.songQueue.push(action.payload);
     },
     addPlaylistSongToQueue: (state, action) => {
       state.songQueue.push(...action.payload);
     },
-
     removeSongFromQueue: (state, action) => {
       state.songQueue = state.songQueue.filter(
         (song) => song.id !== action.payload
@@ -100,6 +132,8 @@ export const {
   setSongLinks,
   setDuration,
   setListSong,
+  setRepeat,
+  setShuffle,
   addSongToQueue,
   addPlaylistSongToQueue,
   removeSongFromQueue,

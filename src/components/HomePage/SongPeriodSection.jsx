@@ -15,14 +15,14 @@ const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
   const [songPage, setSongPage] = useState(1);
   const titleSongChart = titleSong
     ? titleSong
-    : `${
+    : `Top 10 Songs in ${
         new Date().getMonth() < 3
-          ? "Top Songs in Spring"
+          ? "Spring"
           : new Date().getMonth() < 6
-          ? "Top Songs in Summer"
+          ? "Summer"
           : new Date().getMonth() < 9
-          ? "Top Songs in Autumn"
-          : "Top Songs in Winter"
+          ? "Autumn"
+          : "Winter"
       }`;
 
   const currentYear = new Date().getFullYear();
@@ -71,7 +71,18 @@ const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
 
   return (
     <div className="bg-[#FFFFFFCC] rounded-2xl max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
-      <h1 className="text-[#2E3271] text-xl font-bold">{titleSongChart}</h1>
+      <div className="flex flex-row justify-center items-center gap-3">
+        <h1 className="text-[#2E3271] text-xl font-bold">{titleSongChart}</h1>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          fill="#2E3271"
+        >
+          <path d="m130-200-96-95 347-348 162 162 151-153h-86v-136h318v319H790v-88L543-289 381-451 130-200Z" />
+        </svg>
+      </div>
       <div className="xl:w-full">
         <div className="flex flex-row justify-between items-center mt-5 mb-5 text-[#4b4848]">
           <div className="flex flex-row gap-8 ml-8">
