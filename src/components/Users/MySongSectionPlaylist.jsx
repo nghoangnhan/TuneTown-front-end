@@ -19,6 +19,18 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
     (state) => state.playlist.refreshPlaylist
   );
   const handleAddSongToQueue = (songList) => {
+    dispatch(
+      setCurrentSong({
+        id: songList[0].song.id,
+        songName: songList[0].song.songName,
+        artists: songList[0].song.artists.map((artist) => artist),
+        songDuration: songList[0].song.songDuration,
+        songCover: songList[0].song.poster,
+        songData: songList[0].song.songData,
+      })
+    );
+    dispatch(setIsPlaying(true));
+    dispatch(setCurrentTime(0));
     const queueSongs = songList.slice(1, songList.length).map((song) => ({
       id: song.song.id,
       songName: song.song.songName,
@@ -27,19 +39,8 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
       songCover: song.song.poster,
       songData: song.song.songData,
     }));
+    console.log(queueSongs);
     dispatch(addPlaylistSongToQueue(queueSongs));
-    dispatch(
-      setCurrentSong({
-        id: songList[0].song.id,
-        songName: songList[0].song.songName,
-        artists: songList[0].song.artists.map((artist) => artist),
-        songDuration: songList[0].song.songDuration || 0,
-        songCover: songList[0].song.poster,
-        songData: songList[0].song.songData,
-      })
-    );
-    dispatch(setIsPlaying(true));
-    dispatch(setCurrentTime(0));
   };
 
   useEffect(() => {

@@ -91,6 +91,7 @@ const DurationBar = () => {
   };
 
   useEffect(() => {
+    console.log("songData changed", songData);
     const loadCurrentSong = async () => {
       const clearCurrentSourceNode = async () => {
         for (let i = 0; i < 10; i++) {
