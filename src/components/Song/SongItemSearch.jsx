@@ -40,7 +40,7 @@ const SongItemSearch = ({ song, songOrder }) => {
     artists: artists.map((artist) => artist),
     songDuration: songInfor.songDuration,
     songCover: poster,
-    songLink: songData,
+    songData: songData,
   };
 
   // When click to the song, save the current song to the context and play it

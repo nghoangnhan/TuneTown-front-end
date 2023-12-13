@@ -37,7 +37,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
       id: song.song.id,
       songName: song.song.songName,
       artists: song.song.artists.map((artist) => artist),
-      songDuration: song.song.songDuration,
+      songDuration: song.song.songDuration || 200,
       songCover: song.song.poster,
       songData: song.song.songData,
     }));
