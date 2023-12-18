@@ -170,7 +170,7 @@ const EditInfor = () => {
               },
             ]}
           >
-            <Input />
+            <Input disabled />
           </Form.Item>
           <Form.Item
             label="Birthday"
