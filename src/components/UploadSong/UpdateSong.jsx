@@ -2,12 +2,12 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
-import { Button, Form, Input, Select, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Base_URL } from "../../api/config";
 import ArtistInput from "./ArtistInput";
 import UseCookie from "../../hooks/useCookie";
+import GenreInput from "./GenreInput";
 
-const { Option } = Select;
 const layout = {
   labelCol: {
     span: 8,
@@ -273,39 +273,7 @@ const UpdateSong = ({ songData }) => {
           />
         </Form.Item>
         {/* Genre  */}
-        <Form.Item
-          name="genre"
-          label="Song Genre"
-          extra={"Select your song genre, CHOOSE ONE"}
-        >
-          <Select
-            placeholder="Select a option and change input text above"
-            allowClear
-          >
-            <Option value="Pop">Pop</Option>
-            <Option value="Jazz">Jazz</Option>
-            <Option value="EDM">EDM</Option>
-            <Option value="Trap">Trap</Option>
-            <Option value="other">other</Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          noStyle
-          shouldUpdate={(prevValues, currentValues) =>
-            prevValues.genre !== currentValues.genre
-          }
-        >
-          {({ getFieldValue }) =>
-            /* lấy giá trị trong field gender xem có phải other không */
-            getFieldValue("genre") === "other" ? (
-              /* Nếu chọn other thì hiện ra cái này */
-              <Form.Item name="customizeGenre" label="Customize Genre">
-                <Input />
-              </Form.Item>
-            ) : null
-          }
-        </Form.Item>
+        <GenreInput></GenreInput>
         <Form.Item {...tailLayout}>
           <Button
             type="primary"

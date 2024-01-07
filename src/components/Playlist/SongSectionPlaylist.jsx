@@ -17,9 +17,9 @@ const SongSectionPlaylist = (props) => {
           <div className=" text-center font-bold">ID</div>
           <div className=" text-center font-bold">Song Details</div>
         </div>
-        <div>
+        {/* <div>
           <div className=" text-center font-bold">Duration</div>
-        </div>
+        </div> */}
       </div>
       <div className="mt-2 flex flex-col gap-1">
         {songList &&

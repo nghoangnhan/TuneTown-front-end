@@ -27,7 +27,7 @@ const SongItemSearch = ({ song, songOrder }) => {
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
     useMusicAPI();
-  const { showArtistV2, TimeConvert } = useSongDuration();
+  const { showArtistV2 } = useSongDuration();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
@@ -40,7 +40,7 @@ const SongItemSearch = ({ song, songOrder }) => {
     artists: artists.map((artist) => artist),
     songDuration: songInfor.songDuration,
     songCover: poster,
-    songLink: songData,
+    songData: songData,
   };
 
   // When click to the song, save the current song to the context and play it
@@ -157,7 +157,7 @@ const SongItemSearch = ({ song, songOrder }) => {
             </svg>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
-          <div>{TimeConvert(234)}</div>
+          {/* <div>{TimeConvert(234)}</div> */}
         </div>
       </div>
     </div>

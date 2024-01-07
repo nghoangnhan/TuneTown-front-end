@@ -185,7 +185,7 @@ const EditUserForm = ({ editUserId, isAdmin }) => {
             },
           ]}
         >
-          <Input />
+          <Input disabled />
         </Form.Item>
         <Form.Item
           label="Birthday"

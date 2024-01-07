@@ -9,24 +9,18 @@ const musicStore = createSlice({
   initialState: {
     currentSong: {
       id: null,
-      songName: "What make you beautiful",
+      songName: "What Make You Beautiful",
       artists: [
         {
           userName: "One Direction",
         },
-        {
-          userName: "Two Direction",
-        },
-        {
-          userName: "Three Direction",
-        },
       ],
       songDuration: 214,
       songCover:
-        "https://media.npr.org/assets/music/news/2010/09/maroon-e9cb8c5b25b4d1f3e68aa26e6a0ce51cf2ae59d8-s1100-c50.jpg",
+        "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2F1direction.jpg?alt=media&token=c62c84bd-3b36-45b2-844a-f7c4f236fe01",
 
       songData:
-        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/HIGHEST IN THE ROOM - Travis Scott/HIGHEST IN THE ROOM - Travis Scott_",
+        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/What_Makes_You_Beautiful/What_Makes_You_Beautiful_",
     },
     playlist: [],
     // Song will be played next
@@ -35,6 +29,8 @@ const musicStore = createSlice({
     songQueuePlayed: [],
     isPlaying: false,
     currentTime: 0,
+    repeat: false,
+    shuffle: false,
     // ... other state properties
   },
   // type action
@@ -64,13 +60,43 @@ const musicStore = createSlice({
     setListSong: (state, action) => {
       state.listSong = action.payload;
     },
+    setRepeat: (state, action) => {
+      state.repeat = action.payload;
+      if (state.repeat === true) {
+        const currentSongCopy = { ...state.currentSong }; // Tạo bản sao của currentSong
+        state.songQueue = [currentSongCopy, ...state.songQueue]; // Thêm bản sao vào đầu mảng
+      }
+      if (state.repeat === false) {
+        // Xóa bản sao của currentSong khỏi đầu mảng songQueue
+        state.songQueue.shift();
+      }
+    },
+    setShuffle: (state, action) => {
+      state.shuffle = action.payload;
+      if (state.shuffle === true) {
+        // Tạo một bản sao của mảng songQueue
+        const shuffledQueue = [...state.songQueue];
+
+        // Sử dụng thuật toán xáo trộn Fisher-Yates
+        for (let i = shuffledQueue.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledQueue[i], shuffledQueue[j]] = [
+            shuffledQueue[j],
+            shuffledQueue[i],
+          ];
+        }
+
+        // Gán mảng đã xáo trộn vào state
+        state.songQueue = shuffledQueue;
+      }
+    },
+
     addSongToQueue: (state, action) => {
       state.songQueue.push(action.payload);
     },
     addPlaylistSongToQueue: (state, action) => {
       state.songQueue.push(...action.payload);
     },
-
     removeSongFromQueue: (state, action) => {
       state.songQueue = state.songQueue.filter(
         (song) => song.id !== action.payload
@@ -106,6 +132,8 @@ export const {
   setSongLinks,
   setDuration,
   setListSong,
+  setRepeat,
+  setShuffle,
   addSongToQueue,
   addPlaylistSongToQueue,
   removeSongFromQueue,

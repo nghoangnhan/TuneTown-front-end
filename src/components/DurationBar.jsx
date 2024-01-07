@@ -6,10 +6,11 @@ import useSongDuration from "../utils/songUtils";
 import {
   playNextSong,
   playPreviousSong,
-  setCurrentSong,
   setCurrentTime,
   setDuration,
   setIsPlaying,
+  setRepeat,
+  setShuffle,
   setSongLinks,
 } from "../redux/slice/music";
 
@@ -27,92 +28,15 @@ const DurationBar = () => {
   const songQueuePlayed = useSelector((state) => state.music.songQueuePlayed);
   const songQueue = useSelector((state) => state.music.songQueue); // Get song queue from the store
   const duration = useSelector((state) => state.music.currentSong.songDuration);
+  const songCover = useSelector((state) => state.music.currentSong.songCover);
   const audioFile = useSelector((state) => state.music.currentSong.songLink);
+  const songData = useSelector((state) => state.music.currentSong.songData);
   const currentTime = useSelector((state) => state.music.currentTime); // Current time when play a song
   const isPlaying = useSelector((state) => state.music.isPlaying); // Check if the song is playing
-  const songData = useSelector((state) => state.music.currentSong.songData);
   const volume = useSelector((state) => state.volume.volumeValue); // Get the volume from the store
-
-  // Update the currentTime every second
-  useEffect(() => {
-    // CheckPlaying(audioRef);
-    let interval; // Count the isPlaying
-    if (isPlaying == true && currentTime < duration) {
-      // Update every second
-      interval = setInterval(() => {
-        dispatch(setCurrentTime(currentTime + 1));
-        audioRef.current.currentTime = currentTime + 1;
-        // audioRef.current.play();
-      }, 1000);
-      dispatch(setIsPlaying(true));
-    }
-    // if max time is reached, stop the interval
-    else if (currentTime >= duration && isPlaying == true) {
-      dispatch(setCurrentTime(0));
-      dispatch(setIsPlaying(!isPlaying));
-      clearInterval(interval);
-
-      // play next song
-      if (songQueue.length > 0) {
-        dispatch(setCurrentTime(0));
-        dispatch(setIsPlaying(true));
-        dispatch(playNextSong());
-      } else if (songQueue.length == 0) {
-        dispatch(setIsPlaying(false));
-        dispatch(setCurrentTime(0));
-        // dispatch(setCurrentSong(null));
-        dispatch(setSongLinks(null));
-      }
-    } else {
-      clearInterval(interval); // If the song is paused, stop the interval
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, currentTime, duration, dispatch, CheckPlaying]);
-
-  // When click the play/pause button
-  const handlePlayPause = () => {
-    /**
-      Set the isPlaying state to the opposite value, 
-      then the useEffect willbe triggered and the play/pause button will be changed
-       */
-    dispatch(setIsPlaying(!isPlaying));
-    if (sourceNode.current[0] == null) {
-      loadAndPlayAudio();
-    } else {
-      // Pause the song
-      if (isPlaying == true && currentTime < duration) {
-        audioContext.suspend();
-      }
-      // Play the song
-      else if (isPlaying == false && currentTime < duration) {
-        audioContext.resume();
-      }
-    }
-  };
-
-  useEffect(() => {
-    const loadCurrentSong = async () => {
-      const clearCurrentSourceNode = async () => {
-        for (let i = 0; i < 10; i++) {
-          audioBufferArray.current = [];
-          if (sourceNode.current[i] != null) {
-            sourceNode.current[i].disconnect();
-            sourceNode.current[i] = null;
-          }
-          if (timeOutArray.current[i] != null)
-            clearTimeout(timeOutArray.current[i]);
-        }
-        isLoaded.current = false;
-      };
-      await clearCurrentSourceNode();
-
-      if (sourceNode.current[0] == null) {
-        setCurrentIndex(0);
-        loadAndPlayAudio();
-      }
-    };
-    loadCurrentSong();
-  }, [songData]);
+  const repeat = useSelector((state) => state.music.repeat); // Get the repeat state from the store
+  const shuffle = useSelector((state) => state.music.shuffle); // Get the shuffle state from the store
+  const [isAudioReady, setIsAudioReady] = useState(false);
 
   // HANLDE PLAYING AUDIO FILES WITH BUFFER
   const [audioContext, setAudioContext] = useState(null);
@@ -147,28 +71,6 @@ const DurationBar = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const gainVolume = useRef();
   const isSeeked = useRef(true);
-
-  /**
-   * Initialize the audioContext for a whole session
-   */
-  useEffect(() => {
-    const initAudioContext = async () => {
-      try {
-        const audioCtx = new (window.AudioContext ||
-          window.webkitAudioContext)();
-        setAudioContext(audioCtx);
-      } catch (error) {
-        console.error("Error initializing AudioContext:", error);
-      }
-    };
-    initAudioContext();
-    return () => {
-      if (audioContext) {
-        audioContext.close();
-      }
-    };
-  }, []);
-
   /**
    * Create a buffer source for buffered audio
    */
@@ -196,6 +98,27 @@ const DurationBar = () => {
   };
 
   /**
+   * Initialize the audioContext for a whole session
+   */
+  useEffect(() => {
+    const initAudioContext = async () => {
+      try {
+        const audioCtx = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        setAudioContext(audioCtx);
+      } catch (error) {
+        console.error("Error initializing AudioContext:", error);
+      }
+    };
+    initAudioContext();
+    return () => {
+      if (audioContext) {
+        audioContext.close();
+      }
+    };
+  }, []);
+
+  /**
    * Play the audio right after the first part is processed
    */
   useEffect(() => {
@@ -204,7 +127,6 @@ const DurationBar = () => {
       if (audioBufferArray.current.length > 0 && isLoaded.current) {
         await createSourceForPlaying(currentIndex);
         console.log(sourceNode.current[currentIndex]);
-
         // setting songDuration
         dispatch(
           setDuration(sourceNode.current[currentIndex].buffer.duration * 10)
@@ -227,7 +149,6 @@ const DurationBar = () => {
       // if (timeOutArray.current[currentIndex] != null) {
       //   clearTimeout(timeOutArray.current[currentIndex]);
       // }
-
       if (currentIndex + 1 < audioBufferArray.current.length) {
         await setOnEnded();
       }
@@ -236,6 +157,108 @@ const DurationBar = () => {
     playNext();
   }, [currentIndex, isSeeked.current]);
 
+  // ----------------------------------------------------
+  const checkAudioReady = () => {
+    if (audioBufferArray.current.length > 0) {
+      setIsAudioReady(true);
+      return true;
+    }
+    return false;
+  };
+
+  // Update the currentTime every second
+  useEffect(() => {
+    // CheckPlaying(audioRef);
+    let interval; // Count the isPlaying
+    if (isAudioReady == true && isPlaying == true && currentTime < duration) {
+      // Update every second
+      interval = setInterval(() => {
+        dispatch(setCurrentTime(currentTime + 1));
+        audioRef.current.currentTime = currentTime + 1;
+        // audioRef.current.play();
+      }, 1000);
+      dispatch(setIsPlaying(true));
+    }
+    // if max time is reached, stop the interval
+    else if (currentTime >= duration && isPlaying == true) {
+      dispatch(setCurrentTime(0));
+      dispatch(setIsPlaying(!isPlaying));
+      clearInterval(interval);
+
+      // play next song
+      if (songQueue.length > 0) {
+        dispatch(setCurrentTime(0));
+        dispatch(setIsPlaying(true));
+        dispatch(playNextSong());
+      } else if (songQueue.length == 0) {
+        dispatch(setIsPlaying(false));
+        dispatch(setCurrentTime(0));
+        // dispatch(setCurrentSong(null));
+        dispatch(setSongLinks(null));
+      }
+    } else {
+      clearInterval(interval); // If the song is paused, stop the interval
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, currentTime, duration, dispatch, CheckPlaying]);
+
+  // When click the play/pause button
+  const handlePlayPause = async () => {
+    /**
+      Set the isPlaying state to the opposite value, 
+      then the useEffect willbe triggered and the play/pause button will be changed
+       */
+    if (isAudioReady) {
+      dispatch(setIsPlaying(!isPlaying));
+      if (sourceNode.current[0] == null) {
+        await loadAndPlayAudio();
+      } else {
+        // Pause the song
+        if (isPlaying == true && currentTime < duration) {
+          audioContext.suspend();
+        }
+        // Play the song
+        else if (isPlaying == false && currentTime < duration) {
+          audioContext.resume();
+        }
+      }
+    }
+  };
+
+  // When click the repeat button
+  const handleRepeat = () => {
+    dispatch(setRepeat(!repeat));
+  };
+  const handleShuffle = () => {
+    dispatch(setShuffle(!shuffle));
+  };
+
+  useEffect(() => {
+    console.log("songData changed", songData);
+    const loadCurrentSong = async () => {
+      const clearCurrentSourceNode = async () => {
+        for (let i = 0; i < 10; i++) {
+          audioBufferArray.current = [];
+          if (sourceNode.current[i] != null) {
+            sourceNode.current[i].disconnect();
+            sourceNode.current[i] = null;
+          }
+          if (timeOutArray.current[i] != null)
+            clearTimeout(timeOutArray.current[i]);
+        }
+        isLoaded.current = false;
+      };
+      await clearCurrentSourceNode();
+
+      if (sourceNode.current[0] == null) {
+        await loadAndPlayAudio();
+        setCurrentIndex(0);
+        setIsAudioReady(true);
+      }
+    };
+    loadCurrentSong();
+  }, [songData]);
+
   // When the seekbar is changed by user
   const handleSeek = async (e) => {
     const newTime = e.target.value; // newTime is the new value of the seekbar
@@ -243,7 +266,6 @@ const DurationBar = () => {
     dispatch(setIsPlaying(true)); // When move the seekbar, the song will be played
     // audioRef.current.play();
     audioRef.current.currentTime = newTime; // Set the currentTime of the song to the newTime
-
     const clearCurrentSourceNode = async () => {
       for (let i = 0; i < 10; i++) {
         if (sourceNode.current[i] != null) sourceNode.current[i].disconnect();
@@ -252,7 +274,9 @@ const DurationBar = () => {
       }
     };
     await clearCurrentSourceNode();
-
+    if (sourceNode.current[0] == null) {
+      await loadAndPlayAudio();
+    }
     const partIndex = ~~(newTime / audioBufferArray.current[0].duration);
     const currentStartTime = newTime % audioBufferArray.current[0].duration;
     console.log(
@@ -262,9 +286,8 @@ const DurationBar = () => {
     setCurrentIndex(partIndex);
     isSeeked.current = !isSeeked.current;
     setStartTime(currentStartTime);
-
     // If the song is paused, play the song
-    if (newTime > 0 && newTime < duration && isPlaying === false) {
+    if (newTime >= 0 && newTime < duration && isPlaying === false) {
       dispatch(setIsPlaying(true));
     }
     // If the song is ended, stop the song
@@ -321,11 +344,14 @@ const DurationBar = () => {
     <div className="flex flex-col">
       <div className="flex flex-row justify-center items-center gap-3">
         {/* Shuffle button */}
-        <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">
+        <button
+          className="bg-white hover:bg-[#c8c7c7] rounded-xl"
+          onClick={() => handleShuffle()}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 25 24"
-            fill="#887D7D"
+            fill={`${shuffle ? "#44c261" : "#887D7D"}`}
             className="w-5 h-5"
           >
             <path d="M22.25 17.98C22.25 17.96 22.24 17.94 22.24 17.92C22.23 17.84 22.22 17.76 22.19 17.69C22.15 17.6 22.1 17.53 22.04 17.46C22.04 17.46 22.04 17.45 22.03 17.45C21.96 17.38 21.88 17.33 21.79 17.29C21.7 17.25 21.6 17.23 21.5 17.23L16.83 17.25C16.83 17.25 16.83 17.25 16.82 17.25C16.22 17.25 15.64 16.97 15.28 16.49L14.06 14.92C13.81 14.59 13.34 14.53 13.01 14.79C12.68 15.05 12.62 15.51 12.88 15.84L14.1 17.41C14.75 18.25 15.77 18.75 16.83 18.75H16.84L19.69 18.74L18.98 19.45C18.69 19.74 18.69 20.22 18.98 20.51C19.13 20.66 19.32 20.73 19.51 20.73C19.7 20.73 19.89 20.66 20.04 20.51L22.04 18.51C22.11 18.44 22.16 18.36 22.2 18.27C22.23 18.17 22.25 18.07 22.25 17.98Z" />
@@ -433,11 +459,14 @@ const DurationBar = () => {
         </button>
 
         {/* Repeat button */}
-        <button className="bg-white hover:bg-[#c8c7c7] rounded-xl">
+        <button
+          className="bg-white hover:bg-[#c8c7c7] rounded-xl"
+          onClick={() => handleRepeat()}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            fill="#887D7D"
+            fill={`${repeat ? "#44c261" : "#887D7D"}`}
             className="w-5 h-5"
           >
             <path
@@ -458,7 +487,7 @@ const DurationBar = () => {
           </span>
           <input
             type="range"
-            min="0"
+            min={0}
             max={duration}
             value={currentTime}
             onChange={handleSeek}
@@ -476,7 +505,7 @@ const DurationBar = () => {
           </span>
           <input
             type="range"
-            min="0"
+            min={0}
             max={duration}
             value={currentTime}
             onChange={handleSeek}
