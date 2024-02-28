@@ -121,10 +121,9 @@ export const useSongDuration = () => {
   };
   // Get the max duration of the song
   const GetSongDuration = (audioRef) => {
-    const audioElement = new Audio(audioRef);
-    const duration = audioElement.current.duration;
-    console.log(`The duration of the song is ${duration} seconds`);
-    dispatch(setDuration(audioElement.current.duration));
+    // const audioElement = new Audio(audioRef);
+    console.log("audioRef", audioRef.current.duration);
+    return audioRef.current.duration;
   };
 
   return {

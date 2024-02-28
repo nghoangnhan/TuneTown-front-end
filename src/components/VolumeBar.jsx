@@ -44,9 +44,10 @@ const VolumeBar = () => {
       </button>
       <input
         type="range"
-        min={-1}
-        max={1}
-        step={0.02}
+        min={0}
+        max={100}
+        step={1}
+        defaultValue={50}
         ref={audioRef}
         value={volume}
         onChange={changeVolume}

@@ -15,12 +15,14 @@ const musicStore = createSlice({
           userName: "One Direction",
         },
       ],
+      currentTime: 0,
       songDuration: 214,
       songCover:
         "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2F1direction.jpg?alt=media&token=c62c84bd-3b36-45b2-844a-f7c4f236fe01",
 
       songData:
-        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/What_Makes_You_Beautiful/What_Makes_You_Beautiful_",
+        // "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/What_Makes_You_Beautiful/What_Makes_You_Beautiful_",
+        HappyNewYear,
     },
     playlist: [],
     // Song will be played next
@@ -28,7 +30,6 @@ const musicStore = createSlice({
     // Song has been played
     songQueuePlayed: [],
     isPlaying: false,
-    currentTime: 0,
     repeat: false,
     shuffle: false,
     // ... other state properties
@@ -49,7 +50,7 @@ const musicStore = createSlice({
       state.isPlaying = action.payload;
     },
     setCurrentTime: (state, action) => {
-      state.currentTime = action.payload;
+      state.currentSong.currentTime = action.payload;
     },
     setSongLinks: (state, action) => {
       state.currentSong.songData = action.payload;
