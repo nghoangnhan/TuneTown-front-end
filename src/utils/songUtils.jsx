@@ -37,20 +37,6 @@ export const useSongDuration = () => {
     }
   };
   const showArtistV2 = (artistName) => {
-    // artists: [
-    //   {
-    //     id: 1,
-    //     userName: "One Direction",
-    //   },
-    //   {
-    //     id: 2,
-    //     userName: "Two Direction",
-    //   },
-    //   {
-    //     id: 3,
-    //     userName: "Three Direction",
-    //   },
-    // ],
     if (artistName.length > 1) {
       return artistName.map((artist) => (
         <span
@@ -78,7 +64,7 @@ export const useSongDuration = () => {
   };
   // Acronym the name of the song
   const AcronymName = (nameLenght, length) => {
-    if (nameLenght && nameLenght.length > 10) {
+    if (nameLenght && nameLenght.length > length) {
       return nameLenght.slice(0, length) + "...";
     } else {
       return nameLenght;
@@ -392,6 +378,7 @@ export const useMusicAPI = () => {
     deleteSong,
   };
 };
+
 export const useDataAPI = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();

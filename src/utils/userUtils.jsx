@@ -8,6 +8,7 @@ import { useState } from "react";
 const userUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+
   const CheckCookie = () => {
     if (access_token) {
       return true;

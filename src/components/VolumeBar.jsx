@@ -6,6 +6,7 @@ import { setVolume } from "../redux/slice/volume";
 const VolumeBar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const lyric = useSelector((state) => state.music.currentSong.lyric);
   const volume = useSelector((state) => state.volume.volumeValue); // Giả sử âm lượng mặc định là 50%
   const audioRef = useRef();
   const changeVolume = (e) => {
@@ -15,6 +16,24 @@ const VolumeBar = () => {
 
   return (
     <div className="hidden xl:flex flex-row absolute justify-center items-center inset-y-auto right-0 mr-5">
+      {/* Lyric Button  */}
+      <button
+        className={`mr-2 mt-1`}
+        disabled={!lyric}
+        onClick={() => navigate("/lyric")}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          fill={`${!lyric ? "#cfc9c9" : "#887D7D"}`}
+        >
+          <path d="M171.539-318.077v-484.038V-318.077Zm-55.96 184.766v-656.496q0-28.257 20.006-48.263 20.006-20.006 48.263-20.006h419.421q28.257 0 48.263 20.006 20.006 20.006 20.006 48.263v17.577q-16.231 7.692-30.172 18.215-13.942 10.524-25.788 23.437v-59.229q0-5.192-3.462-8.75t-8.847-3.558H183.848q-5.385 0-8.847 3.558-3.462 3.558-3.462 8.75v471.73h431.73q5.385 0 8.847-3.462 3.462-3.462 3.462-8.847v-139.229q11.846 12.988 25.788 23.571 13.941 10.582 30.172 18.082v97.576q0 28.438-20.006 48.353-20.006 19.916-48.263 19.916H244.385L115.579-133.311Zm149.999-278.805h135.961v-55.96H265.578v55.96Zm486.734-80q-44.966 0-76.427-31.513-31.462-31.514-31.462-76.423 0-44.909 31.426-76.467 31.426-31.557 76.21-31.557 15.172 0 27.46 3.827 12.289 3.827 24.904 12.443v-216.27h135.96v55.96h-80V-600q0 44.888-31.553 76.386-31.553 31.498-76.518 31.498Zm-486.734-40h255.961v-55.96H265.578v55.96Zm0-120h255.961v-55.96H265.578v55.96Z" />
+        </svg>
+      </button>
+
+      {/* Queue Button  */}
       <button className="mr-2" onClick={() => navigate("/queue")}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -31,6 +50,7 @@ const VolumeBar = () => {
           />
         </svg>
       </button>
+
       <button>
         <svg
           fill="#887D7D"
@@ -44,10 +64,9 @@ const VolumeBar = () => {
       </button>
       <input
         type="range"
-        min={0}
-        max={100}
-        step={1}
-        defaultValue={50}
+        min={-1}
+        max={1}
+        step={0.02}
         ref={audioRef}
         value={volume}
         onChange={changeVolume}

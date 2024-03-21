@@ -3,6 +3,7 @@ import accountReducer from "../slice/account";
 import musicReducer from "../slice/music";
 import playlistReducer from "../slice/playlist";
 import volumeReducer from "../slice/volume";
+import socialReducer from "../slice/social";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     music: musicReducer,
     playlist: playlistReducer,
     volume: volumeReducer,
+    social: socialReducer,
   },
 });
 export default store;

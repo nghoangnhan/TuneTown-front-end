@@ -15,6 +15,9 @@ import QueueSection from "../components/HomePage/QueueSection";
 import PlaylistManagement from "../components/CMS/pages/PlaylistManagement";
 import UploadSongPage from "../pages/UploadSongPage";
 import CMSArtist from "../pages/CMSArtist";
+import ChattingPage from "../pages/ChattingPage";
+import ChatArea from "../components/Chat/ChatArea";
+import LyricSection from "../components/HomePage/LyricSection";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -88,6 +91,20 @@ export default function init(routes) {
         path: "queue",
         element: <QueueSection />,
       },
+      {
+        path: "lyric",
+        element: <LyricSection />,
+      },
+    ],
+  };
+  const chatRoute = {
+    path: "chat/",
+    element: <ChattingPage />,
+    children: [
+      {
+        path: ":chatId",
+        element: <ChatArea />,
+      },
     ],
   };
 
@@ -120,4 +137,5 @@ export default function init(routes) {
   routes.push(route);
   // Push the new route
   routes.push(cmsRoute);
+  routes.push(chatRoute);
 }

@@ -16,7 +16,7 @@ const PlaylistSection = ({ playlistTitle }) => {
   }, []);
 
   return (
-    <div className="bg-[#FFFFFFCC] rounded-2xl max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-5 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
+    <div className="bg-[#FFFFFFCC] shadow-md rounded-2xl max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-5 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
       <div className="playlist-section xl:w-full py-2">
         <h1 className="text-[#2E3271] text-xl font-bold">{playlistTitle}</h1>
         <Swiper

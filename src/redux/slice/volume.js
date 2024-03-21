@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const volumeSlice = createSlice({
+const volumeStore = createSlice({
   name: "volume",
   initialState: {
-    volumeValue: 50,
+    volumeValue: 0.5,
   },
   reducers: {
     setVolume: (state, action) => {
@@ -12,5 +12,5 @@ const volumeSlice = createSlice({
   },
 });
 
-export const { setVolume } = volumeSlice.actions;
-export default volumeSlice.reducer;
+export const { setVolume } = volumeStore.actions;
+export default volumeStore.reducer;

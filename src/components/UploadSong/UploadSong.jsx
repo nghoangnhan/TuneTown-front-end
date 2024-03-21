@@ -30,7 +30,8 @@ const UploadSong = () => {
   const [uploadedFile, setUploadedFile] = useState({});
   const [fileIMG, setFileIMG] = useState();
   const [fileMP3, setFileMP3] = useState();
-
+  const [coverReady, setCoverReady] = useState(false);
+  const [songReady, setSongReady] = useState(false);
   //drop-zone
   const handleUploadFileIMG = async (file) => {
     let formData = new FormData();
@@ -48,13 +49,11 @@ const UploadSong = () => {
           },
         }
       );
-
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
         setFileIMG(response.data);
+        setCoverReady(true);
         message.success("Image Uploaded Successfully", 2);
-      } else {
-        console.error("Error posting files:", response.data);
       }
     } catch (error) {
       console.error("Error posting files:", error.message);
@@ -64,11 +63,7 @@ const UploadSong = () => {
     let formData = new FormData();
     formData.append("mp3File", file);
     console.log("handleUploadFile FileMP3", formData);
-    message.open({
-      type: "loading",
-      content: "Uploading Song File",
-      duration: 1,
-    });
+    message.loading("Uploading Song File", 1);
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadMp3`,
@@ -80,22 +75,17 @@ const UploadSong = () => {
           },
         }
       );
-
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
         setFileMP3(response.data);
-        message.open({
-          type: "success",
-          content: "Song File Uploaded Successfully",
-          duration: 2,
-        });
-      } else {
-        console.error("Error posting files:", response.data);
+        setSongReady(true);
+        message.success("Song File Uploaded Successfully", 2);
       }
     } catch (error) {
       console.error("Error posting files:", error.message);
     }
   };
+
   // Post Song to API
   const postSong = async (values) => {
     try {
@@ -117,6 +107,8 @@ const UploadSong = () => {
       message.error("Error posting song:", error.message);
     }
   };
+
+  // Submit Form
   const onFinish = async (values) => {
     console.log("Received values:", values);
     const { songName, artists, genres } = values;
@@ -194,12 +186,25 @@ const UploadSong = () => {
           },
         ]}
       >
-        <UploadFileDropZone
-          uploadedFile={uploadedFile}
-          setUploadedFile={setUploadedFile}
-          handleUploadFile={handleUploadFileIMG}
-          accept="image/jpeg, image/png"
-        />
+        <div className="flex flex-row items-center gap-2">
+          <UploadFileDropZone
+            uploadedFile={uploadedFile}
+            setUploadedFile={setUploadedFile}
+            handleUploadFile={handleUploadFileIMG}
+            accept="image/jpeg, image/png"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20"
+            viewBox="0 -960 960 960"
+            width="20"
+            className={`${coverReady ? "" : "hidden"}`}
+            fill={`${coverReady ? "#42ae49" : ""}`}
+          >
+            <path d="M316.231-280.54q-83.295 0-141.762-57.879-58.468-57.879-58.468-141.004 0-84.269 60.896-141.768 60.895-57.5 146.334-57.5h378.615q59.23 0 100.691 41.077 41.462 41.076 41.462 100.307 0 60.23-43.962 100.806-43.961 40.577-105.191 40.577H339.462q-34.761 0-59.418-24.219-24.658-24.219-24.658-59.033 0-35.67 25.622-59.9 25.622-24.231 62.454-24.231h361.152v51.999H339.462q-13.477 0-22.778 9.108-9.3 9.108-9.3 22.585t9.3 22.585q9.301 9.108 22.778 9.108H702.23q37.308.384 63.539-25.777T792-537.505q0-37.459-27.423-63.323-27.423-25.865-64.731-25.865H316.231q-61.538.385-104.385 43.154Q169-540.769 168-479.284q-1 61.465 44.346 104.49 45.347 43.025 108.885 42.256h383.383v51.998H316.231Z" />
+          </svg>
+          <img src={fileIMG} alt="" className="w-16 h-16" />
+        </div>
       </Form.Item>
       {/* MP3 File */}
       <Form.Item
@@ -214,24 +219,35 @@ const UploadSong = () => {
           },
         ]}
       >
-        <UploadFileDropZone
-          uploadedFile={uploadedFile}
-          setUploadedFile={setUploadedFile}
-          handleUploadFile={handleUploadFileMP3}
-          accept="audio/mp3"
-        />
+        <div className="flex flex-row items-center gap-2">
+          <UploadFileDropZone
+            uploadedFile={uploadedFile}
+            setUploadedFile={setUploadedFile}
+            handleUploadFile={handleUploadFileMP3}
+            accept="audio/mp3"
+          />{" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20"
+            viewBox="0 -960 960 960"
+            width="20"
+            className={`${songReady ? "" : "hidden"}`}
+            fill={`${songReady ? "#42ae49" : ""}`}
+          >
+            <path d="M316.231-280.54q-83.295 0-141.762-57.879-58.468-57.879-58.468-141.004 0-84.269 60.896-141.768 60.895-57.5 146.334-57.5h378.615q59.23 0 100.691 41.077 41.462 41.076 41.462 100.307 0 60.23-43.962 100.806-43.961 40.577-105.191 40.577H339.462q-34.761 0-59.418-24.219-24.658-24.219-24.658-59.033 0-35.67 25.622-59.9 25.622-24.231 62.454-24.231h361.152v51.999H339.462q-13.477 0-22.778 9.108-9.3 9.108-9.3 22.585t9.3 22.585q9.301 9.108 22.778 9.108H702.23q37.308.384 63.539-25.777T792-537.505q0-37.459-27.423-63.323-27.423-25.865-64.731-25.865H316.231q-61.538.385-104.385 43.154Q169-540.769 168-479.284q-1 61.465 44.346 104.49 45.347 43.025 108.885 42.256h383.383v51.998H316.231Z" />
+          </svg>
+        </div>
       </Form.Item>
       {/* Genre  */}
       <GenreInput></GenreInput>
 
       <Form.Item {...tailLayout}>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className="bg-[green] absolute right-2"
+        <button
+          type="submit"
+          className="bg-[green] hover:bg-[#42ae49] text-white px-2 py-2 font-semibold rounded-md absolute right-2"
         >
           Submit
-        </Button>
+        </button>
       </Form.Item>
     </Form>
   );

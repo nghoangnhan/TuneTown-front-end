@@ -6,7 +6,7 @@ const MyPlaylistItem = ({ id, playlistName, playlistType, coverArt }) => {
 
   return (
     <div
-      className="w-fit h-fit border-[1px] rounded-lg border-solid border-[#4cd658] bg-white hover:bg-slate-200 cursor-pointer"
+      className="w-fit h-fit border-[1px] rounded-lg border-solid shadow-md border-[#4cd658] bg-white hover:bg-slate-200 cursor-pointer"
       onClick={() => {
         navigate(`/mydetail/${id}`);
         localStorage.setItem("myPlaylistId", id);

@@ -14,15 +14,68 @@ const musicStore = createSlice({
         {
           userName: "One Direction",
         },
+        {
+          userName: "Two Direction",
+        },
       ],
       currentTime: 0,
       songDuration: 214,
       songCover:
         "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2F1direction.jpg?alt=media&token=c62c84bd-3b36-45b2-844a-f7c4f236fe01",
-
       songData:
-        // "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/What_Makes_You_Beautiful/What_Makes_You_Beautiful_",
-        HappyNewYear,
+        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/What_Makes_You_Beautiful/What_Makes_You_Beautiful_",
+      // HappyNewYear,
+      lyric: `
+      [Verse 1]:
+      You're insecure, don't know what for,
+      You're turning heads when you walk through the door,
+      Don't need makeup to cover up,
+      Being the way that you are is enough,
+
+      [Pre-Chorus]:
+      Everyone else in the room can see it,
+      Everyone else but you,
+
+      [Verse 1]:
+      You're insecure, don't know what for,
+      You're turning heads when you walk through the door,
+      Don't need makeup to cover up,
+      Being the way that you are is enough,
+
+      [Pre-Chorus]:
+      Everyone else in the room can see it,
+      Everyone else but you,
+
+      [Verse 1]:
+      You're insecure, don't know what for,
+      You're turning heads when you walk through the door,
+      Don't need makeup to cover up,
+      Being the way that you are is enough,
+
+      [Pre-Chorus]:
+      Everyone else in the room can see it,
+      Everyone else but you,
+
+      [Verse 1]:
+      You're insecure, don't know what for,
+      You're turning heads when you walk through the door,
+      Don't need makeup to cover up,
+      Being the way that you are is enough,
+
+      [Pre-Chorus]:
+      Everyone else in the room can see it,
+      Everyone else but you,
+
+      [Verse 1]:
+      You're insecure, don't know what for,
+      You're turning heads when you walk through the door,
+      Don't need makeup to cover up,
+      Being the way that you are is enough,
+
+      [Pre-Chorus]:
+      Everyone else in the room can see it,
+      Everyone else but you,
+      `,
     },
     playlist: [],
     // Song will be played next

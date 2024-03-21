@@ -26,7 +26,7 @@ const MusicControlBar = () => {
             {!isSmallScreen && songInfor.songName}
           </div>
           <div className="text-xs xl:text-base text-[#7C8DB5B8]">
-            {isSmallScreen && AcronymName(showArtistV2(songInfor.artists), 15)}
+            {isSmallScreen && AcronymName(showArtistV2(songInfor.artists), 10)}
             {!isSmallScreen && AcronymName(showArtistV2(songInfor.artists), 28)}
           </div>
         </div>

@@ -33,29 +33,32 @@ const QueueSection = () => {
         Your Queue
       </div>
 
-      <div className="text-2xl text-[#5d5c5c] font-bold text-start mt-10 mb-5">
-        Now Playing
+      <div className="shadow-lg p-2 rounded-md mt-10">
+        <div className="text-2xl text-[#5d5c5c] font-bold text-start mb-5">
+          Now Playing
+        </div>
+        <SongItemQueue song={playingSong} isPlaying={true}></SongItemQueue>
       </div>
-      <SongItemQueue song={playingSong} isPlaying={true}></SongItemQueue>
-
-      <div className="text-2xl text-[#5d5c5c] font-bold text-start mt-5 mb-5">
-        Next Up
-      </div>
-      <div className="flex flex-col gap-1">
-        {songQueue != null &&
-          songQueue.map((song, index) => (
-            <SongItemQueue
-              key={song.id}
-              order={index + 1}
-              song={song}
-              isPlaying={false}
-            ></SongItemQueue>
-          ))}
-        {songQueue != null && songQueue.length === 0 && (
-          <div className="text-center text-2xl font-bold text-[#5d5c5c] font-boldmt-5 mb-5">
-            No song in queue!
-          </div>
-        )}
+      <div className="p-2 mt-5 rounded-md shadow-lg">
+        <div className="text-2xl text-[#5d5c5c] font-bold text-start mt-5 mb-5">
+          Next Up
+        </div>
+        <div className="flex flex-col gap-1">
+          {songQueue != null &&
+            songQueue.map((song, index) => (
+              <SongItemQueue
+                key={song.id}
+                order={index + 1}
+                song={song}
+                isPlaying={false}
+              ></SongItemQueue>
+            ))}
+          {songQueue != null && songQueue.length === 0 && (
+            <div className="text-center text-2xl font-bold text-[#5d5c5c] mt-5 mb-5">
+              No song in queue!
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

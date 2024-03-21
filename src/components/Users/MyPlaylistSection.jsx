@@ -1,4 +1,3 @@
-import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
@@ -82,24 +81,35 @@ const MyPlaylistSection = () => {
   // dispatch(setPlaylistList(playlistList));
   // if (!playlistList) return null;
   // console.log("playlistttt", playlistList);
+
+  if (!playlistList)
+    return (
+      <div className="playlist-section xl:w-full xl:py-2">
+        <button
+          onClick={CreateNewPlaylist}
+          className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 mt-3 ml-3"
+        >
+          <div className="font-bold px-2 py-2">+ Create New Playlist</div>
+        </button>
+        <div className="text-center font-bold text-3xl text-[#339e3f]">
+          Create your new playlist!
+        </div>
+      </div>
+    );
   return (
-    <div className="playlist-section xl:w-full py-2">
+    <div className="playlist-section xl:w-full xl:py-2">
       <button
         onClick={CreateNewPlaylist}
         className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 mt-3 ml-3"
       >
         <div className="font-bold px-2 py-2">+ Create New Playlist</div>
       </button>
-      <Swiper
-        className="xl:mt-4 mt-2 pl-3 xl:pl-2"
-        spaceBetween={50}
-        grabCursor={"true"}
-        slidesPerView={"auto"}
-        direction={"horizontal"}
-      >
+
+      <div className="grid xl:grid-cols-4 gap-y-1 grid-cols-1 xl:px-5">
         {playlistList &&
           playlistList.map((playlistItem) => (
-            <SwiperSlide
+            <div
+              className="flex justify-center xl:w-full xl:h-full mt-10"
               key={playlistItem.id}
               onContextMenu={(event) => {
                 event.preventDefault();
@@ -114,9 +124,9 @@ const MyPlaylistSection = () => {
                 users={playlistItem.users}
                 coverArt={playlistItem.coverArt}
               ></MyPlaylistItem>
-            </SwiperSlide>
+            </div>
           ))}
-      </Swiper>
+      </div>
     </div>
   );
 };

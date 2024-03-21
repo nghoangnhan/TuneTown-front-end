@@ -2,13 +2,12 @@
 import axios from "axios";
 import "../../assets/CSS/ReactContexify.css";
 import { Base_URL } from "../../api/config";
-import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import UseCookie from "../../hooks/useCookie";
 import SongItem from "../Song/SongItem";
 
 // eslint-disable-next-line react/prop-types
-const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
+const SongChart = ({ titleSong, StartTime, EndTime }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [songList, setSongList] = useState([]);
@@ -59,9 +58,10 @@ const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
       setSongList(response);
     });
   }, [songPage]);
+
   if (!songList) {
     return (
-      <div className="bg-[#FFFFFFCC] rounded-2xl max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
+      <div className="bg-[#FFFFFFCC] rounded-2xl shadow-md max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
         <h1 className="text-[#2E3271] text-xl font-bold">
           Song Chart is updating...
         </h1>
@@ -70,7 +70,7 @@ const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
   }
 
   return (
-    <div className="bg-[#FFFFFFCC] rounded-2xl max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
+    <div className="bg-[#FFFFFFCC] rounded-2xl shadow-md max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
       <div className="flex flex-row justify-center items-center gap-3">
         <h1 className="text-[#2E3271] text-xl font-bold">{titleSongChart}</h1>
         <svg
@@ -121,4 +121,4 @@ const SongPeriodSection = ({ titleSong, StartTime, EndTime }) => {
   );
 };
 
-export default SongPeriodSection;
+export default SongChart;
