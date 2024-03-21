@@ -2,28 +2,49 @@ import { useNavigate } from "react-router-dom";
 import { useChatUtils } from "../../utils/chatUtils";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatChosen } from "../../redux/slice/social";
+import { Base_URL } from "../../api/config";
+import React, { useEffect, useState } from 'react';
+import UseCookie from "../../hooks/useCookie";
+import axios from "axios";
 
 const ChatNavigate = () => {
+  const userId = localStorage.getItem("userId");
   const { AcronymName } = useChatUtils();
+  const { getToken } = UseCookie();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { access_token } = getToken();
   const converChosen = useSelector(
     (state) => state.social.currentChat.currentChatId
   );
-  const ConverList = [
-    {
-      chatId: 0,
-      name: "Ahmed",
-      message: "hellaaaaaaaaaaaaaaaaaaaaaaaa",
-      time: "12:00",
-    },
-    {
-      chatId: 1,
-      name: "B",
-      message: "Hello",
-      time: "12:00",
-    },
-  ];
+  const [converList, setConverList] = useState([]);
+  useEffect(() => {
+    const fetchChatList = async () => {
+      try {
+        ///////////// TODO: userId = current user login
+        const response = await axios.get(`${Base_URL}/messages/loadChatList?userId=${userId}`, {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        });
+        const data = await response.data;
+        const sortedKeys = Object.keys(data).sort((a, b) => b - a);
+        // Convert object keys to array and map each item to the desired format
+        const updatedConverList = sortedKeys.map(key => ({
+          chatId: data[key].user.id,
+          name: data[key].user.userName,
+          message: data[key].lastMessage.content,
+          time: new Date(data[key].lastMessage.messageDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          avatar: data[key].user.avatar,
+        }));
+        setConverList(updatedConverList);
+      } catch (error) {
+        console.error('Error fetching chat list:', error);
+      }
+    };
+
+    fetchChatList();
+  }, []);
   const handleChatChosen = (chatId) => {
     console.log(chatId);
     dispatch(setChatChosen(chatId));
@@ -53,7 +74,7 @@ const ChatNavigate = () => {
       </button>
 
       <div className="flex flex-col justify-center gap-2 mt-2">
-        {ConverList.map((conver) => (
+        {converList.map((conver) => (
           <div
             key={conver.chatId}
             className={`${
@@ -63,7 +84,7 @@ const ChatNavigate = () => {
           >
             <div className="w-14">
               <img
-                src="https://via.placeholder.com/150"
+                src={conver.avatar}
                 alt="user"
                 className="rounded-full"
               />
