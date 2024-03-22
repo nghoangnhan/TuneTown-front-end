@@ -7,7 +7,6 @@ import {
   setCurrentTime,
   setIsPlaying,
 } from "../../redux/slice/music";
-import useSongDuration, { useMusicAPI } from "../../utils/songUtils";
 import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
 import {
   Menu,
@@ -17,6 +16,8 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
+import useSongDuration from "../../utils/songUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const SongItemQueue = ({ song, isPlaying, order }) => {
   const { id, songName, artists, songCover, songData } = song;
@@ -25,7 +26,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
-    useMusicAPI();
+    useMusicAPIUtils();
   const { showArtistV2 } = useSongDuration();
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");

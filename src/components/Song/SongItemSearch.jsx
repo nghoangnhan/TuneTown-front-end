@@ -7,7 +7,6 @@ import {
   setCurrentTime,
   setIsPlaying,
 } from "../../redux/slice/music";
-import useSongDuration, { useMusicAPI } from "../../utils/songUtils";
 import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
 import {
   Menu,
@@ -17,6 +16,8 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
+import useSongDuration from "../../utils/songUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 // Different from SongItem.jsx, this component is used for search page and the color of attribute is different
 const SongItemSearch = ({ song, songOrder }) => {
@@ -26,7 +27,7 @@ const SongItemSearch = ({ song, songOrder }) => {
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
-    useMusicAPI();
+    useMusicAPIUtils();
   const { showArtistV2 } = useSongDuration();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);

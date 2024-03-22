@@ -2,10 +2,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import PlaylistItem from "../Playlist/PlaylistItem";
 import { useEffect, useState } from "react";
-import { useMusicAPI } from "../../utils/songUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const PlaylistSection = ({ playlistTitle }) => {
-  const { getUserPlaylist } = useMusicAPI();
+  const { getUserPlaylist } = useMusicAPIUtils();
   const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState();
 

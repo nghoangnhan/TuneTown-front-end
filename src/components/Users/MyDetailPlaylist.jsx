@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Form, Input, Modal, Select } from "antd";
-import { useDataAPI, useMusicAPI } from "../../utils/songUtils";
 import MySongSectionPlaylist from "./MySongSectionPlaylist";
 import { useDispatch, useSelector } from "react-redux";
 import { setRefreshPlaylist } from "../../redux/slice/playlist";
 import UploadFileDropZone from "../UploadSong/UploadFileDropZone";
+import { useDataUtils } from "../../utils/useDataUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const MyDetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
   const { playlistId } = useParams();
   const [form] = Form.useForm();
   const { editPlaylist, getListSongPlaylist, getPlaylistByPlaylistId } =
-    useMusicAPI();
+    useMusicAPIUtils();
   const dispatch = useDispatch();
-  const { handleUploadFileIMG } = useDataAPI();
+  const { handleUploadFileIMG } = useDataUtils();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
   const [modalOpen, setModalOpen] = useState(false);

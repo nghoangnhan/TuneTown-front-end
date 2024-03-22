@@ -58,6 +58,20 @@ const TheHeader = () => {
   return (
     <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-[#ecf2fd]">
       <div className="xl:right-5 xl:mt-5 right-3 absolute flex flex-row justify-center items-center">
+        <div
+          className="flex items-center justify-center mr-3 mt-1 cursor-pointer  "
+          onClick={() => navigate("/chat")}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 -960 960 960"
+            width="24"
+            fill="#505050"
+          >
+            <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+          </svg>
+        </div>
         {
           <div>
             {userRole === "ADMIN" && (

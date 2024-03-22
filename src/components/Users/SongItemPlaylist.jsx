@@ -8,7 +8,7 @@ import {
   setCurrentTime,
   setIsPlaying,
 } from "../../redux/slice/music";
-import useSongDuration, { useMusicAPI } from "../../utils/songUtils";
+
 import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
 import {
   Menu,
@@ -22,6 +22,8 @@ import { setRefreshPlaylist } from "../../redux/slice/playlist";
 import axios from "axios";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import useSongDuration from "../../utils/songUtils";
 
 const SongItemPlaylist = ({
   song,
@@ -40,7 +42,7 @@ const SongItemPlaylist = ({
     getUserPlaylist,
     deleteSongInPlaylist,
     addSongToHistory,
-  } = useMusicAPI();
+  } = useMusicAPIUtils();
   const { showArtistV2, TimeConvert } = useSongDuration();
   const dispatch = useDispatch();
   const audioRef = useRef();

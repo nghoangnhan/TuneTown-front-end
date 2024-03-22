@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
 import axios from "axios";
-import { useMusicAPI } from "../../utils/songUtils";
+
 import { useDispatch } from "react-redux";
 import { setMyPLaylistList } from "../../redux/slice/playlist";
 import MyPlaylistItem from "./MyPlaylistItem";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const MyPlaylistSection = () => {
   const { getToken } = UseCookie();
-  const { getUserPlaylist } = useMusicAPI();
+  const { getUserPlaylist } = useMusicAPIUtils();
   const { access_token } = getToken();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");

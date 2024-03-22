@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SongPlaylist from "./SongSectionPlaylist";
-import { useMusicAPI } from "../../utils/songUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const DetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
   const { playlistId } = useParams();
-  const { getListSongPlaylist, getPlaylistByPlaylistId } = useMusicAPI();
+  const { getListSongPlaylist, getPlaylistByPlaylistId } = useMusicAPIUtils();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
 

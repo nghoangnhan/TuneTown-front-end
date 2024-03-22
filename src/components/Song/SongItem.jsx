@@ -7,7 +7,7 @@ import {
   setCurrentTime,
   setIsPlaying,
 } from "../../redux/slice/music";
-import useSongDuration, { useMusicAPI } from "../../utils/songUtils";
+
 import DefaultArt from "../../assets/img/logo/logo.png";
 import {
   Menu,
@@ -17,6 +17,8 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
+import useSongDuration from "../../utils/songUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const SongItem = ({ song, songOrder, songListen }) => {
   const { id, songName, artists, poster, songData } = song;
@@ -25,7 +27,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
-    useMusicAPI();
+    useMusicAPIUtils();
   const { showArtistV2 } = useSongDuration();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);

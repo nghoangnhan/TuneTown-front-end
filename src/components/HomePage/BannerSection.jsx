@@ -1,12 +1,12 @@
 import { Carousel } from "antd";
 import { useEffect, useState } from "react";
-import { useMusicAPI } from "../../utils/songUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import { useNavigate } from "react-router-dom";
 
 const BannerSection = () => {
   const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState();
-  const { getUserPlaylist } = useMusicAPI();
+  const { getUserPlaylist } = useMusicAPIUtils();
   const navigate = useNavigate();
   const navigateToPlaylist = (playlistId) => {
     navigate(`/detail/${playlistId}`);
