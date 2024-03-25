@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 const MessageSection = ({ chatContent }) => {
-  console.log("Chat Content:", chatContent);
+  // console.log("Chat Content:", chatContent);
   return (
     <div className="flex flex-col min-h-screen h-screen overflow-auto xl:w-full bg-orange-300 py-20">
       {chatContent.map((chat, index) => (

@@ -9,7 +9,7 @@ const ChatArea = () => {
   // const userId = localStorage.getItem("userId");
   const userId = parseInt(localStorage.getItem("userId"), 10);
 
-  console.log("Chat Area Mounted");
+  // console.log("Chat Area Mounted");
   const chatId = useParams().chatId;
   const { getToken } = UseCookie();
   const { access_token } = getToken();
@@ -21,7 +21,7 @@ const ChatArea = () => {
   };
 
   // Use chatID to fetch chat content from server
-  const fetchChatlist = async (sendUserId, receiveUserId) => {
+  const loadMessage = async (sendUserId, receiveUserId) => {
     try {
       const response = await axios.post(
         `${Base_URL}/messages/loadMessage`,
@@ -36,8 +36,8 @@ const ChatArea = () => {
         }
       );
       const messages = response.data;
-      console.log("Response load message:", messages); // Log the entire response object
-      console.log("Current User", userId);
+      // console.log("Response load message:", messages); // Log the entire response object
+      // console.log("Current User", userId);
       if (response.status !== 200) {
         throw new Error("Failed to fetch messages");
       }
@@ -85,8 +85,8 @@ const ChatArea = () => {
           },
         }
       );
-      console.log("Response:", response.data);
-      fetchChatlist(sendUserId, receiveUserId);
+      // console.log("Response:", response.data);
+      loadMessage(sendUserId, receiveUserId);
       // Clear the message input
       setNewMessage("");
     } catch (error) {
@@ -95,9 +95,9 @@ const ChatArea = () => {
   };
 
   useEffect(() => {
-    console.log(chatId);
-    console.log("ChatArea Mounted");
-    fetchChatlist(userId, chatId);
+    // console.log(chatId);
+    // console.log("ChatArea Mounted");
+    loadMessage(userId, chatId);
   }, [chatId]);
 
   return (

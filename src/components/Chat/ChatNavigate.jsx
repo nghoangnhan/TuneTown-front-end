@@ -6,6 +6,9 @@ import { Base_URL } from "../../api/config";
 import { useEffect, useState } from "react";
 import UseCookie from "../../hooks/useCookie";
 import axios from "axios";
+// import SockJS from 'sockjs-client/dist/sockjs.js';
+// import Stomp from 'stompjs';
+// import {over} from 'stompjs';
 
 const ChatNavigate = () => {
   const userId = localStorage.getItem("userId");
@@ -18,42 +21,46 @@ const ChatNavigate = () => {
     (state) => state.social.currentChat.currentChatId
   );
   const [converList, setConverList] = useState([]);
-  useEffect(() => {
-    const fetchChatList = async () => {
-      try {
-        //  TODO: userId = current user login
-        const response = await axios.get(
-          `${Base_URL}/messages/loadChatList?userId=${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        );
-        const data = await response.data;
-        const sortedKeys = Object.keys(data).sort((a, b) => b - a);
-        // Convert object keys to array and map each item to the desired format
-        const updatedConverList = sortedKeys.map((key) => ({
-          chatId: data[key].user.id,
-          name: data[key].user.userName,
-          message: data[key].lastMessage.content,
-          time: new Date(data[key].lastMessage.messageDate).toLocaleTimeString(
-            [],
-            { hour: "2-digit", minute: "2-digit" }
-          ),
-          avatar: data[key].user.avatar,
-        }));
-        setConverList(updatedConverList);
-      } catch (error) {
-        console.error("Error fetching chat list:", error);
-      }
-    };
 
+  const fetchChatList = async () => {
+    try {
+      //  TODO: userId = current user login
+      const response = await axios.get(
+        `${Base_URL}/messages/loadChatList?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      const data = await response.data;
+      // Sort the message by messageDate
+      const sortedData = Object.values(data).sort((a, b) => {
+        return new Date(b.lastMessage.messageDate) - new Date(a.lastMessage.messageDate);
+      });
+
+      const updatedConverList = sortedData.map((item) => ({
+        chatId: item.user.id,
+        name: item.user.userName,
+        message: item.lastMessage.content,
+        time: new Date(item.lastMessage.messageDate).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        }),
+        avatar: item.user.avatar,
+      }));
+      setConverList(updatedConverList);
+    } catch (error) {
+      console.error("Error fetching chat list:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchChatList();
   }, []);
 
   const handleChatChosen = (chatId) => {
-    console.log(chatId);
+    // console.log(chatId);
     dispatch(setChatChosen(chatId));
     navigate(`/chat/${chatId}`);
   };
