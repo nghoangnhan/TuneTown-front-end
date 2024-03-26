@@ -5,13 +5,16 @@ const socialStore = createSlice({
   initialState: {
     isOnline: false,
     currentChat: {
-      currentChatId: "",
-      conversation: [],
+      chatId: Number,
+      name: "",
+      message: "",
+      time: "",
+      avatar: null,
     },
   },
   reducers: {
     setChatChosen: (state, action) => {
-      state.currentChat.currentChatId = action.payload;
+      state.currentChat = action.payload;
     },
   },
 });
