@@ -17,7 +17,8 @@ export const cliendId =
   "295516651084-5baqm2houfs6u6voha4a8s66j8ga6fru.apps.googleusercontent.com";
 
 // Socket.io
-export const socket = io.connect("ws://localhost:3000");
+// export const socket = io.connect("ws://localhost:3000");
+export const socket = io.connect("https://socketserver-v6lc.onrender.com");
 
 // Get token from cookie
 const token = getToken();
