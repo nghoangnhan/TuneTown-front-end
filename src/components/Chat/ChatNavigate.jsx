@@ -32,17 +32,19 @@ const ChatNavigate = () => {
       );
       console.log("Chat List Response:", response.data);
       const data = await response.data;
-      const sortedKeys = Object.keys(data).sort((a, b) => b - a);
-      // Convert object keys to array and map each item to the desired format
-      const updatedConverList = sortedKeys.map((key) => ({
-        chatId: data[key].user.id,
-        name: data[key].user.userName,
-        message: data[key].lastMessage.content,
-        time: new Date(data[key].lastMessage.messageDate).toLocaleTimeString(
-          [],
-          { hour: "2-digit", minute: "2-digit" }
-        ),
-        avatar: data[key].user.avatar,
+      const sortedData = Object.values(data).sort((a, b) => {
+        return new Date(b.lastMessage.messageDate) - new Date(a.lastMessage.messageDate);
+      });
+
+      const updatedConverList = sortedData.map((item) => ({
+        chatId: item.user.id,
+        name: item.user.userName,
+        message: item.lastMessage.content,
+        time: new Date(item.lastMessage.messageDate).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        }),
+        avatar: item.user.avatar,
       }));
       setConverList(updatedConverList);
     } catch (error) {
