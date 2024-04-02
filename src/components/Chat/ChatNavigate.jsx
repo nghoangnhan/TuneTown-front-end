@@ -33,19 +33,26 @@ const ChatNavigate = () => {
       );
       console.log("Chat List Response:", response.data);
       const data = await response.data;
-      const sortedKeys = Object.keys(data).sort((a, b) => b - a);
-      // Convert object keys to array and map each item to the desired format
-      const updatedConverList = sortedKeys.map((key) => ({
-        chatId: data[key].user.id,
-        name: data[key].user.userName,
-        message: data[key].lastMessage.content,
-        time: new Date(data[key].lastMessage.messageDate).toLocaleTimeString(
-          [],
-          { hour: "2-digit", minute: "2-digit" }
-        ),
-        avatar: data[key].user.avatar,
+      const sortedData = Object.values(data).sort((a, b) => {
+        return (
+          new Date(b.lastMessage.messageDate) -
+          new Date(a.lastMessage.messageDate)
+        );
+      });
+
+      const updatedConverList = sortedData.map((item) => ({
+        chatId: item.user.id,
+        name: item.user.userName,
+        message: item.lastMessage.content,
+        time: new Date(item.lastMessage.messageDate).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        avatar: item.user.avatar,
+        seen: item.lastMessage.seen,
       }));
       setConverList(updatedConverList);
+      console.log(updatedConverList);
     } catch (error) {
       console.error("Error fetching chat list:", error);
     }
@@ -87,34 +94,44 @@ const ChatNavigate = () => {
       </button>
 
       <div className="flex flex-col justify-center gap-2 mt-2">
-        {converList
-          .sort((a, b) => new Date(b.time) - new Date(a.time))
-          .map((conver) => (
-            <div
-              key={conver.chatId}
-              className={`${
-                converChosen == conver.chatId ? "bg-slate-300" : ""
-              } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
-              onClick={() => handleChatChosen(conver.chatId, conver)}
-            >
-              <div className="w-14">
-                <img
-                  src={conver.avatar ? conver.avatar : defaultAva}
-                  alt="user"
-                  className="rounded-full"
-                />
-              </div>
-              <div className="w-3/4">
-                <h3 className="text-base font-bold">
-                  {AcronymName(conver.name, 17)}
-                </h3>
-                <p className="text-sm"> {AcronymName(conver.message, 22)}</p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">{conver.time}</p>
-              </div>
+        {converList.map((conver) => (
+          <div
+            key={conver.chatId}
+            className={`${
+              converChosen == conver.chatId ? "bg-slate-300" : ""
+            } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
+            onClick={() => {
+              console.log("Seen status:", conver.seen);
+              handleChatChosen(conver.chatId, conver);
+            }}
+          >
+            <div className="w-14">
+              <img
+                src={conver.avatar ? conver.avatar : defaultAva}
+                alt="user"
+                className="rounded-full"
+              />
             </div>
-          ))}
+            <div className="w-3/4">
+              <h3 className="text-base font-bold">
+                {AcronymName(conver.name, 17)}
+              </h3>
+              <p
+                className={`text-sm ${
+                  conver.seen === 0 ? "font-bold" : "font-italic"
+                }`}
+              >
+                {" "}
+                {AcronymName(conver.message, 22)}
+              </p>
+            </div>
+            <div>
+              <p className={`text-sm ${conver.seen === 0 ? "font-bold" : ""}`}>
+                {conver.time}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
