@@ -45,8 +45,10 @@ const ChatNavigate = () => {
           minute: "2-digit"
         }),
         avatar: item.user.avatar,
+        seen: item.lastMessage.seen
       }));
       setConverList(updatedConverList);
+      console.log(updatedConverList);
     } catch (error) {
       console.error("Error fetching chat list:", error);
     }
@@ -89,7 +91,10 @@ const ChatNavigate = () => {
             className={`${
               converChosen == conver.chatId ? "bg-slate-300" : ""
             } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
-            onClick={() => handleChatChosen(conver.chatId, conver)}
+            onClick={() => {
+              console.log("Seen status:", conver.seen)
+              handleChatChosen(conver.chatId, conver)}
+            }
           >
             <div className="w-14">
               <img
@@ -102,10 +107,10 @@ const ChatNavigate = () => {
               <h3 className="text-base font-bold">
                 {AcronymName(conver.name, 17)}
               </h3>
-              <p className="text-sm"> {AcronymName(conver.message, 22)}</p>
+              <p className={`text-sm ${conver.seen === 0 ? 'font-bold' : 'font-italic'}`}> {AcronymName(conver.message, 22)}</p>
             </div>
             <div>
-              <p className="text-sm text-slate-400">{conver.time}</p>
+              <p className={`text-sm ${conver.seen === 0 ? 'font-bold' : ''}`}>{conver.time}</p>
             </div>
           </div>
         ))}
