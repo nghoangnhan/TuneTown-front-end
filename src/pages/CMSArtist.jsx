@@ -5,6 +5,7 @@ import UseCookie from "../hooks/useCookie";
 import { useEffect, useState } from "react";
 import { Form, Input, Modal, Space, Table, message } from "antd";
 import UpdateSong from "../components/UploadSong/UpdateSong";
+import useUserUtils from "../utils/useUserUtils";
 
 const CMSArtist = () => {
   const { getToken } = UseCookie();
@@ -16,23 +17,8 @@ const CMSArtist = () => {
   const [songData, setSongData] = useState({});
   const [searchValue, setSearchValue] = useState("");
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
-  const getArtistByArtistId = async (artistId) => {
-    try {
-      const response = await axios.post(
-        `${Base_URL}/users/getArtistDetail?artistId=${artistId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-      console.log("getArtistByArtistId Response", response.data);
-      return response.data;
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
+  const { getArtistByArtistId } = useUserUtils();
+
   const handleGetArtistDetail = async (artistId) => {
     await getArtistByArtistId(artistId).then((result) => {
       setArtistDetail(result);
@@ -89,7 +75,7 @@ const CMSArtist = () => {
       <img
         src={songItem.poster}
         alt={songItem.songName}
-        className="w-11 h-11 rounded-md"
+        className="rounded-md w-11 h-11"
       />
     ),
     songName: songItem.songName,
@@ -163,7 +149,7 @@ const CMSArtist = () => {
       render: (status) => {
         if (status === 0) {
           return (
-            <div className="flex justify-center items-center">
+            <div className="flex items-center justify-center">
               <div
                 className="
           bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg w-fit h-fit px-2 py-1
@@ -175,7 +161,7 @@ const CMSArtist = () => {
           );
         } else if (status === 1) {
           return (
-            <div className="flex justify-center items-center">
+            <div className="flex items-center justify-center">
               <div
                 className="
           bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg w-fit h-fit px-2 py-1
@@ -216,9 +202,7 @@ const CMSArtist = () => {
     }
   }, []);
   useEffect(() => {
-    handleGetArtistDetail(userId).then(() => {
-      setRefresh(true);
-    });
+    handleGetArtistDetail(userId);
   }, [userId, refresh]);
   return (
     <div className="h-full min-h-screen text-[#2E3271] bg-[#ecf2fd] pt-5 pb-24 px-1">

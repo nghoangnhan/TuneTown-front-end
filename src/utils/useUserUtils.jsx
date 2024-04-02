@@ -5,7 +5,7 @@ import UseCookie from "../hooks/useCookie";
 import { Base_URL } from "../api/config";
 import { useState } from "react";
 
-const userUtils = () => {
+const useUserUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
 
@@ -34,7 +34,24 @@ const userUtils = () => {
       console.error("Error edited user:", error.message);
     }
   };
+  const getArtistByArtistId = async (artistId) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/users/getArtistDetail?artistId=${artistId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("getArtistByArtistId Response", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
 
-  return { CheckCookie, getUserInfor };
+  return { CheckCookie, getUserInfor, getArtistByArtistId };
 };
-export default userUtils;
+export default useUserUtils;

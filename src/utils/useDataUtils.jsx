@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Base_URL } from "../api/config";
-import { message } from "antd";
 import UseCookie from "../hooks/useCookie";
 
 export const useDataUtils = () => {
@@ -12,7 +11,6 @@ export const useDataUtils = () => {
     let formData = new FormData();
     formData.append("image", file);
     console.log("handleUploadFile FileIMG", formData);
-    message.loading("Uploading Image", 1);
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadImage`,
@@ -26,9 +24,10 @@ export const useDataUtils = () => {
       );
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
-        message.success("Image Uploaded Successfully", 2);
-        return response.data;
+      } else {
+        console.error("Error posting files:", response.data);
       }
+      return response;
     } catch (error) {
       console.error("Error posting files:", error.message);
     }
@@ -38,7 +37,6 @@ export const useDataUtils = () => {
     let formData = new FormData();
     formData.append("mp3File", file);
     console.log("handleUploadFile FileMP3", formData);
-    message.loading("Uploading Song File", 1);
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadMp3`,
@@ -52,14 +50,14 @@ export const useDataUtils = () => {
       );
       if (response.status == 200) {
         console.log("Files posted successfully:", response.data);
-        message.success("Song File Uploaded Successfully", 2);
       } else {
         console.error("Error posting files:", response.data);
       }
+      return response;
     } catch (error) {
       console.error("Error posting files:", error.message);
     }
   };
-
   return { handleUploadFileIMG, handleUploadFileMP3 };
 };
+export default useDataUtils;

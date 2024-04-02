@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useChatUtils } from "../../utils/useChatUtils";
-import { useDispatch, useSelector } from "react-redux";
-import { setChatChosen } from "../../redux/slice/social";
-import { Base_URL } from "../../api/config";
 import { useEffect, useState } from "react";
-import UseCookie from "../../hooks/useCookie";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import defaultAva from "../../assets/img/logo/logo.png";
+import { useChatUtils } from "../../utils/useChatUtils";
+import UseCookie from "../../hooks/useCookie";
+import { setChatChosen } from "../../redux/slice/social";
+import { Base_URL } from "../../api/config";
+import { setIsNewMessage } from "../../redux/slice/social";
 
 const ChatNavigate = () => {
   const userId = localStorage.getItem("userId");
@@ -17,8 +18,8 @@ const ChatNavigate = () => {
   const { access_token } = getToken();
   const [converList, setConverList] = useState([]);
   const converChosen = useSelector((state) => state.social.currentChat.chatId);
+  const isNewMessage = useSelector((state) => state.social.isNewMessage);
 
-  console.log("Conver Chosen:", converList);
   const fetchChatList = async () => {
     try {
       //  userId = current user login
@@ -58,8 +59,13 @@ const ChatNavigate = () => {
   };
 
   useEffect(() => {
+    if (isNewMessage == true) {
+      fetchChatList().then(() => {
+        dispatch(setIsNewMessage(false));
+      });
+    }
     fetchChatList();
-  }, []);
+  }, [isNewMessage]);
 
   return (
     <div className="min-h-screen px-1 bg-gray-100 border-gray-200 w-80 h-fit">
@@ -81,32 +87,34 @@ const ChatNavigate = () => {
       </button>
 
       <div className="flex flex-col justify-center gap-2 mt-2">
-        {converList.map((conver) => (
-          <div
-            key={conver.chatId}
-            className={`${
-              converChosen == conver.chatId ? "bg-slate-300" : ""
-            } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
-            onClick={() => handleChatChosen(conver.chatId, conver)}
-          >
-            <div className="w-14">
-              <img
-                src={conver.avatar ? conver.avatar : defaultAva}
-                alt="user"
-                className="rounded-full"
-              />
+        {converList
+          .sort((a, b) => new Date(b.time) - new Date(a.time))
+          .map((conver) => (
+            <div
+              key={conver.chatId}
+              className={`${
+                converChosen == conver.chatId ? "bg-slate-300" : ""
+              } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
+              onClick={() => handleChatChosen(conver.chatId, conver)}
+            >
+              <div className="w-14">
+                <img
+                  src={conver.avatar ? conver.avatar : defaultAva}
+                  alt="user"
+                  className="rounded-full"
+                />
+              </div>
+              <div className="w-3/4">
+                <h3 className="text-base font-bold">
+                  {AcronymName(conver.name, 17)}
+                </h3>
+                <p className="text-sm"> {AcronymName(conver.message, 22)}</p>
+              </div>
+              <div>
+                <p className="text-sm text-slate-400">{conver.time}</p>
+              </div>
             </div>
-            <div className="w-3/4">
-              <h3 className="text-base font-bold">
-                {AcronymName(conver.name, 17)}
-              </h3>
-              <p className="text-sm"> {AcronymName(conver.message, 22)}</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-400">{conver.time}</p>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

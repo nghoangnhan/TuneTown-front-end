@@ -1,29 +1,26 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import UseCookie from "../../hooks/useCookie";
 import { Base_URL, socket } from "../../api/config";
 import MessageSection from "./MessageSection";
 import defaultAva from "../../assets/img/logo/logo.png";
 import { useChatUtils } from "../../utils/useChatUtils";
+import { setIsNewMessage } from "../../redux/slice/social";
 
 const ChatArea = () => {
   // const userId = localStorage.getItem("userId");
-  const { handleSocketReconnect } = useChatUtils();
+  const { handleSocketReconnect, fetchChatlist } = useChatUtils();
+  const { getToken } = UseCookie();
+  const dispatch = useDispatch();
+  const { access_token } = getToken();
   const userId = parseInt(localStorage.getItem("userId"), 10);
   const chatId = useParams().chatId;
   const converChosen = useSelector((state) => state.social.currentChat);
-  const { getToken } = UseCookie();
-  const { access_token } = getToken();
+
   const [newMessage, setNewMessage] = useState("");
   const [chatContent, setChatContent] = useState([]);
-  const [messageReceived, setMessageReceived] = useState(false);
-  const { fetchChatlist } = useChatUtils();
-
-  const handleMessageChange = (event) => {
-    setNewMessage(event.target.value);
-  };
 
   const sendMessage = async (sendUserId, receiveUserId, content) => {
     // Check if the message is empty or the sender is the receiver
@@ -57,19 +54,38 @@ const ChatArea = () => {
         receiveUserId: receiveUserId,
         content: content,
       });
+
+      // Update the chat list
       fetchChatlist(userId, chatId).then((data) => {
         setChatContent(data);
       });
+
+      // Set isNewMessage to true
+      dispatch(setIsNewMessage(true));
     } catch (error) {
       console.error("Error sending messages:", error);
     }
   };
 
+  const handleMessageChange = (event) => {
+    setNewMessage(event.target.value);
+  };
+
   useEffect(() => {
-    fetchChatlist(userId, chatId).then((data) => {
-      setChatContent(data);
-    });
-  }, [chatId]);
+    if (userId != null) {
+      fetchChatlist(userId, chatId).then((data) => {
+        setChatContent(data);
+      });
+    }
+  }, [userId, chatId]);
+
+  useEffect(() => {
+    if (converChosen != null) {
+      fetchChatlist(userId, chatId).then((data) => {
+        setChatContent(data);
+      });
+    }
+  }, [converChosen]);
 
   useEffect(() => {
     handleSocketReconnect(socket);
@@ -78,10 +94,10 @@ const ChatArea = () => {
   useEffect(() => {
     socket.on("receive_message", (message) => {
       console.log("Received message:", message);
-
       fetchChatlist(userId, chatId).then((data) => {
         setChatContent(data);
       });
+      dispatch(setIsNewMessage(true));
     });
 
     // // Ngắt kết nối khi component unmounts

@@ -61,20 +61,6 @@ const musicStore = createSlice({
       You're turning heads when you walk through the door,
       Don't need makeup to cover up,
       Being the way that you are is enough,
-
-      [Pre-Chorus]:
-      Everyone else in the room can see it,
-      Everyone else but you,
-
-      [Verse 1]:
-      You're insecure, don't know what for,
-      You're turning heads when you walk through the door,
-      Don't need makeup to cover up,
-      Being the way that you are is enough,
-
-      [Pre-Chorus]:
-      Everyone else in the room can see it,
-      Everyone else but you,
       `,
     },
     playlist: [],

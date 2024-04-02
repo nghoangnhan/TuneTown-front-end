@@ -1,14 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from "react-redux";
-import { setDuration } from "../redux/slice/music";
-import { useRef, useState } from "react";
-import axios from "axios";
-import { Base_URL } from "../api/config";
-import UseCookie from "../hooks/useCookie";
-import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 
-export const useSongDuration = () => {
+export const useSongUtils = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //     const { setDuration } = useMusicSlice();
@@ -41,7 +35,7 @@ export const useSongDuration = () => {
       return artistName.map((artist) => (
         <span
           key={artist.id}
-          className="cursor-pointe hover:underline cursor-pointer"
+          className="cursor-pointer cursor-pointe hover:underline"
           onClick={() => navigate(`artist/${artist.id}`)}
         >
           {artist.userName}, &nbsp;
@@ -52,7 +46,7 @@ export const useSongDuration = () => {
       return (
         <span
           key={artist.id}
-          className="cursor-pointe hover:underline cursor-pointer"
+          className="cursor-pointer cursor-pointe hover:underline"
           onClick={() => navigate(`artist/${artist.id}`)}
         >
           {artist.userName}
@@ -122,4 +116,4 @@ export const useSongDuration = () => {
     GetSongDuration,
   };
 };
-export default useSongDuration;
+export default useSongUtils;

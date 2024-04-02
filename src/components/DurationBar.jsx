@@ -2,7 +2,7 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useSelector, useDispatch } from "react-redux";
-import useSongDuration from "../utils/songUtils";
+import useSongUtils from "../utils/useSongUtils";
 import {
   playNextSong,
   playPreviousSong,
@@ -16,19 +16,16 @@ import {
 } from "../redux/slice/music";
 
 const DurationBar = () => {
-  const { TimeConvert, CheckPlaying, GetSongDuration } = useSongDuration(); // Song Function
+  const { TimeConvert, CheckPlaying, GetSongDuration } = useSongUtils(); // Song Function
   const dispatch = useDispatch();
   const audioRef = useRef();
 
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   // const [duration, setDuration] = useState("0"); // Max time of the song
   const songObj = useSelector((state) => state.music.currentSong); // Get song information from the store
-  // console.log("file: DurationBar.jsx:21 || DurationBar || songObj:", songObj);
   const songQueuePlayed = useSelector((state) => state.music.songQueuePlayed);
   const songQueue = useSelector((state) => state.music.songQueue); // Get song queue from the store
   const duration = useSelector((state) => state.music.currentSong.songDuration);
-  // const songCover = useSelector((state) => state.music.currentSong.songCover);
-  // const audioFile = useSelector((state) => state.music.currentSong.songLink);
   const songData = useSelector((state) => state.music.currentSong.songData);
   const currentTime = useSelector(
     (state) => state.music.currentSong.currentTime
@@ -342,7 +339,7 @@ const DurationBar = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row justify-center items-center gap-3">
+      <div className="flex flex-row items-center justify-center gap-3">
         {/* Shuffle button */}
         <button
           className="bg-white hover:bg-[#c8c7c7] rounded-xl"
@@ -487,7 +484,7 @@ const DurationBar = () => {
       {/* Seekbar Control Song */}
       {/* Mobile  */}
       {isMobile && (
-        <div className="flex flex-row justify-center items-center xl:relative max-sm:static max-sm:bottom-0 max-sm:w-screen px-5">
+        <div className="flex flex-row items-center justify-center px-5 xl:relative max-sm:static max-sm:bottom-0 max-sm:w-screen">
           <span className="text-xs xl:text-base">
             {TimeConvert(currentTime)}
           </span>
@@ -505,7 +502,7 @@ const DurationBar = () => {
 
       {/* Desktop  */}
       {!isMobile && (
-        <div className="xl:flex flex-row justify-center items-center xl:relative">
+        <div className="flex-row items-center justify-center xl:flex xl:relative">
           <span className="text-xs xl:text-base">
             {TimeConvert(currentTime)}
           </span>

@@ -30,7 +30,7 @@ const EditInfor = () => {
   const formRef = useRef(null);
   const [userInfor, setUserInfor] = useState({});
   const [fileIMG, setFileIMG] = useState();
-  // const { getUserInfor } = userUtils();
+  // const { getUserInfor } = useUserUtils();
   // Get user information from API
   const getUserInfor = async () => {
     try {
@@ -107,7 +107,7 @@ const EditInfor = () => {
   }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
   return (
     <section className="w-full h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
-      <div className="flex justify-center items-center h-fit">
+      <div className="flex items-center justify-center h-fit">
         <Form
           {...layout}
           ref={formRef}
@@ -117,7 +117,7 @@ const EditInfor = () => {
           className="xl:w-[500px] relative w-fit border border-[#d2cece] rounded-md mx-auto p-5 bg-[#f6f4f4] "
           // initialValues={{ userName: userInfor.userName }}
         >
-          <div className="w-full text-center mb-5">
+          <div className="w-full mb-5 text-center">
             <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
               Edit Information
             </h2>

@@ -13,9 +13,9 @@ const VolumeBar = () => {
     const newVolume = e.target.value;
     dispatch(setVolume(newVolume));
   };
-
+  // console.log("VolumeBar Lyric ", lyric);
   return (
-    <div className="hidden xl:flex flex-row absolute justify-center items-center inset-y-auto right-0 mr-5">
+    <div className="absolute inset-y-auto right-0 flex-row items-center justify-center hidden mr-5 xl:flex">
       {/* Lyric Button  */}
       <button
         className={`mr-2 mt-1`}

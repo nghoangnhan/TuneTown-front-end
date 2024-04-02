@@ -18,6 +18,8 @@ import CMSArtist from "../pages/CMSArtist";
 import ChattingPage from "../pages/ChattingPage";
 import ChatArea from "../components/Chat/ChatArea";
 import LyricSection from "../components/HomePage/LyricSection";
+import ForumPage from "../pages/ForumPage";
+import PostItemDetail from "../components/Forum/PostItemDetail";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -95,6 +97,14 @@ export default function init(routes) {
         path: "lyric",
         element: <LyricSection />,
       },
+      {
+        path: "forum",
+        element: <ForumPage />,
+      },
+      {
+        path: "forum/:postId",
+        element: <PostItemDetail />,
+      },
     ],
   };
   const chatRoute = {
@@ -135,7 +145,6 @@ export default function init(routes) {
 
   // push route
   routes.push(route);
-  // Push the new route
   routes.push(cmsRoute);
   routes.push(chatRoute);
 }

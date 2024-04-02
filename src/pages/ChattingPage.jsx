@@ -3,7 +3,6 @@ import ChatNavigate from "../components/Chat/ChatNavigate";
 import { useEffect, useState } from "react";
 import UseCookie from "../hooks/useCookie";
 import { Modal } from "antd";
-import { socket } from "../api/config";
 
 const ChattingPage = () => {
   const [open, setOpen] = useState(false);
@@ -30,16 +29,6 @@ const ChattingPage = () => {
       // console.log("CheckCookie", access_token);
     }
   }, [access_token]);
-
-  // useEffect(() => {
-  //   // Lắng nghe các sự kiện từ máy chủ
-  //   socket.on("connect", () => {
-  //     console.log("Connected to server");
-  //   });
-  //   socket.on("disconnect", () => {
-  //     console.log("Disconnected from server");
-  //   });
-  // }, [socket]);
 
   return (
     <div className="flex flex-row w-full h-full min-h-screen min-w-screen">

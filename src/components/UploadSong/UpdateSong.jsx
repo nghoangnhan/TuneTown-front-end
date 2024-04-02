@@ -1,12 +1,13 @@
-/* eslint-disable react/prop-types */
-import { useEffect, useCallback, useState, useRef } from "react";
-import { useDropzone } from "react-dropzone";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Button, Form, Input, message } from "antd";
 import { Base_URL } from "../../api/config";
 import ArtistInput from "./ArtistInput";
 import UseCookie from "../../hooks/useCookie";
 import GenreInput from "./GenreInput";
+import useDataUtils from "../../utils/useDataUtils";
+import UploadFileDropZone from "../../utils/useDropZone";
+import PropTypes from "prop-types";
 
 const layout = {
   labelCol: {
@@ -27,83 +28,34 @@ const UpdateSong = ({ songData }) => {
   const formRef = useRef(null);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const [form] = Form.useForm();
   const [uploadedFile, setUploadedFile] = useState({});
   const [fileIMG, setFileIMG] = useState();
   const [fileMP3, setFileMP3] = useState();
-  const [form] = Form.useForm();
+  const [coverReady, setCoverReady] = useState(false);
+  const [songReady, setSongReady] = useState(false);
+  const { handleUploadFileIMG, handleUploadFileMP3 } = useDataUtils();
 
-  //drop-zone
-  const handleUploadFileIMG = async (file) => {
-    let formData = new FormData();
-    formData.append("image", file);
-    console.log("handleUploadFile FileIMG", formData);
-    message.open({
-      type: "loading",
-      content: "Uploading Image",
-      duration: 1,
-    });
-    try {
-      const response = await axios.post(
-        `${Base_URL}/file/uploadImage`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.status == 200) {
-        console.log("Files posted successfully:", response.data);
-        setFileIMG(response.data);
-        message.open({
-          type: "success",
-          content: "Image Uploaded Successfully",
-          duration: 2,
-        });
-      } else {
-        console.error("Error posting files:", response.data);
+  const UploadIMGfile = async (file) => {
+    message.loading("Uploading Image", 1);
+    await handleUploadFileIMG(file).then((res) => {
+      if (res.status === 200) {
+        setFileIMG(res.data);
+        setCoverReady(true);
+        message.success("Image Uploaded Successfully", 2);
       }
-    } catch (error) {
-      console.error("Error posting files:", error.message);
-    }
+    });
   };
-  const handleUploadFileMP3 = async (file) => {
-    let formData = new FormData();
-    formData.append("mp3File", file);
-    console.log("handleUploadFile FileMP3", formData);
-    message.open({
-      type: "loading",
-      content: "Uploading Song File",
-      duration: 1,
-    });
-    try {
-      const response = await axios.post(
-        `${Base_URL}/file/uploadMp3`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
 
-      if (response.status == 200) {
-        console.log("Files posted successfully:", response.data);
-        setFileMP3(response.data);
-        message.open({
-          type: "success",
-          content: "Song File Uploaded Successfully",
-          duration: 2,
-        });
-      } else {
-        console.error("Error posting files:", response.data);
+  const UploadMP3file = async (file) => {
+    message.loading("Uploading Song File", 1);
+    await handleUploadFileMP3(file).then((res) => {
+      if (res.status === 200) {
+        setFileMP3(res.data);
+        setSongReady(true);
+        message.success("Song File Uploaded Successfully", 2);
       }
-    } catch (error) {
-      console.error("Error posting files:", error.message);
-    }
+    });
   };
 
   // Get Song from API
@@ -194,6 +146,7 @@ const UpdateSong = ({ songData }) => {
         genre: data.genre,
         poster: data.poster,
         songData: data.songData,
+        lyric: data?.lyric,
       });
     });
   }, [songData.songId]);
@@ -205,7 +158,7 @@ const UpdateSong = ({ songData }) => {
     }
   }, [access_token]);
   return (
-    <section className="w-full h-full relative flex flex-col ">
+    <section className="relative flex flex-col w-full h-full ">
       <Form
         {...layout}
         ref={formRef}
@@ -214,7 +167,7 @@ const UpdateSong = ({ songData }) => {
         onFinish={onFinish}
         className="border rounded-md mx-auto p-5 bg-[#f9f9f9]"
       >
-        <div className="w-full text-center mb-5">
+        <div className="w-full mb-5 text-center">
           <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
             Update Song
           </h2>
@@ -230,9 +183,7 @@ const UpdateSong = ({ songData }) => {
         >
           <Input />
         </Form.Item>
-
         <ArtistInput></ArtistInput>
-
         <Form.Item
           name="poster"
           label="Upload Cover Art"
@@ -245,18 +196,31 @@ const UpdateSong = ({ songData }) => {
             },
           ]}
         >
-          <UploadFileDropZone
-            uploadedFile={uploadedFile}
-            setUploadedFile={setUploadedFile}
-            handleUploadFile={handleUploadFileIMG}
-            accept="image/jpeg, image/png"
-          />
+          <div className="flex flex-row items-center gap-2">
+            <UploadFileDropZone
+              uploadedFile={uploadedFile}
+              setUploadedFile={setUploadedFile}
+              handleUploadFile={UploadIMGfile}
+              accept="image/jpeg, image/png"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20"
+              viewBox="0 -960 960 960"
+              width="20"
+              className={`${coverReady ? "" : "hidden"}`}
+              fill={`${coverReady ? "#42ae49" : ""}`}
+            >
+              <path d="M316.231-280.54q-83.295 0-141.762-57.879-58.468-57.879-58.468-141.004 0-84.269 60.896-141.768 60.895-57.5 146.334-57.5h378.615q59.23 0 100.691 41.077 41.462 41.076 41.462 100.307 0 60.23-43.962 100.806-43.961 40.577-105.191 40.577H339.462q-34.761 0-59.418-24.219-24.658-24.219-24.658-59.033 0-35.67 25.622-59.9 25.622-24.231 62.454-24.231h361.152v51.999H339.462q-13.477 0-22.778 9.108-9.3 9.108-9.3 22.585t9.3 22.585q9.301 9.108 22.778 9.108H702.23q37.308.384 63.539-25.777T792-537.505q0-37.459-27.423-63.323-27.423-25.865-64.731-25.865H316.231q-61.538.385-104.385 43.154Q169-540.769 168-479.284q-1 61.465 44.346 104.49 45.347 43.025 108.885 42.256h383.383v51.998H316.231Z" />
+            </svg>
+            <img src={fileIMG} alt="" className="w-16 h-16" />
+          </div>
         </Form.Item>
         {/* MP3 File */}
         <Form.Item
           name="songData"
           label="Upload File"
-          extra="Upload your audio file mp3, wav"
+          extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
           getValueFromEvent={(e) => e && e.fileList}
           valuePropName="fileList"
           rules={[
@@ -265,15 +229,40 @@ const UpdateSong = ({ songData }) => {
             },
           ]}
         >
-          <UploadFileDropZone
-            uploadedFile={uploadedFile}
-            setUploadedFile={setUploadedFile}
-            handleUploadFile={handleUploadFileMP3}
-            accept="audio/mp3"
-          />
+          <div className="flex flex-row items-center gap-2">
+            <UploadFileDropZone
+              uploadedFile={uploadedFile}
+              setUploadedFile={setUploadedFile}
+              handleUploadFile={UploadMP3file}
+              accept="audio/mp3"
+            />{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20"
+              viewBox="0 -960 960 960"
+              width="20"
+              className={`${songReady ? "" : "hidden"}`}
+              fill={`${songReady ? "#42ae49" : ""}`}
+            >
+              <path d="M316.231-280.54q-83.295 0-141.762-57.879-58.468-57.879-58.468-141.004 0-84.269 60.896-141.768 60.895-57.5 146.334-57.5h378.615q59.23 0 100.691 41.077 41.462 41.076 41.462 100.307 0 60.23-43.962 100.806-43.961 40.577-105.191 40.577H339.462q-34.761 0-59.418-24.219-24.658-24.219-24.658-59.033 0-35.67 25.622-59.9 25.622-24.231 62.454-24.231h361.152v51.999H339.462q-13.477 0-22.778 9.108-9.3 9.108-9.3 22.585t9.3 22.585q9.301 9.108 22.778 9.108H702.23q37.308.384 63.539-25.777T792-537.505q0-37.459-27.423-63.323-27.423-25.865-64.731-25.865H316.231q-61.538.385-104.385 43.154Q169-540.769 168-479.284q-1 61.465 44.346 104.49 45.347 43.025 108.885 42.256h383.383v51.998H316.231Z" />
+            </svg>
+          </div>
         </Form.Item>
         {/* Genre  */}
         <GenreInput></GenreInput>
+        {/* Lyric */}
+        <Form.Item
+          name="lyric"
+          label="Lyric"
+          rules={[
+            {
+              required: false,
+            },
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+
         <Form.Item {...tailLayout}>
           <Button
             type="primary"
@@ -288,60 +277,9 @@ const UpdateSong = ({ songData }) => {
   );
 };
 
-// Use to upload File
-function UploadFileDropZone(props) {
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result;
-        console.log(binaryStr);
-        props.setUploadedFile(file);
-      };
-      reader.readAsArrayBuffer(file);
-      props.handleUploadFile(file);
-    });
-  }, []);
-
-  const { getRootProps, getInputProps, open } = useDropzone({
-    noClick: true,
-    onDrop,
-    maxSize: 10485760,
-    maxFiles: 1,
-    accept:
-      props.accept === "image/jpeg, image/png"
-        ? {
-            "image/jpeg": [".jpg", ".jpeg"],
-            "image/png": [".png"],
-          }
-        : props.accept === "audio/mp3"
-        ? {
-            "audio/mpeg": [".mp3"],
-            "audio/wav": [".wav"],
-            "audio/webm": [".webm"],
-            "audio/flac": [".flac"],
-            "audio/x-m4a": [".m4a"],
-          }
-        : undefined,
-  });
-
-  return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      <Button
-        type="button"
-        onClick={open}
-        variant="contained"
-        className="border border-solid border-[#42ae49] bg-white hover:bg-[#42ae49] hover:text-white text-[#42ae49]"
-        sx={{ width: "100%", height: 24 }}
-      >
-        Select file
-      </Button>
-    </div>
-  );
-}
-
+UpdateSong.propTypes = {
+  songData: PropTypes.shape({
+    songId: PropTypes.string.isRequired,
+  }).isRequired,
+};
 export default UpdateSong;

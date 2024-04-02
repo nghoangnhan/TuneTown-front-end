@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -8,7 +6,6 @@ import {
   setCurrentTime,
   setIsPlaying,
 } from "../../redux/slice/music";
-
 import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
 import {
   Menu,
@@ -23,7 +20,8 @@ import axios from "axios";
 import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import useSongDuration from "../../utils/songUtils";
+import useSongUtils from "../../utils/useSongUtils";
+import PropTypes from "prop-types";
 
 const SongItemPlaylist = ({
   song,
@@ -34,7 +32,7 @@ const SongItemPlaylist = ({
 }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const { id, songName, artists, poster, songData } = song;
+  const { id, songName, artists, poster, songData, lyric } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
   const {
@@ -43,12 +41,11 @@ const SongItemPlaylist = ({
     deleteSongInPlaylist,
     addSongToHistory,
   } = useMusicAPIUtils();
-  const { showArtistV2, TimeConvert } = useSongDuration();
+  const { showArtistV2, TimeConvert } = useSongUtils();
   const dispatch = useDispatch();
   const audioRef = useRef();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
-  const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
   const draggableSong = useSelector((state) => state.playlist.draggable);
@@ -64,6 +61,7 @@ const SongItemPlaylist = ({
     songDuration: songInfor.songDuration,
     songCover: poster,
     songData: songData,
+    lyric: lyric,
   };
 
   // When click to the song, save the current song to the context and play it
@@ -187,7 +185,7 @@ const SongItemPlaylist = ({
       </Menu>
 
       <div
-        className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-xl text-sm xl:text-base p-2 my-1 cursor-pointer"
+        className="relative flex flex-row items-center p-2 my-1 text-sm bg-white cursor-pointer text-primary hover:bg-slate-200 rounded-xl xl:text-base"
         draggable={draggableSong}
         onDragStart={(e) => {
           e.dataTransfer.setData("text/plain", songOrder);
@@ -205,31 +203,27 @@ const SongItemPlaylist = ({
         }}
       >
         {
-          <div
-            className=" xl:w-12 xl:h-12
-        mx-2 xl:mx-3  flex justify-center items-center text-[#464444] font-bold
-        "
-          >
+          <div className="flex items-center justify-center mx-2 font-bold xl:w-12 xl:h-12 xl:mx-3 text-primary">
             <span>{songOrder}</span>
           </div>
         }
         <img
-          className="mr-3 w-12 h-12 xl:w-14 xl:h-14 rounded-lg object-cover"
+          className="object-cover w-12 h-12 mr-3 rounded-lg xl:w-14 xl:h-14"
           alt="Album cover"
           src={poster ? poster : DefaultArt}
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
-        <div className="text-[#2E3271] xl:text-base font-semibold">
+        <div className="font-semibold text-primary xl:text-base">
           <h2 className="">{songInforObj.songName}</h2>
-          <h2 className="text-sm text-[#7C8DB5B8] mt-1">
+          <h2 className="mt-1 text-sm text-primaryLight">
             {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}
           </h2>
         </div>
-        <div className="absolute right-4 flex flex-row items-center gap-1 xl:gap-10">
+        <div className="absolute flex flex-row items-center gap-1 right-4 xl:gap-10">
           <button
-            className="hover:bg-slate-300 rounded-2xl p-1"
+            className="p-1 hover:bg-slate-300 rounded-2xl"
             onClick={HandlePlay}
           >
             <svg
@@ -255,3 +249,10 @@ const SongItemPlaylist = ({
 };
 
 export default SongItemPlaylist;
+SongItemPlaylist.propTypes = {
+  song: PropTypes.object.isRequired,
+  songId: PropTypes.string.isRequired,
+  songOrder: PropTypes.number.isRequired,
+  songIndex: PropTypes.number.isRequired,
+  playlistId: PropTypes.string.isRequired,
+};

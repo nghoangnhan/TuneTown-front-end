@@ -41,10 +41,6 @@ const SongSection = ({ titleSong }) => {
 
   const handleLoadMore = () => {
     setSongPage((prevPage) => prevPage + 1);
-    // if (hasMoreSongs) {
-    //   console.log("songPageeeeeeeeee", songPage);
-    //   getListSong(songPage);
-    // }
   };
 
   useEffect(() => {
@@ -63,9 +59,9 @@ const SongSection = ({ titleSong }) => {
 
   return (
     <div className="bg-[#FFFFFFCC] shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
-      <h1 className="text-[#2E3271] text-xl font-bold">{titleSong}</h1>
+      <h1 className="text-xl font-bold text-primary">{titleSong}</h1>
       <div className="xl:w-full">
-        <div className="mt-2 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mt-2">
           {songList &&
             songList.map((songItem, index) => (
               <div key={index}>
@@ -73,10 +69,10 @@ const SongSection = ({ titleSong }) => {
               </div>
             ))}
           {hasMoreSongs == true && (
-            <div className="flex justify-center items-center   ">
+            <div className="flex items-center justify-center ">
               <button
                 onClick={() => handleLoadMore()}
-                className="border border-solid py-2 px-2 w-fit text-[#399f39] border-[#399f39] hover:text-white hover:bg-[#399f39] rounded-md"
+                className="px-2 py-2 transition duration-300 ease-in-out border border-solid rounded-md w-fit text-primary border-primary hover:text-white hover:bg-primary"
               >
                 Load More
               </button>

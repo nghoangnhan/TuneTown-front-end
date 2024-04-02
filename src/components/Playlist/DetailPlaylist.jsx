@@ -38,13 +38,13 @@ const DetailPlaylist = () => {
           onClick={() => window.history.back()}
           className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md mb-5"
         >
-          <div className="text-white font-bold px-2 py-1">{"<"} Back</div>
+          <div className="px-2 py-1 font-bold text-white">{"<"} Back</div>
         </button>
       </div>
       <div className="flex flex-row items-start text-7xl text-[#4b4848] font-bold text-center mb-5 gap-4">
-        <div className="flex flex-row items-start relative">
+        <div className="relative flex flex-row items-start">
           <img
-            className="w-20 h-20 xl:w-56 xl:h-56 rounded-md"
+            className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
             src={
               playlistDetail.coverArt
                 ? playlistDetail.coverArt

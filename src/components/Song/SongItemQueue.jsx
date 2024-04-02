@@ -16,18 +16,18 @@ import {
   useContextMenu,
 } from "react-contexify";
 import { message } from "antd";
-import useSongDuration from "../../utils/songUtils";
+import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const SongItemQueue = ({ song, isPlaying, order }) => {
-  const { id, songName, artists, songCover, songData } = song;
+  const { id, songName, artists, songCover, songData, lyric } = song;
   const audioRef = useRef();
   const { show } = useContextMenu();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
     useMusicAPIUtils();
-  const { showArtistV2 } = useSongDuration();
+  const { showArtistV2 } = useSongUtils();
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
@@ -42,6 +42,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
     songDuration: songInfor.songDuration,
     songCover: songCover,
     songData: songData,
+    lyric: lyric,
   };
 
   // When click to the song, save the current song to the context and play it
@@ -120,12 +121,9 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
         </Submenu>
       </Menu>
 
-      <div className="flex flex-row relative hover:bg-slate-200 bg-white items-center rounded-md text-sm xl:text-base p-2 my-1 cursor-pointer">
-        <div
-          className="xl:w-12 xl:h-12
-        mx-2 xl:mx-3  flex justify-center items-center text-[#464444] font-bold
-        "
-        >
+      <div className="relative flex flex-row items-center p-2 my-1 text-sm bg-white rounded-md cursor-pointer hover:bg-slate-200 xl:text-base">
+        {/* Icon Music / */}
+        <div className="flex items-center justify-center mx-2 font-bold xl:w-12 xl:h-12 xl:mx-3 text-primary ">
           <span>
             {order && isPlaying == false ? (
               order
@@ -148,28 +146,28 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
           </span>
         </div>
         <img
-          className="mr-3 w-12 h-12 xl:w-14 xl:h-14 rounded-lg object-cover"
+          className="object-cover w-12 h-12 mr-3 rounded-lg xl:w-14 xl:h-14"
           alt="Album cover"
           src={songCover ? songCover : DefaultArt}
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songData}></audio>
         <div className="text-[#2E3271] xl:text-base font-semibold">
-          <h2 className="">{songInforObj.songName}</h2>
+          <h2 className="text-primary">{songInforObj.songName}</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">
             {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}
           </h2>
         </div>
-        <div className="absolute right-4 flex flex-row items-center gap-1 xl:gap-10">
+        <div className="absolute flex flex-row items-center gap-1 right-4 xl:gap-10">
           <button
-            className="hover:bg-slate-300 rounded-2xl p-1"
+            className="p-1 hover:opacity-60 rounded-2xl"
             onClick={HandlePlay}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill="currentColor"
+              fill="#79AC78"
               className="w-6 h-6"
             >
               <path
