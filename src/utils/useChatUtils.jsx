@@ -242,6 +242,11 @@ export const useForumUtils = () => {
     windownEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleCheckLiked = (likes) => {
+    if (!likes) return;
+    return !!likes.find((like) => like.id === userId);
+  };
+
   return {
     getAllPost,
     getPostById,
@@ -251,6 +256,7 @@ export const useForumUtils = () => {
     likePost,
     AcronymPost,
     scrollToBottom,
+    handleCheckLiked,
   };
 };
 
