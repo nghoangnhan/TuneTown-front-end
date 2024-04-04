@@ -1,6 +1,16 @@
 import PropTypes from "prop-types";
+import { setIsReply } from "../../redux/slice/social.js";
+import { useDispatch } from "react-redux";
+import { setReplyCommentId } from "../../redux/slice/social.js";
 
 const PostItemComment = ({ postContent }) => {
+  const dispatch = useDispatch();
+
+  const handleReply = (comment) => {
+    dispatch(setIsReply(true));
+    dispatch(setReplyCommentId(comment.id));
+  };
+
   // Component code here
   return (
     <div>
@@ -18,7 +28,10 @@ const PostItemComment = ({ postContent }) => {
                 <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
                   Like
                 </button>
-                <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
+                <button
+                  className="mx-2 mt-1 text-xs font-semibold opacity-80"
+                  onClick={() => handleReply(comment)}
+                >
                   Reply
                 </button>
                 <span className="mx-2 mt-1 text-xs font-semibold opacity-80">

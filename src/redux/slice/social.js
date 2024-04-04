@@ -12,6 +12,8 @@ const socialStore = createSlice({
       time: "",
       avatar: null,
     },
+    isReplying: false,
+    replyCommentId: Number,
   },
   reducers: {
     setChatId: (state, action) => {
@@ -23,9 +25,20 @@ const socialStore = createSlice({
     setIsNewMessage: (state, action) => {
       state.isNewMessage = action.payload;
     },
+    setIsReply: (state, action) => {
+      state.isReplying = action.payload;
+    },
+    setReplyCommentId: (state, action) => {
+      state.replyCommentId = action.payload;
+    },
   },
 });
 
-export const { setChatChosen, setChatId, setIsNewMessage } =
-  socialStore.actions;
+export const {
+  setChatChosen,
+  setChatId,
+  setIsNewMessage,
+  setIsReply,
+  setReplyCommentId,
+} = socialStore.actions;
 export default socialStore.reducer;

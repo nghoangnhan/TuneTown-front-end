@@ -180,7 +180,6 @@ export const useForumUtils = () => {
           },
         }
       );
-
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -195,7 +194,7 @@ export const useForumUtils = () => {
         {
           author: { id: value.author },
           content: value.content,
-          like: 0,
+          likes: 0,
           dislikes: 0,
           reply: null,
         },

@@ -2,22 +2,28 @@ import { useParams } from "react-router-dom";
 import { useForumUtils } from "../../utils/useChatUtils";
 import { useEffect, useRef, useState } from "react";
 import PostItemComment from "./PostItemComment";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsReply } from "../../redux/slice/social.js";
 
 const PostItemDetail = () => {
   const { postId } = useParams();
   const {
     getPostById,
     createComment,
+    createReply,
     scrollToBottom,
     likePost,
     handleCheckLiked,
   } = useForumUtils();
+  const dispatch = useDispatch();
   const userId = parseInt(localStorage.getItem("userId"));
   const commentRef = useRef(null);
   const windownEndRef = useRef(null);
   const [refresh, setRefresh] = useState(false);
   const [postContent, setPostContent] = useState();
   const [liked, setLiked] = useState();
+  const isReplying = useSelector((state) => state.social.isReplying);
+  const replyCommentId = useSelector((state) => state.social.replyCommentId);
 
   const countTime = new Date(
     postContent?.postTime || Date.now()
@@ -32,21 +38,37 @@ const PostItemDetail = () => {
 
   const handleCreateComment = async () => {
     if (commentRef.current.value === "") return;
-    console.log("Create Comment", commentRef.current.value);
-    const comment = {
-      postId: postId,
-      author: userId,
-      content: commentRef.current.value,
-    };
-    await createComment(comment).then((res) => {
-      setRefresh(true);
-      console.log("Create Comment", res);
-      commentRef.current.value = "";
-    });
+    if (isReplying == false) {
+      console.log("Create Comment", commentRef.current.value);
+      const comment = {
+        postId: parseInt(postId),
+        author: parseInt(userId),
+        content: commentRef.current.value,
+      };
+      console.log("Create Comment", comment);
+      await createComment(comment).then((res) => {
+        setRefresh(true);
+        console.log("Create Comment", res);
+        commentRef.current.value = "";
+      });
+    } else if (isReplying == true) {
+      const reply = {
+        author: parseInt(userId),
+        content: commentRef.current.value,
+        postId: parseInt(postId),
+        commentId: replyCommentId,
+      };
+      console.log("Create Reply", reply);
+      await createReply(reply).then((res) => {
+        setRefresh(true);
+        console.log("Create Reply", res);
+        commentRef.current.value = "";
+      });
+    }
   };
 
   const handleLikePost = async () => {
-    await likePost({ userId: userId, postId: postContent.id }).then((res) => {
+    await likePost({ userId: userId, postId: postContent.id }).then(() => {
       setRefresh(true);
     });
   };
@@ -123,9 +145,24 @@ const PostItemDetail = () => {
               ref={commentRef}
               onKeyDown={(e) => e.key === "Enter" && handleCreateComment()}
               type="text"
-              placeholder="Write a comment"
+              placeholder={isReplying ? "Write a reply..." : "Write a comment"}
               className="w-full p-2 border-2 input:border-[#52aa61] rounded-lg"
             />
+            {isReplying && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 -960 960 960"
+                width="24"
+                fill="#69696e"
+                className="cursor-pointer"
+                onClick={() => {
+                  dispatch(setIsReply(false));
+                }}
+              >
+                <path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              </svg>
+            )}
             <button
               className="px-4 py-2 font-bold text-white rounded-lg bg-primary hover:bg-primaryHoverOn"
               onClick={handleCreateComment}
