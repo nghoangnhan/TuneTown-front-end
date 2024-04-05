@@ -24,6 +24,7 @@ const PostItemDetail = () => {
   const [liked, setLiked] = useState();
   const isReplying = useSelector((state) => state.social.isReplying);
   const replyCommentId = useSelector((state) => state.social.replyCommentId);
+  const replyComment = useSelector((state) => state.social.replyComment)
 
   const countTime = new Date(
     postContent?.postTime || Date.now()
@@ -145,7 +146,8 @@ const PostItemDetail = () => {
               ref={commentRef}
               onKeyDown={(e) => e.key === "Enter" && handleCreateComment()}
               type="text"
-              placeholder={isReplying ? "Write a reply..." : "Write a comment"}
+              placeholder={"Write a comment"}
+              defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
               className="w-full p-2 border-2 input:border-[#52aa61] rounded-lg"
             />
             {isReplying && (

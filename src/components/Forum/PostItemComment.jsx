@@ -1,14 +1,28 @@
 import PropTypes from "prop-types";
 import { setIsReply } from "../../redux/slice/social.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setReplyCommentId } from "../../redux/slice/social.js";
+import { setReplyComment } from "../../redux/slice/social.js";
+import { useForumUtils } from "../../utils/useChatUtils";
 
 const PostItemComment = ({ postContent }) => {
   const dispatch = useDispatch();
 
+  const {
+    getCommentById,
+  } = useForumUtils();
+
+  const handleGetCommentById = async (commentId) => {
+    await getCommentById(commentId).then((res) => {
+      console.log("Get comment by id: ", res);
+      dispatch(setReplyComment(res));    
+    })
+  };
+
   const handleReply = (comment) => {
     dispatch(setIsReply(true));
     dispatch(setReplyCommentId(comment.id));
+    handleGetCommentById(comment.id);
   };
 
   // Component code here
