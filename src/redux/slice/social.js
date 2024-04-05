@@ -14,6 +14,11 @@ const socialStore = createSlice({
     },
     isReplying: false,
     replyCommentId: Number,
+    replyComment: {
+      userName: "",
+      content: "",
+      time: "",
+    },
   },
   reducers: {
     setChatId: (state, action) => {
@@ -31,6 +36,14 @@ const socialStore = createSlice({
     setReplyCommentId: (state, action) => {
       state.replyCommentId = action.payload;
     },
+    setReplyComment: (state, action) => {
+      const { author, content, commentDate } = action.payload;
+      state.replyComment = {
+        userName: author.userName,
+        content: content,
+        time: commentDate,
+      };
+    },
   },
 });
 
@@ -40,5 +53,6 @@ export const {
   setIsNewMessage,
   setIsReply,
   setReplyCommentId,
+  setReplyComment,
 } = socialStore.actions;
 export default socialStore.reducer;

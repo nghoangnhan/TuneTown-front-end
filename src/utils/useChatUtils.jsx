@@ -229,6 +229,23 @@ export const useForumUtils = () => {
     }
   };
 
+  const getCommentById = async(value) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/post/comment/getById?commentId=${value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
   const AcronymPost = (nameLenght, length) => {
     if (nameLenght && nameLenght.length > 10) {
       return nameLenght.slice(0, length) + "...";
@@ -256,6 +273,7 @@ export const useForumUtils = () => {
     AcronymPost,
     scrollToBottom,
     handleCheckLiked,
+    getCommentById,
   };
 };
 
