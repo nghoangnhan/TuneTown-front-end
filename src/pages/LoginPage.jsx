@@ -7,7 +7,8 @@ import UseCookie from "../hooks/useCookie";
 import { Base_URL, auth } from "../api/config";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../redux/slice/account";
-import GoogleLoginButton from "../components/AuthGoogle/AuthGoogleLogin";
+import GoogleLoginButton from "../components/AuthLogin/AuthGoogleLogin";
+import FacebookLoginButton from "../components/AuthLogin/AuthFacebookLogin";
 import { gapi } from "gapi-script";
 
 const clientId =
@@ -162,6 +163,9 @@ const LoginPage = () => {
           </p>
           <div className="">
             <GoogleLoginButton />
+          </div>
+          <div className="">
+            <FacebookLoginButton />
           </div>
         </div>
         <footer className="bottom-5 absolute ">
