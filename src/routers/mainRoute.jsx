@@ -20,6 +20,7 @@ import ChatArea from "../components/Chat/ChatArea";
 import LyricSection from "../components/HomePage/LyricSection";
 import ForumPage from "../pages/ForumPage";
 import PostItemDetail from "../components/Forum/PostItemDetail";
+import ErrorPage from "../pages/ErrorPage";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -107,6 +108,14 @@ export default function init(routes) {
       },
     ],
   };
+
+  // Error Page
+  const errorRoute = {
+    path: "*",
+    element: <ErrorPage />,
+  };
+
+  // Chat Route
   const chatRoute = {
     path: "chat/",
     element: <ChattingPage />,
@@ -143,8 +152,9 @@ export default function init(routes) {
     ],
   };
 
-  // push route
+  // Push route
   routes.push(route);
   routes.push(cmsRoute);
   routes.push(chatRoute);
+  routes.push(errorRoute);
 }

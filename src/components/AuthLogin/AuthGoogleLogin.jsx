@@ -110,7 +110,7 @@ function LoginGoogle() {
   };
 
   return (
-    <div id="btn-auth-google-login" className="rounded-lg px-2 py-1 w-fit">
+    <div id="btn-auth-google-login" className="px-2 py-1 rounded-lg w-fit">
       <GoogleOAuthProvider clientId={cliendId}>
         <GoogleLogin onSuccess={onSuccess} locale="en" onFailure={onFailure} />
       </GoogleOAuthProvider>

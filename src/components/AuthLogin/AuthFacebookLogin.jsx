@@ -1,4 +1,3 @@
-import React from "react";
 import axios from "axios";
 import { Base_URL } from "../../api/config";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,7 @@ function LoginFacebook() {
   const { saveToken } = UseCookie();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userId = localStorage.getItem("userId");
 
   const handleUserData = async (userData) => {
     console.log("Data", userData);
@@ -86,7 +86,6 @@ function LoginFacebook() {
     const { name, email } = response.data;
     const avatar = response.data.picture.data.url;
 
-
     // Check email exist
     const isEmailExisted = await checkEmailExisted(email);
     console.log(isEmailExisted);
@@ -102,7 +101,7 @@ function LoginFacebook() {
     console.log("value", account);
 
     console.log(credential);
-    
+
     await editUser(account, getAccessToken.access_token);
 
     message.success("Login Successfully");
@@ -127,11 +126,11 @@ function LoginFacebook() {
 
   return (
     <LoginSocialFacebook
-        appId="961587055526538"
-        onResolve={responseFacebook}
-        onReject={onFailure}
+      appId="961587055526538"
+      onResolve={responseFacebook}
+      onReject={onFailure}
     >
-        <FacebookLoginButton/>
+      <FacebookLoginButton className="rounded-md " />
     </LoginSocialFacebook>
   );
 }
