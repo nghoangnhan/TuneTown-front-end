@@ -18,32 +18,28 @@ const MessageSection = ({ chatContent }) => {
         chatContent.map((chat, index) => (
           <div
             key={index}
-            className={`${
-              chat.own == true ? "items-end" : "items-start"
-            } flex flex-col m-2 gap-2`}
+            className={`${chat.own == true ? "items-end" : "items-start"
+              } flex flex-col m-2 gap-2`}
           >
             <div className="flex flex-row items-end ">
+              {/* Avatar  */}
               <div className="w-10">
-                <img
-                  src={
-                    chat.own
-                      ? chat.avatar || defaultAva
-                      : chat.sentUserAvatar || defaultAva
-                  }
+                {chat.own == false && < img
+                  src={chat.own ? chat.sentUserAvatar : defaultAva}
                   alt="user"
                   className="rounded-full"
-                />
+                />}
               </div>
-              <div className="mx-2">
-                <h3 className="text-gray-500">
+              {/* Message */}
+              <div className="flex flex-col gap-2 mx-1">
+                <h3 className="font-bold text-gray-500">
                   {chat.name ? chat.name : "Unknown"}
                 </h3>
-                <div className="max-w-xs p-1 text-base break-words border rounded-md bg-slate-200">
+                <div className="max-w-xs p-2 text-base break-words border rounded-md bg-slate-200">
                   {chat.message}
                 </div>
-              </div>
-              <div>
-                <p className="text-sm text-slate-400">{chat.time}</p>
+                <div className="flex justify-end">
+                  <p className="text-xs text-slate-400">{chat.time}</p></div>
               </div>
             </div>
           </div>

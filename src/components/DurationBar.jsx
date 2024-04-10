@@ -12,7 +12,6 @@ import {
   setRepeat,
   setShuffle,
   setSongLinks,
-  setCurrentSong,
 } from "../redux/slice/music";
 
 const DurationBar = () => {
@@ -358,9 +357,8 @@ const DurationBar = () => {
         </button>
         {/* Skip previous button */}
         <button
-          className={`${
-            songQueue == 0 ? "hover:bg-[#ffffff]" : "hover:bg-[#c8c7c7]"
-          } bg-white  rounded-xl`}
+          className={`${songQueue == 0 ? "hover:bg-[#ffffff]" : "hover:bg-[#c8c7c7]"
+            } bg-white  rounded-xl`}
           disabled={songQueue.length == 0}
           onClick={
             // Play previous song in queue
@@ -429,9 +427,8 @@ const DurationBar = () => {
 
         {/* Skip next button  */}
         <button
-          className={`${
-            songQueue == 0 ? "hover:bg-[#ffffff]" : "hover:bg-[#c8c7c7]"
-          } bg-white  rounded-xl`}
+          className={`${songQueue == 0 ? "hover:bg-[#ffffff]" : "hover:bg-[#c8c7c7]"
+            } bg-white  rounded-xl`}
           disabled={songQueue.length == 0}
           onClick={
             // Play next song in queue
@@ -484,8 +481,8 @@ const DurationBar = () => {
       {/* Seekbar Control Song */}
       {/* Mobile  */}
       {isMobile && (
-        <div className="flex flex-row items-center justify-center px-5 xl:relative max-sm:static max-sm:bottom-0 max-sm:w-screen">
-          <span className="text-xs xl:text-base">
+        <div className="relative flex flex-row items-center justify-center w-screen px-5">
+          <span className="text-xs">
             {TimeConvert(currentTime)}
           </span>
           <input
@@ -494,16 +491,16 @@ const DurationBar = () => {
             max={duration}
             value={currentTime}
             onChange={handleSeek}
-            className="bg-[#B9C0DE] max-sm:w-screen max-sm:px-5 h-1 mx-2 rounded-full"
+            className="bg-[#B9C0DE] w-screen px-5 h-1 mx-2 rounded-full"
           />
-          <span className="text-xs xl:text-base">{TimeConvert(duration)}</span>
+          <span className="text-xs">{TimeConvert(duration)}</span>
         </div>
       )}
 
       {/* Desktop  */}
       {!isMobile && (
-        <div className="flex-row items-center justify-center xl:flex xl:relative">
-          <span className="text-xs xl:text-base">
+        <div className="relative flex flex-row items-center justify-center">
+          <span className="text-base">
             {TimeConvert(currentTime)}
           </span>
           <input
@@ -512,9 +509,9 @@ const DurationBar = () => {
             max={duration}
             value={currentTime}
             onChange={handleSeek}
-            className="bg-[#B9C0DE] w-[400px] h-1 xl:h-1 mx-2 xl:mx-4 rounded-full"
+            className="bg-[#B9C0DE] w-[400px] h-1 mx-4 rounded-full"
           />
-          <span className="text-xs xl:text-base">{TimeConvert(duration)}</span>
+          <span className="text-base">{TimeConvert(duration)}</span>
         </div>
       )}
     </div>

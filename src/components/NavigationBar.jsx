@@ -115,50 +115,48 @@ const NavigationBar = () => {
 
       {/* Navigation Mobile  */}
       <div className=" flex flex-row xl:hidden bg-[#ffffff] fixed bottom-0 z-50 w-screen justify-center">
-        <div className="">
-          <div className="py-1">
-            <div className="flex flex-row items-center justify-center gap-4">
-              <NavLink
-                to="/home"
-                className={({ isActive }) =>
-                  isActive
-                    ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                    : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
-                }
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/search"
-                className={({ isActive }) =>
-                  isActive
-                    ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                    : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
-                }
-              >
-                Search
-              </NavLink>
-              <NavLink
-                to="/forum"
-                className={({ isActive }) =>
-                  isActive
-                    ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                    : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
-                }
-              >
-                Forum
-              </NavLink>
-              <NavLink
-                to="/playlist"
-                className={({ isActive }) =>
-                  isActive
-                    ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                    : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
-                }
-              >
-                Playlists
-              </NavLink>
-            </div>
+        <div className="pb-1">
+          <div className="flex flex-row items-center justify-center gap-4">
+            <NavLink
+              to="/home"
+              className={({ isActive }) =>
+                isActive
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+              }
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/search"
+              className={({ isActive }) =>
+                isActive
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+              }
+            >
+              Search
+            </NavLink>
+            <NavLink
+              to="/forum"
+              className={({ isActive }) =>
+                isActive
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+              }
+            >
+              Forum
+            </NavLink>
+            <NavLink
+              to="/playlist"
+              className={({ isActive }) =>
+                isActive
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+              }
+            >
+              Playlists
+            </NavLink>
           </div>
         </div>
       </div>

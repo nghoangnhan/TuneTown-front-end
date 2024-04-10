@@ -32,22 +32,6 @@ const PageFull = () => {
   }, [access_token]);
   return (
     <Fragment>
-      <Modal
-        title="Authorization Error"
-        open={open}
-        okButtonProps={{
-          onClick: handleOK,
-          style: { backgroundColor: "#6fa87c", color: "white" },
-        }}
-        cancelButtonProps={{
-          onClick: handleCancel,
-        }}
-        buttonProps={{
-          onClick: handleRefresh,
-        }}
-      >
-        <p>Cannot recognize user</p>
-      </Modal>
       <div>
         <div className="flex flex-col">
           <div className="xl:flex xl:flex-row">
@@ -66,6 +50,22 @@ const PageFull = () => {
           </div>
         </div>
       </div>
+      <Modal
+        title="Authorization Error"
+        open={open}
+        okButtonProps={{
+          onClick: handleOK,
+          style: { backgroundColor: "#6fa87c", color: "white" },
+        }}
+        cancelButtonProps={{
+          onClick: handleCancel,
+        }}
+        buttonProps={{
+          onClick: handleRefresh,
+        }}
+      >
+        <p>Cannot recognize user</p>
+      </Modal>
     </Fragment>
   );
 };

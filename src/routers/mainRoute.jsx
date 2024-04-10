@@ -65,6 +65,7 @@ export default function init(routes) {
         path: "history",
         element: <HistoryPage />,
       },
+
       // Artist Page Route
       {
         path: "artistCMS",
@@ -98,6 +99,8 @@ export default function init(routes) {
         path: "lyric",
         element: <LyricSection />,
       },
+
+      // Forum 
       {
         path: "forum",
         element: <ForumPage />,

@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import defaultAva from "../../assets/img/logo/logo.png";
 import { useChatUtils } from "../../utils/useChatUtils";
 import UseCookie from "../../hooks/useCookie";
-import { setChatChosen } from "../../redux/slice/social";
 import { Base_URL } from "../../api/config";
+import { setChatChosen } from "../../redux/slice/social";
 import { setIsNewMessage } from "../../redux/slice/social";
+
 
 const ChatNavigate = () => {
   const userId = localStorage.getItem("userId");
@@ -15,6 +17,7 @@ const ChatNavigate = () => {
   const { getToken } = UseCookie();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const { access_token } = getToken();
   const [converList, setConverList] = useState([]);
   const converChosen = useSelector((state) => state.social.currentChat.chatId);
@@ -75,7 +78,7 @@ const ChatNavigate = () => {
   }, [isNewMessage]);
 
   return (
-    <div className="min-h-screen px-1 bg-gray-100 border-gray-200 w-80 h-fit">
+    <div className={`${isMobile ? "w-full" : "w-80"} min-h-screen px-1 bg-gray-100 border-gray-200  h-fit`}>
       <div
         className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
         onClick={() => navigate("/home")}
@@ -97,9 +100,8 @@ const ChatNavigate = () => {
         {converList.map((conver) => (
           <div
             key={conver.chatId}
-            className={`${
-              converChosen == conver.chatId ? "bg-slate-300" : ""
-            } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
+            className={`${converChosen == conver.chatId ? "bg-slate-300" : ""
+              } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
             onClick={() => {
               console.log("Seen status:", conver.seen);
               handleChatChosen(conver.chatId, conver);
@@ -117,16 +119,15 @@ const ChatNavigate = () => {
                 {AcronymName(conver.name, 17)}
               </h3>
               <p
-                className={`text-sm ${
-                  conver.seen === 0 ? "font-bold" : "font-italic"
-                }`}
+                className={`text-sm ${conver.seen === 0 ? "font-bold" : "font-italic"
+                  }`}
               >
                 {" "}
                 {AcronymName(conver.message, 22)}
               </p>
             </div>
-            <div>
-              <p className={`text-sm ${conver.seen === 0 ? "font-bold" : ""}`}>
+            <div className="flex justify-center">
+              <p className={`text-sm w-16 ${conver.seen === 0 ? "font-bold" : ""} `}>
                 {conver.time}
               </p>
             </div>

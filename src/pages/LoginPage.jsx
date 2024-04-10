@@ -90,8 +90,8 @@ const LoginPage = () => {
   });
 
   return (
-    <div className="flex flex-row justify-center items-center relative">
-      <div className="flex flex-col justify-center items-center min-h-screen xl:w-1/2">
+    <div className="relative flex flex-row items-center justify-center">
+      <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-20">
           <h1 className="font-bold text-[#2E3271] text-3xl">Login</h1>
         </div>
@@ -141,7 +141,7 @@ const LoginPage = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item className="flex flex-row justify-center items-center">
+          <Form.Item className="flex flex-row items-center justify-center">
             <button className="bg-[#38a870] text-white hover:bg-[#54ce91] hover:text-[#fff] mt-2 py-2 px-3 w-max rounded-lg font-semibold">
               Submit
             </button>
@@ -161,21 +161,21 @@ const LoginPage = () => {
               Forget Password
             </NavLink>
           </p>
-          <div className="">
+          <div className="mt-2">
             <GoogleLoginButton />
           </div>
-          <div className="">
+          <div className="mt-2">
             <FacebookLoginButton />
           </div>
         </div>
-        <footer className="bottom-5 absolute ">
+        <footer className="absolute bottom-5 ">
           <p className="text-[#8d8d8d]">© 2023 TuneTown</p>
         </footer>
       </div>
       <div className="hidden xl:block xl:w-1/2">
         <img
           src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"
-          className="h-screen w-auto object-cover"
+          className="object-cover w-auto h-screen"
           alt=""
         />
       </div>
