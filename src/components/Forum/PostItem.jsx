@@ -2,6 +2,9 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { useNavigate } from "react-router-dom";
+import { useForumUtils } from "../../utils/useChatUtils";
+import { useEffect } from "react";
+
 const PostItem = ({ postContent }) => {
   const Post = {
     id: postContent.id,
@@ -13,11 +16,28 @@ const PostItem = ({ postContent }) => {
     likes: postContent.likes,
     dislikes: postContent.dislikes,
   };
+
   console.log("PostItem", postContent);
   const navigate = useNavigate();
   const { show } = useContextMenu();
   const [refresh, setRefresh] = useState(false);
   const countTime = new Date(Post?.postTime || Date.now()).toLocaleString();
+  const [liked, setLiked] = useState();
+  const userId = parseInt(localStorage.getItem("userId"));
+  const [postDetail, setPostDetail] = useState();
+
+  const {
+    getPostById,
+    likePost,
+    handleCheckLiked,
+  } = useForumUtils();
+
+  const handGetPostById = async () => {
+    await getPostById(postContent.id).then((res) => {
+      console.log("Get Post By ID", res);
+      setPostDetail(res);
+    });
+  };
 
   // Call this function when you want to refresh the playlist
   const refreshPlaylist = () => {
@@ -36,6 +56,30 @@ const PostItem = ({ postContent }) => {
   const handlePostClick = () => {
     navigate(`/forum/${Post.id}`);
   };
+
+  const handleLikePost = async () => {
+    await likePost({ userId: userId, postId: postDetail.id }).then(() => {
+      setRefresh(true);
+    });
+  };
+
+  useEffect(() => {
+    if (handleCheckLiked(postDetail?.likes)) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+    console.log("Liked", liked);
+  }, [postDetail?.likes, likePost]);
+  
+  useEffect(() => {
+    handGetPostById();
+  }, [postContent.id]);
+
+  useEffect(() => {
+    if (refresh) handGetPostById();
+    setRefresh(false);
+  }, [refresh]);
 
   return (
     <div className="bg-[#FFFFFFCC] font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
@@ -93,21 +137,22 @@ const PostItem = ({ postContent }) => {
       <div className="flex flex-row items-center justify-between gap-5 font-bold text-primary">
         <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80">
           <svg
+            onClick={handleLikePost}
             xmlns="http://www.w3.org/2000/svg"
             height="24"
             viewBox="0 -960 960 960"
             width="24"
-            fill="#40cf62"
+            fill={liked ? "#49ad5b" : "#3a3a3d"}
           >
             <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
           </svg>
-          <span>{Post.likes.length}</span>
+          <span>{postDetail != null ? postDetail.likes.length : postContent.likes.length}</span>
         </button>
         <button
           className="mx-2 mt-2 font-bold cursor-pointer text-md opacity-80"
           onClick={handlePostClick}
         >
-          Reply
+          Comment
         </button>
         <button className="mx-2 mt-2 font-bold text-md opacity-80">
           Share
