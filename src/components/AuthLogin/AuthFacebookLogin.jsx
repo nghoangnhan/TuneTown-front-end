@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import { setUserInfor } from "../../redux/slice/account";
 import { message } from "antd";
 import { LoginSocialFacebook } from "reactjs-social-login";
-import { FacebookLoginButton } from "react-social-login-buttons";
 import { jwtDecode } from "jwt-decode";
+import { LoginSocialButton } from "./LoginSocialButton";
 
 function LoginFacebook() {
   const { saveToken } = UseCookie();
@@ -98,14 +98,11 @@ function LoginFacebook() {
     const getAccessToken = await GetAccessToken(email, "FACEBOOK");
     const credential = getAccessToken.access_token;
     const account = jwtDecode(credential);
+
     console.log("value", account);
-
     console.log(credential);
-
     await editUser(account, getAccessToken.access_token);
-
     message.success("Login Successfully");
-
     // Navigate to /home after successful login
     setTimeout(() => {
       navigate("/home");
@@ -130,9 +127,11 @@ function LoginFacebook() {
       onResolve={responseFacebook}
       onReject={onFailure}
     >
-      <FacebookLoginButton className="rounded-md " />
+      {/* <FacebookLoginButton className="bg-white rounded-md" /> */}
+      <LoginSocialButton></LoginSocialButton>
     </LoginSocialFacebook>
   );
 }
+
 
 export default LoginFacebook;

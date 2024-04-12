@@ -9,6 +9,7 @@ import UseCookie from "../../hooks/useCookie";
 import { Base_URL } from "../../api/config";
 import { setChatChosen } from "../../redux/slice/social";
 import { setIsNewMessage } from "../../redux/slice/social";
+import useIconUtils from "../../utils/useIconUtils";
 
 
 const ChatNavigate = () => {
@@ -17,11 +18,13 @@ const ChatNavigate = () => {
   const { getToken } = UseCookie();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { BackButton } = useIconUtils();
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const { access_token } = getToken();
   const [converList, setConverList] = useState([]);
   const converChosen = useSelector((state) => state.social.currentChat.chatId);
   const isNewMessage = useSelector((state) => state.social.isNewMessage);
+
 
   const fetchChatList = async () => {
     try {
@@ -88,15 +91,10 @@ const ChatNavigate = () => {
         </div>
         <div className="text-[#2E3271]">TuneTown</div>
       </div>
-
-      <button
-        onClick={() => navigate("/home")}
-        className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md my-5 ml-2"
-      >
-        <div className="px-2 py-1 font-bold text-white">{"<"} Back</div>
-      </button>
-
-      <div className="flex flex-col justify-center gap-2 mt-2">
+      <div className="ml-2">
+        <BackButton></BackButton>
+      </div>
+      <div className="flex flex-col justify-center gap-2 mt-5">
         {converList.map((conver) => (
           <div
             key={conver.chatId}
