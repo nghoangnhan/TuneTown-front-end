@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form, Input, message } from "antd";
-import { Base_URL } from "../../api/config";
 import ArtistInput from "./ArtistInput";
 import GenreInput from "./GenreInput";
 import UseCookie from "../../hooks/useCookie";
 import useDataUtils from "../../utils/useDataUtils";
 import UploadFileDropZone from "../../utils/useDropZone";
+import useConfig from "../../utils/useConfig";
 
 const layout = {
   labelCol: {
@@ -28,6 +28,7 @@ const UploadSong = () => {
   const formRef = React.useRef(null);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const [uploadedFile, setUploadedFile] = useState({});
   const [fileIMG, setFileIMG] = useState();
   const [fileMP3, setFileMP3] = useState();

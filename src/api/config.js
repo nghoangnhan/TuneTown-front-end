@@ -1,8 +1,6 @@
 import { io } from "socket.io-client";
 import UseCookie from "../hooks/useCookie";
 import axios from "axios";
-import { createButton } from "react-social-login-buttons";
-
 
 const { getToken } = UseCookie();
 // Link to the backend server 
@@ -27,6 +25,9 @@ export const auth = {
   refresh_token: token.refresh_token,
 };
 
+
+
+// Create instance axios
 export const instance = axios.create({
   Base_URL,
   headers: {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
 import axios from "axios";
 
@@ -7,9 +6,11 @@ import { useDispatch } from "react-redux";
 import { setMyPLaylistList } from "../../redux/slice/playlist";
 import MyPlaylistItem from "./MyPlaylistItem";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import useConfig from "../../utils/useConfig";
 
 const MyPlaylistSection = () => {
   const { getToken } = UseCookie();
+  const { Base_URL } = useConfig();
   const { getUserPlaylist } = useMusicAPIUtils();
   const { access_token } = getToken();
   const dispatch = useDispatch();
@@ -90,7 +91,7 @@ const MyPlaylistSection = () => {
           onClick={CreateNewPlaylist}
           className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 mt-3 ml-3"
         >
-          <div className="font-bold px-2 py-2">+ Create New Playlist</div>
+          <div className="px-2 py-2 font-bold">+ Create New Playlist</div>
         </button>
         <div className="text-center font-bold text-3xl text-[#339e3f]">
           Create your new playlist!
@@ -103,14 +104,14 @@ const MyPlaylistSection = () => {
         onClick={CreateNewPlaylist}
         className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 mt-3 ml-3"
       >
-        <div className="font-bold px-2 py-2">+ Create New Playlist</div>
+        <div className="px-2 py-2 font-bold">+ Create New Playlist</div>
       </button>
 
-      <div className="grid xl:grid-cols-4 gap-y-1 grid-cols-1 xl:px-5">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-y-1 xl:px-5">
         {playlistList &&
           playlistList.map((playlistItem) => (
             <div
-              className="flex justify-center xl:w-full xl:h-full mt-10"
+              className="flex justify-center mt-10 xl:w-full xl:h-full"
               key={playlistItem.id}
               onContextMenu={(event) => {
                 event.preventDefault();

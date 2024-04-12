@@ -4,14 +4,14 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import UploadFileDropZone from "../../utils/useDropZone";
 import useDataUtils from "../../utils/useDataUtils";
-import { Base_URL } from "../../api/config";
 import axios from "axios";
+import useConfig from "../../utils/useConfig";
 
 const CreatePost = () => {
   const [form] = Form.useForm();
   const { handleUploadFileMP3 } = useDataUtils();
   const [editorValue, setEditorValue] = useState("");
-  console.log("CreatePost", editorValue);
+  const { Base_URL } = useConfig();
   const [fileMP3, setFileMP3] = useState();
   const [uploadedFile, setUploadedFile] = useState({});
   const [songReady, setSongReady] = useState(false);

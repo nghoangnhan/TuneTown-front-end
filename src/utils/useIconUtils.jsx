@@ -1,6 +1,6 @@
-import { faCaretLeft, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faCaretLeft, faPauseCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PropTypes from 'prop-types';
+
 
 const useIconUtils = () => {
     const BackButton = () => {
@@ -34,6 +34,7 @@ const useIconUtils = () => {
                 height="24"
                 viewBox="0 -960 960 960"
                 width="24"
+                // eslint-disable-next-line react/prop-types
                 fill={props.liked ? "#49ad5b" : "#3a3a3d"}
             >
                 <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
@@ -45,6 +46,18 @@ const useIconUtils = () => {
     const ThumbsUpRegular = () => {
         return (
             <FontAwesomeIcon icon="fa-regular fa-thumbs-up" />
+        );
+    };
+
+    const PlayButton = () => {
+        return (
+            <FontAwesomeIcon className='text-xl' icon={faPlayCircle} />
+        );
+    };
+
+    const PauseButton = () => {
+        return (
+            <FontAwesomeIcon className='text-xl' icon={faPauseCircle} />
         );
     };
 
@@ -62,7 +75,23 @@ const useIconUtils = () => {
                 </svg>
             </span>)
     }
-    return { BackButton, ThumbsUpSolid, ThumbsUpRegular, BackIcon, VerifyAccount };
+
+    const OptionsIcon = () => {
+        return (
+            <div>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 -960 960 960"
+                    width="24"
+                    fill="currentColor"
+                >
+                    <path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z" />
+                </svg>
+            </div>)
+    }
+
+    return { BackButton, ThumbsUpSolid, ThumbsUpRegular, BackIcon, VerifyAccount, OptionsIcon, PlayButton, PauseButton };
 };
 
 export default useIconUtils;

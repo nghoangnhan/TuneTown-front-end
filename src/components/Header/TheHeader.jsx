@@ -3,14 +3,15 @@ import { Avatar, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
-import { Base_URL } from "../../api/config";
 import { setUserId } from "../../redux/slice/account";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import useConfig from "../../utils/useConfig";
 
 const TheHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { Base_URL } = useConfig();
   const { removeToken, getToken } = UseCookie();
   const userRole = localStorage.getItem("userRole");
   const userId = localStorage.getItem("userId");
@@ -57,9 +58,9 @@ const TheHeader = () => {
   }, [userId]);
   return (
     <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-[#ecf2fd]">
-      <div className="xl:right-5 xl:mt-5 right-3 absolute flex flex-row justify-center items-center">
+      <div className="absolute flex flex-row items-center justify-center xl:right-5 xl:mt-5 right-3">
         <div
-          className="flex items-center justify-center mr-3 mt-1 cursor-pointer  "
+          className="flex items-center justify-center mt-1 mr-3 cursor-pointer "
           onClick={() => navigate("/chat")}
         >
           <svg

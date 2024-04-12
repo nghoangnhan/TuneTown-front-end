@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Base_URL } from "../../api/config";
 import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
 import { useDispatch } from "react-redux";
@@ -8,9 +7,11 @@ import { message } from "antd";
 import { LoginSocialFacebook } from "reactjs-social-login";
 import { jwtDecode } from "jwt-decode";
 import { LoginSocialButton } from "./LoginSocialButton";
+import useConfig from "../../utils/useConfig";
 
 function LoginFacebook() {
   const { saveToken } = UseCookie();
+  const { Base_URL } = useConfig();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");

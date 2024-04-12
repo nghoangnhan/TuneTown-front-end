@@ -24,7 +24,7 @@ const PostItemDetail = () => {
   const [refresh, setRefresh] = useState(false);
   const [postContent, setPostContent] = useState();
   const [liked, setLiked] = useState();
-  const { BackButton, ThumbsUpSolid } = useIconUtils();
+  const { BackButton, ThumbsUpSolid, VerifyAccount } = useIconUtils();
   const isReplying = useSelector((state) => state.social.isReplying);
   const replyCommentId = useSelector((state) => state.social.replyCommentId);
   const replyComment = useSelector((state) => state.social.replyComment)
@@ -110,8 +110,11 @@ const PostItemDetail = () => {
         <BackButton></BackButton>
       </div>
       <div className="bg-[#FFFFFFCC]  font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
-        <div className="text-xl font-bold text-primary">
+        <div className="flex flex-row items-center gap-1 text-xl font-bold">
           {postContent.author.userName}
+          {postContent.author.role == "ARTIST" && (
+            <VerifyAccount></VerifyAccount>
+          )}
         </div>
         <div className="text-xs font-medium text-[#3d419783]">{countTime}</div>
 

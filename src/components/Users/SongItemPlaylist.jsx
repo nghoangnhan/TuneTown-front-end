@@ -17,11 +17,11 @@ import {
 import { message } from "antd";
 import { setRefreshPlaylist } from "../../redux/slice/playlist";
 import axios from "axios";
-import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useSongUtils from "../../utils/useSongUtils";
 import PropTypes from "prop-types";
+import useConfig from "../../utils/useConfig";
 
 const SongItemPlaylist = ({
   song,
@@ -32,6 +32,7 @@ const SongItemPlaylist = ({
 }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const { id, songName, artists, poster, songData, lyric } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");

@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import defaultAva from "../../assets/img/logo/logo.png";
 import { useChatUtils } from "../../utils/useChatUtils";
 import UseCookie from "../../hooks/useCookie";
-import { Base_URL } from "../../api/config";
 import { setChatChosen } from "../../redux/slice/social";
 import { setIsNewMessage } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
+import useConfig from "../../utils/useConfig";
 
 
 const ChatNavigate = () => {
@@ -19,7 +18,7 @@ const ChatNavigate = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { BackButton } = useIconUtils();
-  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  const { isMobile, Base_URL } = useConfig();
   const { access_token } = getToken();
   const [converList, setConverList] = useState([]);
   const converChosen = useSelector((state) => state.social.currentChat.chatId);

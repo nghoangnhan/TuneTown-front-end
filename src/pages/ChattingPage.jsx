@@ -3,15 +3,15 @@ import ChatNavigate from "../components/Chat/ChatNavigate";
 import { useEffect, useState } from "react";
 import UseCookie from "../hooks/useCookie";
 import { Modal } from "antd";
-import { useMediaQuery } from "react-responsive";
 import { useSelector } from "react-redux";
+import useConfig from "../utils/useConfig";
 
 const ChattingPage = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  const { isMobile } = useConfig();
   const chatId = useSelector((state) => state.social.currentChat.chatId);
 
   const handleOK = () => {

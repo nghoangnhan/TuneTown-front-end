@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
-import { Item, Menu, useContextMenu } from "react-contexify";
+import { useContextMenu } from "react-contexify";
 import { useNavigate } from "react-router-dom";
 import { useForumUtils } from "../../utils/useChatUtils";
 import useIconUtils from "../../utils/useIconUtils";
+import AudioWaveSurfer from "./AudioWaveSurfer";
+import OptionPostItem from "./OptionPostItem";
 
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
@@ -15,9 +17,9 @@ const PostItem = ({ postContent }) => {
     likePost,
     handleCheckLiked,
   } = useForumUtils();
-  const { ThumbsUpSolid, VerifyAccount } = useIconUtils();
+  const { ThumbsUpSolid, VerifyAccount, OptionsIcon } = useIconUtils();
   const [liked, setLiked] = useState();
-
+  const [postDetail, setPostDetail] = useState();
   const Post = {
     id: postContent.id,
     author: postContent.author,
@@ -28,14 +30,9 @@ const PostItem = ({ postContent }) => {
     likes: postContent.likes,
     dislikes: postContent.dislikes,
   };
-
   console.log("PostItem", postContent);
   // Get the time of the post
   const countTime = new Date(Post?.postTime || Date.now()).toLocaleString();
-
-
-  const [postDetail, setPostDetail] = useState();
-
   const handGetPostById = async () => {
     await getPostById(postContent.id).then((res) => {
       console.log("Get Post By ID", res);
@@ -87,43 +84,41 @@ const PostItem = ({ postContent }) => {
 
   return (
     <div className="bg-[#FFFFFFCC] font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
-      <div className="flex flex-row items-start justify-between">
-        <div>
-          <div className="flex flex-row items-center gap-1 text-xl font-bold">
-            {Post.author.userName}
-            {Post.author.role == "ARTIST" && (
-              <VerifyAccount></VerifyAccount>
-            )}
+      <div className="flex flex-col justify-center">
+        <div className="flex flex-row items-start justify-between">
+          <div className="flex flex-col">
+            {/* Artist Name  */}
+            <div className="flex flex-row items-center gap-1 text-xl font-bold">
+              {Post.author.userName}
+              {Post.author.role == "ARTIST" && (
+                <VerifyAccount></VerifyAccount>
+              )}
+            </div>
+            <div className="text-xs font-medium text-[#3d419783]">
+              {countTime.toLocaleString()}
+            </div>
+            <div
+              className="cursor-pointer mt-2 text-base text-[#3a3a3d]"
+              onClick={handlePostClick}
+            >
+              {Post.content}
+            </div>
           </div>
-          <div className="text-xs font-medium text-[#3d419783]">
-            {countTime.toLocaleString()}
-          </div>
-          <div
-            className="cursor-pointer mt-2 text-base text-[#3a3a3d]"
-            onClick={handlePostClick}
-          >
-            {Post.content}
+          {/* Post Option */}
+          <div>
+            <button
+              className="top-2 right-2"
+              onClick={(e) => displayMenu(e, Post.id)}
+            >
+              <OptionsIcon></OptionsIcon>
+            </button>
           </div>
         </div>
-        {/* Post Option */}
-        <div>
-          <button
-            className="top-2 right-2"
-            onClick={(e) => displayMenu(e, Post.id)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              viewBox="0 -960 960 960"
-              width="24"
-              fill="currentColor"
-            >
-              <path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z" />
-            </svg>
-          </button>
+        {/* Audio Wave */}
+        <div className="w-full">
+          <AudioWaveSurfer></AudioWaveSurfer>
         </div>
       </div>
-
       {/* Line section */}
       <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10"></span>
 
@@ -151,11 +146,10 @@ const PostItem = ({ postContent }) => {
         </button>
       </div>
       {/* Context Menu */}
-      <Menu id={`songOption_${Post.id}`}>
-        <Item onClick={refreshPlaylist}>Refresh</Item>
-        <Item>Update Post</Item>
-        <Item>Delete Post</Item>
-      </Menu>
+      <OptionPostItem
+        id={`songOption_${Post.id}`}
+        refreshPlaylist={refreshPlaylist}
+      ></OptionPostItem>
     </div>
   );
 };
