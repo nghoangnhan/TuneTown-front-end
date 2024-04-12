@@ -3,18 +3,18 @@ import { useEffect, useState } from "react";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { useNavigate } from "react-router-dom";
 import { useForumUtils } from "../../utils/useChatUtils";
-<<<<<<< Updated upstream
-import { useEffect } from "react";
-
-=======
 import useIconUtils from "../../utils/useIconUtils";
->>>>>>> Stashed changes
+
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
   const { show } = useContextMenu();
   const [refresh, setRefresh] = useState(false);
   const userId = parseInt(localStorage.getItem("userId"));
-  const { likePost, handleCheckLiked } = useForumUtils();
+  const {
+    getPostById,
+    likePost,
+    handleCheckLiked,
+  } = useForumUtils();
   const { ThumbsUpSolid, VerifyAccount } = useIconUtils();
   const [liked, setLiked] = useState();
 
@@ -32,15 +32,9 @@ const PostItem = ({ postContent }) => {
   console.log("PostItem", postContent);
   // Get the time of the post
   const countTime = new Date(Post?.postTime || Date.now()).toLocaleString();
-  const [liked, setLiked] = useState();
-  const userId = parseInt(localStorage.getItem("userId"));
-  const [postDetail, setPostDetail] = useState();
 
-  const {
-    getPostById,
-    likePost,
-    handleCheckLiked,
-  } = useForumUtils();
+
+  const [postDetail, setPostDetail] = useState();
 
   const handGetPostById = async () => {
     await getPostById(postContent.id).then((res) => {
@@ -68,29 +62,20 @@ const PostItem = ({ postContent }) => {
   };
 
   const handleLikePost = async () => {
-<<<<<<< Updated upstream
-    await likePost({ userId: userId, postId: postDetail.id }).then(() => {
-=======
     await likePost({ userId: userId, postId: Post?.id }).then(() => {
->>>>>>> Stashed changes
       setRefresh(true);
     });
   };
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    if (handleCheckLiked(postDetail?.likes)) {
-=======
     if (handleCheckLiked(postContent?.likes)) {
->>>>>>> Stashed changes
       setLiked(true);
     } else {
       setLiked(false);
     }
     console.log("Liked", liked);
-<<<<<<< Updated upstream
   }, [postDetail?.likes, likePost]);
-  
+
   useEffect(() => {
     handGetPostById();
   }, [postContent.id]);
@@ -99,9 +84,6 @@ const PostItem = ({ postContent }) => {
     if (refresh) handGetPostById();
     setRefresh(false);
   }, [refresh]);
-=======
-  }, [Post?.likes, likePost]);
->>>>>>> Stashed changes
 
   return (
     <div className="bg-[#FFFFFFCC] font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
@@ -147,26 +129,11 @@ const PostItem = ({ postContent }) => {
 
       {/* React Post  */}
       <div className="flex flex-row items-center justify-between gap-5 font-bold text-primary">
-<<<<<<< Updated upstream
-        <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80">
-          <svg
-            onClick={handleLikePost}
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            viewBox="0 -960 960 960"
-            width="24"
-            fill={liked ? "#49ad5b" : "#3a3a3d"}
-          >
-            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-          </svg>
-          <span>{postDetail != null ? postDetail.likes.length : postContent.likes.length}</span>
-=======
         {/* Like  */}
         <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80"
           onClick={handleLikePost}>
           <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
           <span>{postContent.likes.length}</span>
->>>>>>> Stashed changes
         </button>
 
         {/* Control  */}
