@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import defaultAva from "../../assets/img/logo/logo.png";
+import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 
 const MessageSection = ({ chatContent }) => {
   console.log("Chat Content:", chatContent);
@@ -25,7 +26,7 @@ const MessageSection = ({ chatContent }) => {
               {/* Avatar  */}
               <div className="w-10">
                 {chat.own == false && < img
-                  src={chat.sentUserAvatar}
+                  src={`${chat.sentUserAvatar ? chat.sentUserAvatar : defaultAva}`}
                   alt="user"
                   className="rounded-full"
                 />}
@@ -35,8 +36,12 @@ const MessageSection = ({ chatContent }) => {
                 <h3 className="font-bold text-gray-500">
                   {chat.name ? chat.name : "Unknown"}
                 </h3>
-                <div className="max-w-xs p-2 text-base break-words border rounded-md bg-slate-200">
-                  {chat.message}
+                <div className="flex flex-row items-end">
+                  <span className="max-w-xs p-2 text-base break-words border rounded-md bg-slate-200">
+                    {chat.message}
+                  </span>
+                  {chat.own && chat.seen === 1 && <FaCheckDouble className="ml-1 text-gray-500" />}
+                  {chat.own && chat.seen === 0 && <FaCheck className="ml-1 text-gray-500" />}
                 </div>
                 <div className="flex justify-end">
                   <p className="text-xs text-slate-400">{chat.time}</p></div>

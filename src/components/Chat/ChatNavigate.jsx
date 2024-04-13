@@ -12,10 +12,9 @@ import useConfig from "../../utils/useConfig";
 import { useForm } from "antd/es/form/Form";
 import { Form, Input, Button } from "antd";
 import useDebounce from "../../hooks/useDebounce";
-import { CloseOutlined } from '@ant-design/icons';
 
 const ChatNavigate = () => {
-  const userId = localStorage.getItem("userId");
+  const userId =  parseInt(localStorage.getItem("userId"), 10);
   const { AcronymName } = useChatUtils();
   const { getToken } = UseCookie();
   const [form] = useForm();
@@ -25,9 +24,8 @@ const ChatNavigate = () => {
   const { isMobile, Base_URL } = useConfig();
   const { access_token } = getToken();
   const [converList, setConverList] = useState([]);
-  const converChosen = useSelector((state) => state.social.currentChat.chatId);
+  const converChosen = useSelector((state) => state.social.currentChat);
   const isNewMessage = useSelector((state) => state.social.isNewMessage);
-
   const [keywordsInput, setKeywordsInput] = useState("");
   const [userRs, setUserRs] = useState([]);
   const keywordsInputDebounce = useDebounce(keywordsInput, 500);
@@ -43,7 +41,6 @@ const ChatNavigate = () => {
           },
         }
       );
-      console.log("Chat List Response:", response.data);
       const data = await response.data;
       const sortedData = Object.values(data).sort((a, b) => {
         return (
@@ -56,6 +53,7 @@ const ChatNavigate = () => {
         chatId: item.user.id,
         userName: item.user.userName,
         message: item.lastMessage.content,
+        sendId: item.lastMessage.sendUserId,
         time: new Date(item.lastMessage.messageDate).toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -64,18 +62,16 @@ const ChatNavigate = () => {
         seen: item.lastMessage.seen,
       }));
       setConverList(updatedConverList);
-      console.log(updatedConverList);
     } catch (error) {
       console.error("Error fetching chat list:", error);
     }
   };
 
   // Handle chat chosen
-  const handleChatChosen = async (chatId, conver) => {
-    console.log(chatId + " " + conver.userName + " " + conver.message);
+  const handleChatChosen = (chatId, conver) => {
+    console.log(chatId + " " + conver.userName + " " + conver.message + " " + conver.seen);
     dispatch(setChatChosen(conver));
     navigate(`/chat/${chatId}`);
-    await fetchChatList();
   };
 
   const searchUserByName = async (keywords) => {
@@ -88,7 +84,6 @@ const ChatNavigate = () => {
           },
         }
       );
-      console.log("Search user data", response.data);
       return response.data;
     } catch (error) {
       // Handle network errors or other exceptions
@@ -122,9 +117,8 @@ const ChatNavigate = () => {
   }, [keywordsInputDebounce]);
 
   useEffect(() => {
-    // Fetch chat list when component mounts
     fetchChatList();
-  }, []);
+  }, [converChosen.seen]);
 
   useEffect(() => {
     if (isNewMessage == true) {
@@ -172,7 +166,7 @@ const ChatNavigate = () => {
           <ul className="px-4 py-2">
             {userRs.map(user => (
               <li key={user.id} className="flex items-center space-x-2 hover:bg-blue-100 cursor-pointer rounded-md p-2" onClick={() => handleUserItemClick(user)}>
-              <img src={user.avatar} alt="User Avatar" className="w-8 h-8 rounded-full" />
+              <img src={`${user.avatar ? user.avatar : defaultAva}`} alt="User Avatar" className="w-8 h-8 rounded-full" />
               <span>{user.userName}</span>
             </li>
             ))}
@@ -187,10 +181,9 @@ const ChatNavigate = () => {
         {converList.map((conver) => (
           <div
             key={conver.chatId}
-            className={`${converChosen == conver.chatId ? "bg-slate-300" : ""
+            className={`${converChosen.chatId == conver.chatId ? "bg-slate-300" : ""
               } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
             onClick={() => {
-              console.log("Seen status:", conver.seen);
               handleChatChosen(conver.chatId, conver);
             }}
           >
@@ -206,7 +199,7 @@ const ChatNavigate = () => {
                 {AcronymName(conver.userName, 17)}
               </h3>
               <p
-                className={`text-sm ${conver.seen === 0 ? "font-bold" : "font-italic"
+                className={`text-sm ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : "font-italic"
                   }`}
               >
                 {" "}
@@ -214,7 +207,7 @@ const ChatNavigate = () => {
               </p>
             </div>
             <div className="flex justify-center">
-              <p className={`text-sm w-16 ${conver.seen === 0 ? "font-bold" : ""} `}>
+              <p className={`text-sm w-16 ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : ""} `}>
                 {conver.time}
               </p>
             </div>

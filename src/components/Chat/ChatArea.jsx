@@ -12,7 +12,7 @@ import useIconUtils from "../../utils/useIconUtils";
 
 const ChatArea = () => {
   // const userId = localStorage.getItem("userId");
-  const { handleSocketReconnect, fetchChatlist } = useChatUtils();
+  const { handleSocketReconnect, loadMessage } = useChatUtils();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const { BackIcon } = useIconUtils();
@@ -57,13 +57,12 @@ const ChatArea = () => {
       });
 
       // Update the chat list
-      fetchChatlist(userId, chatId).then((data) => {
+      loadMessage(userId, chatId).then((data) => {
         setChatContent(data);
       });
 
       // Set isNewMessage to true
       dispatch(setIsNewMessage(true));
-      console.log("SENTID", receiveUserId);
     } catch (error) {
       console.error("Error sending messages:", error);
     }
@@ -75,7 +74,7 @@ const ChatArea = () => {
 
   useEffect(() => {
     if (userId != null) {
-      fetchChatlist(userId, chatId).then((data) => {
+      loadMessage(userId, chatId).then((data) => {
         setChatContent(data);
       });
     }
@@ -83,7 +82,7 @@ const ChatArea = () => {
 
   useEffect(() => {
     if (converChosen != null) {
-      fetchChatlist(userId, chatId).then((data) => {
+      loadMessage(userId, chatId).then((data) => {
         setChatContent(data);
       });
     }
@@ -96,7 +95,7 @@ const ChatArea = () => {
   useEffect(() => {
     socket.on("receive_message", (message) => {
       console.log("Received message:", message);
-      fetchChatlist(userId, chatId).then((data) => {
+      loadMessage(userId, chatId).then((data) => {
         setChatContent(data);
       });
       dispatch(setIsNewMessage(true));

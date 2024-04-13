@@ -43,7 +43,7 @@ export const useChatUtils = () => {
   };
 
   // Use chatID to fetch chat content from server
-  const fetchChatlist = async (sendUserId, receiveUserId) => {
+  const loadMessage = async (sendUserId, receiveUserId) => {
     try {
       const response = await axios.post(
         `${Base_URL}/messages/loadMessage`,
@@ -78,6 +78,7 @@ export const useChatUtils = () => {
           }),
           avatar: message.user.avatar,
           sentUserAvatar: message.sentUser.avatar,
+          seen: message.message.seen
         };
       });
       return updatedChatContent;
@@ -85,7 +86,7 @@ export const useChatUtils = () => {
       console.error("Error fetching messages:", error);
     }
   };
-  return { AcronymName, fetchChatlist, handleSocketReconnect };
+  return { AcronymName, loadMessage, handleSocketReconnect };
 };
 
 export const useForumUtils = () => {
