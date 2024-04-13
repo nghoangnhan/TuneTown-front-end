@@ -1,17 +1,18 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import "../../assets/CSS/ReactContexify.css";
-import { Base_URL } from "../../api/config";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { setListSong } from "../../redux/slice/music";
 import UseCookie from "../../hooks/useCookie";
 import SongItem from "../Song/SongItem";
+import useConfig from "../../utils/useConfig";
 
 // eslint-disable-next-line react/prop-types
 const SongSection = ({ titleSong }) => {
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
+  const { Base_URL } = useConfig();
   const { access_token } = getToken();
   const [songList, setSongList] = useState([]);
   const [hasMoreSongs, setHasMoreSongs] = useState(false);

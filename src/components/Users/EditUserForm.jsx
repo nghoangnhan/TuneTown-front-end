@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Base_URL } from "../../api/config";
 import { Button, DatePicker, Form, Input, message } from "antd";
 import UseCookie from "../../hooks/useCookie";
 import UploadAvatar from "./UploadAvatar";
 import dayjs from "dayjs";
+import useConfig from "../../utils/useConfig";
 
 const layout = {
   labelCol: {
@@ -25,6 +25,7 @@ const tailLayout = {
 const EditUserForm = ({ editUserId, isAdmin }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const userId = editUserId || localStorage.getItem("userId");
   const [form] = Form.useForm();
   const formRef = useRef(null);
@@ -115,9 +116,8 @@ const EditUserForm = ({ editUserId, isAdmin }) => {
   ]);
   return (
     <section
-      className={`${
-        isAdmin ? "justify-center" : " pt-10 w-full min-h-screen"
-      } relative flex flex-col  items-center bg-[#ecf2fd]`}
+      className={`${isAdmin ? "justify-center" : " pt-10 w-full min-h-screen"
+        } relative flex flex-col  items-center bg-[#ecf2fd]`}
     >
       <Form
         {...layout}
@@ -125,11 +125,10 @@ const EditUserForm = ({ editUserId, isAdmin }) => {
         name="control-ref"
         form={form}
         onFinish={onFinish}
-        className={`relative  border ${
-          isAdmin ? "mx-auto w-full rounded-md" : ""
-        } p-5 bg-[#f9f9f9]`}
+        className={`relative  border ${isAdmin ? "mx-auto w-full rounded-md" : ""
+          } p-5 bg-[#f9f9f9]`}
       >
-        <div className="w-full text-center mb-5">
+        <div className="w-full mb-5 text-center">
           <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
             Edit User Information
           </h2>
@@ -159,7 +158,7 @@ const EditUserForm = ({ editUserId, isAdmin }) => {
               required: true,
             },
           ]}
-          // initialValue={userInfor.userName}
+        // initialValue={userInfor.userName}
         >
           <Input />
         </Form.Item>

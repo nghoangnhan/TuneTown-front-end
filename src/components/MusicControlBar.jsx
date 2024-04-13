@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
 import DurationBar from "./DurationBar";
 import VolumeBar from "./VolumeBar";
 import useSongUtils from "../utils/useSongUtils";
 import DefaultArt from "../assets/img/logo/logo.png";
+import useConfig from "../utils/useConfig";
 
 const MusicControlBar = () => {
   const songInfor = useSelector((state) => state.music.currentSong);
   // Check Screen Size Mobile
-  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  const { isMobile } = useConfig();
   const { showArtistV2, AcronymName } = useSongUtils();
 
   return (

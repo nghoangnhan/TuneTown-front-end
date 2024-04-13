@@ -1,12 +1,10 @@
 import { io } from "socket.io-client";
 import UseCookie from "../hooks/useCookie";
 import axios from "axios";
+
 const { getToken } = UseCookie();
-
-// Link to the backend server (production)
+// Link to the backend server 
 // export const Base_URL = "https://tunetown-production.up.railway.app";
-
-// Link to the backend server (local)
 export const Base_URL = "http://localhost:8080";
 export const Base_Ava =
   "https://i.pinimg.com/564x/08/e4/58/08e458a736a3c0365612771772fa4904.jpg";
@@ -27,6 +25,9 @@ export const auth = {
   refresh_token: token.refresh_token,
 };
 
+
+
+// Create instance axios
 export const instance = axios.create({
   Base_URL,
   headers: {

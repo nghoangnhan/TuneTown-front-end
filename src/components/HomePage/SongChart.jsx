@@ -1,36 +1,35 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import "../../assets/CSS/ReactContexify.css";
-import { Base_URL } from "../../api/config";
 import { useEffect, useState } from "react";
 import UseCookie from "../../hooks/useCookie";
 import SongItem from "../Song/SongItem";
+import useConfig from "../../utils/useConfig";
 
 // eslint-disable-next-line react/prop-types
 const SongChart = ({ titleSong, StartTime, EndTime }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const [songList, setSongList] = useState([]);
   const [songPage, setSongPage] = useState(1);
   const titleSongChart = titleSong
     ? titleSong
-    : `Top 10 Songs in ${
-        new Date().getMonth() < 3
-          ? "Spring"
-          : new Date().getMonth() < 6
-          ? "Summer"
-          : new Date().getMonth() < 9
+    : `Top 10 Songs in ${new Date().getMonth() < 3
+      ? "Spring"
+      : new Date().getMonth() < 6
+        ? "Summer"
+        : new Date().getMonth() < 9
           ? "Autumn"
           : "Winter"
-      }`;
+    }`;
 
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1; // Adding 1 to get the correct month
 
   const startTime =
     StartTime ||
-    `${currentYear}-${
-      currentMonth - 1 < 10 ? `0${currentMonth - 1}` : currentMonth - 1
+    `${currentYear}-${currentMonth - 1 < 10 ? `0${currentMonth - 1}` : currentMonth - 1
     }-01`;
   const endTime = EndTime || `${currentYear}-${currentMonth}-30`;
 

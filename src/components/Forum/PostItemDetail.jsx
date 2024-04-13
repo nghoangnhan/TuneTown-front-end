@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import PostItemComment from "./PostItemComment";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsReply } from "../../redux/slice/social.js";
+import useIconUtils from "../../utils/useIconUtils.jsx";
+import AudioWaveSurfer from "./AudioWaveSurfer.jsx";
 
 const PostItemDetail = () => {
   const { postId } = useParams();
@@ -22,6 +24,7 @@ const PostItemDetail = () => {
   const [refresh, setRefresh] = useState(false);
   const [postContent, setPostContent] = useState();
   const [liked, setLiked] = useState();
+  const { BackButton, ThumbsUpSolid, VerifyAccount } = useIconUtils();
   const isReplying = useSelector((state) => state.social.isReplying);
   const replyCommentId = useSelector((state) => state.social.replyCommentId);
   const replyComment = useSelector((state) => state.social.replyComment)
@@ -51,6 +54,7 @@ const PostItemDetail = () => {
         setRefresh(true);
         console.log("Create Comment", res);
         commentRef.current.value = "";
+        scrollToBottom(windownEndRef);
       });
     } else if (isReplying == true) {
       const reply = {
@@ -66,6 +70,7 @@ const PostItemDetail = () => {
         commentRef.current.value = "";
       });
     }
+
   };
 
   const handleLikePost = async () => {
@@ -92,9 +97,9 @@ const PostItemDetail = () => {
     setRefresh(false);
   }, [refresh]);
 
-  useEffect(() => {
-    scrollToBottom(windownEndRef);
-  }, [postContent]);
+  // useEffect(() => {
+  //   scrollToBottom(windownEndRef);
+  // }, [postContent]);
 
   if (!postContent) return null;
 
@@ -102,33 +107,27 @@ const PostItemDetail = () => {
     <div className="h-auto min-h-screen text-[#2E3271] bg-[#ecf2fd] pt-5 pb-24 px-1">
       <div className="p-5">
         <div className="mb-2 text-4xl font-bold">Post Detail</div>
-        <button
-          className="bg-[#59c26d] text-white font-bold py-2 px-4 mt-5 rounded-lg"
-          onClick={() => window.history.back()}
-        >
-          <span>{"<"}</span> Back
-        </button>
+        <BackButton></BackButton>
       </div>
       <div className="bg-[#FFFFFFCC]  font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
-        <div className="text-xl font-bold text-primary">
+        <div className="flex flex-row items-center gap-1 text-xl font-bold">
           {postContent.author.userName}
+          {postContent.author.role == "ARTIST" && (
+            <VerifyAccount></VerifyAccount>
+          )}
         </div>
         <div className="text-xs font-medium text-[#3d419783]">{countTime}</div>
 
+        {/* Post Content */}
         <div className="text-md">{postContent?.content}</div>
+        <AudioWaveSurfer></AudioWaveSurfer>
+
+        {/* Control Reaction */}
         <div className="flex flex-row items-center justify-center gap-5 mt-2 font-bold text-primary">
           {/* Like  */}
-          <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80">
-            <svg
-              onClick={handleLikePost}
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              viewBox="0 -960 960 960"
-              width="24"
-              fill={liked ? "#49ad5b" : "#3a3a3d"}
-            >
-              <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
-            </svg>
+          <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80"
+            onClick={handleLikePost}>
+            <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
             <span>{postContent.likes.length}</span>
           </button>
           {/* Share  */}
@@ -136,11 +135,15 @@ const PostItemDetail = () => {
             Share
           </button>
         </div>
+
         <span className="block font-bold border-b-2 border-[#49ad5b] py-2 text-center opacity-10"></span>
+
         {/* Comment section */}
         <div className="mt-5">
-          <PostItemComment postContent={postContent}></PostItemComment>
           {/* Post Comment */}
+          <PostItemComment postContent={postContent}></PostItemComment>
+
+          {/* Input Comment */}
           <div className="flex flex-row items-center justify-center gap-2 mt-5">
             <input
               ref={commentRef}

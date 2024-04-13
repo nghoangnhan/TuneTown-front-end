@@ -1,12 +1,11 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import { Button, Upload, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+
+import { Button, message } from "antd";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Base_URL } from "../../api/config";
 import axios from "axios";
 import UseCookie from "../../hooks/useCookie";
+import useConfig from "../../utils/useConfig";
+import PropTypes from 'prop-types';
 
 function UploadFileDropZone(props) {
   const onDrop = useCallback((acceptedFiles) => {
@@ -56,6 +55,7 @@ function UploadFileDropZone(props) {
 const UploadAvatar = ({ setFileIMG }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const [uploadedFile, setUploadedFile] = useState({});
   //drop-zone
   const handleUploadFileIMG = async (file) => {
@@ -93,6 +93,16 @@ const UploadAvatar = ({ setFileIMG }) => {
       handleUploadFile={handleUploadFileIMG}
     ></UploadFileDropZone>
   );
+};
+UploadFileDropZone.propTypes = {
+  setUploadedFile: PropTypes.func.isRequired,
+  handleUploadFile: PropTypes.func.isRequired,
+};
+
+
+
+UploadAvatar.propTypes = {
+  setFileIMG: PropTypes.func.isRequired,
 };
 
 export default UploadAvatar;

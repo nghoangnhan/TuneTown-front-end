@@ -8,8 +8,8 @@ import { Base_URL, auth } from "../api/config";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../redux/slice/account";
 import GoogleLoginButton from "../components/AuthLogin/AuthGoogleLogin";
-import FacebookLoginButton from "../components/AuthLogin/AuthFacebookLogin";
 import { gapi } from "gapi-script";
+import LoginFacebook from "../components/AuthLogin/AuthFacebookLogin";
 
 const clientId =
   "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
@@ -103,7 +103,7 @@ const LoginPage = () => {
             span: 8,
           }}
           wrapperCol={{
-            span: 16,
+            span: 10,
           }}
           style={{
             maxWidth: 600,
@@ -142,13 +142,13 @@ const LoginPage = () => {
           </Form.Item>
 
           <Form.Item className="flex flex-row items-center justify-center">
-            <button className="bg-[#38a870] text-white hover:bg-[#54ce91] hover:text-[#fff] mt-2 py-2 px-3 w-max rounded-lg font-semibold">
-              Submit
+            <button className="bg-primary text-white hover:bg-primaryHoverOn hover:text-[#aaaaaa] rounded shadow-lg mt-2 py-2 px-3 w-max font-semibold">
+              Login
             </button>
           </Form.Item>
         </Form>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center gap-2 xl:gap-4">
           <p className="text-[#2E3271]">
             Don&apos;t have account?
             <NavLink to="/signup" className="text-[#34a56d] ml-1 text-sm">
@@ -161,12 +161,12 @@ const LoginPage = () => {
               Forget Password
             </NavLink>
           </p>
-          <div className="mt-2">
-            <GoogleLoginButton />
+
+          <div>
+            <p className="text-[#a8a8ac]">Or login with</p>
           </div>
-          <div className="mt-2">
-            <FacebookLoginButton />
-          </div>
+          <GoogleLoginButton />
+          <LoginFacebook />
         </div>
         <footer className="absolute bottom-5 ">
           <p className="text-[#8d8d8d]">© 2023 TuneTown</p>

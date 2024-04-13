@@ -7,6 +7,7 @@ import { setRefreshPlaylist } from "../../redux/slice/playlist";
 import UploadFileDropZone from "../UploadSong/UploadFileDropZone";
 import { useDataUtils } from "../../utils/useDataUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import useIconUtils from "../../utils/useIconUtils";
 
 const MyDetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
@@ -14,6 +15,7 @@ const MyDetailPlaylist = () => {
   const [form] = Form.useForm();
   const { editPlaylist, getListSongPlaylist, getPlaylistByPlaylistId } =
     useMusicAPIUtils();
+  const { BackButton } = useIconUtils();
   const dispatch = useDispatch();
   const { handleUploadFileIMG } = useDataUtils();
   const [songPlaylistList, setSongPlaylistList] = useState();
@@ -79,11 +81,10 @@ const MyDetailPlaylist = () => {
   }, [uploadedFile]);
   return (
     <div
-      className={`${
-        songPlaylistList != null && songPlaylistList.length > 0
-          ? "min-h-screen h-full"
-          : "min-h-screen"
-      } xl:p-5 bg-[#ecf2fd] mb-20`}
+      className={`${songPlaylistList != null && songPlaylistList.length > 0
+        ? "min-h-screen h-full"
+        : "min-h-screen"
+        } xl:p-5 bg-[#ecf2fd] mb-20`}
     >
       {/* Button  */}
       <div className="flex flex-row gap-4">
@@ -91,19 +92,19 @@ const MyDetailPlaylist = () => {
           onClick={() => window.history.back()}
           className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md mb-5"
         >
-          <div className="text-white font-bold px-2 py-1">{"<"} Back</div>
+          <div className="px-2 py-1 font-bold text-white"><BackButton></BackButton> Back</div>
         </button>
         <button
           onClick={() => setModalOpen(true)}
           className="bg-[#ecf2fd] text-[#40cf62] hover:text-[#ecf2fd]  hover:bg-[#40cf62] border border-solid border-[#40cf62]  rounded-md mb-5"
         >
-          <div className="font-bold px-2 py-1">Edit Playlist Information</div>
+          <div className="px-2 py-1 font-bold">Edit Playlist Information</div>
         </button>
       </div>
       <div className="flex flex-row items-start text-7xl text-[#4b4848] font-bold text-center mb-5 gap-4">
-        <div className="flex flex-row items-start relative">
+        <div className="relative flex flex-row items-start">
           <img
-            className="w-20 h-20 xl:w-56 xl:h-56 rounded-md"
+            className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
             src={
               playlistDetail.coverArt
                 ? playlistDetail.coverArt
@@ -171,7 +172,7 @@ const MyDetailPlaylist = () => {
           <div className="flex flex-col gap-2">
             <Form.Item name="baseAva">
               <img
-                className="ml-10 w-40 h-40 rounded-md"
+                className="w-40 h-40 ml-10 rounded-md"
                 src={
                   playlistDetail.coverArt
                     ? playlistDetail.coverArt

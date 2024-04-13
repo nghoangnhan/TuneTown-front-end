@@ -1,16 +1,17 @@
 import axios from "axios";
-import { Base_URL } from "../../api/config";
 import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../../redux/slice/account";
 import { message } from "antd";
 import { LoginSocialFacebook } from "reactjs-social-login";
-import { FacebookLoginButton } from "react-social-login-buttons";
 import { jwtDecode } from "jwt-decode";
+import { LoginSocialButton } from "./LoginSocialButton";
+import useConfig from "../../utils/useConfig";
 
 function LoginFacebook() {
   const { saveToken } = UseCookie();
+  const { Base_URL } = useConfig();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
@@ -98,14 +99,11 @@ function LoginFacebook() {
     const getAccessToken = await GetAccessToken(email, "FACEBOOK");
     const credential = getAccessToken.access_token;
     const account = jwtDecode(credential);
+
     console.log("value", account);
-
     console.log(credential);
-
     await editUser(account, getAccessToken.access_token);
-
     message.success("Login Successfully");
-
     // Navigate to /home after successful login
     setTimeout(() => {
       navigate("/home");
@@ -130,9 +128,11 @@ function LoginFacebook() {
       onResolve={responseFacebook}
       onReject={onFailure}
     >
-      <FacebookLoginButton className="rounded-md " />
+      {/* <FacebookLoginButton className="bg-white rounded-md" /> */}
+      <LoginSocialButton></LoginSocialButton>
     </LoginSocialFacebook>
   );
 }
+
 
 export default LoginFacebook;

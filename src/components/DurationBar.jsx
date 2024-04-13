@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import { useSelector, useDispatch } from "react-redux";
 import useSongUtils from "../utils/useSongUtils";
 import {
@@ -13,13 +12,14 @@ import {
   setShuffle,
   setSongLinks,
 } from "../redux/slice/music";
+import useConfig from "../utils/useConfig";
 
 const DurationBar = () => {
   const { TimeConvert, CheckPlaying, GetSongDuration } = useSongUtils(); // Song Function
   const dispatch = useDispatch();
   const audioRef = useRef();
 
-  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  const { isMobile } = useConfig();
   // const [duration, setDuration] = useState("0"); // Max time of the song
   const songObj = useSelector((state) => state.music.currentSong); // Get song information from the store
   const songQueuePlayed = useSelector((state) => state.music.songQueuePlayed);

@@ -2,12 +2,13 @@
 import { useEffect, useState } from "react";
 import { Button, Form, Input, Space, Table } from "antd";
 import axios from "axios";
-import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
+import useConfig from "../../utils/useConfig";
 
 const HistorySection = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const [songList, setSongList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const userId = localStorage.getItem("userId");
@@ -41,7 +42,7 @@ const HistorySection = () => {
       <img
         src={songItem.song.poster}
         alt={songItem.song.songName}
-        className="w-11 h-11 rounded-md"
+        className="rounded-md w-11 h-11"
       />
     ),
     songName: songItem.song.songName,
@@ -73,7 +74,7 @@ const HistorySection = () => {
     //   key: "action",
     //   render: (_, record) => (
     //     <Space size="middle">
-    //       {/* <button className="py-1 px-2 bg-slate-800 rounded-lg">Edit</button> */}
+    //       {/* <button className="px-2 py-1 rounded-lg bg-slate-800">Edit</button> */}
     //       {/* <button
     //         className="py-1 px-2 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
     //         onClick={() => deleteSong(record.key)}
@@ -93,7 +94,7 @@ const HistorySection = () => {
   return (
     <div className="min-h-screen h-full xl:p-5 bg-[#ecf2fd] mb-20">
       <div className="text-2xl font-bold">Song Management</div>
-      <div className=" flex flex-row justify-between mb-5 mt-5"></div>
+      <div className="flex flex-row justify-between mt-5 mb-5 "></div>
       <Table columns={columnsSong} dataSource={dataSongTable} />
     </div>
   );

@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import defaultAva from "../../assets/img/logo/logo.png";
 import { useChatUtils } from "../../utils/useChatUtils";
 import UseCookie from "../../hooks/useCookie";
-import { Base_URL } from "../../api/config";
 import { setChatChosen } from "../../redux/slice/social";
 import { setIsNewMessage } from "../../redux/slice/social";
+import useIconUtils from "../../utils/useIconUtils";
+import useConfig from "../../utils/useConfig";
 import { useForm } from "antd/es/form/Form";
 import { Form, Input, Button } from "antd";
 import useDebounce from "../../hooks/useDebounce";
@@ -21,11 +21,13 @@ const ChatNavigate = () => {
   const [form] = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+  const { BackButton } = useIconUtils();
+  const { isMobile, Base_URL } = useConfig();
   const { access_token } = getToken();
   const [converList, setConverList] = useState([]);
   const converChosen = useSelector((state) => state.social.currentChat.chatId);
   const isNewMessage = useSelector((state) => state.social.isNewMessage);
+
   const [keywordsInput, setKeywordsInput] = useState("");
   const [userRs, setUserRs] = useState([]);
   const keywordsInputDebounce = useDebounce(keywordsInput, 500);
@@ -178,15 +180,10 @@ const ChatNavigate = () => {
         </div>
       )}
     </div>
-
-      <button
-        onClick={() => navigate("/home")}
-        className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md my-5 ml-2"
-      >
-        <div className="px-2 py-1 font-bold text-white">{"<"} Back</div>
-      </button>
-
-      <div className="flex flex-col justify-center gap-2 mt-2">
+      <div className="ml-2">
+        <BackButton></BackButton>
+      </div>
+      <div className="flex flex-col justify-center gap-2 mt-5">
         {converList.map((conver) => (
           <div
             key={conver.chatId}

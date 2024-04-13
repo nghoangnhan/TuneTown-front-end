@@ -1,11 +1,12 @@
 import { Form, Select } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Base_URL } from "../../api/config";
 import useDebounce from "../../hooks/useDebounce";
 import UseCookie from "../../hooks/useCookie";
+import useConfig from "../../utils/useConfig";
 
 const ArtistInput = () => {
+  const { Base_URL } = useConfig();
   // Get the users name from API
   const { getToken } = UseCookie();
   const { access_token } = getToken();

@@ -1,13 +1,15 @@
 import { Button, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { Base_URL } from "../../api/config";
 import UseCookie from "../../hooks/useCookie";
 import axios from "axios";
 import { Form } from "react-router-dom";
+import useConfig from "../../utils/useConfig";
 
 const UploadImage = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
+  
   const UploadImage = async (values) => {
     try {
       const response = await axios.post(
