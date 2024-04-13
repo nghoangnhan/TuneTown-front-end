@@ -25,7 +25,7 @@ const MessageSection = ({ chatContent }) => {
               {/* Avatar  */}
               <div className="w-10">
                 {chat.own == false && < img
-                  src={chat.own ? chat.sentUserAvatar : defaultAva}
+                  src={chat.sentUserAvatar}
                   alt="user"
                   className="rounded-full"
                 />}

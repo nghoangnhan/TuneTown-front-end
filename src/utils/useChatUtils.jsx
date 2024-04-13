@@ -58,15 +58,7 @@ export const useChatUtils = () => {
         }
       );
       const messages = response.data;
-      // console.log(
-      //   "Response fetchChatlist:",
-      //   "sendUID",
-      //   parseInt(sendUserId),
-      //   "RecieveUID",
-      //   parseInt(receiveUserId),
-      //   "Message",
-      //   messages
-      // );
+      console.log("MESSAGES", messages);
       if (response.status !== 200) {
         throw new Error("Failed to fetch messages");
       }

@@ -62,6 +62,7 @@ const ChatArea = () => {
 
       // Set isNewMessage to true
       dispatch(setIsNewMessage(true));
+      console.log("SENTID", receiveUserId);
     } catch (error) {
       console.error("Error sending messages:", error);
     }
@@ -126,7 +127,7 @@ const ChatArea = () => {
           />
         </div>
         <h2 className="z-50 flex items-center h-full pl-3 font-bold text-black">
-          {converChosen.name ? converChosen.name : "Unknown"}
+          {converChosen.userName ? converChosen.userName : "Unknown"}
         </h2>
       </div>
 

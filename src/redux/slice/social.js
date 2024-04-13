@@ -7,7 +7,7 @@ const socialStore = createSlice({
     isNewMessage: false,
     currentChat: {
       chatId: Number,
-      name: "",
+      userName: "",
       message: "",
       time: "",
       avatar: null,
