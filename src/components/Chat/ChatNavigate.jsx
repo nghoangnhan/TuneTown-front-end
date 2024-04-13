@@ -9,21 +9,26 @@ import { setChatChosen } from "../../redux/slice/social";
 import { setIsNewMessage } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
-
+import { useForm } from "antd/es/form/Form";
+import { Form, Input, Button } from "antd";
+import useDebounce from "../../hooks/useDebounce";
 
 const ChatNavigate = () => {
-  const userId = localStorage.getItem("userId");
+  const userId =  parseInt(localStorage.getItem("userId"), 10);
   const { AcronymName } = useChatUtils();
   const { getToken } = UseCookie();
+  const [form] = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { BackButton } = useIconUtils();
   const { isMobile, Base_URL } = useConfig();
   const { access_token } = getToken();
   const [converList, setConverList] = useState([]);
-  const converChosen = useSelector((state) => state.social.currentChat.chatId);
+  const converChosen = useSelector((state) => state.social.currentChat);
   const isNewMessage = useSelector((state) => state.social.isNewMessage);
-
+  const [keywordsInput, setKeywordsInput] = useState("");
+  const [userRs, setUserRs] = useState([]);
+  const keywordsInputDebounce = useDebounce(keywordsInput, 500);
 
   const fetchChatList = async () => {
     try {
@@ -36,7 +41,6 @@ const ChatNavigate = () => {
           },
         }
       );
-      console.log("Chat List Response:", response.data);
       const data = await response.data;
       const sortedData = Object.values(data).sort((a, b) => {
         return (
@@ -47,8 +51,9 @@ const ChatNavigate = () => {
 
       const updatedConverList = sortedData.map((item) => ({
         chatId: item.user.id,
-        name: item.user.userName,
+        userName: item.user.userName,
         message: item.lastMessage.content,
+        sendId: item.lastMessage.sendUserId,
         time: new Date(item.lastMessage.messageDate).toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -57,7 +62,6 @@ const ChatNavigate = () => {
         seen: item.lastMessage.seen,
       }));
       setConverList(updatedConverList);
-      console.log(updatedConverList);
     } catch (error) {
       console.error("Error fetching chat list:", error);
     }
@@ -65,10 +69,56 @@ const ChatNavigate = () => {
 
   // Handle chat chosen
   const handleChatChosen = (chatId, conver) => {
-    console.log(chatId + " " + conver.name + " " + conver.message);
+    console.log(chatId + " " + conver.userName + " " + conver.message + " " + conver.seen);
     dispatch(setChatChosen(conver));
     navigate(`/chat/${chatId}`);
   };
+
+  const searchUserByName = async (keywords) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/users/getListByName?userName=${keywords}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("Error search user:", error.message);
+    }
+  };
+
+  const handleSearch = async (keywords) => {
+    // Checkk if keywords is empty
+    if (keywords === "") return;
+    const searchUser = await searchUserByName(keywords);
+    if (searchUser.length === 0) return;
+    else {
+      setUserRs(searchUser);
+    }
+  };
+
+  const handleUserItemClick = async (user) => {
+    dispatch(setChatChosen(user));
+    navigate(`/chat/${user.id}`);
+    setKeywordsInput('');
+  }
+
+  useEffect(() => {
+    if (keywordsInputDebounce === "") {
+      setUserRs(null);
+    }
+    if (keywordsInputDebounce) {
+      handleSearch(keywordsInputDebounce);
+    }
+  }, [keywordsInputDebounce]);
+
+  useEffect(() => {
+    fetchChatList();
+  }, [converChosen.seen]);
 
   useEffect(() => {
     if (isNewMessage == true) {
@@ -90,6 +140,40 @@ const ChatNavigate = () => {
         </div>
         <div className="text-[#2E3271]">TuneTown</div>
       </div>
+
+      <div className="relative">
+      <Form className="flex flex-col justify-center" form={form}>
+        <Form.Item
+          name="search"
+          rules={[
+            {
+              required: false,
+            },
+          ]}
+        >
+          <Input
+            name="keywords"
+            placeholder="Search..."
+            onChange={(e) => setKeywordsInput(e.target.value)}
+            className="rounded-md bg-[#FFFFFFCC] w-full h-12 text-lg"
+          />
+        </Form.Item>
+      </Form>
+
+      {/* Render userResults absolutely positioned below the search input */}
+      {userRs && (
+        <div className="absolute top-full left-0 right-0 bg-white shadow-md">
+          <ul className="px-4 py-2">
+            {userRs.map(user => (
+              <li key={user.id} className="flex items-center space-x-2 hover:bg-blue-100 cursor-pointer rounded-md p-2" onClick={() => handleUserItemClick(user)}>
+              <img src={`${user.avatar ? user.avatar : defaultAva}`} alt="User Avatar" className="w-8 h-8 rounded-full" />
+              <span>{user.userName}</span>
+            </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
       <div className="ml-2">
         <BackButton></BackButton>
       </div>
@@ -97,10 +181,9 @@ const ChatNavigate = () => {
         {converList.map((conver) => (
           <div
             key={conver.chatId}
-            className={`${converChosen == conver.chatId ? "bg-slate-300" : ""
+            className={`${converChosen.chatId == conver.chatId ? "bg-slate-300" : ""
               } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
             onClick={() => {
-              console.log("Seen status:", conver.seen);
               handleChatChosen(conver.chatId, conver);
             }}
           >
@@ -113,10 +196,10 @@ const ChatNavigate = () => {
             </div>
             <div className="w-3/4">
               <h3 className="text-base font-bold">
-                {AcronymName(conver.name, 17)}
+                {AcronymName(conver.userName, 17)}
               </h3>
               <p
-                className={`text-sm ${conver.seen === 0 ? "font-bold" : "font-italic"
+                className={`text-sm ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : "font-italic"
                   }`}
               >
                 {" "}
@@ -124,7 +207,7 @@ const ChatNavigate = () => {
               </p>
             </div>
             <div className="flex justify-center">
-              <p className={`text-sm w-16 ${conver.seen === 0 ? "font-bold" : ""} `}>
+              <p className={`text-sm w-16 ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : ""} `}>
                 {conver.time}
               </p>
             </div>
