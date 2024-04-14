@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import defaultAva from "../../assets/img/logo/logo.png";
-import { FaCheck, FaCheckDouble } from 'react-icons/fa';
+import useIconUtils from "../../utils/useIconUtils";
 
 const MessageSection = ({ chatContent }) => {
+  const { Check, CheckSeen } = useIconUtils();
   console.log("Chat Content:", chatContent);
   const windownEndRef = useRef(null);
   const scollToBottom = (windownEndRef) => {
@@ -36,12 +37,12 @@ const MessageSection = ({ chatContent }) => {
                 <h3 className="font-bold text-gray-500">
                   {chat.name ? chat.name : "Unknown"}
                 </h3>
-                <div className="flex flex-row items-end">
-                  <span className="max-w-xs p-2 text-base break-words border rounded-md bg-slate-200">
+                <div className="flex flex-row items-end gap-1">
+                  <span className="max-w-xs px-2 py-1 text-base break-words border rounded-md bg-slate-200">
                     {chat.message}
                   </span>
-                  {chat.own && chat.seen === 1 && <FaCheckDouble className="ml-1 text-gray-500" />}
-                  {chat.own && chat.seen === 0 && <FaCheck className="ml-1 text-gray-500" />}
+                  {chat.own && chat.seen === 1 && <CheckSeen className="ml-1 text-gray-500" />}
+                  {chat.own && chat.seen === 0 && <Check className="ml-1 text-gray-500" />}
                 </div>
                 <div className="flex justify-end">
                   <p className="text-xs text-slate-400">{chat.time}</p></div>

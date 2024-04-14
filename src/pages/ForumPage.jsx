@@ -26,6 +26,7 @@ const ForumPage = () => {
 
   return (
     <div className="h-auto min-h-screen text-[#59c26d] bg-[#ecf2fd] pt-5 pb-40 px-1">
+      {/* Desktop  */}
       {!isMobile && <div className="flex flex-row">
         <div className="flex-1 p-5">
           <div className="mb-2 text-4xl font-bold">Forum</div>
@@ -42,6 +43,7 @@ const ForumPage = () => {
       </div>
       }
 
+      {/* Mobile  */}
       {isMobile && <div className="flex flex-col">
         <div className="p-5">
           <div className="mb-2 text-4xl font-bold">Forum</div>
@@ -57,6 +59,8 @@ const ForumPage = () => {
         <SongChart></SongChart>
       </div>
       }
+
+      {/* Post Option  */}
       <Modal
         title="Create a Post"
         open={openModal}

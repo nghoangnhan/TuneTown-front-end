@@ -20,11 +20,11 @@ const AudioWaveSurfer = ({ audio }) => {
     useEffect(() => {
         wavesurfer.current = WaveSurfer.create({
             container: wavesurferRef.current,
-            waveColor: 'violet',
-            progressColor: 'purple',
+            waveColor: "#00cc00",
+            progressColor: "green",
             barWidth: 3,
             cursorWidth: 1,
-            height: 100,
+            height: 80,
             barGap: 2,
             url: HappyNewYear,
         });

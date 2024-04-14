@@ -116,7 +116,9 @@ const PostItem = ({ postContent }) => {
         </div>
         {/* Audio Wave */}
         <div className="w-full">
-          <AudioWaveSurfer></AudioWaveSurfer>
+          <AudioWaveSurfer audio={
+            postContent?.song?.songData
+          }></AudioWaveSurfer>
         </div>
       </div>
       {/* Line section */}
@@ -128,7 +130,7 @@ const PostItem = ({ postContent }) => {
         <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80"
           onClick={handleLikePost}>
           <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
-          <span>{postContent.likes.length}</span>
+          <span>{postContent?.likes.length}</span>
         </button>
 
         {/* Control  */}

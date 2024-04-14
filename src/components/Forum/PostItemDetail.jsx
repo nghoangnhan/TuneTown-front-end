@@ -26,7 +26,7 @@ const PostItemDetail = () => {
   const [liked, setLiked] = useState();
   const { BackButton, ThumbsUpSolid, VerifyAccount } = useIconUtils();
   const isReplying = useSelector((state) => state.social.isReplying);
-  const replyCommentId = useSelector((state) => state.social.replyCommentId);
+  const replyCommentId = useSelector((state) => state.social.replyComment.replyCommentId);
   const replyComment = useSelector((state) => state.social.replyComment)
 
   const countTime = new Date(
@@ -70,7 +70,6 @@ const PostItemDetail = () => {
         commentRef.current.value = "";
       });
     }
-
   };
 
   const handleLikePost = async () => {
