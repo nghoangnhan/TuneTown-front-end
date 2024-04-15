@@ -65,7 +65,7 @@ const PostItem = ({ postContent }) => {
   };
 
   useEffect(() => {
-    if (handleCheckLiked(postContent?.likes)) {
+    if (handleCheckLiked(postDetail?.likes)) {
       setLiked(true);
     } else {
       setLiked(false);
@@ -128,7 +128,7 @@ const PostItem = ({ postContent }) => {
         <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80"
           onClick={handleLikePost}>
           <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
-          <span>{postContent.likes.length}</span>
+          <span>{postDetail != null ? postDetail.likes.length : postContent.likes.length}</span>
         </button>
 
         {/* Control  */}

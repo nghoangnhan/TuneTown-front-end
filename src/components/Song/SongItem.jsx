@@ -25,7 +25,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
   const { show } = useContextMenu();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
-  const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
+  const { addSongToPlaylist, getUserPlaylist, addSongToHistory, combineData } =
     useMusicAPIUtils();
   const { showArtistV2 } = useSongUtils();
   const isPlaying = useSelector((state) => state.music.isPlaying);
@@ -33,6 +33,8 @@ const SongItem = ({ song, songOrder, songListen }) => {
   // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [filePath, setFilePath] = useState('');
+  const fileInputRef = useRef(null);
 
   const songInforObj = {
     id: id,
@@ -66,6 +68,30 @@ const SongItem = ({ song, songOrder, songListen }) => {
       id: `songOption_${songId}`,
     });
   }
+
+  const handleShareSong = () => {
+    console.log("SONG", songInforObj.songData);
+  }
+
+  const handleDownloadSong = async () => {
+    const data = await combineData(songInforObj.songName);
+    console.log(data);
+    const blob = new Blob([data], { type: 'audio/mpeg' });
+
+    // Create a link element
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = songInforObj.songName; // Set the filename
+    // Trigger a click event on the link to prompt the save dialog
+    document.body.appendChild(link);
+    link.click();
+    console.log(blob)
+
+    // Clean up
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+};
 
   // Call this function when you want to refresh the playlist
   const refreshPlaylist = () => {
@@ -168,6 +194,44 @@ const SongItem = ({ song, songOrder, songListen }) => {
                 fillRule="evenodd"
                 d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
                 clipRule="evenodd"
+              />
+            </svg>
+          </button>
+          <button 
+            className="p-1 hover:opacity-60 rounded-2xl"
+            onClick={handleShareSong}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke-width="1.5" 
+              stroke="currentColor" 
+              class="w-6 h-6"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" 
+              />
+            </svg>
+          </button>
+          <button 
+            className="p-1 hover:opacity-60 rounded-2xl"
+            onClick={handleDownloadSong}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke-width="1.5" 
+              stroke="currentColor" 
+              class="w-6 h-6"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" 
               />
             </svg>
           </button>
