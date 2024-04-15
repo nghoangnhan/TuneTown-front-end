@@ -116,7 +116,7 @@ const PostItem = ({ postContent }) => {
         </div>
         {/* Audio Wave */}
         <div className="w-full">
-          <AudioWaveSurfer></AudioWaveSurfer>
+          <AudioWaveSurfer song={postContent.song}></AudioWaveSurfer>
         </div>
       </div>
       {/* Line section */}
