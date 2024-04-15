@@ -25,39 +25,41 @@ const ForumPage = () => {
   }, []);
 
   return (
-    <div className="h-auto min-h-screen text-[#59c26d] bg-[#ecf2fd] pt-5 pb-40 px-1">
+    <div className="h-auto min-h-screen text-[#59c26d] bg-[#ecf2fd] pt-5 pb-40 px-2">
       {/* Desktop  */}
-      {!isMobile && <div className="flex flex-row">
-        <div className="flex-1 p-5">
-          <div className="mb-2 text-4xl font-bold">Forum</div>
-          <div className="text-xl font-bold">Welcome to the Forum!</div>
-          <button
-            className="px-4 py-2 mt-5 font-bold text-white transition duration-200 ease-in-out rounded-lg bg-primary hover:bg-primaryHoverOn"
-            onClick={() => setOpenModal(true)}
-          >
-            Create a Post
-          </button>
-          <PostSection postList={listPost?.postList}></PostSection>
+      {!isMobile &&
+        <div className="flex flex-row">
+          <div className="flex-1 py-3">
+            <div className="mb-2 text-4xl font-bold">Forum</div>
+            <div className="text-xl font-bold">Welcome to the Forum!</div>
+            <button
+              className="px-4 py-2 mt-5 font-bold text-white transition duration-200 ease-in-out rounded-lg bg-primary hover:bg-primaryHoverOn"
+              onClick={() => setOpenModal(true)}
+            >
+              Create a Post
+            </button>
+            <PostSection postList={listPost?.postList}></PostSection>
+          </div>
+          <SongChart inForum={true}></SongChart>
         </div>
-        <SongChart></SongChart>
-      </div>
       }
 
       {/* Mobile  */}
-      {isMobile && <div className="flex flex-col">
-        <div className="p-5">
-          <div className="mb-2 text-4xl font-bold">Forum</div>
-          <div className="text-xl font-bold">Welcome to the Forum!</div>
-          <button
-            className="px-4 py-2 mt-5 font-bold text-white transition duration-200 ease-in-out rounded-lg bg-primary hover:bg-primaryHoverOn"
-            onClick={() => setOpenModal(true)}
-          >
-            Create a Post
-          </button>
-          <PostSection postList={listPost?.postList}></PostSection>
+      {isMobile &&
+        <div className="flex flex-col">
+          <div className="p-2">
+            <div className="mb-2 text-4xl font-bold">Forum</div>
+            <div className="text-xl font-bold">Welcome to the Forum!</div>
+            <button
+              className="px-4 py-2 mt-5 font-bold text-white transition duration-200 ease-in-out rounded-lg bg-primary hover:bg-primaryHoverOn"
+              onClick={() => setOpenModal(true)}
+            >
+              Create a Post
+            </button>
+            <PostSection postList={listPost?.postList}></PostSection>
+          </div>
+          <SongChart></SongChart>
         </div>
-        <SongChart></SongChart>
-      </div>
       }
 
       {/* Post Option  */}
