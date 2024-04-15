@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import UseCookie from "../../hooks/useCookie";
 import SongItem from "../Song/SongItem";
 import useConfig from "../../utils/useConfig";
+import useIconUtils from "../../utils/useIconUtils";
 
 // eslint-disable-next-line react/prop-types
-const SongChart = ({ titleSong, StartTime, EndTime }) => {
+const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
+  const { ListenIcon, TrendingIcon } = useIconUtils();
   const [songList, setSongList] = useState([]);
   const [songPage, setSongPage] = useState(1);
   const titleSongChart = titleSong
@@ -31,7 +33,7 @@ const SongChart = ({ titleSong, StartTime, EndTime }) => {
     StartTime ||
     `${currentYear}-${currentMonth - 1 < 10 ? `0${currentMonth - 1}` : currentMonth - 1
     }-01`;
-  const endTime = EndTime || `${currentYear}-${currentMonth}-30`;
+  const endTime = EndTime || `${currentYear}-${currentMonth < 10 ? `0${currentMonth}` : currentMonth}-30`;
 
   const getListSongPeriod = async () => {
     try {
@@ -69,18 +71,11 @@ const SongChart = ({ titleSong, StartTime, EndTime }) => {
   }
 
   return (
-    <div className="bg-[#FFFFFFCC] rounded-2xl shadow-md max-xl:w-full m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
+    <div className={`bg-[#FFFFFFCC] rounded-2xl shadow-md  mt-4 py-3 xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 ${inForum
+      ? "min-w-[500px]" : "min-w-[250px]"}`}>
       <div className="flex flex-row items-center justify-center gap-3">
         <h1 className="text-xl font-bold text-primary">{titleSongChart}</h1>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24"
-          viewBox="0 -960 960 960"
-          width="24"
-          fill="#59c26d"
-        >
-          <path d="m130-200-96-95 347-348 162 162 151-153h-86v-136h318v319H790v-88L543-289 381-451 130-200Z" />
-        </svg>
+        <TrendingIcon></TrendingIcon>
       </div>
       <div className="xl:w-full">
         <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary">
@@ -91,15 +86,7 @@ const SongChart = ({ titleSong, StartTime, EndTime }) => {
 
           <div className="flex flex-row items-center justify-center ">
             <div className="mr-24">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="20"
-                viewBox="0 -960 960 960"
-                width="20"
-                fill="currentColor"
-              >
-                <path d="M170.87-81.413q-34.483 0-58.742-24.279-24.259-24.278-24.259-58.789v-426.432q0-27.783 13.859-51.902 13.859-24.12 39.402-34.033l534.935-194.565 25.717 69.435-351.804 128.543h439.116q34.819 0 58.928 24.271 24.109 24.271 24.109 58.77v426.264q0 34.5-24.259 58.609-24.259 24.108-58.742 24.108H170.87Zm0-83h618.26v-259.456H170.87v259.456Zm138.035-45.609q40.225 0 68.225-27.774 28-27.775 28-68 0-40.226-27.774-68.226-27.775-28-68-28-40.226 0-68.226 27.775t-28 68q0 40.225 27.775 68.225 27.775 28 68 28ZM170.87-495.869H648v-70.566h72v70.566h69.13v-94.566H170.87v94.566Zm0 331.456v-259.456 259.456Z" />
-              </svg>
+              <ListenIcon></ListenIcon>
             </div>
             {/* <div className="font-bold text-center ">Duration</div> */}
           </div>

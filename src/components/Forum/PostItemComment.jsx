@@ -7,9 +7,7 @@ import { useForumUtils } from "../../utils/useChatUtils";
 
 const PostItemComment = ({ postContent }) => {
   const dispatch = useDispatch();
-
   const { getCommentById } = useForumUtils();
-
   const handleGetCommentById = async (commentId) => {
     await getCommentById(commentId).then((res) => {
       console.log("Get comment by id: ", res);
@@ -26,7 +24,7 @@ const PostItemComment = ({ postContent }) => {
   // Component code here
   return (
     <div>
-      {postContent != null &&
+      {postContent?.comments != null &&
         postContent?.comments?.map((comment) => (
           <div key={comment.id} className="pl-5 mt-4">
             <div className="flex flex-col ">

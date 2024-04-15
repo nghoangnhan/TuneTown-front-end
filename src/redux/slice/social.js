@@ -6,15 +6,15 @@ const socialStore = createSlice({
     isOnline: false,
     isNewMessage: false,
     currentChat: {
-      chatId: Number,
+      chatId: null,
       userName: "",
       message: "",
       time: "",
       avatar: null,
     },
     isReplying: false,
-    replyCommentId: Number,
     replyComment: {
+      replyCommentId: Number,
       userName: "",
       content: "",
       time: "",
@@ -34,7 +34,7 @@ const socialStore = createSlice({
       state.isReplying = action.payload;
     },
     setReplyCommentId: (state, action) => {
-      state.replyCommentId = action.payload;
+      state.replyComment.replyCommentId = action.payload;
     },
     setReplyComment: (state, action) => {
       const { author, content, commentDate } = action.payload;

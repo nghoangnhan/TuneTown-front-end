@@ -22,10 +22,10 @@ const MusicControlBar = () => {
           className="w-10 h-10 xl:w-14 xl:h-14 bg-[#B9C0DE] rounded-full"
         ></img>
         <div className="ml-1 xl:ml-4">
-          <carousel className="text-xs xl:text-base font-bold text-[#2E3271]">
+          <div className="text-xs xl:text-base font-bold text-[#2E3271]">
             {isMobile && AcronymName(songInfor.songName, 12)}
             {!isMobile && songInfor.songName}
-          </carousel>
+          </div>
           <div className="text-xs xl:text-base text-[#7C8DB5B8]">
             {isMobile && AcronymName(showArtistV2(songInfor.artists), 10)}
             {!isMobile && AcronymName(showArtistV2(songInfor.artists), 28)}

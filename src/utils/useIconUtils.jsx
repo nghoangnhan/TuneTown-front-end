@@ -1,6 +1,5 @@
-import { faCaretLeft, faPauseCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowTrendUp, faCaretLeft, faCheckCircle, faHeadphones, faPauseCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 
 const useIconUtils = () => {
     const BackButton = () => {
@@ -42,7 +41,6 @@ const useIconUtils = () => {
         );
     };
 
-
     const ThumbsUpRegular = () => {
         return (
             <FontAwesomeIcon icon="fa-regular fa-thumbs-up" />
@@ -60,6 +58,18 @@ const useIconUtils = () => {
             <FontAwesomeIcon className='text-xl' icon={faPauseCircle} />
         );
     };
+
+    const CheckSeen = () => {
+        return (
+            <FontAwesomeIcon className='text-gray-600' icon={faCheckCircle}></FontAwesomeIcon>
+        );
+    }
+
+    const Check = () => {
+        return (
+            <FontAwesomeIcon className='text-gray-600' icon={faCheckCircle}></FontAwesomeIcon>
+        );
+    }
 
     const VerifyAccount = () => {
         return (
@@ -91,7 +101,23 @@ const useIconUtils = () => {
             </div>)
     }
 
-    return { BackButton, ThumbsUpSolid, ThumbsUpRegular, BackIcon, VerifyAccount, OptionsIcon, PlayButton, PauseButton };
+    const ListenIcon = () => {
+        return (
+            <FontAwesomeIcon icon={faHeadphones}></FontAwesomeIcon>
+        )
+    }
+
+    const TrendingIcon = () => {
+        return (
+            <FontAwesomeIcon icon={faArrowTrendUp}></FontAwesomeIcon>
+        )
+    }
+
+    return {
+        BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
+        BackIcon, VerifyAccount, OptionsIcon, PlayButton,
+        PauseButton, ListenIcon, TrendingIcon
+    };
 };
 
 export default useIconUtils;

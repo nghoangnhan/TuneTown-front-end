@@ -118,7 +118,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
         <Separator />
         <Submenu label="Add to playlist">
           {playlistList &&
-            playlistList.map((playlist) => (
+            playlistList?.map((playlist) => (
               <Item
                 key={playlist.id}
                 onClick={() => {
@@ -257,10 +257,10 @@ const SongItem = ({ song, songOrder, songListen }) => {
 export default SongItem;
 
 SongItem.propTypes = {
-  song: PropTypes.object.isRequired,
-  songId: PropTypes.string.isRequired,
-  songOrder: PropTypes.number.isRequired,
-  songIndex: PropTypes.number.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  song: PropTypes.object,
+  songId: PropTypes.string,
+  songOrder: PropTypes.number,
+  songIndex: PropTypes.number,
+  playlistId: PropTypes.string,
   songListen: PropTypes.number,
 };
