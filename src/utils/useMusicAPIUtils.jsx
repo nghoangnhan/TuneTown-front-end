@@ -243,6 +243,25 @@ export const useMusicAPIUtils = () => {
       console.log("Error:", error);
     }
   };
+  const combineData = async (fileName) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/songs/combineData?fileName=${fileName}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            Accept: 'application/octet-stream' // Specify the expected response content type
+          },
+          responseType: 'arraybuffer' // Tell Axios to expect a binary response
+        }
+      );
+        return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+      return { success: false, error: error.message };
+    }
+  };
   return {
     addSongToPlaylist,
     getListSong,
@@ -254,5 +273,6 @@ export const useMusicAPIUtils = () => {
     deletePlaylist,
     deleteSongInPlaylist,
     deleteSong,
+    combineData
   };
 };

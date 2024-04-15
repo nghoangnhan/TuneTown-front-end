@@ -39,14 +39,14 @@ const CreatePost = () => {
       console.log("Received values:", fileMP3);
       const response = axios.post(`${Base_URL}/post/create`, {
         author: userId,
-        title: values.title,
         content: values.content,
         song: fileMP3,
         playlist: 452,
         likes: 0,
         dislikes: 0,
         listComments: null,
-      });
+      },
+    );
       if (response.status === 200) {
         message.success("Post Created Successfully", 2);
       }
@@ -71,16 +71,6 @@ const CreatePost = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
-        <Form.Item
-          label="Title"
-          name="title"
-          rules={[{ required: true, message: "Please input your title!" }]}
-        >
-          <input
-            className="w-full h-10 px-3 text-base placeholder-gray-600 border rounded-lg focus:shadow-outline"
-            placeholder="Title"
-          />
-        </Form.Item>
         <Form.Item
           label="Content"
           name="content"
