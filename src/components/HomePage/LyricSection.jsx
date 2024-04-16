@@ -1,13 +1,26 @@
 import { useSelector } from "react-redux";
 import useSongUtils from "../../utils/useSongUtils";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 
-const LyricSection = () => {
-  const songInfor = useSelector((state) => state.music.currentSong);
+const LyricSection = ({ lyric }) => {
   const { showArtistV2 } = useSongUtils();
-  if (!songInfor.lyric) {
+  const songInfor = useSelector((state) => state.music.currentSong);
+  const [lyrical, SetLyrical] = useState();
+
+  useEffect(() => {
+    if (lyric != null) {
+      SetLyrical(lyric);
+    }
+    else if (lyric == null) {
+      SetLyrical(songInfor.lyric);
+    }
+  }, [lyric]);
+
+  if (!lyrical) {
     return (
-      <div className="max-h-screen  xl:h-screen">
-        <div className="h-full text-center text-2xl pt-8 px-4 font-bold bg-[#ecf2fd] text-[#5d5c5c] font-boldmt-5 mb-5">
+      <div className="max-h-screen xl:h-screen">
+        <div className="h-full text-center text-2xl pt-8 px-4 bg-[#ecf2fd] text-[#5d5c5c] font-bold mt-5 mb-5">
           This song has no lyric!
         </div>
       </div>
@@ -28,16 +41,21 @@ const LyricSection = () => {
         <h2 className="text-xl text-[#2E3271] font-bold">
           {songInfor.songName}
         </h2>
-        <div className="text-[#7C8DB5]">{showArtistV2(songInfor.artists)}</div>
+        <div className="text-[#7C8DB5]">{showArtistV2(songInfor?.artists)}</div>
       </div>
       <div className="w-full xl:h-[550px] bg-[#ecf2fd] shadow-xl rounded-md p-5 overflow-y-auto pb-3">
         <div className="text-[#2E3271] font-bold text-2xl mb-2">Lyrics</div>
         <div className="text-[#7C8DB5] text-sm whitespace-pre-line">
-          {songInfor.lyric}
+          {lyrical}
         </div>
       </div>
     </div>
   );
 };
+
+LyricSection.propTypes = {
+  lyric: PropTypes.string,
+};
+
 
 export default LyricSection;

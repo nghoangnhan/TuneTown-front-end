@@ -20,8 +20,7 @@ import { message } from "antd";
 import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import PropTypes from "prop-types";
-import { data } from "autoprefixer";
-import AudioWaveSurfer from "../Forum/AudioWaveSurfer";
+import useIconUtils from "../../utils/useIconUtils";
 
 const SongItem = ({ song, songOrder, songListen }) => {
   const { id, songName, artists, poster, songData, lyric } = song;
@@ -31,7 +30,8 @@ const SongItem = ({ song, songOrder, songListen }) => {
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory, combineData } =
     useMusicAPIUtils();
-  const { showArtistV2 } = useSongUtils();
+  const { ListenIcon } = useIconUtils();
+  const { showArtistV2, NavigateSong } = useSongUtils();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
@@ -92,7 +92,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
     // Clean up
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
-};
+  };
 
   // Call this function when you want to refresh the playlist
   const refreshPlaylist = () => {
@@ -143,15 +143,13 @@ const SongItem = ({ song, songOrder, songListen }) => {
       </Menu>
 
       <div className="relative flex flex-row items-center p-2 my-1 text-sm bg-white rounded-md cursor-pointer hover:bg-slate-200 xl:text-base">
-        {
-          <div
-            className="xl:w-12 xl:h-12
+        <div
+          className="xl:w-12 xl:h-12
         mx-2 xl:mx-3  flex justify-center items-center text-[#79AC78] font-bold
         "
-          >
-            <span>{songOrder + 1}</span>
-          </div>
-        }
+        >
+          <span>{songOrder + 1}</span>
+        </div>
         <img
           className="object-cover w-12 h-12 mr-3 rounded-lg xl:w-14 xl:h-14"
           alt="Album cover"
@@ -160,25 +158,18 @@ const SongItem = ({ song, songOrder, songListen }) => {
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
         <div className="text-[#2E3271] xl:text-base font-semibold">
-          <h2 className="text-primary">{songInforObj.songName}</h2>
+          <h2 className="text-primary" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">
             {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}
           </h2>
         </div>
-        <div></div>
-        <div className="absolute flex flex-row items-center gap-1 right-4 xl:gap-10">
+        {/* // Listen Icon */}
+        <div className="absolute flex flex-row items-center right-2 xl:gap-2">
           {songListen && (
             <div className="flex flex-row items-center justify-center text-[#464444] font-semibold gap-1">
               {songListen}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="20"
-                viewBox="0 -960 960 960"
-                width="20"
-              >
-                <path d="M365.537-164.001H228.309q-26.308 0-45.308-19t-19-45.308V-480q0-65.769 24.97-123.248 24.969-57.479 67.905-100.246 42.937-42.766 100.646-67.635 57.709-24.87 122.978-24.87 65.269 0 122.748 24.87 57.479 24.869 100.246 67.635 42.766 42.767 67.635 100.246 24.87 57.479 24.87 123.248v251.691q0 26.308-18.65 45.308t-45.658 19H594.463v-251.075H744V-480q0-110.314-76.778-187.157Q590.443-744 480.222-744 370-744 293-667.157 216-590.314 216-480v64.924h149.537v251.075Zm-51.998-199.076H216v134.768q0 4.616 3.846 8.463 3.847 3.846 8.463 3.846h85.23v-147.077Zm332.922 0V-216h85.23q4.616 0 8.463-3.846 3.846-3.847 3.846-8.463v-134.768h-97.539Zm-332.922 0H216h97.539Zm332.922 0H744h-97.539Z" />
-              </svg>
+              <ListenIcon></ListenIcon>
             </div>
           )}
           <button
@@ -198,51 +189,42 @@ const SongItem = ({ song, songOrder, songListen }) => {
               />
             </svg>
           </button>
-          <Modal
-            title="Repost"
-            open={openModal}
-            onCancel={() => {
-              setOpenModal(false);
-            }}
-            footer={null}
-          >
-            <Repost song={songInforObj} closeModal={() => setOpenModal(false)}/>
-          </Modal>
-          <button 
+
+          <button
             className="p-1 hover:opacity-60 rounded-2xl"
             onClick={handleRepostSong}
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              strokeWidth="1.5" 
-              stroke="currentColor" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
               className="w-6 h-6"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
               />
             </svg>
           </button>
-          <button 
+          <button
             className="p-1 hover:opacity-60 rounded-2xl"
             onClick={handleDownloadSong}
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              strokeWidth="1.5" 
-              stroke="currentColor" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
               className="w-6 h-6"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
               />
             </svg>
           </button>
@@ -250,6 +232,16 @@ const SongItem = ({ song, songOrder, songListen }) => {
           {/* <div>{TimeConvert(234)}</div> */}
         </div>
       </div>
+      <Modal
+        title="Repost"
+        open={openModal}
+        onCancel={() => {
+          setOpenModal(false);
+        }}
+        footer={null}
+      >
+        <Repost song={songInforObj} closeModal={() => setOpenModal(false)} />
+      </Modal>
     </div>
   );
 };

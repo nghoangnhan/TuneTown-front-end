@@ -14,7 +14,7 @@ const socialStore = createSlice({
     },
     isReplying: false,
     replyComment: {
-      replyCommentId: Number,
+      replyCommentId: null,
       userName: "",
       content: "",
       time: "",

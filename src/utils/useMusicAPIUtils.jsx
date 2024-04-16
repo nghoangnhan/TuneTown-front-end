@@ -79,6 +79,21 @@ export const useMusicAPIUtils = () => {
       console.log("Error:", error);
     }
   };
+
+  const getSongById = async (songId) => {
+    try {
+      const response = await axios.get(`${Base_URL}/songs/getSongById?songId=${songId}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      console.log("SongDetail Response", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
   // Edit playlist of user
   const editPlaylist = async (
     playlistId,
@@ -256,7 +271,7 @@ export const useMusicAPIUtils = () => {
           responseType: 'arraybuffer' // Tell Axios to expect a binary response
         }
       );
-        return response.data;
+      return response.data;
     } catch (error) {
       console.log("Error:", error);
       return { success: false, error: error.message };
@@ -265,6 +280,7 @@ export const useMusicAPIUtils = () => {
   return {
     addSongToPlaylist,
     getListSong,
+    getSongById,
     getUserPlaylist,
     getListSongPlaylist,
     getPlaylistByPlaylistId,

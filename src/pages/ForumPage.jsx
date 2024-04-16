@@ -24,6 +24,7 @@ const ForumPage = () => {
     handleGetAllPost();
   }, []);
 
+  if (!listPost) return null;
   return (
     <div className="h-auto min-h-screen text-[#59c26d] bg-[#ecf2fd] pt-5 pb-40 px-2">
       {/* Desktop  */}
@@ -78,7 +79,7 @@ const ForumPage = () => {
 };
 
 ForumPage.propTypes = {
-  postList: PropTypes.array.isRequired,
+  postList: PropTypes.array,
 };
 
 export default ForumPage;

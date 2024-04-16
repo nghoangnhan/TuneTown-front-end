@@ -12,9 +12,11 @@ const musicStore = createSlice({
       songName: "What Make You Beautiful",
       artists: [
         {
+          id: 1,
           userName: "One Direction",
         },
         {
+          id: 2,
           userName: "Two Direction",
         },
       ],
@@ -63,6 +65,7 @@ const musicStore = createSlice({
       Being the way that you are is enough,
       `,
     },
+    listSong: [],
     playlist: [],
     // Song will be played next
     songQueue: [],

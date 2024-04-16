@@ -104,9 +104,10 @@ const PostItemDetail = () => {
 
   return (
     <div className="h-auto min-h-screen text-[#2E3271] bg-[#ecf2fd] pt-5 pb-24 px-1">
-      <div className="p-5">
+      <div className="px-5 py-2">
+        <div className="mb-2">
+          <BackButton ></BackButton></div>
         <div className="mb-2 text-4xl font-bold">Post Detail</div>
-        <BackButton></BackButton>
       </div>
       <div className="bg-[#FFFFFFCC]  font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
         <div className="flex flex-row items-center gap-1 text-xl font-bold">
@@ -119,8 +120,9 @@ const PostItemDetail = () => {
 
         {/* Post Content */}
         <div className="text-md">{postContent?.content}</div>
-        <AudioWaveSurfer></AudioWaveSurfer>
-
+        <div className="text-primary">
+          <AudioWaveSurfer song={postContent?.song?.songData}></AudioWaveSurfer>
+        </div>
         {/* Control Reaction */}
         <div className="flex flex-row items-center justify-center gap-5 mt-2 font-bold text-primary">
           {/* Like  */}

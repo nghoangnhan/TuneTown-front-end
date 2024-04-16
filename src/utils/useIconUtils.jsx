@@ -1,11 +1,11 @@
-import { faArrowTrendUp, faCaretLeft, faCheckCircle, faHeadphones, faPauseCircle, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowTrendUp, faCaretLeft, faCheckCircle, faHeadphones, faPauseCircle, faPlayCircle, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const useIconUtils = () => {
     const BackButton = () => {
         return (
             <button
-                className="bg-[#59c26d] text-white font-bold shadow-md py-2 px-4 mt-5 rounded-lg"
+                className="bg-[#59c26d] text-white font-bold shadow-md py-2 px-4 rounded-lg"
                 onClick={() => window.history.back()}
             >
                 <FontAwesomeIcon
@@ -86,6 +86,12 @@ const useIconUtils = () => {
             </span>)
     }
 
+    const UserCheck = () => {
+        return (
+            <FontAwesomeIcon className='text-primary' icon={faUserCheck}></FontAwesomeIcon>
+        )
+    }
+
     const OptionsIcon = () => {
         return (
             <div>
@@ -115,8 +121,8 @@ const useIconUtils = () => {
 
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
-        BackIcon, VerifyAccount, OptionsIcon, PlayButton,
-        PauseButton, ListenIcon, TrendingIcon
+        BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
+        PauseButton, ListenIcon, TrendingIcon,
     };
 };
 

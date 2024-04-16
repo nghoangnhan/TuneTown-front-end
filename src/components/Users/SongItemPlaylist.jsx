@@ -42,7 +42,7 @@ const SongItemPlaylist = ({
     deleteSongInPlaylist,
     addSongToHistory,
   } = useMusicAPIUtils();
-  const { showArtistV2, TimeConvert } = useSongUtils();
+  const { showArtistV2, TimeConvert, NavigateSong } = useSongUtils();
   const dispatch = useDispatch();
   const audioRef = useRef();
   const isPlaying = useSelector((state) => state.music.isPlaying);
@@ -216,7 +216,7 @@ const SongItemPlaylist = ({
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
         <div className="font-semibold text-primary xl:text-base">
-          <h2 className="">{songInforObj.songName}</h2>
+          <h2 className="" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
           <h2 className="mt-1 text-sm text-primaryLight">
             {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}

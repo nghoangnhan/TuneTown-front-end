@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import UseCookie from "../hooks/useCookie";
 import { useMediaQuery } from 'react-responsive';
+import Base_Ava from "../assets/img/logo/logo.png";
 
 const useConfig = () => {
     const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
@@ -8,8 +9,7 @@ const useConfig = () => {
     // Link to the backend server 
     // export const Base_URL = "https://tunetown-production.up.railway.app";
     const Base_URL = "http://localhost:8080";
-    const Base_Ava =
-        "https://i.pinimg.com/564x/08/e4/58/08e458a736a3c0365612771772fa4904.jpg";
+    const Base_AVA = Base_Ava
     // token return an object {access_token, refress_Token}
 
     // Client ID lấy từ google console API (đăng ký project và tạo client ID)
@@ -29,7 +29,7 @@ const useConfig = () => {
     return {
         isMobile,
         Base_URL,
-        Base_Ava,
+        Base_AVA,
         cliendId,
         socket,
         auth,

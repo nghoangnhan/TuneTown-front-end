@@ -1,6 +1,6 @@
 import DetailPlaylist from "../components/Playlist/DetailPlaylist";
 import HomePage from "../pages/HomePage";
-import PageFull from "../pages/PageFull";
+import MainPageLayout from "../components/layouts/MainPageLayout";
 import PlaylistPage from "../pages/PlaylistPage";
 import SearchPage from "../pages/SearchPage";
 import CMSPage from "../pages/CMSPage";
@@ -21,12 +21,13 @@ import LyricSection from "../components/HomePage/LyricSection";
 import ForumPage from "../pages/ForumPage";
 import PostItemDetail from "../components/Forum/PostItemDetail";
 import ErrorPage from "../pages/ErrorPage";
+import SongDetailPage from "../pages/SongDetailPage";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
   const route = {
     path: "/",
-    element: <PageFull />,
+    element: <MainPageLayout />,
 
     // Element là AuthenLayout, các children muốn hiển thị được trong AuthenLayout thì trong Layout phải có outlet mới hiển thị được
     // outlet đóng vai trò tương tự children
@@ -65,31 +66,10 @@ export default function init(routes) {
         path: "history",
         element: <HistoryPage />,
       },
-
       // Artist Page Route
       {
         path: "artistCMS",
         element: <CMSArtist />,
-      },
-      {
-        path: "artist/:artistId",
-        element: <ArtistDetailPage />,
-      },
-      {
-        path: "home/artist/:artistId",
-        element: <ArtistDetailPage />,
-      },
-      {
-        path: "mydetail/:playlistId/artist/:artistId",
-        element: <ArtistDetailPage />,
-      },
-      {
-        path: "detail/:playlistId/artist/:artistId",
-        element: <ArtistDetailPage />,
-      },
-      {
-        path: "search/artist/:artistId",
-        element: <ArtistDetailPage />,
       },
       {
         path: "queue",
@@ -108,6 +88,26 @@ export default function init(routes) {
       {
         path: "forum/:postId",
         element: <PostItemDetail />,
+      },
+    ],
+  };
+
+  const artistRoute = {
+    path: "/:sectionId?",
+    children: [
+      {
+        path: "artist/:artistId",
+        element: <ArtistDetailPage />,
+      },
+    ],
+  };
+
+  const songRoute = {
+    path: "/:sectionId?",
+    children: [
+      {
+        path: "song/:songId",
+        element: <SongDetailPage />
       },
     ],
   };
@@ -158,6 +158,8 @@ export default function init(routes) {
   // Push route
   routes.push(route);
   routes.push(cmsRoute);
+  routes.push(artistRoute);
+  routes.push(songRoute);
   routes.push(chatRoute);
   routes.push(errorRoute);
 }

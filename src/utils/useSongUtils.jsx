@@ -56,6 +56,11 @@ export const useSongUtils = () => {
       return "Unknown Artist";
     }
   };
+
+  const NavigateSong = (songId) => {
+    navigate(`song/${songId}`);
+  };
+
   // Acronym the name of the song
   const AcronymName = (nameLenght, length) => {
     if (nameLenght && nameLenght.length > length) {
@@ -106,14 +111,14 @@ export const useSongUtils = () => {
     return audioRef.current.duration;
   };
 
+  const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
+    const hex = x.toString(16)
+    return hex.length === 1 ? '0' + hex : hex
+  }).join('')
+
   return {
-    TimeConvert,
-    GetSongFragment,
-    showArtist,
-    showArtistV2,
-    AcronymName,
-    CheckPlaying,
-    GetSongDuration,
+    TimeConvert, GetSongFragment, showArtist, showArtistV2, NavigateSong,
+    AcronymName, CheckPlaying, GetSongDuration, rgbToHex
   };
 };
 export default useSongUtils;

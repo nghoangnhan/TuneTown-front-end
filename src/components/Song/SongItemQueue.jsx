@@ -27,7 +27,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
     useMusicAPIUtils();
-  const { showArtistV2 } = useSongUtils();
+  const { showArtistV2, NavigateSong } = useSongUtils();
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
@@ -153,7 +153,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songData}></audio>
         <div className="text-[#2E3271] xl:text-base font-semibold">
-          <h2 className="text-primary">{songInforObj.songName}</h2>
+          <h2 className="text-primary" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
           <h2 className="text-sm text-[#7C8DB5B8] mt-1">
             {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}

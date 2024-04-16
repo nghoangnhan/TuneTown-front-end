@@ -27,11 +27,10 @@ const DetailPlaylist = () => {
 
   return (
     <div
-      className={`${
-        songPlaylistList != null && songPlaylistList.length > 0
+      className={`${songPlaylistList != null && songPlaylistList.length > 0
           ? "min-h-screen h-full"
           : "min-h-screen"
-      } xl:p-5 bg-[#ecf2fd] mb-20`}
+        } xl:p-5 bg-[#ecf2fd] mb-20`}
     >
       <div className="flex flex-row gap-4">
         <button

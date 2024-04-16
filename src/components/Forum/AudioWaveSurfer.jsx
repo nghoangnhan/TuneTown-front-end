@@ -1,4 +1,4 @@
-import HappyNewYear from '../../assets/music/HappyNewYear.mp3';
+// import HappyNewYear from '../../assets/music/HappyNewYear.mp3';
 import WaveSurfer from 'wavesurfer.js';
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ const AudioWaveSurfer = ({ song }) => {
     const { PauseButton, PlayButton } = useIconUtils();
     const [isPlaying, setIsPlaying] = useState(false);
     const { combineData } = useMusicAPIUtils();
-    const [ audio, setAudio ] = useState();
+    const [audio, setAudio] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
     const getAudioSrc = async () => {
@@ -29,14 +29,14 @@ const AudioWaveSurfer = ({ song }) => {
             setIsLoading(false); // Set loading state to false when data fetching completes
         }
     }
-    
+
 
     const handlePlayPause = () => {
         wavesurfer.current.playPause();
     };
 
     useEffect(() => {
-        if(!audio){
+        if (!audio) {
             getAudioSrc();
         }
     }, [audio]);
@@ -95,7 +95,9 @@ const AudioWaveSurfer = ({ song }) => {
 };
 
 AudioWaveSurfer.propTypes = {
-    audio: PropTypes.string.isRequired,
+    song: PropTypes.shape({
+        songName: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default AudioWaveSurfer;

@@ -32,7 +32,9 @@ const PostItem = ({ postContent }) => {
   };
   console.log("PostItem", postContent);
   // Get the time of the post
-  const countTime = new Date(Post?.postTime || Date.now()).toLocaleString();
+  const countTime = new Date(
+    postContent?.postTime || Date.now()
+  ).toLocaleString();
   const handGetPostById = async () => {
     await getPostById(postContent.id).then((res) => {
       console.log("Get Post By ID", res);
@@ -95,7 +97,7 @@ const PostItem = ({ postContent }) => {
               )}
             </div>
             <div className="text-xs font-medium text-[#3d419783]">
-              {countTime.toLocaleString()}
+              {countTime}
             </div>
             <div
               className="cursor-pointer mt-2 text-base text-[#3a3a3d]"

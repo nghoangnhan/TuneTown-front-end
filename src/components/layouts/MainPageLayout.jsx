@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import NavigationBar from "../components/NavigationBar";
-import TheHeader from "../components/Header/TheHeader";
-import MusicControlBar from "../components/MusicControlBar";
+import NavigationBar from "../NavigationBar";
+import TheHeader from "../Header/TheHeader";
+import MusicControlBar from "../MusicControlBar";
 import { Modal } from "antd";
-import UseCookie from "../hooks/useCookie";
+import UseCookie from "../../hooks/useCookie";
 
-const PageFull = () => {
+const MainPageLayout = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { getToken } = UseCookie();
@@ -70,4 +70,4 @@ const PageFull = () => {
   );
 };
 
-export default PageFull;
+export default MainPageLayout;

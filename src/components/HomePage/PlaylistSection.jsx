@@ -16,7 +16,7 @@ const PlaylistSection = ({ playlistTitle }) => {
   }, []);
 
   return (
-    <div className="bg-[#FFFFFFCC] shadow-md rounded-2xl m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-5 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
+    <div className="bg-[#FFFFFFCC] shadow-md rounded-2xl m-auto xl:h-fit xl:mx-5 mx-1 xl:mt-8 mt-4 py-3 px-3 xl:py-5 xl:px-5">
       <div className="py-2 playlist-section xl:w-full">
         <h1 className="text-xl font-bold text-center text-primary xl:text-2xl">
           {playlistTitle}
