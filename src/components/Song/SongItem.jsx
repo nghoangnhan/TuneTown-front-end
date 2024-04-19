@@ -38,6 +38,8 @@ const SongItem = ({ song, songOrder, songListen }) => {
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const songInforObj = {
     id: id,
@@ -77,21 +79,50 @@ const SongItem = ({ song, songOrder, songListen }) => {
   }
 
   const handleDownloadSong = async () => {
-    const data = await combineData(songInforObj.songName);
-    const blob = new Blob([data], { type: 'audio/mpeg' });
+    setLoading(true);
+    try {
+      const data = await combineData(songInforObj.songName);
+      const blob = new Blob([data], { type: 'audio/mpeg' });
 
-    // Create a link element
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = songInforObj.songName; // Set the filename
-    // Trigger a click event on the link to prompt the save dialog
-    document.body.appendChild(link);
-    link.click();
+      // Create a link element
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = songInforObj.songName; // Set the filename
 
-    // Clean up
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+      // Trigger a click event on the link to prompt the save dialog
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+      setLoading(false); // Hide loading overlay
+    }
+  };
+
+  const handleShareSong = () => {
+    try{
+      const currentUrl = window.location.href;
+      const songUrl = `${currentUrl}/song/${songInforObj.id}`;
+      navigator.clipboard.writeText(songUrl);
+      message.success("Link copied!");
+    } catch (error) {
+      message.error("Error when coppying song link!!");
+      console.error('Error:', error);
+    }
+  }
+
+  const handleMouseEnter = () => {
+      setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+      setIsHovered(false);
   };
 
   // Call this function when you want to refresh the playlist
@@ -142,7 +173,10 @@ const SongItem = ({ song, songOrder, songListen }) => {
         </Submenu>
       </Menu>
 
-      <div className="relative flex flex-row items-center p-2 my-1 text-sm bg-white rounded-md cursor-pointer hover:bg-slate-200 xl:text-base">
+      <div className="relative flex flex-row items-center p-2 my-1 text-sm bg-white rounded-md cursor-pointer hover:bg-slate-200 xl:text-base"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div
           className="xl:w-12 xl:h-12
         mx-2 xl:mx-3  flex justify-center items-center text-[#79AC78] font-bold
@@ -190,7 +224,9 @@ const SongItem = ({ song, songOrder, songListen }) => {
             </svg>
           </button>
 
-          <button
+          { isHovered && (
+            <>
+              <button
             className="p-1 hover:opacity-60 rounded-2xl"
             onClick={handleRepostSong}
           >
@@ -228,6 +264,26 @@ const SongItem = ({ song, songOrder, songListen }) => {
               />
             </svg>
           </button>
+          <button
+            className="p-1 hover:opacity-60 rounded-2xl"
+            onClick={handleShareSong}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" viewBox="0 0 24 24" 
+              stroke-width="1.5" 
+              stroke="currentColor" 
+              className="w-6 h-6"
+            >
+              <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" 
+              />
+            </svg>
+          </button>
+            </>  
+          )}
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           {/* <div>{TimeConvert(234)}</div> */}
         </div>
@@ -242,6 +298,11 @@ const SongItem = ({ song, songOrder, songListen }) => {
       >
         <Repost song={songInforObj} closeModal={() => setOpenModal(false)} />
       </Modal>
+      {loading && (
+        <div className="overlay">
+          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out"/>
+        </div>
+      )}
     </div>
   );
 };

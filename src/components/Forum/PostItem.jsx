@@ -28,7 +28,7 @@ const PostItem = ({ postContent }) => {
     time: postContent.time,
     comments: postContent.comments,
     likes: postContent.likes,
-    dislikes: postContent.dislikes,
+    mp3Link: postContent.mp3Link,
   };
   console.log("PostItem", postContent);
   // Get the time of the post
@@ -118,7 +118,7 @@ const PostItem = ({ postContent }) => {
         </div>
         {/* Audio Wave */}
         <div className="w-full">
-          <AudioWaveSurfer song={postContent.song}></AudioWaveSurfer>
+          <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link}></AudioWaveSurfer>
         </div>
       </div>
       {/* Line section */}

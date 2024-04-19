@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import useIconUtils from '../../utils/useIconUtils';
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
-const AudioWaveSurfer = ({ song }) => {
+const AudioWaveSurfer = ({ song, mp3Link }) => {
     // Sử dụng để lưu trữ đối tượng WaveSurfer được tạo bởi thư viện wavesurfer.js. 
     // Đối tượng WaveSurfer này được sử dụng để tạo và quản lý sóng âm thanh, cũng như điều khiển phát/pause của âm thanh.
     const wavesurfer = useRef(null);
@@ -17,9 +17,24 @@ const AudioWaveSurfer = ({ song }) => {
     const [audio, setAudio] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
+    const extractFileName = (link) => {
+        const parts = link.split("audios/");
+        const fileName = parts[1].split("/")[0];
+        return fileName;
+    }
+
     const getAudioSrc = async () => {
         try {
-            const data = await combineData(song.songName);
+            let dataCombined = "";
+            if(!song){
+                console.log(mp3Link);
+                dataCombined = extractFileName(mp3Link);
+            }
+            else{
+                dataCombined = song.songName;
+            }
+            const data = await combineData(dataCombined);
+            console.log(data);
             const audioBlob = new Blob([data], { type: 'audio/mp3' });
             const audioURL = URL.createObjectURL(audioBlob);
             setAudio(audioURL);
@@ -75,7 +90,10 @@ const AudioWaveSurfer = ({ song }) => {
     return (
         <div className='flex flex-row items-center gap-5'>
             {isLoading ? ( // Render loading indicator if still loading
-                <div>Loading...</div>
+                <div>
+                    <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={50} height={50} className="zoom-in-out" />
+                    <span>Generating song data...</span>
+                </div>
             ) : (
                 <>
                     {isPlaying ? (
