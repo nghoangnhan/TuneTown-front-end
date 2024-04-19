@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import useIconUtils from '../../utils/useIconUtils';
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
-const AudioWaveSurfer = ({ song, mp3Link }) => {
+const AudioWaveSurfer = ({ song }) => {
     // Sử dụng để lưu trữ đối tượng WaveSurfer được tạo bởi thư viện wavesurfer.js. 
     // Đối tượng WaveSurfer này được sử dụng để tạo và quản lý sóng âm thanh, cũng như điều khiển phát/pause của âm thanh.
     const wavesurfer = useRef(null);
@@ -17,23 +17,9 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
     const [audio, setAudio] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
-    const extractFileName = (link) => {
-        const parts = link.split("audios/");
-        const fileName = parts[1].split("/")[0];
-        return fileName;
-    }
-
     const getAudioSrc = async () => {
         try {
-            let dataCombined = "";
-            if (!song) {
-                console.log(mp3Link);
-                dataCombined = extractFileName(mp3Link);
-            }
-            else {
-                dataCombined = song.songName;
-            }
-            const data = await combineData(dataCombined);
+            const data = await combineData(song.id);
             console.log(data);
             const audioBlob = new Blob([data], { type: 'audio/mp3' });
             const audioURL = URL.createObjectURL(audioBlob);
@@ -114,9 +100,8 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
 
 AudioWaveSurfer.propTypes = {
     song: PropTypes.shape({
-        songName: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
     }).isRequired,
-    mp3Link: PropTypes.string,
 };
 
 export default AudioWaveSurfer;
