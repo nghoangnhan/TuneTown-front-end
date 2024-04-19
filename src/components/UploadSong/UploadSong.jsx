@@ -35,25 +35,30 @@ const UploadSong = () => {
   const [coverReady, setCoverReady] = useState(false);
   const [songReady, setSongReady] = useState(false);
   const { handleUploadFileIMG, handleUploadFileMP3 } = useDataUtils();
+  const [loading, setLoading] = useState(false);
 
   const UploadIMGfile = async (file) => {
+    setLoading(true);
     message.loading("Uploading Image", 1);
     await handleUploadFileIMG(file).then((res) => {
       if (res.status === 200) {
         setFileIMG(res.data);
         setCoverReady(true);
         message.success("Image Uploaded Successfully", 2);
+        setLoading(false);
       }
     });
   };
 
   const UploadMP3file = async (file) => {
+    setLoading(true);
     message.loading("Uploading Song File", 1);
     await handleUploadFileMP3(file).then((res) => {
       if (res.status === 200) {
         setFileMP3(res.data);
         setSongReady(true);
         message.success("Song File Uploaded Successfully", 2);
+        setLoading(false);
       }
     });
   };
@@ -105,6 +110,7 @@ const UploadSong = () => {
         console.log("Song posted successfully:", response.data);
         message.success("Song posted successfully", 2);
         formRef.current.resetFields();
+        setFileIMG(null);
       }
     } catch (error) {
       // Handle network errors or other exceptions
@@ -189,7 +195,7 @@ const UploadSong = () => {
         valuePropName="fileList"
         rules={[
           {
-            required: true,
+            required: !songReady,  // Required when song is not ready
           },
         ]}
       >
@@ -236,6 +242,11 @@ const UploadSong = () => {
           Submit
         </button>
       </Form.Item>
+      {loading && (
+        <div className="overlay">
+          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out"/>
+        </div>
+      )}
     </Form>
   );
 };

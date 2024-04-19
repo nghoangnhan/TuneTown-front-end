@@ -6,6 +6,10 @@ import UploadFileDropZone from "../../utils/useDropZone";
 import useDataUtils from "../../utils/useDataUtils";
 import axios from "axios";
 import useConfig from "../../utils/useConfig";
+import DOMPurify from 'dompurify';
+import Parser from 'html-react-parser';
+import UseCookie from "../../hooks/useCookie";
+
 
 const CreatePost = () => {
   const [form] = Form.useForm();
@@ -15,9 +19,13 @@ const CreatePost = () => {
   const [fileMP3, setFileMP3] = useState();
   const [uploadedFile, setUploadedFile] = useState({});
   const [songReady, setSongReady] = useState(false);
-  const userId = localStorage.getItem("userId");
+  const userId = parseInt(localStorage.getItem("userId"));
+  const [loading, setLoading] = useState(false);
+  const { getToken } = UseCookie();
+  const { access_token } = getToken();
 
   const UploadMP3file = async (file) => {
+    setLoading(true);
     message.loading("Uploading Song File", 1);
     await handleUploadFileMP3(file).then((res) => {
       console.log("UploadMP3file", res);
@@ -25,6 +33,7 @@ const CreatePost = () => {
         setFileMP3(res.data);
         setSongReady(true);
         message.success("Song File Uploaded Successfully", 2);
+        setLoading(false);
       }
     });
   };
@@ -37,15 +46,23 @@ const CreatePost = () => {
     try {
       console.log("Received values:", values);
       console.log("Received values:", fileMP3);
+      const sanitizedContent = DOMPurify.sanitize(values.content);
+      const contentParser = Parser(sanitizedContent).props.children;
       const response = axios.post(`${Base_URL}/post/create`, {
-        author: userId,
-        content: values.content,
-        song: fileMP3,
-        playlist: 452,
-        likes: 0,
-        dislikes: 0,
+        author: { 
+          id: userId 
+        },
+        content: contentParser,
+        song: null,
+        playlist: null,
+        likes: null,
         listComments: null,
-      },
+        mp3Link: fileMP3
+      },{
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        }
+      }
     );
       if (response.status === 200) {
         message.success("Post Created Successfully", 2);
@@ -78,7 +95,7 @@ const CreatePost = () => {
         >
           <ReactQuill
             theme="snow"
-            value={editorValue}
+            value={Parser(editorValue)}
             onChange={setEditorValue}
           />
         </Form.Item>
@@ -92,7 +109,7 @@ const CreatePost = () => {
           valuePropName="fileList"
           rules={[
             {
-              required: true,
+              required: !songReady, // Required when song is not ready
             },
           ]}
         >
@@ -134,6 +151,12 @@ const CreatePost = () => {
             Submit
           </button>
         </Form.Item>
+        {loading && (
+        <div className="overlay">
+          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out"/>
+        </div>
+      )}
+
       </Form>
     </div>
   );

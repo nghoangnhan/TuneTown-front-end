@@ -31,7 +31,8 @@ const Repost = ({song, closeModal}) => {
         },
         playlist: null,
         likes: null,
-        listComments: null
+        listComments: null,
+        mp3Link: ""
       },{
         headers:{
             Authorization: `Bearer ${access_token}`,
