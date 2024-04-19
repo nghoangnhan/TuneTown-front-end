@@ -26,11 +26,11 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
     const getAudioSrc = async () => {
         try {
             let dataCombined = "";
-            if(!song){
+            if (!song) {
                 console.log(mp3Link);
                 dataCombined = extractFileName(mp3Link);
             }
-            else{
+            else {
                 dataCombined = song.songName;
             }
             const data = await combineData(dataCombined);
@@ -116,6 +116,7 @@ AudioWaveSurfer.propTypes = {
     song: PropTypes.shape({
         songName: PropTypes.string.isRequired,
     }).isRequired,
+    mp3Link: PropTypes.string,
 };
 
 export default AudioWaveSurfer;

@@ -99,14 +99,14 @@ const SongItem = ({ song, songOrder, songListen }) => {
       window.URL.revokeObjectURL(url);
 
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error:', error);
     } finally {
       setLoading(false); // Hide loading overlay
     }
   };
 
   const handleShareSong = () => {
-    try{
+    try {
       const currentUrl = window.location.href;
       const songUrl = `${currentUrl}/song/${songInforObj.id}`;
       navigator.clipboard.writeText(songUrl);
@@ -118,11 +118,11 @@ const SongItem = ({ song, songOrder, songListen }) => {
   }
 
   const handleMouseEnter = () => {
-      setIsHovered(true);
+    setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
-      setIsHovered(false);
+    setIsHovered(false);
   };
 
   // Call this function when you want to refresh the playlist
@@ -224,65 +224,65 @@ const SongItem = ({ song, songOrder, songListen }) => {
             </svg>
           </button>
 
-          { isHovered && (
+          {isHovered && (
             <>
               <button
-            className="p-1 hover:opacity-60 rounded-2xl"
-            onClick={handleRepostSong}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-              />
-            </svg>
-          </button>
-          <button
-            className="p-1 hover:opacity-60 rounded-2xl"
-            onClick={handleDownloadSong}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-              />
-            </svg>
-          </button>
-          <button
-            className="p-1 hover:opacity-60 rounded-2xl"
-            onClick={handleShareSong}
-          >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" viewBox="0 0 24 24" 
-              stroke-width="1.5" 
-              stroke="currentColor" 
-              className="w-6 h-6"
-            >
-              <path 
-                stroke-linecap="round" 
-                stroke-linejoin="round" 
-                d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" 
-              />
-            </svg>
-          </button>
-            </>  
+                className="p-1 hover:opacity-60 rounded-2xl"
+                onClick={handleRepostSong}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                  />
+                </svg>
+              </button>
+              <button
+                className="p-1 hover:opacity-60 rounded-2xl"
+                onClick={handleDownloadSong}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+              </button>
+              <button
+                className="p-1 hover:opacity-60 rounded-2xl"
+                onClick={handleShareSong}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none" viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+                  />
+                </svg>
+              </button>
+            </>
           )}
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           {/* <div>{TimeConvert(234)}</div> */}
@@ -300,7 +300,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
       </Modal>
       {loading && (
         <div className="overlay">
-          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out"/>
+          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out" />
         </div>
       )}
     </div>
