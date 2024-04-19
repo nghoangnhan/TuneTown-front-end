@@ -258,10 +258,10 @@ export const useMusicAPIUtils = () => {
       console.log("Error:", error);
     }
   };
-  const combineData = async (fileName) => {
+  const combineData = async (songId) => {
     try {
       const response = await axios.post(
-        `${Base_URL}/songs/combineData?fileName=${fileName}`,
+        `${Base_URL}/songs/combineData?songId=${songId}`,
         {},
         {
           headers: {
