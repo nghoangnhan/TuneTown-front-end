@@ -2,12 +2,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios from "axios";
 import UseCookie from "../hooks/useCookie";
-import { Base_URL } from "../api/config";
 import { useState } from "react";
+import useConfig from "./useConfig";
 
 const useUserUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
 
   const CheckCookie = () => {
     if (access_token) {

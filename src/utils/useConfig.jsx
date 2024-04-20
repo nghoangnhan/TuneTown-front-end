@@ -26,13 +26,17 @@ const useConfig = () => {
         access_token: token.access_token,
         refresh_token: token.refresh_token,
     };
+
+    // Theme 
+    const darkTheme = localStorage.getItem("darkTheme");
+
     return {
         isMobile,
         Base_URL,
         Base_AVA,
         cliendId,
         socket,
-        auth,
+        auth, darkTheme
     };
 };
 export default useConfig;

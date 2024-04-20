@@ -4,12 +4,13 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
-import { Base_URL } from "../api/config";
+import useConfig from "../utils/useConfig";
 
 const SignUpPage = () => {
   const passwordRef = useRef();
   const navigate = useNavigate();
   const { removeToken } = UseCookie();
+  const { Base_URL } = useConfig();
 
   async function PostData(usn, email, password, bdate, method) {
     try {

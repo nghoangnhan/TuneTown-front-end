@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import UseCookie from "../hooks/useCookie";
-import { Base_URL } from "../api/config";
+import useConfig from "./useConfig";
 
 export const useChatUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const userId = parseInt(localStorage.getItem("userId"), 10);
 
   // Acronym the name of the song
@@ -92,6 +93,7 @@ export const useChatUtils = () => {
 export const useForumUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const userId = parseInt(localStorage.getItem("userId"), 10);
 
   // Get All Post API
@@ -222,7 +224,7 @@ export const useForumUtils = () => {
     }
   };
 
-  const getCommentById = async(value) => {
+  const getCommentById = async (value) => {
     try {
       const response = await axios.get(
         `${Base_URL}/post/comment/getById?commentId=${value}`,

@@ -2,20 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal } from "antd";
 import Repost from "../../components/Forum/Repost";
-import {
-  addSongToQueue,
-  setCurrentSong,
-  setCurrentTime,
-  setIsPlaying,
-} from "../../redux/slice/music";
+import { addSongToQueue, setCurrentSong, setCurrentTime, setIsPlaying, } from "../../redux/slice/music";
 import DefaultArt from "../../assets/img/logo/logo.png";
-import {
-  Menu,
-  Item,
-  Separator,
-  Submenu,
-  useContextMenu,
-} from "react-contexify";
+import { Menu, Item, Separator, Submenu, useContextMenu } from "react-contexify";
 import { message } from "antd";
 import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
@@ -24,17 +13,18 @@ import useIconUtils from "../../utils/useIconUtils";
 
 const SongItem = ({ song, songOrder, songListen }) => {
   const { id, songName, artists, poster, songData, lyric } = song;
-  const audioRef = useRef();
   const { show } = useContextMenu();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
-  const { addSongToPlaylist, getUserPlaylist, addSongToHistory, combineData } =
-    useMusicAPIUtils();
-  const { ListenIcon } = useIconUtils();
-  const { showArtistV2, NavigateSong } = useSongUtils();
+  const { addSongToPlaylist, getUserPlaylist,
+    addSongToHistory, combineData } = useMusicAPIUtils();
+  const { ListenIcon, RepostButton,
+    DownloadButton, ShareButton, PlayButton } = useIconUtils();
+  const { showArtistV2, NavigateSong, handleDownloadSong, handleShareSong } = useSongUtils();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   // const audio = document.getElementById("audio");
+  const audioRef = useRef();
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -76,45 +66,6 @@ const SongItem = ({ song, songOrder, songListen }) => {
 
   const handleRepostSong = async () => {
     setOpenModal(true);
-  }
-
-  const handleDownloadSong = async () => {
-    setLoading(true);
-    try {
-      const data = await combineData(songInforObj.songName);
-      const blob = new Blob([data], { type: 'audio/mpeg' });
-
-      // Create a link element
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = songInforObj.songName; // Set the filename
-
-      // Trigger a click event on the link to prompt the save dialog
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false); // Hide loading overlay
-    }
-  };
-
-  const handleShareSong = () => {
-    try {
-      const currentUrl = window.location.href;
-      const songUrl = `${currentUrl}/song/${songInforObj.id}`;
-      navigator.clipboard.writeText(songUrl);
-      message.success("Link copied!");
-    } catch (error) {
-      message.error("Error when coppying song link!!");
-      console.error('Error:', error);
-    }
   }
 
   const handleMouseEnter = () => {
@@ -200,7 +151,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
         </div>
         {/* // Listen Icon */}
         <div className="absolute flex flex-row items-center right-2 xl:gap-2">
-          {songListen && (
+          {songListen && isHovered === false && (
             <div className="flex flex-row items-center justify-center text-[#464444] font-semibold gap-1">
               {songListen}
               <ListenIcon></ListenIcon>
@@ -210,84 +161,25 @@ const SongItem = ({ song, songOrder, songListen }) => {
             className="p-1 hover:opacity-60 rounded-2xl"
             onClick={HandlePlay}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="#79AC78"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <PlayButton></PlayButton>
           </button>
 
           {isHovered && (
             <>
-              <button
-                className="p-1 hover:opacity-60 rounded-2xl"
-                onClick={handleRepostSong}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                  />
-                </svg>
-              </button>
-              <button
-                className="p-1 hover:opacity-60 rounded-2xl"
-                onClick={handleDownloadSong}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
-                  />
-                </svg>
-              </button>
-              <button
-                className="p-1 hover:opacity-60 rounded-2xl"
-                onClick={handleShareSong}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none" viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
-                  />
-                </svg>
-              </button>
+              {/* Repost Song  */}
+              <RepostButton handleRepostSong={handleRepostSong}></RepostButton>
+              {/* Download Song */}
+              <DownloadButton handleDownloadSong={() => handleDownloadSong(songInforObj, setLoading, combineData)}></DownloadButton>
+              {/* Share Song */}
+              <ShareButton handleShareSong={() => handleShareSong(songInforObj)}></ShareButton>
             </>
           )}
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           {/* <div>{TimeConvert(234)}</div> */}
         </div>
       </div>
+
+      {/* Modal Repost  */}
       <Modal
         title="Repost"
         open={openModal}

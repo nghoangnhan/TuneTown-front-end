@@ -1,20 +1,26 @@
 /* eslint-disable no-unused-vars */
+import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setRefreshPlaylist } from "../redux/slice/playlist";
 
 export const useSongUtils = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const refreshPlaylist = useSelector(
+    (state) => state.playlist.refreshPlaylist
+  );
+
+  const isPlaying = useSelector((state) => state.music.isPlaying);
+
   //     const { setDuration } = useMusicSlice();
   //   // Get the duration of the song
   //   const getSongDuration = (songTime) => {
   //       dispatch(setDuration(songTime.duration))
-
   //       return duration;
   //     };
-
   // Transform seconds to minutes:seconds
-  const isPlaying = useSelector((state) => state.music.isPlaying);
+
   const TimeConvert = (sec) => {
     const minutes = Math.floor(sec / 60);
     const seconds = Math.floor(sec % 60);
@@ -96,6 +102,13 @@ export const useSongUtils = () => {
     });
   };
 
+  const HandleRefreshPlaylist = () => {
+    // True is to refresh the playlist
+    if (refreshPlaylist == true) {
+      dispatch(setRefreshPlaylist(false));
+    }
+  }
+
   // Check if the song isPlaying
   const CheckPlaying = (audioRef) => {
     if (isPlaying) {
@@ -116,9 +129,50 @@ export const useSongUtils = () => {
     return hex.length === 1 ? '0' + hex : hex
   }).join('')
 
+  // Song Option
+  const handleDownloadSong = async (songInforObj, setLoading, combineData) => {
+    setLoading(true);
+    try {
+      const data = await combineData(songInforObj.songName);
+      const blob = new Blob([data], { type: 'audio/mpeg' });
+
+      // Create a link element
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = songInforObj.songName; // Set the filename
+
+      // Trigger a click event on the link to prompt the save dialog
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false); // Hide loading overlay
+    }
+  };
+
+  const handleShareSong = (songInforObj) => {
+    try {
+      const currentUrl = window.location.href;
+      const songUrl = `${currentUrl}/song/${songInforObj.id}`;
+      navigator.clipboard.writeText(songUrl);
+      message.success("Link copied!");
+    } catch (error) {
+      message.error("Error when coppying song link!!");
+      console.error('Error:', error);
+    }
+  }
+
   return {
-    TimeConvert, GetSongFragment, showArtist, showArtistV2, NavigateSong,
-    AcronymName, CheckPlaying, GetSongDuration, rgbToHex
+    TimeConvert, GetSongFragment,
+    showArtist, showArtistV2, NavigateSong,
+    AcronymName, CheckPlaying, GetSongDuration, rgbToHex, handleDownloadSong, handleShareSong, HandleRefreshPlaylist
   };
 };
 export default useSongUtils;

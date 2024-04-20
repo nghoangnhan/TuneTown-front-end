@@ -18,11 +18,13 @@ import {
 import { message } from "antd";
 import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import useIconUtils from "../../utils/useIconUtils";
 
 // Different from SongItem.jsx, this component is used for search page and the color of attribute is different
 const SongItemSearch = ({ song, songOrder }) => {
   const { id, songName, artists, poster, songData, lyric } = song;
   const audioRef = useRef();
+  const { PlayButton } = useIconUtils();
   const { show } = useContextMenu();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
@@ -141,18 +143,7 @@ const SongItemSearch = ({ song, songOrder }) => {
             className="p-1 hover:bg-slate-300 rounded-2xl"
             onClick={HandlePlay}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <PlayButton></PlayButton>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           {/* <div>{TimeConvert(234)}</div> */}

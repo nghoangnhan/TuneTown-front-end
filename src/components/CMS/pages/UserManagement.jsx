@@ -1,26 +1,17 @@
-import {
-  Button,
-  Form,
-  Input,
-  Modal,
-  Select,
-  Space,
-  Table,
-  Tag,
-  message,
-} from "antd";
-import { Base_URL } from "../../../api/config";
+import { Button, Form, Input, Modal, Select, Space, Table, Tag, message, } from "antd";
 import axios from "axios";
 import UseCookie from "../../../hooks/useCookie";
 import { useEffect, useState } from "react";
 import EditUserForm from "../../Users/EditUserForm";
 import defaultAva from "../../../assets/img/logo/logo.png";
 import { useForm } from "antd/es/form/Form";
+import useConfig from "../../../utils/useConfig";
 /* eslint-disable no-unused-vars */
 const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [formRole] = useForm();
+  const { Base_URL } = useConfig();
   const [userList, setUserList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
@@ -196,7 +187,7 @@ const UserManagement = () => {
           <img
             src={avatar ? avatar : defaultAva}
             alt="avatar"
-            className="w-11 h-11 rounded-full object-cover"
+            className="object-cover rounded-full w-11 h-11"
           />
         );
       },
@@ -264,9 +255,7 @@ const UserManagement = () => {
       render: (_, record) => (
         <Space
           size="middle"
-          className="
-        flex flex-row gap-2
-        "
+          className="flex flex-row gap-2 "
         >
           <button
             className="py-1 px-2 h-8 w-14 bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
@@ -298,8 +287,8 @@ const UserManagement = () => {
   return (
     <div>
       <div className="text-2xl font-bold">User Management</div>
-      <div className=" flex flex-col gap-3">
-        <div className=" flex flex-row justify-between mb-5 mt-5">
+      <div className="flex flex-col gap-3 ">
+        <div className="flex flex-row justify-between mt-5 mb-5 ">
           <div className="">
             <Form
               name="basic"
@@ -328,10 +317,10 @@ const UserManagement = () => {
           dataSource={
             searchValue
               ? userList.filter((user) =>
-                  user.userName
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-                )
+                user.userName
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
+              )
               : userList
           }
           pagination={{ pageSize: 8 }}

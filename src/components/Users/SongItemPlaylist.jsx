@@ -1,19 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  addSongToQueue,
-  setCurrentSong,
-  setCurrentTime,
-  setIsPlaying,
-} from "../../redux/slice/music";
+import { addSongToQueue, setCurrentSong, setCurrentTime, setIsPlaying, } from "../../redux/slice/music";
 import DefaultArt from "../../assets/img/CoverArt/starboy.jpg";
-import {
-  Menu,
-  Item,
-  Separator,
-  Submenu,
-  useContextMenu,
-} from "react-contexify";
+import { Menu, Item, Separator, Submenu, useContextMenu, } from "react-contexify";
 import { message } from "antd";
 import { setRefreshPlaylist } from "../../redux/slice/playlist";
 import axios from "axios";
@@ -22,6 +11,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useSongUtils from "../../utils/useSongUtils";
 import PropTypes from "prop-types";
 import useConfig from "../../utils/useConfig";
+import useIconUtils from "../../utils/useIconUtils";
 
 const SongItemPlaylist = ({
   song,
@@ -36,6 +26,7 @@ const SongItemPlaylist = ({
   const { id, songName, artists, poster, songData, lyric } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
+  const { PlayButton } = useIconUtils();
   const {
     addSongToPlaylist,
     getUserPlaylist,
@@ -48,7 +39,6 @@ const SongItemPlaylist = ({
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
   const [playlistList, setPlaylistList] = useState([]);
-  const [messageApi, contextHolder] = message.useMessage();
   const draggableSong = useSelector((state) => state.playlist.draggable);
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
@@ -87,10 +77,6 @@ const SongItemPlaylist = ({
       id: `songOption_${songId}`,
     });
   }
-  // Call this function when you want to refresh the playlist
-  const HandleRefreshPlaylist = () => {
-    dispatch(setRefreshPlaylist(!refreshPlaylist));
-  };
 
   // When the song is deleted, refresh the playlist
   const handleDeleteSong = () => {
@@ -98,11 +84,11 @@ const SongItemPlaylist = ({
       (response) => {
         console.log("Delete song response", response);
         if (response === 200) {
-          messageApi.success(`Deleted ${songInforObj.songName} in playlist`);
+          message.success(`Deleted ${songInforObj.songName} in playlist`);
           // Trigger a re-render by updating the refresh state
           dispatch(setRefreshPlaylist(true));
         } else {
-          messageApi.error(`Failed to delete song: ${response.error}`);
+          message.error(`Failed to delete song: ${response.error}`);
         }
       }
     );
@@ -121,11 +107,11 @@ const SongItemPlaylist = ({
       }
     );
     if (response.status === 200) {
-      messageApi.success(`Order ${item} to ${over}`);
+      message.success(`Order ${item} to ${over}`);
       dispatch(setRefreshPlaylist(true));
       getUserPlaylist(userId).then((data) => setPlaylistList(data));
     } else {
-      messageApi.error(`Failed to order song: ${response.error}`);
+      message.error(`Failed to order song: ${response.error}`);
     }
   }
 
@@ -141,7 +127,6 @@ const SongItemPlaylist = ({
   }, [refreshPlaylist]);
   return (
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
-      {contextHolder}
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`}>
         <Item onClick={refreshPlaylist}>Refresh</Item>
@@ -168,11 +153,11 @@ const SongItemPlaylist = ({
                 addSongToPlaylist(songInforObj.id, playlist.id).then(
                   (result) => {
                     if (result.success) {
-                      messageApi.success(
+                      message.success(
                         `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`
                       );
                     } else {
-                      messageApi.error(`Failed to add song: ${result.error}`);
+                      message.error(`Failed to add song: ${result.error}`);
                     }
                   }
                 );
@@ -227,18 +212,7 @@ const SongItemPlaylist = ({
             className="p-1 hover:bg-slate-300 rounded-2xl"
             onClick={HandlePlay}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <PlayButton></PlayButton>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           <div>{TimeConvert(234)}</div>

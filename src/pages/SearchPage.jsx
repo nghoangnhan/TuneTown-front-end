@@ -1,16 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { Form, Input } from "antd";
 import { useEffect, useState } from "react";
-import { Base_URL } from "../api/config";
 import axios from "axios";
 import UseCookie from "../hooks/useCookie";
 import { useForm } from "antd/es/form/Form";
 import SongItemSearch from "../components/Song/SongItemSearch";
 import useDebounce from "../hooks/useDebounce";
+import useConfig from "../utils/useConfig";
 
 const SearchPage = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const [form] = useForm();
   const [artistRs, setArtistRs] = useState([]);
   const [songRs, setSongRs] = useState([]);

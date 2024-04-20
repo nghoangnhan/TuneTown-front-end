@@ -1,11 +1,11 @@
 import axios from "axios";
-import { Base_URL } from "../api/config";
 import UseCookie from "../hooks/useCookie";
+import useConfig from "./useConfig";
 
 export const useDataUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-
+  const { Base_URL } = useConfig();
   //drop-zone
   const handleUploadFileIMG = async (file) => {
     let formData = new FormData();
