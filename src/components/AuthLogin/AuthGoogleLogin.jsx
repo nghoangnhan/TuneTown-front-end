@@ -5,13 +5,12 @@ import { useDispatch } from "react-redux";
 import { setUserInfor } from "../../redux/slice/account";
 import { message } from "antd";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import { cliendId } from "../../api/config";
 import { jwtDecode } from "jwt-decode";
 import useConfig from "../../utils/useConfig";
 
 function LoginGoogle() {
   const { saveToken } = UseCookie();
-  const { Base_URL } = useConfig();
+  const { Base_URL, cliendId } = useConfig();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");

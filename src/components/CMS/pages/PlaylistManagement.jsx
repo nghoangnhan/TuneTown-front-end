@@ -3,15 +3,16 @@ import { Form, Input, Modal, Space, Table } from "antd";
 import UpdateSong from "../../UploadSong/UpdateSong";
 import UploadSong from "../../UploadSong/UploadSong";
 import { useEffect, useState } from "react";
-import { Base_URL } from "../../../api/config";
 import axios from "axios";
 import UseCookie from "../../../hooks/useCookie";
 import defaultAva from "../../../assets/img/logo/logo.png";
+import useConfig from "../../../utils/useConfig";
 
 const PlaylistManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const [songList, setSongList] = useState([]);
   const [songPage, setSongPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
@@ -160,7 +161,7 @@ const PlaylistManagement = () => {
       <img
         src={songItem.poster}
         alt={songItem.songName}
-        className="w-11 h-11 rounded-md"
+        className="rounded-md w-11 h-11"
       />
     ),
     songName: songItem.songName,
@@ -182,7 +183,7 @@ const PlaylistManagement = () => {
   return (
     <div>
       <div className="text-2xl font-bold">Song Management</div>
-      <div className=" flex flex-row justify-between mb-5 mt-5">
+      <div className="flex flex-row justify-between mt-5 mb-5 ">
         <div className="">
           <Form
             name="basic"
@@ -209,8 +210,8 @@ const PlaylistManagement = () => {
         dataSource={
           searchValue
             ? dataSongs.filter((song) =>
-                song.songName.toLowerCase().includes(searchValue.toLowerCase())
-              )
+              song.songName.toLowerCase().includes(searchValue.toLowerCase())
+            )
             : dataSongs
         }
         pagination={{

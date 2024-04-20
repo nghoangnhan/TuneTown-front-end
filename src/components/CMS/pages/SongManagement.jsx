@@ -1,20 +1,21 @@
 /* eslint-disable no-unused-vars */
+
 import { Form, Input, Modal, Space, Table, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Base_URL } from "../../../api/config";
 import UseCookie from "../../../hooks/useCookie";
 import UploadSong from "../../UploadSong/UploadSong";
 import UpdateSong from "../../UploadSong/UpdateSong";
 import defaultAva from "../../../assets/img/logo/logo.png";
+import useConfig from "../../../utils/useConfig";
 
 const SongManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
+  const { Base_URL } = useConfig();
   const { access_token } = getToken();
   const [songList, setSongList] = useState([]);
   const [songPage, setSongPage] = useState(1);
-  const [totalPages, setTotalPages] = useState();
   const [refresh, setRefresh] = useState(false);
   const [songData, setSongData] = useState({});
   const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
@@ -23,11 +24,6 @@ const SongManagement = () => {
   const handSearch = (e) => {
     console.log("value", e.target.value);
     setSearchValue(e.target.value);
-  };
-
-  // Call this function when you want to refresh the playlist
-  const refreshPlaylist = () => {
-    setRefresh(false);
   };
 
   const getListSong = async (songPage) => {
@@ -182,7 +178,7 @@ const SongManagement = () => {
       <img
         src={songItem.poster}
         alt={songItem.songName}
-        className="w-11 h-11 rounded-md"
+        className="rounded-md w-11 h-11"
       />
     ),
     songName: songItem.songName,
@@ -201,7 +197,7 @@ const SongManagement = () => {
   return (
     <div>
       <div className="text-2xl font-bold">Song Management</div>
-      <div className=" flex flex-row justify-between mb-5 mt-5">
+      <div className="flex flex-row justify-between mt-5 mb-5 ">
         <div className="">
           <Form
             name="basic"
@@ -236,8 +232,8 @@ const SongManagement = () => {
         dataSource={
           searchValue
             ? dataSongs.filter((song) =>
-                song.songName.toLowerCase().includes(searchValue.toLowerCase())
-              )
+              song.songName.toLowerCase().includes(searchValue.toLowerCase())
+            )
             : dataSongs
         }
         pagination={{ pageSize: 8 }}

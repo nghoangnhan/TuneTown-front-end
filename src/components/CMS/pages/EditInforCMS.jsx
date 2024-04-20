@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Button, DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
-import { Base_URL } from "../../../api/config";
 import UseCookie from "../../../hooks/useCookie";
 import UploadAvatar from "../../Users/UploadAvatar";
+import useConfig from "../../../utils/useConfig";
 
 const layout = {
   labelCol: {
@@ -18,13 +18,14 @@ const tailLayout = {
   wrapperCol: {
     offset: 20,
     span: 16,
-  },
+},
 };
 
 // Edit Information in CMS page
 const EditInfor = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const userId = localStorage.getItem("userId");
   const [form] = Form.useForm();
   const formRef = useRef(null);
@@ -115,7 +116,7 @@ const EditInfor = () => {
           form={form}
           onFinish={onFinish}
           className="xl:w-[500px] relative w-fit border border-[#d2cece] rounded-md mx-auto p-5 bg-[#f6f4f4] "
-          // initialValues={{ userName: userInfor.userName }}
+        // initialValues={{ userName: userInfor.userName }}
         >
           <div className="w-full mb-5 text-center">
             <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
@@ -144,7 +145,7 @@ const EditInfor = () => {
                 required: true,
               },
             ]}
-            // initialValue={userInfor.userName}
+          // initialValue={userInfor.userName}
           >
             <Input />
           </Form.Item>

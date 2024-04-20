@@ -1,11 +1,12 @@
 import { useForm } from "antd/es/form/Form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form, Input, message } from "antd";
-import { Base_URL } from "../api/config";
 import axios from "axios";
+import useConfig from "../utils/useConfig";
 
 const ForgotPass = () => {
   const [form] = useForm();
+  const { Base_URL } = useConfig();
   const navigate = useNavigate();
   // Get OTP
   const GetOTP = async (emailInput) => {
@@ -108,16 +109,16 @@ const ForgotPass = () => {
 
   return (
     <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
-      <div className="flex flex-col flex-1 items-center relative">
-        <div className="hidden xl:block mt-10 mb-5">
+      <div className="relative flex flex-col items-center flex-1">
+        <div className="hidden mt-10 mb-5 xl:block">
           <img
             src="https://cdn-icons-png.flaticon.com/512/10480/10480727.png"
-            className="h-48 w-auto object-cover"
+            className="object-cover w-auto h-48"
             alt=""
           />
         </div>
 
-        <div className="flex flex-col justify-center items-center mt-10">
+        <div className="flex flex-col items-center justify-center mt-10">
           <h1 className="font-bold text-[#2E3271] text-3xl mb-10">
             Forget Password
           </h1>
@@ -166,7 +167,7 @@ const ForgotPass = () => {
               <div className="flex flex-row gap-2">
                 <Input />
                 <button
-                  className="w-28 h-12 rounded-md py-1 px-1 bg-green-500 text-white"
+                  className="h-12 px-1 py-1 text-white bg-green-500 rounded-md w-28"
                   onClick={() => handleSendOTP()}
                 >
                   Get OTP
@@ -186,7 +187,7 @@ const ForgotPass = () => {
               <Input.Password />
             </Form.Item>
             <Form.Item
-              className="flex flex-row justify-center items-center"
+              className="flex flex-row items-center justify-center"
               wrapperCol={{
                 offset: 8,
                 span: 16,

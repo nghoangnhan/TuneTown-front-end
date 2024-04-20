@@ -1,15 +1,16 @@
 import axios from "axios";
 import defaultAva from "../assets/img/logo/logo.png";
-import { Base_URL } from "../api/config";
 import UseCookie from "../hooks/useCookie";
 import { useEffect, useState } from "react";
 import { Form, Input, Modal, Space, Table, message } from "antd";
 import UpdateSong from "../components/UploadSong/UpdateSong";
 import useUserUtils from "../utils/useUserUtils";
+import useConfig from "../utils/useConfig";
 
 const CMSArtist = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
   const userId = localStorage.getItem("userId");
   const [refresh, setRefresh] = useState(false);
   const [artistDetail, setArtistDetail] = useState({});
@@ -213,8 +214,8 @@ const CMSArtist = () => {
           {new Date().getHours() < 12
             ? "Morning"
             : new Date().getHours() < 18
-            ? "Afternoon"
-            : "Evening"}
+              ? "Afternoon"
+              : "Evening"}
           {", "}
           {artistDetail.name ? artistDetail.name : "Unknown Artist"}
           {"! "}
@@ -246,14 +247,14 @@ const CMSArtist = () => {
         dataSource={
           searchValue
             ? dataSongTable.filter((song) =>
-                song.songName.toLowerCase().includes(searchValue.toLowerCase())
-              )
+              song.songName.toLowerCase().includes(searchValue.toLowerCase())
+            )
             : dataSongTable
         }
-        // pagination={{
-        //   total: totalPages,
-        //   pageSize: 10,
-        // }}
+      // pagination={{
+      //   total: totalPages,
+      //   pageSize: 10,
+      // }}
       />
       <Modal
         open={isModalOpenUpdate}

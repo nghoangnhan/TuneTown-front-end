@@ -18,18 +18,21 @@ import {
 import { message } from "antd";
 import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import useIconUtils from "../../utils/useIconUtils";
 
 const SongItemQueue = ({ song, isPlaying, order }) => {
   const { id, songName, artists, songCover, songData, lyric } = song;
-  const audioRef = useRef();
+  const userId = localStorage.getItem("userId");
   const { show } = useContextMenu();
   const dispatch = useDispatch();
-  const userId = localStorage.getItem("userId");
-  const { addSongToPlaylist, getUserPlaylist, addSongToHistory } =
+  const { MusicIcon, PlayButton } = useIconUtils();
+  const { addSongToPlaylist,
+    getUserPlaylist, addSongToHistory } =
     useMusicAPIUtils();
   const { showArtistV2, NavigateSong } = useSongUtils();
   const songInfor = useSelector((state) => state.music.currentSong);
-  // const audio = document.getElementById("audio");
+  // const audio = document.getElementById("audio");  
+  const audioRef = useRef();
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -128,20 +131,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
             {order && isPlaying == false ? (
               order
             ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"
-                />
-              </svg>
+              <MusicIcon></MusicIcon>
             )}
           </span>
         </div>
@@ -164,18 +154,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
             className="p-1 hover:opacity-60 rounded-2xl"
             onClick={HandlePlay}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="#79AC78"
-              className="w-6 h-6"
-            >
-              <path
-                fillRule="evenodd"
-                d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <PlayButton></PlayButton>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           {/* <div>{TimeConvert(234)}</div> */}

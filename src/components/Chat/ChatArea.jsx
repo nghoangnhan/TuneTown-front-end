@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import UseCookie from "../../hooks/useCookie";
-import { Base_URL, socket } from "../../api/config";
 import MessageSection from "./MessageSection";
 import defaultAva from "../../assets/img/logo/logo.png";
 import { useChatUtils } from "../../utils/useChatUtils";
 import { setIsNewMessage } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
+import useConfig from "../../utils/useConfig";
 
 const ChatArea = () => {
   // const userId = localStorage.getItem("userId");
   const { handleSocketReconnect, loadMessage } = useChatUtils();
+  const { Base_URL, socket } = useConfig();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const { BackIcon } = useIconUtils();

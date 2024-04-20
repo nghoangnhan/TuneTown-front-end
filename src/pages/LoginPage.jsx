@@ -4,18 +4,19 @@ import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { NavLink, useNavigate } from "react-router-dom";
 import UseCookie from "../hooks/useCookie";
-import { Base_URL, auth } from "../api/config";
 import { useDispatch } from "react-redux";
 import { setUserInfor } from "../redux/slice/account";
 import GoogleLoginButton from "../components/AuthLogin/AuthGoogleLogin";
 import { gapi } from "gapi-script";
 import LoginFacebook from "../components/AuthLogin/AuthFacebookLogin";
+import useConfig from "../utils/useConfig";
 
 const clientId =
   "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
 
 const LoginPage = () => {
   const { removeToken } = UseCookie();
+  const { Base_URL, auth } = useConfig();
   const [form] = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const LoginPage = () => {
     localStorage.setItem("userId", usersData.id);
     localStorage.setItem("userName", usersData.userName);
     localStorage.setItem("userRole", usersData.role);
+    localStorage.setItem("darkTheme", false);
     console.log("User infor", usersData);
   };
   // Get access to the API

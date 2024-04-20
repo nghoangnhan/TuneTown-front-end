@@ -1,10 +1,11 @@
 import axios from "axios";
-import { Base_URL } from "../api/config";
 import UseCookie from "../hooks/useCookie";
+import useConfig from "./useConfig";
 
 export const useMusicAPIUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
+  const { Base_URL } = useConfig();
 
   // Get list song to show homepage
   const getListSong = async (userId, songPage) => {

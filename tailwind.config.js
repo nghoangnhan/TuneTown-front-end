@@ -16,6 +16,8 @@ export default {
         primaryLighter: "#D0E7D2",
         primaryHoverOn: "#74ff8f",
         backgroundPrimary: "#ecf2fd",
+        backgroundComponentPrimary: "#FFFFFFCC",
+        backgroundChat: "#e8e8e8",
       },
     },
   },
