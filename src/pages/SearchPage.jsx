@@ -85,7 +85,7 @@ const SearchPage = () => {
     }
   }, [keywordsInputDebounce]);
   return (
-    <div className="text-white bg-[#ecf2fd] min-h-screen pt-16 px-5">
+    <div className="text-white bg-backgroundPrimary min-h-screen pt-16 px-5">
       <Form className="flex flex-col justify-center" form={form}>
         <Form.Item
           name="search"

@@ -103,7 +103,7 @@ const PostItemDetail = () => {
   if (!postContent) return null;
 
   return (
-    <div className="h-auto min-h-screen text-[#2E3271] bg-[#ecf2fd] pt-5 pb-24 px-1">
+    <div className="h-auto min-h-screen text-[#2E3271] bg-backgroundPrimary pt-5 pb-24 px-1">
       <div className="px-5 py-2">
         <div className="mb-2">
           <BackButton ></BackButton></div>

@@ -1,4 +1,5 @@
-import { faArrowTrendUp, faCaretLeft, faCheckCircle, faHeadphones, faPauseCircle, faPlayCircle, faUserCheck } from '@fortawesome/free-solid-svg-icons';
+import { faComments } from '@fortawesome/free-regular-svg-icons';
+import { faArrowTrendUp, faCaretLeft, faCheckCircle, faHeadphones, faMoon, faPauseCircle, faPlayCircle, faSun, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 
@@ -215,11 +216,24 @@ const useIconUtils = () => {
         </svg>
     }
 
+    const ChatButton = () => {
+        return <FontAwesomeIcon icon={faComments}></FontAwesomeIcon>
+    }
+
+    const LightTheme = () => {
+        return <FontAwesomeIcon icon={faSun}></FontAwesomeIcon>
+    }
+    const DarkTheme = () => {
+        return <FontAwesomeIcon icon={faMoon}></FontAwesomeIcon>
+    }
+
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
         PauseButton, ListenIcon, TrendingIcon, MusicIcon,
-        RepostButton, DownloadButton, ShareButton
+        RepostButton, DownloadButton, ShareButton,
+        ChatButton,
+        LightTheme, DarkTheme
     };
 };
 

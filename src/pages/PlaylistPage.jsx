@@ -9,7 +9,7 @@ const PlaylistPage = () => {
 
   useEffect(() => { }, []);
   return (
-    <div className="bg-[#ecf2fd] h-full mb-20 pt-16 px-1 xl:px-5 py-5">
+    <div className="bg-backgroundPrimary h-full mb-20 pt-16 px-1 xl:px-5 py-5">
       {/* <h1 className="text-[#2E3271]  text-2xl font-bold mb-5">Playlist Page</h1> */}
       {/* Button back to history */}
       <BackButton></BackButton>

@@ -206,7 +206,7 @@ const CMSArtist = () => {
     handleGetArtistDetail(userId);
   }, [userId, refresh]);
   return (
-    <div className="h-full min-h-screen text-[#2E3271] bg-[#ecf2fd] pt-5 pb-24 px-1">
+    <div className="h-full min-h-screen text-[#2E3271] bg-backgroundPrimary pt-5 pb-24 px-1">
       {" "}
       <div className="flex flex-row">
         <div className="text-xl font-bold text-[#2E3271] my-5 mx-3">

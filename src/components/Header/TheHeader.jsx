@@ -5,38 +5,21 @@ import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
 import { setUserId } from "../../redux/slice/account";
 import { useDispatch } from "react-redux";
-import axios from "axios";
-import useConfig from "../../utils/useConfig";
+import useIconUtils from "../../utils/useIconUtils";
+import useUserUtils from "../../utils/useUserUtils";
+import DarkMode from "../DarkMode/DarkMode";
 
 const TheHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { Base_URL } = useConfig();
-  const { removeToken, getToken } = UseCookie();
+  const { ChatButton } = useIconUtils();
+  const { removeToken } = UseCookie();
+  const { getUserInfor } = useUserUtils();
   const userRole = localStorage.getItem("userRole");
   const userId = localStorage.getItem("userId");
-  const { access_token } = getToken();
   const [modalOpen, setModalOpen] = useState(false);
   const [userInfor, setUserInfor] = useState({});
   dispatch(setUserId(userId));
-
-  // Get user information from API
-  const getUserInfor = async () => {
-    try {
-      const response = await axios.get(`${Base_URL}/users?userId=${userId}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-        body: {},
-      });
-      console.log("TheHeader || GetUserInfor", response.data, response.status);
-      return response.data;
-      // setUserName(response.data.user.userName);
-    } catch (error) {
-      // Handle network errors or other exceptions
-      console.error("Error edited user:", error.message);
-    }
-  };
 
   const handleOnclick = (direction) => {
     navigate(`/${direction}`);
@@ -48,8 +31,9 @@ const TheHeader = () => {
     localStorage.clear();
     navigate("/");
   };
+
   useEffect(() => {
-    getUserInfor().then((res) => {
+    getUserInfor(userId).then((res) => {
       setUserInfor(res.user);
       localStorage.setItem("userName", res.user.userName);
       console.log("The Header || UserInfor", res.user);
@@ -57,42 +41,25 @@ const TheHeader = () => {
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
   return (
-    <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-[#ecf2fd]">
+    <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-backgroundPrimary">
       <div className="absolute flex flex-row items-center justify-center xl:right-5 xl:mt-5 right-3">
+        <div>
+          <DarkMode></DarkMode>
+        </div>
         <div
-          className="flex items-center justify-center mt-1 mr-3 cursor-pointer "
+          className="flex items-center justify-center text-xl mt-1 mr-2 cursor-pointer text-[#505050] font-bold hover:opacity-50 rounded-lg h-10 w-10"
           onClick={() => navigate("/chat")}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            viewBox="0 -960 960 960"
-            width="24"
-            fill="#505050"
-          >
-            <path d="M240-400h320v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
-          </svg>
+          <ChatButton></ChatButton>
         </div>
         {
           <div>
-            {userRole === "ADMIN" && (
-              <div className="text-[#f24e4e] font-bold flex flex-row justify-center items-center p-1 border border-[#f24e4e] border-solid rounded-md mr-3">
-                Admin
-              </div>
-            )}
-            {userRole === "USER" && (
-              <div className="text-[#359254] font-bold flex flex-row justify-center items-center p-1 border border-[#359254] border-solid rounded-md mr-3">
-                User
-              </div>
-            )}
-            {userRole === "ARTIST" && (
-              <div className="text-[#3f3ca0] font-bold flex flex-row justify-center items-center p-1 border border-[#3f3ca0] border-solid rounded-md mr-3">
-                Artist
-              </div>
-            )}
+            <div className={`${userRole === "ADMIN" ? "text-[#f24e4e] border-[#f24e4e] font-bold" : (userRole === "USER" ? "text-primary border-primary font-bold" : (userRole === "ARTIST" ? "text-[#3f3ca0] border-[#3f3ca0] font-bold" : ""))} flex justify-center items-center p-1 border border-solid rounded-md mr-3`}>
+              {userRole === "ADMIN" ? "Admin" : (userRole === "USER" ? "User" : (userRole === "ARTIST" ? "Artist" : ""))}
+            </div>
           </div>
         }
-        <span className="xl:block hidden mr-3 text-[#505050] cursor-default">
+        <span className="xl:block hidden mr-3 text-[#505050] dark:text-white cursor-default">
           {userInfor.userName ? userInfor.userName : "Unknown User"}
         </span>
 
@@ -115,7 +82,6 @@ const TheHeader = () => {
       <Modal
         title="Options"
         centered
-        style={{ top: 20 }}
         open={modalOpen}
         onOk={() => setModalOpen(false)}
         okButtonProps={{ style: { backgroundColor: "#45cc79" } }}

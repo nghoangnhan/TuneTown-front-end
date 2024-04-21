@@ -20,14 +20,14 @@ const LyricSection = ({ lyric }) => {
   if (!lyrical) {
     return (
       <div className="max-h-screen xl:h-screen">
-        <div className="h-full text-center text-2xl pt-8 px-4 bg-[#ecf2fd] text-[#5d5c5c] font-bold mt-5 mb-5">
+        <div className="h-full text-center text-2xl pt-8 px-4 bg-backgroundPrimary text-[#5d5c5c] font-bold mt-5 mb-5">
           This song has no lyric!
         </div>
       </div>
     );
   }
   return (
-    <div className="h-fit pb-4 xl:pb-10 pt-8 px-4 bg-[#ecf2fd] flex xl:flex-row flex-col gap-4">
+    <div className="h-fit pb-4 xl:pb-10 pt-8 px-4 bg-backgroundPrimary flex xl:flex-row flex-col gap-4">
       <div className="px-2 xl:px-4">
         <img
           src={
@@ -43,7 +43,7 @@ const LyricSection = ({ lyric }) => {
         </h2>
         <div className="text-[#7C8DB5]">{showArtistV2(songInfor?.artists)}</div>
       </div>
-      <div className="w-full xl:h-[550px] bg-[#ecf2fd] shadow-xl rounded-md p-5 overflow-y-auto pb-3">
+      <div className="w-full xl:h-[550px] bg-backgroundPrimary shadow-xl rounded-md p-5 overflow-y-auto pb-3">
         <div className="text-[#2E3271] font-bold text-2xl mb-2">Lyrics</div>
         <div className="text-[#7C8DB5] text-sm whitespace-pre-line">
           {lyrical}

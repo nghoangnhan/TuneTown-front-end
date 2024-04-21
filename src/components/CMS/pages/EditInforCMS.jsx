@@ -18,7 +18,7 @@ const tailLayout = {
   wrapperCol: {
     offset: 20,
     span: 16,
-},
+  },
 };
 
 // Edit Information in CMS page
@@ -107,7 +107,7 @@ const EditInfor = () => {
     // console.log("userName", userName);
   }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
   return (
-    <section className="w-full h-screen relative flex flex-col pt-10 bg-[#ecf2fd]">
+    <section className="w-full h-screen relative flex flex-col pt-10 bg-backgroundPrimary">
       <div className="flex items-center justify-center h-fit">
         <Form
           {...layout}

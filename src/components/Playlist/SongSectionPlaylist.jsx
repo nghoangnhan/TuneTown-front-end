@@ -11,7 +11,7 @@ const SongSectionPlaylist = (props) => {
   }, [props.songData]);
   if (!songList) return null;
   return (
-    <div className="xl:w-full w-full bg-[#ecf2fd]">
+    <div className="xl:w-full w-full bg-backgroundPrimary">
       <div className="flex flex-row justify-between items-center mt-5 mb-5 text-[#4b4848]">
         <div className="flex flex-row gap-8 ml-8">
           <div className=" text-center font-bold">ID</div>
