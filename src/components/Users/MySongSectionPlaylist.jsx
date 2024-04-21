@@ -53,7 +53,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
 
   if (!songList) return null;
   return (
-    <div className="xl:w-full w-full bg-[#ecf2fd]">
+    <div className="xl:w-full w-full bg-backgroundPrimary">
       <div className="flex flex-row items-center  gap-5">
         <div className="border-solid border border-[#44c261] hover:border-[#d5ddd7] hover:bg-[#40cf62] rounded-md mb-5 px-2 py-1 text-[#44c261] hover:text-white font-bold w-fit h-fit flex flex-row gap-2">
           <svg

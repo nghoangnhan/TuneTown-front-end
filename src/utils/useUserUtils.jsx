@@ -19,7 +19,6 @@ const useUserUtils = () => {
 
   // Get user information from API
   const getUserInfor = async (userId) => {
-    const [userInfor, setUserInfor] = useState({});
     try {
       const response = await axios.get(`${Base_URL}/users?userId=${userId}`, {
         headers: {
@@ -28,8 +27,7 @@ const useUserUtils = () => {
         body: {},
       });
       console.log(response.data, response.status);
-      setUserInfor(response.data.user);
-      // setUserName(response.data.user.userName);
+      return response.data;
     } catch (error) {
       // Handle network errors or other exceptions
       console.error("Error edited user:", error.message);

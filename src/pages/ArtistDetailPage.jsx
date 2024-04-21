@@ -48,7 +48,7 @@ const ArtistDetailPage = () => {
   return (
     <div
       className={`${artistId ? "min-h-screen h-full" : "min-h-screen h-fit"
-        } xl:p-8 p-2 bg-[#ecf2fd] mb-20`}
+        } xl:p-8 p-2 bg-backgroundPrimary mb-20`}
     >
 
       <div className="flex flex-row mb-2">

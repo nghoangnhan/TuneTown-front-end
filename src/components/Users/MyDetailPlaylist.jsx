@@ -84,14 +84,14 @@ const MyDetailPlaylist = () => {
       className={`${songPlaylistList != null && songPlaylistList.length > 0
         ? "min-h-screen h-full"
         : "min-h-screen"
-        } xl:p-5 bg-[#ecf2fd] mb-20`}
+        } xl:p-5 bg-backgroundPrimary mb-20`}
     >
       {/* Button  */}
       <div className="flex flex-row items-center gap-4 mb-3">
         <BackButton></BackButton>
         <button
           onClick={() => setModalOpen(true)}
-          className="bg-[#ecf2fd] text-[#40cf62] hover:text-[#ecf2fd]  hover:bg-[#40cf62] border border-solid border-[#40cf62] rounded-md"
+          className="bg-backgroundPrimary text-[#40cf62] hover:text-backgroundPrimary  hover:bg-[#40cf62] border border-solid border-[#40cf62] rounded-md"
         >
           <div className="px-2 py-1 font-bold">Edit Playlist Information</div>
         </button>

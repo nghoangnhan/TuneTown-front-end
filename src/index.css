@@ -19,7 +19,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(96, 96, 96, 0.5); /* semi-transparent white background */
+  background-color: rgba(
+    96,
+    96,
+    96,
+    0.5
+  ); /* semi-transparent white background */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,11 +35,15 @@
   animation: zoomInOut 1s infinite alternate; /* Zoom-in and zoom-out animation with 2 seconds duration */
 }
 
+* {
+  @apply transition-colors duration-100;
+}
+
 @keyframes zoomInOut {
   0% {
-      transform: scale(1); /* Start with normal size */
+    transform: scale(1); /* Start with normal size */
   }
   100% {
-      transform: scale(1.2); /* Zoom out to 120% size */
+    transform: scale(1.2); /* Zoom out to 120% size */
   }
 }

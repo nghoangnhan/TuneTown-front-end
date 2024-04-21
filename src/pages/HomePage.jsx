@@ -6,7 +6,7 @@ import SongSection from "../components/HomePage/SongSection";
 const HomePage = () => {
   const userName = localStorage.getItem("userName");
   return (
-    <div className="h-auto min-h-screen text-primary bg-[#ecf2fd] pt-5 pb-24 px-1">
+    <div className="h-auto min-h-screen text-primary bg-backgroundPrimary pt-5 pb-24 px-1">
       <div className="p-5">
         <div className="mb-2 text-4xl font-bold">Home</div>
         <div className="text-xl font-bold">
@@ -14,8 +14,8 @@ const HomePage = () => {
           {new Date().getHours() < 12
             ? "Morning"
             : new Date().getHours() < 18
-            ? "Afternoon"
-            : "Evening"}
+              ? "Afternoon"
+              : "Evening"}
           , {userName}!
         </div>
       </div>

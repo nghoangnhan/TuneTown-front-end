@@ -17,9 +17,8 @@ const QueueSection = () => {
 
   return (
     <div
-      className={`${
-        songQueue != null && songQueue.length > 0 ? "min-h-screen" : "h-screen"
-      } xl:p-6 bg-[#ecf2fd] mb-20`}
+      className={`${songQueue != null && songQueue.length > 0 ? "min-h-screen" : "h-screen"
+        } xl:p-6 bg-backgroundPrimary mb-20`}
     >
       <div className="flex flex-row gap-4">
         <button

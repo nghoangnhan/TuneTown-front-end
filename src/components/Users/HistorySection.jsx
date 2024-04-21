@@ -92,7 +92,7 @@ const HistorySection = () => {
 
   if (!songList) return null;
   return (
-    <div className="min-h-screen h-full xl:p-5 bg-[#ecf2fd] mb-20">
+    <div className="min-h-screen h-full xl:p-5 bg-backgroundPrimary mb-20">
       <div className="text-2xl font-bold">Song Management</div>
       <div className="flex flex-row justify-between mt-5 mb-5 "></div>
       <Table columns={columnsSong} dataSource={dataSongTable} />
