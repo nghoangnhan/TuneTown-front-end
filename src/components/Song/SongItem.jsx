@@ -124,14 +124,12 @@ const SongItem = ({ song, songOrder, songListen }) => {
         </Submenu>
       </Menu>
 
-      <div className="relative flex flex-row items-center p-2 my-1 text-sm bg-white rounded-md cursor-pointer hover:bg-slate-200 xl:text-base"
+      <div className="relative flex flex-row items-center p-2 my-1 text-sm rounded-md cursor-pointer bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDark xl:text-base"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className="xl:w-12 xl:h-12
-        mx-2 xl:mx-3  flex justify-center items-center text-[#79AC78] font-bold
-        "
+          className="flex items-center justify-center mx-2 font-bold xl:w-12 xl:h-12 xl:mx-3 text-primary dark:text-primaryDarkmode "
         >
           <span>{songOrder + 1}</span>
         </div>
@@ -142,9 +140,9 @@ const SongItem = ({ song, songOrder, songListen }) => {
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
-        <div className="text-[#2E3271] xl:text-base font-semibold">
-          <h2 className="text-primary" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
-          <h2 className="text-sm text-[#7C8DB5B8] mt-1">
+        <div className="font-semibold xl:text-base">
+          <h2 className="text-primary dark:text-primaryDarkmode" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
+          <h2 className="mt-1 text-sm text-primaryText2 dark:text-primaryTextDark2">
             {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}
           </h2>
@@ -152,17 +150,12 @@ const SongItem = ({ song, songOrder, songListen }) => {
         {/* // Listen Icon */}
         <div className="absolute flex flex-row items-center right-2 xl:gap-2">
           {songListen && isHovered === false && (
-            <div className="flex flex-row items-center justify-center text-[#464444] font-semibold gap-1">
+            <div className="flex flex-row items-center justify-center gap-1 font-semibold text-textNormal dark:text-textNormalDark">
               {songListen}
               <ListenIcon></ListenIcon>
             </div>
           )}
-          <button
-            className="p-1 hover:opacity-60 rounded-2xl"
-            onClick={HandlePlay}
-          >
-            <PlayButton></PlayButton>
-          </button>
+
 
           {isHovered && (
             <>
@@ -174,6 +167,12 @@ const SongItem = ({ song, songOrder, songListen }) => {
               <ShareButton handleShareSong={() => handleShareSong(songInforObj)}></ShareButton>
             </>
           )}
+          <button
+            className="p-1 hover:opacity-60 rounded-2xl"
+            onClick={HandlePlay}
+          >
+            <PlayButton></PlayButton>
+          </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           {/* <div>{TimeConvert(234)}</div> */}
         </div>

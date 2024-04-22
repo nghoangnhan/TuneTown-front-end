@@ -1,5 +1,10 @@
 import { faComments } from '@fortawesome/free-regular-svg-icons';
-import { faArrowTrendUp, faCaretLeft, faCheckCircle, faHeadphones, faMoon, faPauseCircle, faPlayCircle, faSun, faUserCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowTrendUp, faBackwardStep, faCaretLeft, faCheckCircle, faEarthAmerica, faForwardStep, faHeadphones, faHouse, faList
+    , faListOl, faMoon, faPause, faPauseCircle, faPlay, faPlayCircle, faPlus, faRepeat, faSearch, faShuffle, faSun, faUserCheck,
+    faVolumeHigh,
+    faVolumeLow
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 
@@ -28,6 +33,25 @@ const useIconUtils = () => {
             </button>
         );
     };
+
+    // Nav  Icon 
+    const HomeIcon = () => {
+        return <FontAwesomeIcon icon={faHouse}></FontAwesomeIcon>
+    }
+
+    const SearchIcon = () => {
+        return <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+    }
+
+    const EarthIcon = () => {
+        return <FontAwesomeIcon icon={faEarthAmerica}></FontAwesomeIcon>
+    }
+    const PlaylistIcon = () => {
+        return <FontAwesomeIcon icon={faList}></FontAwesomeIcon>
+    }
+
+
+
     const ThumbsUpSolid = (props) => {
         return (
             <svg
@@ -206,7 +230,7 @@ const useIconUtils = () => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-4 h-4"
+            className=""
         >
             <path
                 strokeLinecap="round"
@@ -214,6 +238,49 @@ const useIconUtils = () => {
                 d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"
             />
         </svg>
+    }
+
+    const PlusIcon = () => {
+        return <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+    }
+    // MusicControlBar Icon 
+    const ShuffleIcon = () => {
+        return <FontAwesomeIcon icon={faShuffle}></FontAwesomeIcon>
+    }
+    const RepeatIcon = () => {
+        return <FontAwesomeIcon icon={faRepeat}></FontAwesomeIcon>
+    }
+    const VolumeLowIcon = () => {
+        return <FontAwesomeIcon icon={faVolumeLow}></FontAwesomeIcon>
+    }
+    const VolumeHighIcon = () => {
+        return <FontAwesomeIcon icon={faVolumeHigh}></FontAwesomeIcon>
+    }
+    const PlayIcon = () => {
+        return <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
+    }
+    const PauseIcon = () => {
+        return <FontAwesomeIcon icon={faPause}></FontAwesomeIcon>
+    }
+    const SkipNextIcon = () => {
+        return <FontAwesomeIcon icon={faForwardStep}></FontAwesomeIcon>
+    }
+    const SkipPreviousIcon = () => {
+        return <FontAwesomeIcon icon={faBackwardStep}></FontAwesomeIcon>
+    }
+    const LyricIcon = () => {
+        return <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 -960 960 960"
+            width="24"
+            fill="currentColor"
+        >
+            <path d="M171.539-318.077v-484.038V-318.077Zm-55.96 184.766v-656.496q0-28.257 20.006-48.263 20.006-20.006 48.263-20.006h419.421q28.257 0 48.263 20.006 20.006 20.006 20.006 48.263v17.577q-16.231 7.692-30.172 18.215-13.942 10.524-25.788 23.437v-59.229q0-5.192-3.462-8.75t-8.847-3.558H183.848q-5.385 0-8.847 3.558-3.462 3.558-3.462 8.75v471.73h431.73q5.385 0 8.847-3.462 3.462-3.462 3.462-8.847v-139.229q11.846 12.988 25.788 23.571 13.941 10.582 30.172 18.082v97.576q0 28.438-20.006 48.353-20.006 19.916-48.263 19.916H244.385L115.579-133.311Zm149.999-278.805h135.961v-55.96H265.578v55.96Zm486.734-80q-44.966 0-76.427-31.513-31.462-31.514-31.462-76.423 0-44.909 31.426-76.467 31.426-31.557 76.21-31.557 15.172 0 27.46 3.827 12.289 3.827 24.904 12.443v-216.27h135.96v55.96h-80V-600q0 44.888-31.553 76.386-31.553 31.498-76.518 31.498Zm-486.734-40h255.961v-55.96H265.578v55.96Zm0-120h255.961v-55.96H265.578v55.96Z" />
+        </svg>
+    }
+    const QueueIcon = () => {
+        return <FontAwesomeIcon icon={faListOl}></FontAwesomeIcon>
     }
 
     const ChatButton = () => {
@@ -227,13 +294,24 @@ const useIconUtils = () => {
         return <FontAwesomeIcon icon={faMoon}></FontAwesomeIcon>
     }
 
+    const CreatePlaylistButton = (CreateNewPlaylist) => {
+        return <button
+            onClick={CreateNewPlaylist}
+            className="mt-3 mb-5 ml-3 border border-solid rounded-md border-primary text-primary hover:text-backgroundPrimary bg-backgroundPrimary hover:bg-primaryDarkmode dark:text-primaryTextDark2 dark:bg-primary dark:hover:bg-primaryTextDark2 dark:hover:text-primary "
+        >
+            <div className="px-2 py-2 font-bold">+ Create New Playlist</div>
+        </button>
+    }
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
         PauseButton, ListenIcon, TrendingIcon, MusicIcon,
         RepostButton, DownloadButton, ShareButton,
-        ChatButton,
-        LightTheme, DarkTheme
+        ChatButton, PlusIcon,
+        LightTheme, DarkTheme,
+        HomeIcon, SearchIcon, EarthIcon, PlaylistIcon,
+        ShuffleIcon, RepeatIcon, PlayIcon, PauseIcon, SkipNextIcon, SkipPreviousIcon,
+        VolumeLowIcon, VolumeHighIcon, LyricIcon, QueueIcon, CreatePlaylistButton
     };
 };
 

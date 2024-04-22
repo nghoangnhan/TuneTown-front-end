@@ -95,7 +95,7 @@ const LoginPage = () => {
     <div className="relative flex flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-20">
-          <h1 className="font-bold text-[#2E3271] text-3xl">Login</h1>
+          <h1 className="font-bold text-headingText dark:text-headingTextDark text-3xl">Login</h1>
         </div>
         <Form
           form={form}
@@ -151,13 +151,13 @@ const LoginPage = () => {
         </Form>
 
         <div className="flex flex-col items-center justify-center gap-2 xl:gap-4">
-          <p className="text-[#2E3271]">
+          <p className="text-headingText dark:text-headingTextDark">
             Don&apos;t have account?
             <NavLink to="/signup" className="text-[#34a56d] ml-1 text-sm">
               Sign up
             </NavLink>
           </p>
-          <p className="text-[#2E3271] mb-3">
+          <p className="text-headingText dark:text-headingTextDark mb-3">
             Forget Your Password?
             <NavLink to="/forgotpass" className="text-[#34a56d] ml-1 text-sm">
               Forget Password

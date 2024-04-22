@@ -118,9 +118,9 @@ const SongItemSearch = ({ song, songOrder }) => {
         </Submenu>
       </Menu>
 
-      <div className="relative flex flex-row items-center p-2 my-1 text-sm bg-white rounded-md cursor-pointer hover:bg-slate-200 text-primary xl:text-base">
+      <div className="relative flex flex-row items-center p-2 my-1 text-sm rounded-md cursor-pointer bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDarkbg-backgroundSongItem hover:dark:bg-backgroundSongItemHoverDark text-primary xl:text-base">
         {
-          <div className="flex items-center justify-center mx-2 font-bold xl:w-12 xl:h-12 xl:mx-3 text-primary ">
+          <div className="flex items-center justify-center mx-2 font-bold xl:w-12 xl:h-12 xl:mx-3 text-primary dark:text-primaryDarkmode ">
             <span>{songOrder}</span>
           </div>
         }
@@ -131,9 +131,9 @@ const SongItemSearch = ({ song, songOrder }) => {
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
-        <div className="font-semibold text-primary xl:text-base">
-          <h2 className="" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
-          <h2 className="mt-1 text-sm text-primaryLight">
+        <div className="font-semibold text-primary dark:text-primaryDarkmode xl:text-base">
+          <h2 className="text-primary dark:text-primaryDarkmode" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
+          <h2 className="mt-1 text-sm text-primaryText2 dark:text-primaryTextDark2">
             {artists && showArtistV2(artists)}
             {!artists && <span>Null</span>}
           </h2>

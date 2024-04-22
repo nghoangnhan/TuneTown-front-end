@@ -22,6 +22,7 @@ import ForumPage from "../pages/ForumPage";
 import PostItemDetail from "../components/Forum/PostItemDetail";
 import ErrorPage from "../pages/ErrorPage";
 import SongDetailPage from "../pages/SongDetailPage";
+import UserDetailPage from "../pages/UserDetailPage";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -59,8 +60,12 @@ export default function init(routes) {
         element: <UploadSongPage />,
       },
       {
-        path: "editUser",
+        path: "edit-user",
         element: <EditUserForm />,
+      },
+      {
+        path: "my-profile",
+        element: <UserDetailPage />,
       },
       {
         path: "history",

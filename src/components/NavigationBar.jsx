@@ -1,11 +1,15 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import useIconUtils from "../utils/useIconUtils";
+import useConfig from "../utils/useConfig";
 
 const NavigationBar = () => {
   const navigate = useNavigate();
+  const { isMobile } = useConfig();
+  const { HomeIcon, SearchIcon, EarthIcon, PlaylistIcon } = useIconUtils();
   return (
     <div>
       {/* Navigation Laptop  */}
-      <div className=" hidden xl:flex h-screen bg-[#FFFFFFCC] justify-center ">
+      {!isMobile && <div className="justify-center hidden h-full min-h-screen xl:flex bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
         <div className="max-xl:w-64 xl:fixed">
           <div
             className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
@@ -18,7 +22,7 @@ const NavigationBar = () => {
                 alt=""
               />
             </div>
-            <div className="text-[#2E3271]">TuneTown</div>
+            <div className="text-headingText dark:text-headingTextDark">TuneTown</div>
           </div>
           <div className="mt-8">
             <div className="flex flex-col gap-2 mt-7">
@@ -26,20 +30,12 @@ const NavigationBar = () => {
                 to="/home"
                 className={({ isActive }) =>
                   isActive
-                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-white flex justify-center items-center rounded-lg"
-                    : "h-10 w-48 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                    : "h-10 w-48 font-bold hover:text-[#6aca72] text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
                 }
               >
                 <span className="mr-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
-                    <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
-                  </svg>
+                  <HomeIcon></HomeIcon>
                 </span>
                 Home
               </NavLink>
@@ -47,23 +43,12 @@ const NavigationBar = () => {
                 to="/search"
                 className={({ isActive }) =>
                   isActive
-                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] font-bold to-[#32b95b] hover:text-[#e9e5e5] text-white flex justify-center items-center rounded-lg"
-                    : "h-10 w-48 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] font-bold to-[#32b95b] hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                    : "h-10 w-48 font-bold hover:text-[#6aca72] text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
                 }
               >
                 <span className="mr-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <SearchIcon></SearchIcon>
                 </span>
                 Search
               </NavLink>
@@ -71,20 +56,12 @@ const NavigationBar = () => {
                 to="/forum"
                 className={({ isActive }) =>
                   isActive
-                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-white flex justify-center items-center rounded-lg"
-                    : "h-10 w-48 hover:text-[#6aca72] font-bold text-[#2E327180] flex justify-center items-center rounded-lg"
+                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                    : "h-10 w-48 hover:text-[#6aca72] font-bold text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
                 }
               >
                 <span className="mr-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="24"
-                    viewBox="0 -960 960 960"
-                    width="24"
-                    fill="currentColor"
-                  >
-                    <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-40-82v-78q-33 0-56.5-23.5T360-320v-40L168-552q-3 18-5.5 36t-2.5 36q0 121 79.5 212T440-162Zm276-102q20-22 36-47.5t26.5-53q10.5-27.5 16-56.5t5.5-59q0-98-54.5-179T600-776v16q0 33-23.5 56.5T520-680h-80v80q0 17-11.5 28.5T400-560h-80v80h240q17 0 28.5 11.5T600-440v120h40q26 0 47 15.5t29 40.5Z" />
-                  </svg>
+                  <EarthIcon></EarthIcon>
                 </span>
                 Forum
               </NavLink>
@@ -92,37 +69,30 @@ const NavigationBar = () => {
                 to="/playlist"
                 className={({ isActive }) =>
                   isActive
-                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-white flex justify-center items-center rounded-lg"
-                    : "h-10 w-48 hover:text-[#6aca72] font-bold text-[#2E327180] flex justify-center items-center rounded-lg"
+                    ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                    : "h-10 w-48 hover:text-[#6aca72] font-bold text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
                 }
               >
                 <span className="mr-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path d="M15 3.75H9v16.5h6V3.75zM16.5 20.25h3.375c1.035 0 1.875-.84 1.875-1.875V5.625c0-1.036-.84-1.875-1.875-1.875H16.5v16.5zM4.125 3.75H7.5v16.5H4.125a1.875 1.875 0 01-1.875-1.875V5.625c0-1.036.84-1.875 1.875-1.875z" />
-                  </svg>
+                  <PlaylistIcon></PlaylistIcon>
                 </span>
                 My Playlists
               </NavLink>
             </div>
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* Navigation Mobile  */}
-      <div className=" flex flex-row xl:hidden bg-[#ffffff] fixed bottom-0 z-50 w-screen justify-center">
+      {isMobile && <div className="fixed bottom-0 z-50 flex flex-row justify-center w-screen xl:hidden bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
         <div className="pb-1">
           <div className="flex flex-row items-center justify-center gap-4">
             <NavLink
               to="/home"
               className={({ isActive }) =>
                 isActive
-                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
               }
             >
               Home
@@ -131,8 +101,8 @@ const NavigationBar = () => {
               to="/search"
               className={({ isActive }) =>
                 isActive
-                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
               }
             >
               Search
@@ -141,8 +111,8 @@ const NavigationBar = () => {
               to="/forum"
               className={({ isActive }) =>
                 isActive
-                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
               }
             >
               Forum
@@ -151,15 +121,15 @@ const NavigationBar = () => {
               to="/playlist"
               className={({ isActive }) =>
                 isActive
-                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:text-[#e9e5e5] text-[#fff] flex justify-center items-center rounded-lg"
-                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-[#2E327180] flex justify-center items-center rounded-lg"
+                  ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
+                  : "h-2 w-auto p-4 font-bold hover:text-[#6aca72] text-textNavbar dark:text-textNavbarDark flex justify-center items-center rounded-lg"
               }
             >
               Playlists
             </NavLink>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

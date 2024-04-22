@@ -8,6 +8,7 @@ import UploadFileDropZone from "../UploadSong/UploadFileDropZone";
 import { useDataUtils } from "../../utils/useDataUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useIconUtils from "../../utils/useIconUtils";
+import useConfig from "../../utils/useConfig";
 
 const MyDetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
@@ -15,6 +16,7 @@ const MyDetailPlaylist = () => {
   const [form] = Form.useForm();
   const { editPlaylist, getListSongPlaylist, getPlaylistByPlaylistId } =
     useMusicAPIUtils();
+  const { default_Img } = useConfig();
   const { BackButton } = useIconUtils();
   const dispatch = useDispatch();
   const { handleUploadFileIMG } = useDataUtils();
@@ -84,31 +86,39 @@ const MyDetailPlaylist = () => {
       className={`${songPlaylistList != null && songPlaylistList.length > 0
         ? "min-h-screen h-full"
         : "min-h-screen"
-        } xl:p-5 bg-backgroundPrimary mb-20`}
+        } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary mb-20`}
     >
       {/* Button  */}
       <div className="flex flex-row items-center gap-4 mb-3">
         <BackButton></BackButton>
         <button
           onClick={() => setModalOpen(true)}
-          className="bg-backgroundPrimary text-[#40cf62] hover:text-backgroundPrimary  hover:bg-[#40cf62] border border-solid border-[#40cf62] rounded-md"
+          className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-[#40cf62] hover:text-backgroundPrimary hover:bg-[#40cf62] dark:hover:bg-primary  border border-solid border-[#40cf62] rounded-md"
         >
           <div className="px-2 py-1 font-bold">Edit Playlist Information</div>
         </button>
       </div>
-      <div className="flex flex-row items-start text-7xl text-[#4b4848] font-bold text-center mb-5 gap-4">
+      <div className="flex flex-row items-start gap-4 mb-5 font-bold text-center text-7xl text-primary dark:text-primaryDarkmode">
         <div className="relative flex flex-row items-start">
           <img
             className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
             src={
               playlistDetail.coverArt
                 ? playlistDetail.coverArt
-                : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
+                : default_Img
             }
             alt="artist-avatar"
           />
         </div>
-        {playlistDetail.playlistName} <span className="">#{playlistId}</span>
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex flex-row items-center justify-center gap-4">
+            {playlistDetail.playlistName} <span className="text-5xl">#{playlistId}</span>
+          </div>
+          <div className="flex flex-col items-start justify-center gap-2">
+            <div className="text-2xl text-primary dark:text-primaryDarkmode">Made by {" "}{playlistDetail?.user?.userName}</div>
+            <div className="text-base text-primaryText2 dark:text-primaryTextDark">{playlistDetail.playlistType}{" "}playlist</div>
+          </div>
+        </div>
       </div>
 
       <MySongSectionPlaylist

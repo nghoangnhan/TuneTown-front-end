@@ -63,7 +63,7 @@ const SignUpPage = () => {
 
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-8">
-          <h1 className="font-bold text-[#2E3271] text-3xl">Sign up</h1>
+          <h1 className="font-bold text-headingText dark:text-headingTextDark text-3xl">Sign up</h1>
         </div>
         <Form
           className="w-full"
@@ -184,7 +184,7 @@ const SignUpPage = () => {
           </Form.Item>
         </Form>
 
-        <div className="text-[#2E3271]">
+        <div className="text-headingText dark:text-headingTextDark">
           Have an account?
           <NavLink to="/" className="text-[#34a56d] ml-1 text-sm">
             Login

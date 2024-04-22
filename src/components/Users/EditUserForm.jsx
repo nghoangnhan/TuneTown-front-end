@@ -117,7 +117,7 @@ const EditUserForm = ({ editUserId, isAdmin }) => {
   return (
     <section
       className={`${isAdmin ? "justify-center" : " pt-10 w-full min-h-screen"
-        } relative flex flex-col  items-center bg-backgroundPrimary`}
+        } relative flex flex-col  items-center bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}
     >
       <Form
         {...layout}

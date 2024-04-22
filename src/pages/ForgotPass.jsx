@@ -108,7 +108,7 @@ const ForgotPass = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center bg-[#FFFFFFCC]">
+    <div className="flex flex-col justify-center bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
       <div className="relative flex flex-col items-center flex-1">
         <div className="hidden mt-10 mb-5 xl:block">
           <img
@@ -119,7 +119,7 @@ const ForgotPass = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center mt-10">
-          <h1 className="font-bold text-[#2E3271] text-3xl mb-10">
+          <h1 className="font-bold text-headingText dark:text-headingTextDark text-3xl mb-10">
             Forget Password
           </h1>
 
@@ -203,7 +203,7 @@ const ForgotPass = () => {
           </Form>
 
           <div>
-            <p className="text-[#2E3271]">
+            <p className="text-headingText dark:text-headingTextDark">
               Back to Login?
               <NavLink to="/" className="text-[#34a56d] ml-1 text-sm">
                 Sign in

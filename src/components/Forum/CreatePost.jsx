@@ -28,7 +28,7 @@ const CreatePost = () => {
   const [playlistRs, setPlaylistRs] = useState([]);
   const { getPlaylistByUserId } = useMusicAPIUtils();
   const [openModal, setOpenModal] = useState(false);
-  const [ playlist, setPlaylist ] = useState();
+  const [playlist, setPlaylist] = useState();
 
   const UploadMP3file = async (file) => {
     setLoading(true);
@@ -55,8 +55,8 @@ const CreatePost = () => {
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
       const response = axios.post(`${Base_URL}/post/create`, {
-        author: { 
-          id: userId 
+        author: {
+          id: userId
         },
         content: contentParser,
         song: null,
@@ -66,12 +66,12 @@ const CreatePost = () => {
         likes: null,
         listComments: null,
         mp3Link: fileMP3
-      },{
+      }, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         }
       }
-    );
+      );
       // if (response.status === 200) {
       message.success("Post Created Successfully", 2);
       // }
@@ -91,7 +91,7 @@ const CreatePost = () => {
       const listPlaylist = await getPlaylistByUserId(userId);
       setPlaylistRs(listPlaylist);
       setOpenModal(true);
-      console.log("PLAYLISTRS",playlistRs);
+      console.log("PLAYLISTRS", playlistRs);
     } catch (error) {
       console.error("Error adding playlist:", error);
     }
@@ -135,11 +135,11 @@ const CreatePost = () => {
           extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
           getValueFromEvent={(e) => e && e.fileList}
           valuePropName="fileList"
-          // rules={[
-          //   {
-          //     required: !songReady, // Required when song is not ready
-          //   },
-          // ]}
+        // rules={[
+        //   {
+        //     required: !songReady, // Required when song is not ready
+        //   },
+        // ]}
         >
           <div className="flex flex-row items-center gap-2">
             <UploadFileDropZone
@@ -153,8 +153,8 @@ const CreatePost = () => {
               height="20"
               viewBox="0 -960 960 960"
               width="20"
-              // className={`${songReady ? "" : "hidden"}`}
-              // fill={`${songReady ? "#42ae49" : ""}`}
+            // className={`${songReady ? "" : "hidden"}`}
+            // fill={`${songReady ? "#42ae49" : ""}`}
             >
               <path d="M316.231-280.54q-83.295 0-141.762-57.879-58.468-57.879-58.468-141.004 0-84.269 60.896-141.768 60.895-57.5 146.334-57.5h378.615q59.23 0 100.691 41.077 41.462 41.076 41.462 100.307 0 60.23-43.962 100.806-43.961 40.577-105.191 40.577H339.462q-34.761 0-59.418-24.219-24.658-24.219-24.658-59.033 0-35.67 25.622-59.9 25.622-24.231 62.454-24.231h361.152v51.999H339.462q-13.477 0-22.778 9.108-9.3 9.108-9.3 22.585t9.3 22.585q9.301 9.108 22.778 9.108H702.23q37.308.384 63.539-25.777T792-537.505q0-37.459-27.423-63.323-27.423-25.865-64.731-25.865H316.231q-61.538.385-104.385 43.154Q169-540.769 168-479.284q-1 61.465 44.346 104.49 45.347 43.025 108.885 42.256h383.383v51.998H316.231Z" />
             </svg>
@@ -164,7 +164,7 @@ const CreatePost = () => {
         {/* Playlist */}
         <Form.Item>
           <button
-          onClick={handleAddPlaylist}
+            onClick={handleAddPlaylist}
             type="button"
             className="w-full h-10 px-3 text-base text-white transition-colors duration-150 bg-[#59c26d] rounded-lg focus:shadow-outline hover:bg-[#58ec73]"
           >
@@ -180,10 +180,10 @@ const CreatePost = () => {
           </button>
         </Form.Item>
         {loading && (
-        <div className="overlay">
-          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out"/>
-        </div>
-      )}
+          <div className="overlay">
+            <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out" />
+          </div>
+        )}
 
       </Form>
       <Modal
@@ -195,12 +195,12 @@ const CreatePost = () => {
         footer={null}
       >
         {playlistRs && (
-          <div className="absolute top-full left-0 right-0 bg-white shadow-md">
+          <div className="absolute left-0 right-0 bg-white shadow-md top-full">
             <ul className="px-4 py-2">
               {playlistRs.map((playlist) => (
                 <li
                   key={playlist.id}
-                  className="flex items-center space-x-2 hover:bg-blue-100 cursor-pointer rounded-md p-2"
+                  className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100"
                   onClick={() => handlePlaylistItemClick(playlist)}
                 >
                   <img

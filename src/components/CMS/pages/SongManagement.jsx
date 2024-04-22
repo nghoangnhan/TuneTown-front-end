@@ -238,6 +238,7 @@ const SongManagement = () => {
         }
         pagination={{ pageSize: 8 }}
       />
+      {/* Upload Song  */}
       <Modal
         open={isModalOpenUpload}
         onOk={handleOk}
@@ -247,6 +248,7 @@ const SongManagement = () => {
       >
         <UploadSong></UploadSong>
       </Modal>
+      {/* Update Song  */}
       <Modal
         open={isModalOpenUpdate}
         onOk={handleOk}

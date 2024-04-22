@@ -59,7 +59,7 @@ const SongSection = ({ titleSong }) => {
   if (!songList) return null;
 
   return (
-    <div className="bg-[#FFFFFFCC] shadow-md rounded-2xl m-auto xl:h-fit xl:mx-5 mx-1 xl:mt-8 mt-4 py-3 px-3 xl:py-5 xl:px-5">
+    <div className="bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary shadow-md rounded-2xl m-auto xl:h-fit xl:mx-5 mx-1 xl:mt-8 mt-4 py-3 px-3 xl:py-5 xl:px-5">
       <h1 className="text-xl font-bold text-primary">{titleSong}</h1>
       <div className="flex flex-col gap-2 mt-2 xl:w-full">
         {songList &&

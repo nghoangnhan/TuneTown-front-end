@@ -5,9 +5,15 @@ const DarkMode = () => {
     // Dark Theme == true => Moon Icon
     const [darkTheme, setDarkTheme] = useState(false);
     const handleTheme = () => {
-        const newTheme = darkTheme === false ? true : false;
-        console.log("Dark Theme", newTheme);
-        setDarkTheme(newTheme);
+        // const newTheme = darkTheme === false ? true : false;
+        // console.log("Dark Theme", newTheme);
+        // setDarkTheme(newTheme);
+        if (darkTheme == false) {
+            setDarkTheme(true);
+        }
+        else {
+            setDarkTheme(false);
+        }
     };
     useEffect(() => {
         if (darkTheme == true) {

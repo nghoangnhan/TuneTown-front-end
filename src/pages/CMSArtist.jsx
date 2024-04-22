@@ -6,18 +6,22 @@ import { Form, Input, Modal, Space, Table, message } from "antd";
 import UpdateSong from "../components/UploadSong/UpdateSong";
 import useUserUtils from "../utils/useUserUtils";
 import useConfig from "../utils/useConfig";
+import UploadSong from "../components/UploadSong/UploadSong";
+import useIconUtils from "../utils/useIconUtils";
 
 const CMSArtist = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
+  const { PlusIcon } = useIconUtils();
   const userId = localStorage.getItem("userId");
+  const [form] = Form.useForm();
   const [refresh, setRefresh] = useState(false);
   const [artistDetail, setArtistDetail] = useState({});
   const [songListArtist, setSongListArtist] = useState([]);
   const [songData, setSongData] = useState({});
   const [searchValue, setSearchValue] = useState("");
-  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false); const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
   const { getArtistByArtistId } = useUserUtils();
 
   const handleGetArtistDetail = async (artistId) => {
@@ -25,7 +29,6 @@ const CMSArtist = () => {
       setArtistDetail(result);
       setSongListArtist(result.songs);
       console.log("SetArtistDetail", result);
-      console.log("SetSongListArtist", songListArtist);
     });
   };
   const handSearch = (e) => {
@@ -41,9 +44,17 @@ const CMSArtist = () => {
     setSongData(songData);
     setIsModalOpenUpdate(true);
   };
-
+  const handleOk = () => {
+    form.submit();
+    setIsModalOpenUpload(false);
+  };
   const handleCancel = () => {
     setIsModalOpenUpdate(false);
+  };
+
+  // Call this function when you want to refresh the playlist
+  const showModal = () => {
+    setIsModalOpenUpload(true);
   };
 
   // Delete Song
@@ -152,10 +163,7 @@ const CMSArtist = () => {
           return (
             <div className="flex items-center justify-center">
               <div
-                className="
-          bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg w-fit h-fit px-2 py-1
-          "
-              >
+                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md h-fit hover:opacity-70">
                 Deleted
               </div>
             </div>
@@ -164,9 +172,7 @@ const CMSArtist = () => {
           return (
             <div className="flex items-center justify-center">
               <div
-                className="
-          bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg w-fit h-fit px-2 py-1
-          "
+                className="w-16 px-1 py-1 border rounded-md h-fit text-primary dark:text-primaryDarkmode border-primary hover:opacity-70"
               >
                 Public
               </div>
@@ -182,13 +188,13 @@ const CMSArtist = () => {
       render: (_, record) => (
         <Space>
           <button
-            className="py-1 px-2 h-8 w-14  bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
+            className="px-2 py-1 text-white rounded-md w-14 bg-primary hover:opacity-70"
             onClick={() => handUpdateSong(record.key, record.songName)}
           >
             Edit
           </button>
           <button
-            className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
+            className="py-1 px-2 w-14 bg-[#c42323e1] hover:opacity-70 text-white rounded-md"
             onClick={() => deleteSong(record.key)}
           >
             Delete
@@ -206,10 +212,10 @@ const CMSArtist = () => {
     handleGetArtistDetail(userId);
   }, [userId, refresh]);
   return (
-    <div className="h-full min-h-screen text-[#2E3271] bg-backgroundPrimary pt-5 pb-24 px-1">
+    <div className="h-full min-h-screen px-2 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       {" "}
       <div className="flex flex-row">
-        <div className="text-xl font-bold text-[#2E3271] my-5 mx-3">
+        <div className="mx-3 my-5 text-4xl font-bold text-primary dark:text-primaryDarkmode">
           Good{" "}
           {new Date().getHours() < 12
             ? "Morning"
@@ -221,25 +227,35 @@ const CMSArtist = () => {
           {"! "}
         </div>
       </div>
-      <div className="my-4">
-        <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          layout="inline"
-          initialValues={{
-            remember: true,
-          }}
-          autoComplete="off"
-        >
-          <Form.Item label="" name="songName" className="ml-1">
-            <Input placeholder="Search Song" onChange={handSearch} />
-          </Form.Item>
-        </Form>
+      <div className="flex flex-row justify-between mt-5 mb-5 ">
+        <div className="">
+          <Form
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            layout="inline"
+            initialValues={{
+              remember: true,
+            }}
+            autoComplete="off"
+          >
+            <Form.Item label="" name="songName">
+              <Input placeholder="Search Song" onChange={handSearch} />
+            </Form.Item>
+          </Form>
+        </div>
+        <div>
+          <button
+            className="px-2 py-1 text-white rounded-lg bg-primary hover:bg-primaryDarkmode"
+            onClick={showModal}
+          >
+            <PlusIcon></PlusIcon> Create New Song
+          </button>
+        </div>
       </div>
       <Table
         columns={columnsSong}
@@ -251,14 +267,21 @@ const CMSArtist = () => {
             )
             : dataSongTable
         }
-      // pagination={{
-      //   total: totalPages,
-      //   pageSize: 10,
-      // }}
+
       />
+      <Modal
+        open={isModalOpenUpload}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[null, null]}
+        className="w-fit h-fit "
+      >
+        <UploadSong></UploadSong>
+      </Modal>
       <Modal
         open={isModalOpenUpdate}
         onCancel={handleCancel}
+        onOk={handleOk}
         footer={[null, null]}
         className="w-fit h-fit "
       >

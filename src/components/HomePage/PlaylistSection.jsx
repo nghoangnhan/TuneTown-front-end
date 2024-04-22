@@ -16,13 +16,13 @@ const PlaylistSection = ({ playlistTitle }) => {
   }, []);
 
   return (
-    <div className="bg-[#FFFFFFCC] shadow-md rounded-2xl m-auto xl:h-fit xl:mx-5 mx-1 xl:mt-8 mt-4 py-3 px-3 xl:py-5 xl:px-5">
+    <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5">
       <div className="py-2 playlist-section xl:w-full">
         <h1 className="text-xl font-bold text-center text-primary xl:text-2xl">
           {playlistTitle}
         </h1>
         <Swiper
-          className="pl-3 mt-2 xl:mt-4 xl:pl-2"
+          className="pl-2 mt-5 xl:mt-10 xl:pl-2"
           spaceBetween={50}
           grabCursor={"true"}
           slidesPerView={"auto"}

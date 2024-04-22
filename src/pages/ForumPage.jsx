@@ -26,7 +26,7 @@ const ForumPage = () => {
 
   if (!listPost) return null;
   return (
-    <div className="h-auto min-h-screen text-[#59c26d] bg-backgroundPrimary pt-5 pb-40 px-2">
+    <div className="h-auto min-h-screen text-[#59c26d] bg-backgroundPrimary dark:bg-backgroundDarkPrimary pt-5 pb-40 px-2">
       {/* Desktop  */}
       {!isMobile &&
         <div className="flex flex-row">

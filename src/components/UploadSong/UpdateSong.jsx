@@ -62,7 +62,6 @@ const UpdateSong = ({ songData }) => {
   // Get Song from API
   const getSongById = async (songId) => {
     try {
-      console.log("auth", access_token);
       const response = await axios.get(
         `${Base_URL}/songs/getSongById?songId=${songId}`,
         {
@@ -80,7 +79,6 @@ const UpdateSong = ({ songData }) => {
   // Post Song to API
   const updateSong = async (data) => {
     try {
-      console.log("auth", access_token);
       const response = await axios.put(
         `${Base_URL}/songs?accessToken=${access_token}`,
         {

@@ -6,11 +6,14 @@ import { setChatChosen } from "../redux/slice/social";
 import { useDispatch } from "react-redux";
 import useUserUtils from "../utils/useUserUtils";
 import useIconUtils from "../utils/useIconUtils";
+import TheHeader from "../components/Header/TheHeader";
 
 const ArtistDetailPage = () => {
   const { artistId } = useParams();
-  const { getArtistByArtistId } = useUserUtils();
+  const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
+  const { followArtist, unfollowArtist } = useUserUtils();
+  const { getArtistByArtistId } = useUserUtils();
   const { UserCheck, BackButton } = useIconUtils();
   const [artistDetail, setArtistDetail] = useState({});
   const [songListArtist, setSongListArtist] = useState([]);
@@ -40,6 +43,19 @@ const ArtistDetailPage = () => {
       console.log("SetArtistDetail", result);
     });
   };
+  const handleFollowArtist = async () => {
+    await followArtist(userId, artistId).then((result) => {
+      console.log("Follow Artist", result);
+    }
+    );
+  }
+  const handleUnfollowArtist = async () => {
+    await unfollowArtist(userId, artistId).then((result) => {
+      console.log("Unfollow Artist", result);
+    }
+    );
+  }
+
   useEffect(() => {
     handleGetArtistDetail(artistId);
   }, [artistId]);
@@ -47,10 +63,12 @@ const ArtistDetailPage = () => {
 
   return (
     <div
-      className={`${artistId ? "min-h-screen h-full" : "min-h-screen h-fit"
-        } xl:p-8 p-2 bg-backgroundPrimary mb-20`}
+      className={`${artistId ? " h-full" : "h-fit"
+        }min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
-
+      <div className="mb-4">
+        <TheHeader></TheHeader>
+      </div>
       <div className="flex flex-row mb-2">
         <BackButton></BackButton>
       </div>
@@ -63,29 +81,23 @@ const ArtistDetailPage = () => {
           />
         </div>
         <div className="flex flex-col">
-          <div className="text-[50px] text-[#4b4848] font-bold text-center mb-5">
+          <div className="text-[50px] text-textNormal dark:text-textNormalDark font-bold text-center mb-5">
             <div className="flex flex-row items-center justify-center gap-2">
               {artistDetail.name ? artistDetail.name : "Unknown Artist"}
-              <span className="text-lg text-gray-500">#{artistDetail.id}</span>
-              <span className="text-4xl"><UserCheck></UserCheck></span>
-              {/* {artistDetail.role == "ARTIST" ||
-                (artistDetail.role == "ADMIN" && (
-                  <VerifyAccount></VerifyAccount>
-                ))} */}
+              <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">#{artistDetail.id}</span>
+              <span className="text-4xl text-primary dark:text-primaryDarkmode"><UserCheck></UserCheck></span>
             </div>
           </div>
           {
             <div className="flex flex-row gap-4">
               <button
                 onClick={() => handleFollow()}
-                className="mb-5 rounded-md bg-primary hover:bg-primaryHoverOn"
+                className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
               >
-                <div className="px-2 py-1 font-bold text-white">
-                  {follow == true ? "Unfollow" : "Follow"}
-                </div>
+                {follow == true ? "Unfollow" : "Follow"}
               </button>
               <button
-                className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary hover:bg-primaryHoverOn"
+                className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
                 onClick={() => handleNavigate(artistDetail.id)}
               >
                 Join the artist community
@@ -98,8 +110,8 @@ const ArtistDetailPage = () => {
 
       {/* <SongSectionPlaylist songData={artistDetail.songs}></SongSectionPlaylist> */}
       {artistDetail?.songs && (
-        <div className="bg-[#FFFFFFCC] rounded-xl m-auto ml-2 mr-2 mt-2 pt-2 pl-5 pr-5 pb-5">
-          <div className="flex flex-row justify-between items-center mt-5 mb-5 text-[#4b4848]">
+        <div className="pt-2 pb-5 pl-5 pr-5 m-auto mt-2 ml-2 mr-2 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
+          <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
             <div className="flex flex-row gap-8 ml-8">
               <div className="font-bold text-center ">ID</div>
               <div className="font-bold text-center ">Song Details</div>

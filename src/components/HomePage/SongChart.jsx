@@ -62,7 +62,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
 
   if (!songList) {
     return (
-      <div className="bg-[#FFFFFFCC] shadow-md rounded-2xl m-auto xl:h-fit xl:mx-5 mx-1 xl:mt-8 mt-4 py-3 px-3 xl:py-5 xl:px-5">
+      <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5">
         <h1 className="text-xl font-bold text-primary">
           Song Chart is updating...
         </h1>
@@ -71,7 +71,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
   }
 
   return (
-    <div className={`bg-[#FFFFFFCC] rounded-2xl shadow-md  mt-4 py-3 xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 ${inForum
+    <div className={`bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl shadow-md mt-4 py-3 xl:py-5 px-2 xl:h-fit xl:mx-2 xl:mt-8  ${inForum
       ? "min-w-[500px]" : "min-w-[250px]"}`}>
       <div className="flex flex-row items-center justify-center gap-3">
         <h1 className="text-xl font-bold text-primary">{titleSongChart}</h1>

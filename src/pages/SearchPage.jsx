@@ -85,7 +85,7 @@ const SearchPage = () => {
     }
   }, [keywordsInputDebounce]);
   return (
-    <div className="text-white bg-backgroundPrimary min-h-screen pt-16 px-5">
+    <div className="text-white bg-backgroundPrimary dark:bg-backgroundDarkPrimary min-h-screen pt-16 px-5">
       <Form className="flex flex-col justify-center" form={form}>
         <Form.Item
           name="search"
@@ -99,12 +99,12 @@ const SearchPage = () => {
             name="keywords"
             placeholder="Search by song, artist, lyric..."
             onChange={(e) => setKeywordsInput(e.target.value)}
-            className="rounded-md bg-[#FFFFFFCC] w-full h-14 text-lg"
+            className="rounded-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary w-full h-14 text-lg"
           />
         </Form.Item>
       </Form>
       {songRs != null && (
-        <div className="bg-[#FFFFFFCC] rounded-xl m-auto ml-2 mr-2 mt-2 pt-5 pl-5 pr-5 pb-5">
+        <div className="bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl m-auto ml-2 mr-2 mt-2 pt-5 pl-5 pr-5 pb-5">
           {songRs.map((song, index) => (
             <SongItemSearch key={song.id} songOrder={index + 1} song={song} />
           ))}

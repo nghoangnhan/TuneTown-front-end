@@ -1,5 +1,5 @@
 import { Form, message } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -8,8 +8,9 @@ import AudioWaveSurfer from "./AudioWaveSurfer";
 import UseCookie from "../../hooks/useCookie";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
+import PropTypes from 'prop-types';
 
-const Repost = ({song, closeModal}) => {
+const Repost = ({ song, closeModal }) => {
   const [form] = Form.useForm();
   const [editorValue, setEditorValue] = useState("");
   const { Base_URL } = useConfig();
@@ -22,25 +23,25 @@ const Repost = ({song, closeModal}) => {
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
       const response = axios.post(`${Base_URL}/post/create`, {
-        author: { 
-            id: userId 
+        author: {
+          id: userId
         },
         content: contentParser,
         song: {
-            id: song.id,
+          id: song.id,
         },
         playlist: null,
         likes: null,
         listComments: null,
         mp3Link: ""
-      },{
-        headers:{
-            Authorization: `Bearer ${access_token}`,
+      }, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
         }
       });
       if (response.status === 200) {
         message.success("Repost Successfully", 2);
-    }
+      }
       form.resetFields();
       closeModal();
     } catch (error) {
@@ -53,7 +54,7 @@ const Repost = ({song, closeModal}) => {
   };
 
   return (
-    <div className="bg-[#FFFFFFCC] mt-4">
+    <div className="mt-4 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
       <Form
         form={form}
         layout="vertical"
@@ -89,5 +90,8 @@ const Repost = ({song, closeModal}) => {
     </div>
   );
 };
-
+Repost.propTypes = {
+  song: PropTypes.object,
+  closeModal: PropTypes.func,
+};
 export default Repost;

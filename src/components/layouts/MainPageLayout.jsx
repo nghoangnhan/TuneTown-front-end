@@ -35,7 +35,7 @@ const MainPageLayout = () => {
       <div>
         <div className="flex flex-col">
           <div className="xl:flex xl:flex-row">
-            <div className="xl:w-2/12">
+            <div className="h-full xl:w-2/12 min-h-fit bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
               <NavigationBar></NavigationBar>
             </div>
             <div className="xl:w-10/12">

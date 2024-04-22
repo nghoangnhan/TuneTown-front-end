@@ -107,7 +107,7 @@ const EditInfor = () => {
     // console.log("userName", userName);
   }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
   return (
-    <section className="w-full h-screen relative flex flex-col pt-10 bg-backgroundPrimary">
+    <section className="w-full h-screen relative flex flex-col pt-10 bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="flex items-center justify-center h-fit">
         <Form
           {...layout}

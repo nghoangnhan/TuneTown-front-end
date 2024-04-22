@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import SongPlaylist from "./SongSectionPlaylist";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import useIconUtils from "../../utils/useIconUtils";
+import useConfig from "../../utils/useConfig";
 
 const DetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
   const { playlistId } = useParams();
+  const { BackButton } = useIconUtils();
+  const { default_Img } = useConfig();
   const { getListSongPlaylist, getPlaylistByPlaylistId } = useMusicAPIUtils();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
@@ -30,29 +34,32 @@ const DetailPlaylist = () => {
       className={`${songPlaylistList != null && songPlaylistList.length > 0
         ? "min-h-screen h-full"
         : "min-h-screen"
-        } xl:p-5 bg-backgroundPrimary mb-20`}
+        } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary mb-20`}
     >
-      <div className="flex flex-row gap-4">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-[#2f9948] hover:bg-[#40cf62] rounded-md mb-5"
-        >
-          <div className="px-2 py-1 font-bold text-white">{"<"} Back</div>
-        </button>
+      <div className="my-4">
+        <BackButton></BackButton>
       </div>
-      <div className="flex flex-row items-start text-7xl text-[#4b4848] font-bold text-center mb-5 gap-4">
+      <div className="flex flex-row items-start gap-4 mb-5 font-bold text-center text-7xl text-primary dark:text-primaryDarkmode">
         <div className="relative flex flex-row items-start">
           <img
             className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
             src={
               playlistDetail.coverArt
                 ? playlistDetail.coverArt
-                : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
+                : default_Img
             }
             alt="artist-avatar"
           />
         </div>
-        {playlistDetail.playlistName} <span className="">#{playlistId}</span>
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex flex-row items-center justify-center gap-4">
+            {playlistDetail.playlistName} <span className="text-5xl">#{playlistId}</span>
+          </div>
+          <div className="flex flex-col items-start justify-center gap-2">
+            <div className="text-2xl text-primary dark:text-primaryDarkmode">Made by {" "}{playlistDetail?.user?.userName}</div>
+            <div className="text-base text-primaryText2 dark:text-primaryTextDark">{playlistDetail.playlistType}{" "}playlist</div>
+          </div>
+        </div>
       </div>
 
       <SongPlaylist

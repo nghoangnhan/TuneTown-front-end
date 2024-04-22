@@ -7,10 +7,12 @@ import { setMyPLaylistList } from "../../redux/slice/playlist";
 import MyPlaylistItem from "./MyPlaylistItem";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useConfig from "../../utils/useConfig";
+import useIconUtils from "../../utils/useIconUtils";
 
 const MyPlaylistSection = () => {
   const { getToken } = UseCookie();
   const { Base_URL } = useConfig();
+  const { CreatePlaylistButton } = useIconUtils();
   const { getUserPlaylist } = useMusicAPIUtils();
   const { access_token } = getToken();
   const dispatch = useDispatch();
@@ -87,25 +89,15 @@ const MyPlaylistSection = () => {
   if (!playlistList)
     return (
       <div className="playlist-section xl:w-full xl:py-2">
-        <button
-          onClick={CreateNewPlaylist}
-          className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 mt-3 ml-3"
-        >
-          <div className="px-2 py-2 font-bold">+ Create New Playlist</div>
-        </button>
-        <div className="text-center font-bold text-3xl text-[#339e3f]">
+        <CreatePlaylistButton CreateNewPlaylist={CreateNewPlaylist}></CreatePlaylistButton>
+        <div className="text-3xl font-bold text-center text-primary dark:text-primaryDarkmode">
           Create your new playlist!
         </div>
       </div>
     );
   return (
     <div className="playlist-section xl:w-full xl:py-2">
-      <button
-        onClick={CreateNewPlaylist}
-        className=" border-solid border border-[#54f466] text-[#3ecd4f] hover:text-white  bg-[#ffffff71] hover:bg-[#40cf62] rounded-md mb-5 mt-3 ml-3"
-      >
-        <div className="px-2 py-2 font-bold">+ Create New Playlist</div>
-      </button>
+      <CreatePlaylistButton CreateNewPlaylist={CreateNewPlaylist}></CreatePlaylistButton>
 
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-y-1 xl:px-5">
         {playlistList &&
@@ -121,6 +113,7 @@ const MyPlaylistSection = () => {
               <MyPlaylistItem
                 key={playlistItem.id}
                 id={playlistItem.id}
+                playlistInfo={playlistItem}
                 playlistName={playlistItem.playlistName}
                 playlistType={playlistItem.playlistType}
                 users={playlistItem.users}

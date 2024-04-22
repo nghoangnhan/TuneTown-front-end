@@ -10,11 +10,11 @@ import { setIsNewMessage } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
 import { useForm } from "antd/es/form/Form";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
 import useDebounce from "../../hooks/useDebounce";
 
 const ChatNavigate = () => {
-  const userId =  parseInt(localStorage.getItem("userId"), 10);
+  const userId = parseInt(localStorage.getItem("userId"), 10);
   const { AcronymName } = useChatUtils();
   const { getToken } = UseCookie();
   const [form] = useForm();
@@ -138,42 +138,42 @@ const ChatNavigate = () => {
         <div>
           <img src={defaultAva} className="h-12 rounded-lg" alt="" />
         </div>
-        <div className="text-[#2E3271]">TuneTown</div>
+        <div className="text-headingText dark:text-headingTextDark">TuneTown</div>
       </div>
 
       <div className="relative">
-      <Form className="flex flex-col justify-center" form={form}>
-        <Form.Item
-          name="search"
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
-          <Input
-            name="keywords"
-            placeholder="Search..."
-            onChange={(e) => setKeywordsInput(e.target.value)}
-            className="rounded-md bg-[#FFFFFFCC] w-full h-12 text-lg"
-          />
-        </Form.Item>
-      </Form>
+        <Form className="flex flex-col justify-center" form={form}>
+          <Form.Item
+            name="search"
+            rules={[
+              {
+                required: false,
+              },
+            ]}
+          >
+            <Input
+              name="keywords"
+              placeholder="Search..."
+              onChange={(e) => setKeywordsInput(e.target.value)}
+              className="w-full h-12 text-lg rounded-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary"
+            />
+          </Form.Item>
+        </Form>
 
-      {/* Render userResults absolutely positioned below the search input */}
-      {userRs && (
-        <div className="absolute top-full left-0 right-0 bg-white shadow-md">
-          <ul className="px-4 py-2">
-            {userRs.map(user => (
-              <li key={user.id} className="flex items-center space-x-2 hover:bg-blue-100 cursor-pointer rounded-md p-2" onClick={() => handleUserItemClick(user)}>
-              <img src={`${user.avatar ? user.avatar : defaultAva}`} alt="User Avatar" className="w-8 h-8 rounded-full" />
-              <span>{user.userName}</span>
-            </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+        {/* Render userResults absolutely positioned below the search input */}
+        {userRs && (
+          <div className="absolute left-0 right-0 bg-white shadow-md top-full">
+            <ul className="px-4 py-2">
+              {userRs.map(user => (
+                <li key={user.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100" onClick={() => handleUserItemClick(user)}>
+                  <img src={`${user.avatar ? user.avatar : defaultAva}`} alt="User Avatar" className="w-8 h-8 rounded-full" />
+                  <span>{user.userName}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
       <div className="ml-2">
         <BackButton></BackButton>
       </div>

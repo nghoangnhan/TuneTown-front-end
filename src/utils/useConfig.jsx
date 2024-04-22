@@ -10,6 +10,7 @@ const useConfig = () => {
     // export const Base_URL = "https://tunetown-production.up.railway.app";
     const Base_URL = "http://localhost:8080";
     const Base_AVA = Base_Ava
+    const default_Img = Base_AVA;
     // token return an object {access_token, refress_Token}
 
     // Client ID lấy từ google console API (đăng ký project và tạo client ID)
@@ -30,7 +31,7 @@ const useConfig = () => {
     return {
         isMobile,
         Base_URL,
-        Base_AVA,
+        Base_AVA, default_Img,
         cliendId,
         socket,
         auth,

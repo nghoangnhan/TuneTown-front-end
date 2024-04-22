@@ -11,17 +11,17 @@ const SongSectionPlaylist = (props) => {
   }, [props.songData]);
   if (!songList) return null;
   return (
-    <div className="xl:w-full w-full bg-backgroundPrimary">
-      <div className="flex flex-row justify-between items-center mt-5 mb-5 text-[#4b4848]">
+    <div className="w-full xl:w-full bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
+      <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
         <div className="flex flex-row gap-8 ml-8">
-          <div className=" text-center font-bold">ID</div>
-          <div className=" text-center font-bold">Song Details</div>
+          <div className="font-bold text-center ">ID</div>
+          <div className="font-bold text-center ">Song Details</div>
         </div>
         {/* <div>
-          <div className=" text-center font-bold">Duration</div>
+          <div className="font-bold text-center ">Duration</div>
         </div> */}
       </div>
-      <div className="mt-2 flex flex-col gap-1">
+      <div className="flex flex-col gap-1 mt-2">
         {songList &&
           songList.map((songItem) => (
             <SongItem

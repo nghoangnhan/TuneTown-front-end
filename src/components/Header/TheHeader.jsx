@@ -41,13 +41,13 @@ const TheHeader = () => {
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
   return (
-    <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-backgroundPrimary">
+    <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="absolute flex flex-row items-center justify-center xl:right-5 xl:mt-5 right-3">
         <div>
           <DarkMode></DarkMode>
         </div>
         <div
-          className="flex items-center justify-center text-xl mt-1 mr-2 cursor-pointer text-[#505050] font-bold hover:opacity-50 rounded-lg h-10 w-10"
+          className="flex items-center justify-center w-10 h-10 mt-1 mr-2 text-xl font-bold rounded-lg cursor-pointer text-iconText dark:text-iconTextDark hover:text-iconTextHover dark:hover:text-iconTextHoverDark dark:hover:bg-iconBackgroundDark"
           onClick={() => navigate("/chat")}
         >
           <ChatButton></ChatButton>
@@ -59,7 +59,7 @@ const TheHeader = () => {
             </div>
           </div>
         }
-        <span className="xl:block hidden mr-3 text-[#505050] dark:text-white cursor-default">
+        <span className="hidden mr-3 cursor-default xl:block text-primaryText2 dark:text-white">
           {userInfor.userName ? userInfor.userName : "Unknown User"}
         </span>
 
@@ -90,36 +90,41 @@ const TheHeader = () => {
         className="text-[#359254] font-bold flex flex-row justify-center items-center"
       >
         {userRole != "ADMIN" && (
-          <div
-            onClick={() => handleOnclick("editUser")}
-            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
-          >
-            <button>Edit User Information</button>
+          <div>
+            <div
+              onClick={() => handleOnclick("my-profile")}
+              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
+            >
+              <button>My Profile</button>
+            </div>
+            <div
+              onClick={() => handleOnclick("edit-user")}
+              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
+            >
+              <button>Edit User Information</button>
+            </div>
+            <div
+              onClick={() => handleOnclick("history")}
+              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
+            >
+              <button>Listen History</button>
+            </div>
           </div>
         )}
         {userRole == "ARTIST" && (
           <div>
-            <div
+            {/* <div
               onClick={() => handleOnclick("upload")}
               className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
             >
               <button>Upload Song</button>
-            </div>
+            </div> */}
             <div
               onClick={() => handleOnclick("artistCMS")}
               className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
             >
               <button>Song Management</button>
             </div>
-          </div>
-        )}
-
-        {userRole != "ADMIN" && (
-          <div
-            onClick={() => handleOnclick("history")}
-            className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
-          >
-            <button>Listen History</button>
           </div>
         )}
         <div

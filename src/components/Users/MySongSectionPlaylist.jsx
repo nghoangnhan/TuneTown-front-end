@@ -53,9 +53,9 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
 
   if (!songList) return null;
   return (
-    <div className="xl:w-full w-full bg-backgroundPrimary">
-      <div className="flex flex-row items-center  gap-5">
-        <div className="border-solid border border-[#44c261] hover:border-[#d5ddd7] hover:bg-[#40cf62] rounded-md mb-5 px-2 py-1 text-[#44c261] hover:text-white font-bold w-fit h-fit flex flex-row gap-2">
+    <div className="w-full xl:w-full bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
+      <div className="flex flex-row items-center gap-5">
+        <div className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-[#40cf62] hover:text-backgroundPrimary hover:bg-[#40cf62] dark:hover:bg-primary  border border-solid border-[#40cf62] rounded-md p-2 flex flex-row gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -79,7 +79,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
         </div>
         <div>
           <button
-            className="rounded-full  hover:bg-[#2af358] bg-[#40cf62]  mb-5 font-bold w-fit h-fit"
+            className="rounded-full  hover:bg-[#2af358] bg-[#40cf62]  font-bold w-fit h-fit"
             onClick={() => handleAddSongToQueue(songList)}
           >
             <svg
@@ -99,16 +99,16 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
           </button>
         </div>
       </div>
-      <div className="flex flex-row justify-between items-center mt-5 mb-5 text-[#4b4848]">
+      <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
         <div className="flex flex-row gap-8 ml-8">
-          <div className=" text-center font-bold">ID</div>
-          <div className=" text-center font-bold">Song Details</div>
+          <div className="font-bold text-center ">ID</div>
+          <div className="font-bold text-center ">Song Details</div>
         </div>
         {/* <div>
-          <div className=" text-center font-bold">Duration</div>
+          <div className="font-bold text-center ">Duration</div>
         </div> */}
       </div>
-      <div className="mt-2 flex flex-col gap-1">
+      <div className="flex flex-col gap-1 mt-2">
         {songList &&
           songList.map((songItem, index) => (
             <SongItemPlaylist

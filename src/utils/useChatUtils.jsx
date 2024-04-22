@@ -2,11 +2,16 @@
 import axios from "axios";
 import UseCookie from "../hooks/useCookie";
 import useConfig from "./useConfig";
+import { useDispatch } from "react-redux";
+import { setChatChosen } from "../redux/slice/social";
+import { useNavigate } from "react-router-dom";
 
 export const useChatUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userId = parseInt(localStorage.getItem("userId"), 10);
 
   // Acronym the name of the song
@@ -87,7 +92,17 @@ export const useChatUtils = () => {
       console.error("Error fetching messages:", error);
     }
   };
-  return { AcronymName, loadMessage, handleSocketReconnect };
+  const handleNavigate = (path, artistDetail) => {
+    dispatch(
+      setChatChosen({
+        chatId: path,
+        name: artistDetail.name,
+        avatar: artistDetail.avatar,
+      })
+    );
+    navigate(`/chat/${path}`);
+  };
+  return { AcronymName, loadMessage, handleSocketReconnect, handleNavigate };
 };
 
 export const useForumUtils = () => {
@@ -156,6 +171,52 @@ export const useForumUtils = () => {
       console.log("Error:", error);
     }
   };
+
+  const updatePost = async (post) => {
+    try {
+      const response = await axios.put(
+        `${Base_URL}/post/updatePost?postId=${post.postId}`,
+        {
+          "id": post.postId,
+          "author": {
+            "id": post.authorId,
+          },
+          "content": post.postContent,
+          "song": {
+            "id": post.songId
+          },
+          "playlist": {
+            "id": post.playistId
+          }
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+
+  const deletePost = async (postId) => {
+    try {
+      const response = await axios.delete(
+        `${Base_URL}/post?postId=${postId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+    }
+    catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
 
   // Create Comment API
   const createComment = async (value) => {
@@ -262,6 +323,8 @@ export const useForumUtils = () => {
     getAllPost,
     getPostById,
     createPost,
+    updatePost,
+    deletePost,
     createComment,
     createReply,
     likePost,

@@ -41,7 +41,7 @@ const PostItem = ({ postContent }) => {
   console.log("PostItem", postContent);
   // Get the time of the post
   const countTime = new Date(
-    postContent?.postTime || Date.now()
+    postContent?.postTime
   ).toLocaleString();
   const handGetPostById = async () => {
     await getPostById(postContent.id).then((res) => {
@@ -111,22 +111,22 @@ const PostItem = ({ postContent }) => {
   }, [postContent.playlist]);
   
   return (
-    <div className="bg-[#FFFFFFCC] font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
+    <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-3 xl:mt-5 xl:py-5 xl:px-5">
       <div className="flex flex-col justify-center">
         <div className="flex flex-row items-start justify-between">
           <div className="flex flex-col">
             {/* Artist Name  */}
-            <div className="flex flex-row items-center gap-1 text-xl font-bold">
+            <div className="flex flex-row items-center gap-1 text-xl font-bold text-primary dark:text-primaryDarkmode">
               {Post.author.userName}
               {Post.author.role == "ARTIST" && (
                 <VerifyAccount></VerifyAccount>
               )}
             </div>
-            <div className="text-xs font-medium text-[#3d419783]">
+            <div className="text-xs font-medium text-primaryText2 dark:text-primaryTextDark2">
               {countTime}
             </div>
             <div
-              className="cursor-pointer mt-2 text-base text-[#3a3a3d]"
+              className="mt-2 text-base cursor-pointer text-textNormal dark:text-textNormalDark"
               onClick={handlePostClick}
             >
               {Post.content}
@@ -135,7 +135,7 @@ const PostItem = ({ postContent }) => {
           {/* Post Option */}
           <div>
             <button
-              className="top-2 right-2"
+              className="top-2 right-2 text-iconText dark:text-iconTextDark"
               onClick={(e) => displayMenu(e, Post.id)}
             >
               <OptionsIcon></OptionsIcon>
@@ -181,7 +181,7 @@ const PostItem = ({ postContent }) => {
       {/* React Post  */}
       <div className="flex flex-row items-center justify-between gap-5 font-bold text-primary">
         {/* Like  */}
-        <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80"
+        <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80 "
           onClick={handleLikePost}>
           <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
           <span>{postDetail != null ? postDetail.likes.length : postContent.likes.length}</span>
