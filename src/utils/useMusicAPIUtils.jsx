@@ -259,11 +259,13 @@ export const useMusicAPIUtils = () => {
       console.log("Error:", error);
     }
   };
-  const combineData = async (songId) => {
+  const combineData = async (songId, mp3Link) => {
     try {
       const response = await axios.post(
         `${Base_URL}/songs/combineData?songId=${songId}`,
-        {},
+        {
+          mp3Link: mp3Link
+        },
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -278,6 +280,22 @@ export const useMusicAPIUtils = () => {
       return { success: false, error: error.message };
     }
   };
+  const getPlaylistByUserId = async (userId) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/playlists/getUserPlaylists?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+      return { success: false, error: error.message };
+    }
+  }
   return {
     addSongToPlaylist,
     getListSong,
@@ -290,6 +308,7 @@ export const useMusicAPIUtils = () => {
     deletePlaylist,
     deleteSongInPlaylist,
     deleteSong,
-    combineData
+    combineData,
+    getPlaylistByUserId,
   };
 };

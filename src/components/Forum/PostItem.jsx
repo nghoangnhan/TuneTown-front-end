@@ -6,6 +6,8 @@ import { useForumUtils } from "../../utils/useChatUtils";
 import useIconUtils from "../../utils/useIconUtils";
 import AudioWaveSurfer from "./AudioWaveSurfer";
 import OptionPostItem from "./OptionPostItem";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import useSongUtils from "../../utils/useSongUtils";
 
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
@@ -20,6 +22,12 @@ const PostItem = ({ postContent }) => {
   const { ThumbsUpSolid, VerifyAccount, OptionsIcon } = useIconUtils();
   const [liked, setLiked] = useState();
   const [postDetail, setPostDetail] = useState();
+  const { getListSongPlaylist } = useMusicAPIUtils();
+  const [songData, setSongData] = useState(null);
+  const { showArtistV2, NavigateSong, handleDownloadSong, handleShareSong } = useSongUtils();
+  const { ListenIcon, RepostButton,
+    DownloadButton, ShareButton, PlayButton } = useIconUtils();
+
   const Post = {
     id: postContent.id,
     author: postContent.author,
@@ -84,6 +92,24 @@ const PostItem = ({ postContent }) => {
     setRefresh(false);
   }, [refresh]);
 
+  const getSongFromPlaylist = async (playlistId) => {
+    try {
+      const data = await getListSongPlaylist(playlistId);
+      return data.map(item => item.song);
+    } catch (error) {
+      console.error("Error fetching song:", error);
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    if (postContent.playlist) {
+      getSongFromPlaylist(postContent.playlist.id)
+        .then(song => setSongData(song))
+        .catch(error => console.error("Error:", error));
+    }
+  }, [postContent.playlist]);
+  
   return (
     <div className="bg-[#FFFFFFCC] font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
       <div className="flex flex-col justify-center">
@@ -117,9 +143,37 @@ const PostItem = ({ postContent }) => {
           </div>
         </div>
         {/* Audio Wave */}
-        <div className="w-full">
-          <AudioWaveSurfer song={postContent.song}></AudioWaveSurfer>
-        </div>
+        {(postContent.song || postContent.mp3Link) && (
+          <div className="w-full">
+            <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link} />
+          </div>
+        )}
+
+        {/* Playlist */}
+        {songData && (
+           songData.map((song) => (
+            <div
+              className="flex justify-left mt-10 xl:w-full xl:h-full"
+              key={song.id}
+            >
+              <img
+                src={`${song.poster ? song.poster : `https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg`}`}
+                alt="Song Poster"
+                className="w-8 h-8"
+              />
+              <div className="text-[#2E3271] xl:text-base font-semibold">
+                <h2 className="text-primary" onClick={() => NavigateSong(song.id)}>{song.songName}</h2>
+                <h2 className="text-sm text-[#7C8DB5B8] mt-1">
+                  {song.artists && showArtistV2(song.artists)}
+                  {!song.artists && <span>Null</span>}
+                </h2>
+              </div>
+              <div className="flex flex-row items-center justify-center text-[#464444] font-semibold gap-1">
+                <PlayButton></PlayButton>
+              </div>
+            </div>
+          )) 
+      )}
       </div>
       {/* Line section */}
       <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10"></span>
