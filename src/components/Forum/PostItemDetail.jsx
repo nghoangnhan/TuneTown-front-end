@@ -9,14 +9,7 @@ import AudioWaveSurfer from "./AudioWaveSurfer.jsx";
 
 const PostItemDetail = () => {
   const { postId } = useParams();
-  const {
-    getPostById,
-    createComment,
-    createReply,
-    scrollToBottom,
-    likePost,
-    handleCheckLiked,
-  } = useForumUtils();
+  const { getPostById, createComment, createReply, scrollToBottom, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
   const dispatch = useDispatch();
   const userId = parseInt(localStorage.getItem("userId"));
   const commentRef = useRef(null);
@@ -103,13 +96,13 @@ const PostItemDetail = () => {
   if (!postContent) return null;
 
   return (
-    <div className="h-auto min-h-screen text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary pt-5 pb-24 px-1">
+    <div className="h-auto min-h-screen px-1 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="px-5 py-2">
         <div className="mb-2">
           <BackButton ></BackButton></div>
         <div className="mb-2 text-4xl font-bold">Post Detail</div>
       </div>
-      <div className="bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary  font-montserrat shadow-md rounded-2xl max-xl:w-fit m-auto xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 mt-4 pt-3 xl:pt-5 pl-3 xl:pl-5 pr-3 xl:pr-5 pb-3 xl:pb-5">
+      <div className="pt-3 pb-3 pl-3 pr-3 m-auto mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary font-montserrat rounded-2xl max-xl:w-fit xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 xl:pt-5 xl:pl-5 xl:pr-5 xl:pb-5">
         <div className="flex flex-row items-center gap-1 text-xl font-bold">
           {postContent.author.userName}
           {postContent.author.role == "ARTIST" && (
@@ -132,7 +125,9 @@ const PostItemDetail = () => {
             <span>{postContent.likes.length}</span>
           </button>
           {/* Share  */}
-          <button className="mx-2 mt-2 font-bold text-md opacity-80">
+          <button className="mx-2 mt-2 font-bold text-md opacity-80" onClick={() => {
+            handleSharePost(postContent.id, true)
+          }}>
             Share
           </button>
         </div>
@@ -152,7 +147,7 @@ const PostItemDetail = () => {
               type="text"
               placeholder={"Write a comment"}
               defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
-              className="w-full p-2 border-2 input:border-[#52aa61] rounded-lg"
+              className="w-full p-2 border-2 input:border-[#52aa61] text-primaryText2 dark:text-primaryTextDark2 rounded-lg"
             />
             {isReplying && (
               <svg

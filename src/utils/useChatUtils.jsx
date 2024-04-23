@@ -5,6 +5,7 @@ import useConfig from "./useConfig";
 import { useDispatch } from "react-redux";
 import { setChatChosen } from "../redux/slice/social";
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 export const useChatUtils = () => {
   const { getToken } = UseCookie();
@@ -318,6 +319,24 @@ export const useForumUtils = () => {
     if (!likes) return;
     return !!likes.find((like) => like.id === userId);
   };
+  const handleSharePost = (item, inside) => {
+    try {
+      const currentUrl = window.location.href;
+      if (inside == true) {
+        const songUrl = `${currentUrl}`;
+        navigator.clipboard.writeText(songUrl);
+        message.success("Link copied!");
+      }
+      else {
+        const songUrl = `${currentUrl}/${item.id}`;
+        navigator.clipboard.writeText(songUrl);
+        message.success("Link copied!");
+      }
+    } catch (error) {
+      message.error("Error when coppying post link!!");
+      console.error('Error:', error);
+    }
+  }
 
   return {
     getAllPost,
@@ -331,7 +350,7 @@ export const useForumUtils = () => {
     AcronymPost,
     scrollToBottom,
     handleCheckLiked,
-    getCommentById,
+    getCommentById, handleSharePost
   };
 };
 

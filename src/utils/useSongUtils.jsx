@@ -172,7 +172,8 @@ export const useSongUtils = () => {
   return {
     TimeConvert, GetSongFragment,
     showArtist, showArtistV2, NavigateSong,
-    AcronymName, CheckPlaying, GetSongDuration, rgbToHex, handleDownloadSong, handleShareSong, HandleRefreshPlaylist
+    AcronymName, CheckPlaying, GetSongDuration, rgbToHex, handleDownloadSong, handleShareSong,
+    HandleRefreshPlaylist,
   };
 };
 export default useSongUtils;
