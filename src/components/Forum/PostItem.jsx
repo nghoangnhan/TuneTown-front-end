@@ -26,19 +26,8 @@ const PostItem = ({ postContent }) => {
   const [songData, setSongData] = useState(null);
   const { showArtistV2, NavigateSong, } = useSongUtils();
   const { handleSharePost } = useForumUtils();
-  const { ListenIcon, RepostButton,
-    DownloadButton, ShareButton, PlayButton } = useIconUtils();
+  const { PlayButton } = useIconUtils();
 
-  // const Post = {
-  //   id: postContent.id,
-  //   author: postContent.author,
-  //   title: postContent.title,
-  //   content: postContent.content,
-  //   time: postContent.time,
-  //   comments: postContent.comments,
-  //   likes: postContent.likes,
-  //   mp3Link: postContent.mp3Link,
-  // };
   console.log("PostItem", postContent);
   // Get the time of the post
   const countTime = new Date(
@@ -56,12 +45,12 @@ const PostItem = ({ postContent }) => {
     setRefresh(!refresh);
   };
 
-  function displayMenu(e, songId) {
+  function displayMenu(e, postId) {
     e.preventDefault();
     show({
       position: { x: e.clientX, y: e.clientY },
       event: e,
-      id: `songOption_${songId}`,
+      id: `songOption_${postId}`,
     });
   }
 
@@ -204,6 +193,7 @@ const PostItem = ({ postContent }) => {
       </div>
       {/* Context Menu */}
       <OptionPostItem
+        postId={postContent.id}
         id={`songOption_${postContent.id}`}
         refreshPlaylist={refreshPlaylist}
       ></OptionPostItem>

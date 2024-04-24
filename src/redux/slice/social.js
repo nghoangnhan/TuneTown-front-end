@@ -19,6 +19,7 @@ const socialStore = createSlice({
       content: "",
       time: "",
     },
+    refreshPost: false,
   },
   reducers: {
     setChatId: (state, action) => {
@@ -44,6 +45,9 @@ const socialStore = createSlice({
         time: commentDate,
       };
     },
+    setRefreshPost: (state, action) => {
+      state.refreshPost = action.payload;
+    },
   },
 });
 
@@ -53,6 +57,6 @@ export const {
   setIsNewMessage,
   setIsReply,
   setReplyCommentId,
-  setReplyComment,
+  setReplyComment, setRefreshPost
 } = socialStore.actions;
 export default socialStore.reducer;

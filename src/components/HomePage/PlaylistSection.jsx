@@ -1,10 +1,10 @@
-/* eslint-disable react/prop-types */
 import { Swiper, SwiperSlide } from "swiper/react";
 import PlaylistItem from "../Playlist/PlaylistItem";
 import { useEffect, useState } from "react";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import PropTypes from "prop-types";
 
-const PlaylistSection = ({ playlistTitle }) => {
+const PlaylistSection = ({ playlistTitle, inForum }) => {
   const { getUserPlaylist } = useMusicAPIUtils();
   const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState();
@@ -25,7 +25,7 @@ const PlaylistSection = ({ playlistTitle }) => {
           className="pl-2 mt-5 xl:mt-10 xl:pl-2"
           spaceBetween={50}
           grabCursor={"true"}
-          slidesPerView={"auto"}
+          slidesPerView={inForum ? 1 : 4}
           direction={"horizontal"}
         >
           {playlistList &&
@@ -51,5 +51,10 @@ const PlaylistSection = ({ playlistTitle }) => {
     </div>
   );
 };
+
+PlaylistSection.propTypes = {
+  playlistTitle: PropTypes.string,
+  inForum: PropTypes.bool,
+}
 
 export default PlaylistSection;

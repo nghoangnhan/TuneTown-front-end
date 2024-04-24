@@ -91,7 +91,7 @@ const ChatArea = () => {
 
   useEffect(() => {
     handleSocketReconnect(socket);
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     socket.on("receive_message", (message) => {

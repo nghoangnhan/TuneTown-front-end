@@ -24,7 +24,51 @@ export const useChatUtils = () => {
     }
   };
 
+  // const handleSocketReconnect = (socket) => {
+  //   const handleConnect = () => {
+  //     console.log("Connected to server");
+  //     clearInterval(reconnectInterval);
+  //   };
+
+  //   const handleDisconnect = () => {
+  //     console.log("Disconnected from server");
+  //     // Reconnect to the server
+  //     socket.connect();
+  //   };
+
+  //   // Set up event listeners for connection and disconnection
+  //   socket.on("connect", handleConnect);
+  //   socket.on("disconnect", handleDisconnect);
+
+  //   // Function to start the reconnect process
+  //   const startReconnect = () => {
+  //     console.log("Reconnecting to server...");
+  //     socket.connect();
+  //   };
+
+  //   // Set up a reconnect interval
+  //   let reconnectInterval;
+
+  //   const reconnect = () => {
+  //     if (!socket.connected) {
+  //       console.log("Attempting to reconnect...");
+  //       startReconnect();
+  //     }
+  //   };
+
+  //   // Start the reconnect interval
+  //   reconnectInterval = setInterval(reconnect, 1000);
+
+  //   // Return a cleanup function
+  //   return () => {
+  //     clearInterval(reconnectInterval);
+  //     socket.off("connect", handleConnect);
+  //     socket.off("disconnect", handleDisconnect);
+  //   };
+  // };
+
   const handleSocketReconnect = (socket) => {
+    // Help me fix this function
     const handleConnect = () => {
       console.log("Connected to server");
     };
@@ -48,6 +92,7 @@ export const useChatUtils = () => {
       socket.off("disconnect", handleDisconnect);
     };
   };
+
 
   // Use chatID to fetch chat content from server
   const loadMessage = async (sendUserId, receiveUserId) => {
@@ -212,6 +257,12 @@ export const useForumUtils = () => {
           },
         }
       );
+      if (response.status === 200) {
+        message.success("Delete post successfully!");
+        return true;
+      }
+      message.error("Delete post failed!");
+      return false;
     }
     catch (error) {
       console.log("Error:", error);

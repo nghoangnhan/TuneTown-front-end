@@ -6,23 +6,28 @@ import PropTypes from "prop-types";
 import SongChart from "../components/HomePage/SongChart";
 import { useForumUtils } from "../utils/useChatUtils";
 import useConfig from "../utils/useConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { setRefreshPost } from "../redux/slice/social";
 
 const ForumPage = () => {
   const { getAllPost } = useForumUtils();
   const [listPost, setListPost] = useState();
   const [openModal, setOpenModal] = useState(false);
   const { isMobile } = useConfig();
+  const dispatch = useDispatch();
+  const refreshPost = useSelector(state => state.social.refreshPost);
 
 
   const handleGetAllPost = async () => {
     await getAllPost().then((res) => {
       console.log("GetAllPost", res);
       setListPost(res);
+      dispatch(setRefreshPost(false));
     });
   };
   useEffect(() => {
     handleGetAllPost();
-  }, []);
+  }, [refreshPost]);
 
   if (!listPost) return null;
   return (
@@ -42,6 +47,7 @@ const ForumPage = () => {
             <PostSection postList={listPost?.postList}></PostSection>
           </div>
           <SongChart inForum={true}></SongChart>
+          {/* <PlaylistSection playlistTitle={"Maybe You Want!"}></PlaylistSection> */}
         </div>
       }
 

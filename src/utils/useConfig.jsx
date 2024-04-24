@@ -2,6 +2,7 @@ import { io } from "socket.io-client";
 import UseCookie from "../hooks/useCookie";
 import { useMediaQuery } from 'react-responsive';
 import Base_Ava from "../assets/img/logo/logo.png";
+import { useEffect, useState } from "react";
 
 const useConfig = () => {
     const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
@@ -18,8 +19,20 @@ const useConfig = () => {
         "295516651084-5baqm2houfs6u6voha4a8s66j8ga6fru.apps.googleusercontent.com";
 
     // Socket.io
-    // const socket = io.connect("ws://localhost:3000");
-    const socket = io.connect("https://socketserver-v6lc.onrender.com");
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+
+        const newSocket = io.connect("ws://localhost:3000");
+        // const newSocket = io.connect("https://socketserver-v6lc.onrender.com");
+        setSocket(newSocket);
+
+        // Clean up the connection when the component unmounts
+        return () => newSocket.disconnect();
+
+    }, []);
+
+
 
     // Get token from cookie
     const token = getToken();
