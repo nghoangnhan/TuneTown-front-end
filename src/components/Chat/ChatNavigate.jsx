@@ -12,6 +12,7 @@ import useConfig from "../../utils/useConfig";
 import { useForm } from "antd/es/form/Form";
 import { Form, Input } from "antd";
 import useDebounce from "../../hooks/useDebounce";
+import useUserUtils from "../../utils/useUserUtils";
 
 const ChatNavigate = () => {
   const userId = parseInt(localStorage.getItem("userId"), 10);
@@ -32,7 +33,6 @@ const ChatNavigate = () => {
 
   const fetchChatList = async () => {
     try {
-      //  userId = current user login
       const response = await axios.get(
         `${Base_URL}/messages/loadChatList?userId=${userId}`,
         {
@@ -42,6 +42,8 @@ const ChatNavigate = () => {
         }
       );
       const data = await response.data;
+      console.log("data: " , data)
+
       const sortedData = Object.values(data).sort((a, b) => {
         return (
           new Date(b.lastMessage.messageDate) -
@@ -49,29 +51,63 @@ const ChatNavigate = () => {
         );
       });
 
-      const updatedConverList = sortedData.map((item) => ({
-        chatId: item.user.id,
-        userName: item.user.userName,
-        message: item.lastMessage.content,
-        sendId: item.lastMessage.sendUserId,
-        time: new Date(item.lastMessage.messageDate).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        avatar: item.user.avatar,
-        seen: item.lastMessage.seen,
-      }));
+      const updatedConverList = sortedData.map((item) => {
+        let userName = '';
+        let message = '';
+        let sendId = '';
+        let avatar = '';
+        const own = userId === item.lastMessage.sendUser.id;
+        const userNameParts = item.lastMessage.sendUser.userName.split(" ");
+        const userNameFirstWord = userNameParts[0];
+        if (!item.community) {
+          // If the item contains user information
+          userName = item.user.userName;
+          sendId = item.user.id;
+          avatar = item.user.avatar;
+          message = (!own ? userNameFirstWord + ": " : " ") + item.lastMessage.content;
+        } else {
+          // If the item contains community information
+          userName = `Community ${item.community.communityId}`;
+          // Assuming the last message content is retrieved from the lastMessage object
+          message = (item.lastMessage.type == 1 && !own ? userNameFirstWord + ": " : " ") + item.lastMessage.content;
+          sendId = item.community.id;
+        }
+  
+        return {
+          chatId: sendId,
+          userName: userName,
+          message: message,
+          sendId: sendId,
+          time: new Date(item.lastMessage.messageDate).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          avatar: avatar,
+          seen: item.lastMessage.seen,
+          // Add communityId if available
+          communityId: item.community ? item.community.id : null,
+        };
+      });
+  
       setConverList(updatedConverList);
+      console.log("CONVERRRRRRRRR ", updatedConverList);
     } catch (error) {
       console.error("Error fetching chat list:", error);
     }
   };
 
   // Handle chat chosen
-  const handleChatChosen = (chatId, conver) => {
-    console.log(chatId + " " + conver.userName + " " + conver.message + " " + conver.seen);
+  const handleChatChosen = async (conver) => {
+    console.log(conver.userName + " " + conver.message + " " + conver.seen);
     dispatch(setChatChosen(conver));
-    navigate(`/chat/${chatId}`);
+    if(!conver.communityId){
+      // Private message
+      navigate(`/chat/${conver.chatId}`);  
+    }
+    else{
+      // Artist community
+      navigate(`/chat/community/${conver.communityId}`);
+    }
   };
 
   const searchUserByName = async (keywords) => {
@@ -184,7 +220,7 @@ const ChatNavigate = () => {
             className={`${converChosen.chatId == conver.chatId ? "bg-slate-300" : ""
               } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
             onClick={() => {
-              handleChatChosen(conver.chatId, conver);
+              handleChatChosen(conver);
             }}
           >
             <div className="w-14">

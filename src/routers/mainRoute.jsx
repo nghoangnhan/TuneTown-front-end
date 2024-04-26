@@ -132,6 +132,10 @@ export default function init(routes) {
         path: ":chatId",
         element: <ChatArea />,
       },
+      {
+        path: "community/:chatId",
+        element: <ChatArea />,
+      },
     ],
   };
 

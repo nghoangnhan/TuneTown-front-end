@@ -11,7 +11,6 @@ import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
 
 const ChatArea = () => {
-  // const userId = localStorage.getItem("userId");
   const { handleSocketReconnect, loadMessage } = useChatUtils();
   const { Base_URL, socket } = useConfig();
   const { getToken } = UseCookie();
@@ -34,7 +33,9 @@ const ChatArea = () => {
       const response = await axios.post(
         `${Base_URL}/messages/sendMessage`,
         {
-          sendUserId: sendUserId,
+          sendUser: {
+            id: sendUserId
+          },
           receiveUserId: receiveUserId,
           content: content,
         },
@@ -52,7 +53,9 @@ const ChatArea = () => {
       setNewMessage("");
       // Emit the message to the server
       socket.emit("send_message", {
-        sendUserId: sendUserId,
+        sendUser: {
+          id: sendUserId
+        },
         receiveUserId: receiveUserId,
         content: content,
       });
@@ -75,6 +78,7 @@ const ChatArea = () => {
 
   useEffect(() => {
     if (userId != null) {
+      console.log("CHATID ", chatId);
       loadMessage(userId, chatId).then((data) => {
         setChatContent(data);
       });
@@ -83,8 +87,10 @@ const ChatArea = () => {
 
   useEffect(() => {
     if (converChosen != null) {
+      console.log("CHATID ", chatId);
       loadMessage(userId, chatId).then((data) => {
         setChatContent(data);
+        console.log("CONTENTTTT ", chatContent);
       });
     }
   }, [converChosen]);

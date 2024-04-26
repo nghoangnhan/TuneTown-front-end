@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import useUserUtils from "../utils/useUserUtils";
 import useIconUtils from "../utils/useIconUtils";
 import TheHeader from "../components/Header/TheHeader";
+import useChatUtils from "../utils/useChatUtils";
 
 const ArtistDetailPage = () => {
   const { artistId } = useParams();
@@ -19,6 +20,9 @@ const ArtistDetailPage = () => {
   const [songListArtist, setSongListArtist] = useState([]);
   const [follow, setFollow] = useState(false);
   const navigate = useNavigate();
+  const { getCommunityByHostId, joinRequest, outCommunity } = useChatUtils();
+  const [ request, setRequest ] = useState();
+  const [ join, setJoin ] = useState();
 
   const handleNavigate = (path) => {
     dispatch(
@@ -55,6 +59,52 @@ const ArtistDetailPage = () => {
     }
     );
   }
+
+  const handleGetCommunity = async (artistId) => {
+    const response = await getCommunityByHostId(artistId);
+    return response;
+  }
+
+  const handleJoinCommunity = async () => {
+    const response = await handleGetCommunity(artistId);
+    const communityId = response.id;
+    // Approve request
+    if(!join){
+      const updatedRequest = await joinRequest(userId, communityId);
+      setRequest(updatedRequest);
+    } else{
+      // Navigate to joined community
+      handleNavigate("community/" + communityId);
+    }
+
+  }
+
+  useEffect(() => {
+    console.log("ISREQUEST ", request);
+    const fetchData = async () => {
+      try {
+        const communityData = await handleGetCommunity(artistId);
+        console.log("Community Data:", communityData);
+        for(const userRequest of communityData.approveRequests) {
+          if(userRequest.id == userId){
+            setRequest(true);
+            return;
+          }
+        }
+        for(const userJoin of communityData.joinUsers) {
+          if(userJoin.id == userId){
+            setJoin(true);
+            return;
+          }
+        }
+        setJoin(false);
+      } catch (error) {
+        console.error("Error fetching community data:", error);
+      }
+    };
+  
+    fetchData();
+  }, [request, join, artistId]);
 
   useEffect(() => {
     handleGetArtistDetail(artistId);
@@ -98,9 +148,9 @@ const ArtistDetailPage = () => {
               </button>
               <button
                 className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
-                onClick={() => handleNavigate(artistDetail.id)}
+                onClick={() => handleJoinCommunity()}
               >
-                Join the artist community
+                {request ? 'Request sent' : (join ? 'Community joined' : 'Join the artist community')}
               </button>
             </div>
           }

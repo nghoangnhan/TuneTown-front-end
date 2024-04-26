@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { setChatChosen } from "../redux/slice/social";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
+import useUserUtils from "./useUserUtils";
 
 export const useChatUtils = () => {
   const { getToken } = UseCookie();
@@ -14,6 +15,7 @@ export const useChatUtils = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = parseInt(localStorage.getItem("userId"), 10);
+  const { getUserInfor } = useUserUtils();
 
   // Acronym the name of the song
   const AcronymName = (nameLenght, length) => {
@@ -98,44 +100,73 @@ export const useChatUtils = () => {
   const loadMessage = async (sendUserId, receiveUserId) => {
     try {
       const response = await axios.post(
-        `${Base_URL}/messages/loadMessage`,
-        {
-          sendUserId: parseInt(sendUserId),
-          receiveUserId: parseInt(receiveUserId),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
+          `${Base_URL}/messages/loadMessage`,
+          {
+              sendUser: {
+                id: parseInt(sendUserId)
+              },
+              receiveUserId: parseInt(receiveUserId),
           },
-        }
+          {
+              headers: {
+                  Authorization: `Bearer ${access_token}`,
+              },
+          }
       );
       const messages = response.data;
       console.log("MESSAGES", messages);
       if (response.status !== 200) {
-        throw new Error("Failed to fetch messages");
+          throw new Error("Failed to fetch messages");
       }
-      // Append the new messages to the chatContent of the found chat
-      const updatedChatContent = Object.keys(messages).map((key) => {
+    
+      // Extract the necessary information from the regular message response
+      const updatedChatContent = [];
+      for (const key in messages) {
         const message = messages[key];
-        const own = userId === message.message.sendUserId;
-        const name = own ? message.user.userName : message.sentUser.userName;
-        return {
-          id: message.sentUser.id,
-          name: name,
-          own: userId === message.message.sendUserId,
-          message: message.message.content,
-          time: new Date(message.message.messageDate).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-          avatar: message.user.avatar,
-          sentUserAvatar: message.sentUser.avatar,
-          seen: message.message.seen
-        };
-      });
+        // If community
+        if (message.community) {
+          const isSystemMessage = message.message.receiveUserId === message.community.id;
+          console.log("MESSAGES ", messages);
+          for (const msg of message.community.communityMessages) {
+            const own = userId === msg.sendUser.id;
+            const name = msg.type == 2 ? "SYSTEM MESSAGE" : (own ? " " : msg.sendUser.userName);  
+            updatedChatContent.push({
+                id: message.community.id,
+                name: name,
+                own: own,
+                message: msg.content,
+                time: new Date(msg.messageDate).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                }),
+                avatar: "",
+                sentUserAvatar: msg.sendUser.avatar,
+                seen: msg.seen
+            });
+          }
+        } 
+        else {
+          const own = userId === message.message.sendUser.id;
+          const name = own ? " " : message.sentUser.userName;  
+          updatedChatContent.push({
+              id: message.sentUser.id,
+              name: name,
+              own: own,
+              message: message.message.content,
+              time: new Date(message.message.messageDate).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+              }),
+              avatar: message.message.sendUser.avatar,
+              sentUserAvatar: message.sentUser.avatar,
+              seen: message.message.seen
+          });
+        }
+      }
+      // console.log("UPDATE ", updatedChatContent);
       return updatedChatContent;
     } catch (error) {
-      console.error("Error fetching messages:", error);
+        console.error("Error fetching messages:", error);
     }
   };
   const handleNavigate = (path, artistDetail) => {
@@ -148,7 +179,57 @@ export const useChatUtils = () => {
     );
     navigate(`/chat/${path}`);
   };
-  return { AcronymName, loadMessage, handleSocketReconnect, handleNavigate };
+  const getCommunityByHostId = async (hostId) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/community/getByHostId?hostId=${hostId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  const joinRequest = async (userId, communityId) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/community/joinRequest?userId=${userId}&communityId=${communityId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  const outCommunity = async (userId, communityId) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/community/outCommunity?userId=${userId}&communityId=${communityId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
+  return { AcronymName, loadMessage, handleSocketReconnect, handleNavigate, getCommunityByHostId, joinRequest, outCommunity };
 };
 
 export const useForumUtils = () => {
@@ -387,7 +468,7 @@ export const useForumUtils = () => {
       message.error("Error when coppying post link!!");
       console.error('Error:', error);
     }
-  }
+  };
 
   return {
     getAllPost,
@@ -401,7 +482,7 @@ export const useForumUtils = () => {
     AcronymPost,
     scrollToBottom,
     handleCheckLiked,
-    getCommentById, handleSharePost
+    getCommentById, handleSharePost,
   };
 };
 
