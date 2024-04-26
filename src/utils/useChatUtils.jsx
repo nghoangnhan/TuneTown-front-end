@@ -302,7 +302,7 @@ export const useForumUtils = () => {
   const updatePost = async (post) => {
     try {
       const response = await axios.put(
-        `${Base_URL}/post/updatePost?postId=${post.postId}`,
+        `${Base_URL}/post`,
         {
           "id": post.postId,
           "author": {
@@ -322,6 +322,7 @@ export const useForumUtils = () => {
           },
         }
       );
+      return response.data;
     } catch (error) {
       console.log("Error:", error);
     }

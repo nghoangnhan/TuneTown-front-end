@@ -8,27 +8,24 @@ import AudioWaveSurfer from "./AudioWaveSurfer";
 import OptionPostItem from "./OptionPostItem";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useSongUtils from "../../utils/useSongUtils";
+import useConfig from "../../utils/useConfig";
 
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
   const { show } = useContextMenu();
-  const [refresh, setRefresh] = useState(false);
   const userId = parseInt(localStorage.getItem("userId"));
-  const {
-    getPostById,
-    likePost,
-    handleCheckLiked,
-  } = useForumUtils();
+  const { Base_AVA } = useConfig();
+  const { getPostById, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
   const { ThumbsUpSolid, VerifyAccount, OptionsIcon } = useIconUtils();
+  const { showArtistV2, NavigateSong, NavigatePlaylist } = useSongUtils();
   const [liked, setLiked] = useState();
   const [postDetail, setPostDetail] = useState();
   const { getListSongPlaylist } = useMusicAPIUtils();
-  const [songData, setSongData] = useState(null);
-  const { showArtistV2, NavigateSong, } = useSongUtils();
-  const { handleSharePost } = useForumUtils();
-  const { PlayButton } = useIconUtils();
+  const [songPlaylist, setSongPlaylist] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   console.log("PostItem", postContent);
+
   // Get the time of the post
   const countTime = new Date(
     postContent?.postTime
@@ -40,10 +37,15 @@ const PostItem = ({ postContent }) => {
     });
   };
 
-  // Call this function when you want to refresh the playlist
-  const refreshPlaylist = () => {
-    setRefresh(!refresh);
-  };
+  const getSongFromPlaylist = async (playlistId) => {
+    try {
+      const data = await getListSongPlaylist(playlistId);
+      return data.map(item => item.song);
+    } catch (error) {
+      console.error("Error fetching song:", error);
+      return null;
+    }
+  }
 
   function displayMenu(e, postId) {
     e.preventDefault();
@@ -70,7 +72,6 @@ const PostItem = ({ postContent }) => {
     } else {
       setLiked(false);
     }
-    console.log("Liked", liked);
   }, [postDetail?.likes, likePost]);
 
   useEffect(() => {
@@ -82,20 +83,12 @@ const PostItem = ({ postContent }) => {
     setRefresh(false);
   }, [refresh]);
 
-  const getSongFromPlaylist = async (playlistId) => {
-    try {
-      const data = await getListSongPlaylist(playlistId);
-      return data.map(item => item.song);
-    } catch (error) {
-      console.error("Error fetching song:", error);
-      return null;
-    }
-  }
-
   useEffect(() => {
     if (postContent.playlist) {
       getSongFromPlaylist(postContent.playlist.id)
-        .then(song => setSongData(song))
+        .then(song => {
+          setSongPlaylist(song)
+        })
         .catch(error => console.error("Error:", error));
     }
   }, [postContent.playlist]);
@@ -132,39 +125,50 @@ const PostItem = ({ postContent }) => {
             </button>
           </div>
         </div>
+
         {/* Audio Wave */}
         {(postContent.song || postContent.mp3Link) && (
-          <div className="w-full">
-            <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link} />
-          </div>
+          <div className="flex flex-row items-center justify-center gap-2 mt-2">
+            <div className="items-center rounded-md dark:bg-white ">
+              <img className="rounded-md max-w-20 max-h-20 w-fit h-fit" src={postContent.song?.poster ? postContent.song.poster : Base_AVA} alt="Cover Art Song" />
+            </div>
+            <div className="w-full">
+              <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link} />
+            </div></div>
         )}
 
         {/* Playlist */}
-        {songData && (
-          songData.map((song) => (
-            <div
-              className="flex mt-10 justify-left xl:w-full xl:h-full"
-              key={song.id}
-            >
-              <img
-                src={`${song.poster ? song.poster : `https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg`}`}
-                alt="Song Poster"
-                className="w-8 h-8"
-              />
-              <div className="text-[#2E3271] xl:text-base font-semibold">
-                <h2 className="text-primary" onClick={() => NavigateSong(song.id)}>{song.songName}</h2>
-                <h2 className="text-sm text-[#7C8DB5B8] mt-1">
-                  {song.artists && showArtistV2(song.artists)}
-                  {!song.artists && <span>Null</span>}
+        {postContent.playlist && (
+          <div className="flex flex-row items-center justify-start gap-2 mt-2">
+            {/* PlaylistInfo  */}
+            <div className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => NavigatePlaylist(postContent.playlist?.id, true)}>
+              <div className="rounded-md dark:bg-white">
+                <img className="rounded-md max-w-14 max-h-14 w-fit h-fit" src={postContent.playlist.coverArt ? postContent.playlist.coverArt : Base_AVA} alt="Cover Art Playlist" />
+              </div>
+              <div >
+                <h2 className="text-lg font-bold text-primary dark:text-primaryDarkmode">{postContent.playlist.playlistName}</h2>
+                <h2 className="text-base text-primaryText2 dark:text-primaryTextDark">
+                  {postContent.playlist.user.userName ? postContent.playlist.user.userName : "Unknown User"}
                 </h2>
               </div>
-              <div className="flex flex-row items-center justify-center text-[#464444] font-semibold gap-1">
-                <PlayButton></PlayButton>
-              </div>
             </div>
-          ))
+            {/* Song Playlist */}
+            {songPlaylist &&
+              <div className="grid grid-cols-3 gap-x-10 gap-y-4">
+                {songPlaylist.slice(0, 6).map((song, index) => (
+                  <div key={index} className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => NavigateSong(song.id)}>
+                    <img className="rounded-md max-w-8 max-h-8 w-fit h-fit" src={song.poster ? song.poster : Base_AVA} alt="Cover Art Song" />
+                    <div>
+                      <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">{song.songName}</div>
+                      <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">{showArtistV2(song.artists)}</div></div>
+                  </div>
+                ))}
+              </div>
+            }
+          </div>
         )}
       </div>
+
       {/* Line section */}
       <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10"></span>
 
@@ -193,9 +197,10 @@ const PostItem = ({ postContent }) => {
       </div>
       {/* Context Menu */}
       <OptionPostItem
-        postId={postContent.id}
         id={`songOption_${postContent.id}`}
-        refreshPlaylist={refreshPlaylist}
+        postId={postContent.id}
+        postContent={postContent}
+        owned={postContent.author.id === userId}
       ></OptionPostItem>
     </div>
   );

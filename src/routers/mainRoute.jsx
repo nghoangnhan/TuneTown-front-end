@@ -48,11 +48,15 @@ export default function init(routes) {
         element: <PlaylistPage />,
       },
       {
-        path: "detail/:playlistId",
+        path: "detail-playlist/:playlistId",
         element: <DetailPlaylist />,
       },
       {
-        path: "mydetail/:playlistId",
+        path: "my-detail-playlist/:playlistId",
+        element: <MyDetailPlaylist />,
+      },
+      {
+        path: "forum/my-detail-playlist/:playlistId",
         element: <MyDetailPlaylist />,
       },
       {

@@ -36,7 +36,6 @@ const PostItemDetail = () => {
   const handleCreateComment = async () => {
     if (commentRef.current.value === "") return;
     if (isReplying == false) {
-      console.log("Create Comment", commentRef.current.value);
       const comment = {
         postId: parseInt(postId),
         author: parseInt(userId),
@@ -109,7 +108,7 @@ const PostItemDetail = () => {
             <VerifyAccount></VerifyAccount>
           )}
         </div>
-        <div className="text-xs font-medium text-[#3d419783]">{countTime}</div>
+        <div className="text-xs font-medium text-primaryText2 dark:text-primaryTextDark2">{countTime}</div>
 
         {/* Post Content */}
         <div className="text-md">{postContent?.content}</div>
@@ -117,11 +116,13 @@ const PostItemDetail = () => {
           <AudioWaveSurfer song={postContent?.song?.songData}></AudioWaveSurfer>
         </div>
         {/* Control Reaction */}
-        <div className="flex flex-row items-center justify-center gap-5 mt-2 font-bold text-primary">
+        <div className="flex flex-row items-center justify-center gap-5 mt-2 font-bold text-primary dark:text-primaryDarkmode">
           {/* Like  */}
           <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80"
             onClick={handleLikePost}>
-            <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
+            <div className="text-primary dark:text-primaryDarkmode">
+              <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
+            </div>
             <span>{postContent.likes.length}</span>
           </button>
           {/* Share  */}
@@ -132,7 +133,7 @@ const PostItemDetail = () => {
           </button>
         </div>
 
-        <span className="block font-bold border-b-2 border-[#49ad5b] py-2 text-center opacity-10"></span>
+        <span className="block py-2 font-bold text-center border-b-2 border-primary opacity-10"></span>
 
         {/* Comment section */}
         <div className="mt-5">
@@ -155,8 +156,7 @@ const PostItemDetail = () => {
                 height="24"
                 viewBox="0 -960 960 960"
                 width="24"
-                fill="#69696e"
-                className="cursor-pointer"
+                className="cursor-pointer fill-primaryText2 dark:fill-primaryTextDark2"
                 onClick={() => {
                   dispatch(setIsReply(false));
                 }}

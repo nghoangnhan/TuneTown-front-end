@@ -1,7 +1,7 @@
-/* eslint-disable react/prop-types */
 import { Button } from "antd";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import PropTypes from "prop-types";
 
 const UploadFileDropZone = (props) => {
   const onDrop = useCallback((acceptedFiles) => {
@@ -26,20 +26,20 @@ const UploadFileDropZone = (props) => {
     maxSize: 10485760,
     maxFiles: 1,
     accept:
-      props.accept === "image/jpeg, image/png"
+      props.accept === "image/jpeg, image/png" || props.accept === "image/*"
         ? {
-            "image/jpeg": [".jpg", ".jpeg"],
-            "image/png": [".png"],
-          }
-        : props.accept === "audio/mp3"
-        ? {
+          "image/jpeg": [".jpg", ".jpeg"],
+          "image/png": [".png"],
+        }
+        : props.accept === "audio/mp3" || props.accept === "audio/*"
+          ? {
             "audio/mpeg": [".mp3"],
             "audio/wav": [".wav"],
             "audio/webm": [".webm"],
             "audio/flac": [".flac"],
             "audio/x-m4a": [".m4a"],
           }
-        : undefined,
+          : undefined,
   });
 
   return (
@@ -56,6 +56,13 @@ const UploadFileDropZone = (props) => {
       </Button>
     </div>
   );
+};
+
+UploadFileDropZone.propTypes = {
+  uploadedFile: PropTypes.object,
+  setUploadedFile: PropTypes.func,
+  handleUploadFile: PropTypes.func,
+  accept: PropTypes.string,
 };
 
 export default UploadFileDropZone;

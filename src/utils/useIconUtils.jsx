@@ -59,12 +59,14 @@ const useIconUtils = () => {
                 height="24"
                 viewBox="0 -960 960 960"
                 width="24"
-                // eslint-disable-next-line react/prop-types
-                fill={props.liked ? "#49ad5b" : "#3a3a3d"}
+                className={`${props.liked ? 'fill-primary dark:fill-primaryDarkmode' : 'fill-iconText dark:fill-iconTextDark'} transition-colors duration-200`}
             >
                 <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
             </svg>
         );
+    };
+    ThumbsUpSolid.propTypes = {
+        liked: PropTypes.bool.isRequired,
     };
 
     const ThumbsUpRegular = () => {
@@ -97,6 +99,17 @@ const useIconUtils = () => {
         );
     }
 
+    const LoadingLogo = ({ loading }) => {
+        return loading && (
+            <div className="overlay">
+                <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out" />
+            </div>
+        )
+    }
+    LoadingLogo.propTypes = {
+        loading: PropTypes.bool.isRequired,
+    };
+
     const VerifyAccount = () => {
         return (
             <span className="">
@@ -105,7 +118,7 @@ const useIconUtils = () => {
                     height="18"
                     viewBox="0 -960 960 960"
                     width="18"
-                    fill="#40cf62"
+                    className='fill-[#40cf62]'
                 >
                     <path d="m436-350 233-234-47-47-183 183-101-101-49 49 147 150Zm44.063 291Q331.105-96.81 234.552-230.909 138-365.007 138-522.837v-252.601L480-903l343 127.595v252.242q0 157.953-96.989 292.153Q629.021-96.81 480.063-59Z" />
                 </svg>
@@ -307,7 +320,7 @@ const useIconUtils = () => {
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
         PauseButton, ListenIcon, TrendingIcon, MusicIcon,
         RepostButton, DownloadButton, ShareButton,
-        ChatButton, PlusIcon,
+        ChatButton, PlusIcon, LoadingLogo,
         LightTheme, DarkTheme,
         HomeIcon, SearchIcon, EarthIcon, PlaylistIcon,
         ShuffleIcon, RepeatIcon, PlayIcon, PauseIcon, SkipNextIcon, SkipPreviousIcon,

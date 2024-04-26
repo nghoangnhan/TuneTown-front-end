@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import useIconUtils from "../../utils/useIconUtils";
 import useUserUtils from "../../utils/useUserUtils";
 import DarkMode from "../DarkMode/DarkMode";
+import useConfig from "../../utils/useConfig";
 
 const TheHeader = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const TheHeader = () => {
   const { ChatButton } = useIconUtils();
   const { removeToken } = UseCookie();
   const { getUserInfor } = useUserUtils();
+  const { Base_AVA } = useConfig();
   const userRole = localStorage.getItem("userRole");
   const userId = localStorage.getItem("userId");
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,8 +43,8 @@ const TheHeader = () => {
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
   return (
-    <header className="w-full h-[60px] xl:w-full xl:h-[60px] py-1 gap-x-7 flex justify-center items-center font-bold bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
-      <div className="absolute flex flex-row items-center justify-center xl:right-5 xl:mt-5 right-3">
+    <header className="sticky top-0 z-50 w-full h-[60px] xl:w-full py-1 gap-x-7 flex justify-center items-center font-bold bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
+      <div className="absolute flex flex-row items-center justify-center mt-2 xl:right-5 right-3">
         <div>
           <DarkMode></DarkMode>
         </div>
@@ -54,7 +56,7 @@ const TheHeader = () => {
         </div>
         {
           <div>
-            <div className={`${userRole === "ADMIN" ? "text-[#f24e4e] border-[#f24e4e] font-bold" : (userRole === "USER" ? "text-primary border-primary font-bold" : (userRole === "ARTIST" ? "text-[#3f3ca0] border-[#3f3ca0] font-bold" : ""))} flex justify-center items-center p-1 border border-solid rounded-md mr-3`}>
+            <div className={`${userRole === "ADMIN" ? "text-[#f24e4e] dark:text-[#ff5050] border-[#f24e4e] dark:border-[#ff5050] font-bold" : (userRole === "USER" ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold" : (userRole === "ARTIST" ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold" : ""))} flex justify-center items-center p-1 border border-solid rounded-md mr-3`}>
               {userRole === "ADMIN" ? "Admin" : (userRole === "USER" ? "User" : (userRole === "ARTIST" ? "Artist" : ""))}
             </div>
           </div>
@@ -67,9 +69,9 @@ const TheHeader = () => {
           <button className="cursor-pointer" onClick={() => setModalOpen(true)}>
             <Avatar
               icon={<UserOutlined />}
-              className="border-[3px] border-[#2c2a2a] "
+              className="border-[3px] border-primaryText2 dark:border-primaryTextDark2 "
               size="large"
-              src={<img src={userInfor.avatar} alt="avatar" />}
+              src={<img src={userInfor.avatar ? userInfor.avatar : Base_AVA} alt="avatar" />}
             />
           </button>
         )}

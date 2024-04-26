@@ -32,24 +32,24 @@ const MainPageLayout = () => {
   }, [access_token]);
   return (
     <Fragment>
-      <div>
-        <div className="flex flex-col">
-          <div className="xl:flex xl:flex-row">
-            <div className="h-full xl:w-2/12 min-h-fit bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
-              <NavigationBar></NavigationBar>
-            </div>
-            <div className="xl:w-10/12">
-              <div className="flex flex-col">
-                <TheHeader></TheHeader>
-                <Outlet></Outlet>
-              </div>
-            </div>
+
+      <div className="flex flex-col bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
+        <div className="xl:flex xl:flex-row">
+          <div className="sticky h-full xl:w-2/12 min-h-fit bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
+            <NavigationBar></NavigationBar>
           </div>
-          <div className="z-50">
-            <MusicControlBar></MusicControlBar>
+          <div className="xl:w-10/12">
+            <div className="flex flex-col">
+              <TheHeader></TheHeader>
+              <Outlet></Outlet>
+            </div>
           </div>
         </div>
+        <div className="sticky z-50">
+          <MusicControlBar></MusicControlBar>
+        </div>
       </div>
+
       <Modal
         title="Authorization Error"
         open={open}

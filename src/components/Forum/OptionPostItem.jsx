@@ -3,30 +3,61 @@ import { Item, Menu } from 'react-contexify';
 import { useForumUtils } from '../../utils/useChatUtils';
 import { useDispatch } from 'react-redux';
 import { setRefreshPost } from '../../redux/slice/social';
+import { Modal, message } from 'antd';
+import { useState } from 'react';
+import UpdatePost from './UpdatePost';
 
-const OptionPostItem = ({ id, postId, owned, refreshPlaylist }) => {
+const OptionPostItem = ({ id, postId, owned, postContent }) => {
     const { deletePost } = useForumUtils();
     const dispatch = useDispatch();
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+
+    const onCancel = () => {
+        setOpenModalUpdate(false);
+    };
     const handleDeletePost = async (postId) => {
+        if (!owned) {
+            message.error("You are not authorized to delete this post")
+            return
+        }
+        if (!window.confirm("Are you sure you want to delete this post?")) {
+            return;
+        }
         await deletePost(postId).then(() => {
             dispatch(setRefreshPost(true));
         });
     };
-    console.log("OptionPostItem", id);
+
+    const handleOpenModalUpdate = () => {
+        if (!owned) {
+            message.error("You are not authorized to update this post")
+            return
+        }
+        setOpenModalUpdate(true);
+    }
     return (
-        <Menu id={id}>
-            <Item onClick={refreshPlaylist}>Refresh</Item>
-            <Item>Update Post</Item>
-            <Item onClick={() => handleDeletePost(postId)}>Delete Post</Item>
-        </Menu>
+        <div>
+            <Menu id={id}>
+                <Item onClick={() => dispatch(setRefreshPost(true))}>Refresh</Item>
+                {owned == true && <Item onClick={() => handleOpenModalUpdate()}>Update Post</Item>}
+                {owned == true && <Item onClick={() => handleDeletePost(postId)}>Delete Post</Item>}
+            </Menu>
+            <Modal open={openModalUpdate} onCancel={onCancel}
+                footer={null} title="Update Post">
+                <UpdatePost postContent={postContent}
+                    setOpenModalUpdate={setOpenModalUpdate}
+                ></UpdatePost>
+            </Modal>
+        </div>
     );
 };
 
 OptionPostItem.propTypes = {
     id: PropTypes.string.isRequired,
-    refreshPlaylist: PropTypes.func.isRequired,
     postId: PropTypes.number.isRequired,
     owned: PropTypes.bool.isRequired,
+    postContent: PropTypes.object.isRequired
 };
 
 export default OptionPostItem;

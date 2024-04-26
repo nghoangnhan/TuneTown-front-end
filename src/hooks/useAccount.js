@@ -14,15 +14,15 @@ import { setUser } from "../redux/slice/account";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useCookie from "./UseCookie";
 
 import { message } from "antd";
+import UseCookie from "./useCookie";
 
 function useAccount() {
   //hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { saveToken, removeToken } = useCookie();
+  const { saveToken, removeToken } = UseCookie();
   //variables
   //login
   const { mutate: handleLogin, data: accountdata } = useMutation({
@@ -152,8 +152,8 @@ function useAccount() {
   //Check Otp
   const { mutate: checkOtp } = useMutation({
     mutationFn: checkOtpApi,
-    onSuccess: () => {},
-    onError: () => {},
+    onSuccess: () => { },
+    onError: () => { },
   });
   return {
     handleLogin,

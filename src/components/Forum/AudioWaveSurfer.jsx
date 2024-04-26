@@ -20,11 +20,11 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
     const getAudioSrc = async () => {
         try {
             let data = '';
-            if(!song){
+            if (!song) {
                 console.log("!song");
                 data = await combineData(-1, mp3Link);
             }
-            else{
+            else {
                 data = await combineData(song.id, '');
             }
             console.log(data);
@@ -51,14 +51,13 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
 
     useEffect(() => {
         if (!audio || isLoading) return;
-
         wavesurfer.current = WaveSurfer.create({
             container: wavesurferRef.current,
             waveColor: "#00cc00",
             progressColor: "green",
             barWidth: 3,
             cursorWidth: 1,
-            height: 80,
+            height: 45,
             barGap: 2,
             url: audio,
         });
@@ -80,6 +79,12 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
             wavesurfer.current.destroy();
         };
     }, [audio, isLoading]);
+
+    useEffect(() => {
+        if (mp3Link != null) {
+            setAudio(mp3Link);
+        }
+    }, [mp3Link]);
     return (
         <div className='flex flex-row items-center gap-5'>
             {isLoading ? ( // Render loading indicator if still loading
@@ -108,7 +113,8 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
 AudioWaveSurfer.propTypes = {
     song: PropTypes.shape({
         id: PropTypes.number.isRequired,
-    }).isRequired,
+    }),
+    mp3Link: PropTypes.string.isRequired,
 };
 
 export default AudioWaveSurfer;

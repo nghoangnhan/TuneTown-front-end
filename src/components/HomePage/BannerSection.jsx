@@ -9,7 +9,7 @@ const BannerSection = () => {
   const { getUserPlaylist } = useMusicAPIUtils();
   const navigate = useNavigate();
   const navigateToPlaylist = (playlistId) => {
-    navigate(`/detail/${playlistId}`);
+    navigate(`/detail-playlist/${playlistId}`);
   };
   useEffect(() => {
     getUserPlaylist(userId).then((data) => {
@@ -17,35 +17,35 @@ const BannerSection = () => {
     });
   }, []);
   return (
-    <div className="max-w-7xl max-h-80 overflow-hidden rounded-md mx-2">
+    <div className="mx-2 overflow-hidden rounded-md max-w-7xl max-h-80">
       <Carousel autoplay autoplaySpeed={3000}>
         {
           // Get First 4 playlist
           playlistList &&
-            playlistList.slice(0, 5).map((playlistItem) => (
-              <div
-                className="w-fit h-[400px] flex items-center rounded-lg"
-                key={playlistItem.id}
-              >
-                <img
-                  className="w-fit h-full m-auto object-cover rounded-lg cursor-pointer relative"
-                  onClick={() => navigateToPlaylist(playlistItem.id)}
-                  src={
-                    playlistItem.coverArt
-                      ? playlistItem.coverArt
-                      : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
-                  }
-                  alt="playlist-cover"
-                />
+          playlistList.slice(0, 5).map((playlistItem) => (
+            <div
+              className="w-fit h-[400px] flex items-center rounded-lg"
+              key={playlistItem.id}
+            >
+              <img
+                className="relative object-cover h-full m-auto rounded-lg cursor-pointer w-fit"
+                onClick={() => navigateToPlaylist(playlistItem.id)}
+                src={
+                  playlistItem.coverArt
+                    ? playlistItem.coverArt
+                    : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
+                }
+                alt="playlist-cover"
+              />
 
-                <div className="text-white text-2xl font-bold absolute bottom-10 left-10">
-                  {playlistItem.playlistName}
-                </div>
-                <div className="text-white text-sm font-bold absolute bottom-2 left-10">
-                  {playlistItem.artistName}
-                </div>
+              <div className="absolute text-2xl font-bold text-white bottom-10 left-10">
+                {playlistItem.playlistName}
               </div>
-            ))
+              <div className="absolute text-sm font-bold text-white bottom-2 left-10">
+                {playlistItem.artistName}
+              </div>
+            </div>
+          ))
         }
       </Carousel>
     </div>

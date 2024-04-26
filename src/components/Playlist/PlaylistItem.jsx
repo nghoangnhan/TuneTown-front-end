@@ -10,7 +10,7 @@ const PlaylistItem = ({ id, playlistName, playlistType, coverArt }) => {
   return (
     <div
       className="border border-solid rounded-lg shadow-xl cursor-pointer w-fit h-fit border-primary dark:border-primaryDarkmode bg-backgroundPlaylist hover:bg-backgroundPlaylistHover dark:bg-backgroundPlaylistDark hover:dark:bg-backgroundPlaylistHoverDark"
-      onClick={() => navigate(`/detail/${id}`)}
+      onClick={() => navigate(`/detail-playlist/${id}`)}
     >
       <div className="px-2 pb-3 bg-transparent rounded-lg xl:w-fit xl:h-fit w-fit h-fit">
         <img

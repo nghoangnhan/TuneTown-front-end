@@ -41,7 +41,7 @@ export const useSongUtils = () => {
       return artistName.map((artist) => (
         <span
           key={artist.id}
-          className="cursor-pointer cursor-pointe hover:underline"
+          className="cursor-pointer hover:underline"
           onClick={() => navigate(`artist/${artist.id}`)}
         >
           {artist.userName}, &nbsp;
@@ -52,7 +52,7 @@ export const useSongUtils = () => {
       return (
         <span
           key={artist.id}
-          className="cursor-pointer cursor-pointe hover:underline"
+          className="cursor-pointer hover:underline"
           onClick={() => navigate(`artist/${artist.id}`)}
         >
           {artist.userName}
@@ -67,6 +67,15 @@ export const useSongUtils = () => {
     navigate(`song/${songId}`);
   };
 
+  const NavigatePlaylist = (playlistId, owned) => {
+    if (owned == true) {
+      navigate(`my-detail-playlist/${playlistId}`);
+    }
+    else {
+      navigate(`detail-playlist/${playlistId}`);
+    }
+
+  };
   // Acronym the name of the song
   const AcronymName = (nameLenght, length) => {
     if (nameLenght && nameLenght.length > length) {
@@ -171,7 +180,7 @@ export const useSongUtils = () => {
 
   return {
     TimeConvert, GetSongFragment,
-    showArtist, showArtistV2, NavigateSong,
+    showArtist, showArtistV2, NavigateSong, NavigatePlaylist,
     AcronymName, CheckPlaying, GetSongDuration, rgbToHex, handleDownloadSong, handleShareSong,
     HandleRefreshPlaylist,
   };

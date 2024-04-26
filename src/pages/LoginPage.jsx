@@ -95,7 +95,7 @@ const LoginPage = () => {
     <div className="relative flex flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-20">
-          <h1 className="font-bold text-headingText dark:text-headingTextDark text-3xl">Login</h1>
+          <h1 className="text-3xl font-bold text-headingText dark:text-headingTextDark">Login</h1>
         </div>
         <Form
           form={form}
@@ -157,7 +157,7 @@ const LoginPage = () => {
               Sign up
             </NavLink>
           </p>
-          <p className="text-headingText dark:text-headingTextDark mb-3">
+          <p className="mb-3 text-headingText dark:text-headingTextDark">
             Forget Your Password?
             <NavLink to="/forgotpass" className="text-[#34a56d] ml-1 text-sm">
               Forget Password
