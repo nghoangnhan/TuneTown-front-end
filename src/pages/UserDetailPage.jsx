@@ -47,6 +47,9 @@ const UserDetailPage = ({ owned }) => {
                     <div className="text-lg text-primaryText dark:text-textNormalDark opacity-80">
                         <span>Bio:</span>{" "}{userInfor.userBio}
                     </div>
+                    <div className=''>
+                        <button className='h-10 px-3 text-base transition-colors duration-150 border rounded-lg border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70'>Create Community</button>
+                    </div>
                 </div>
             </div>
             <div className='flex flex-row items-start justify-center w-full'>
