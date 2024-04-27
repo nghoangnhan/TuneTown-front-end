@@ -4,6 +4,11 @@ import useConfig from '../utils/useConfig';
 import useUserUtils from '../utils/useUserUtils';
 import { useEffect, useState } from 'react';
 import PostSection from '../components/Forum/PostSection';
+import useChatUtils from '../utils/useChatUtils';
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { setChatChosen } from "../redux/slice/social";
+import { useDispatch } from "react-redux";
 
 // eslint-disable-next-line no-unused-vars
 const UserDetailPage = ({ owned }) => {
@@ -14,6 +19,49 @@ const UserDetailPage = ({ owned }) => {
     const { getUserInfor, getUserPost } = useUserUtils();
     const [userInfor, setUserInfor] = useState({});
     const [postList, setPostList] = useState([]);
+    const { createCommunity, getCommunityByArtist } = useChatUtils();
+    const [isCreated, setIsCreated] = useState(false);
+    const [community, setCommunity] = useState();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleNavigate = (path) => {
+        dispatch(
+            setChatChosen({
+                chatId: path,
+                name: community.communityName,
+                avatar: community.communityAvatar,
+            })
+        );
+        console.log("COMMUNITY ", community);
+        navigate(`/chat/${path}`);
+    };
+
+    const handleCreateCommunity = async () => {
+        try{
+            if(!isCreated){
+                await createCommunity(userId);
+                setIsCreated(true);
+                message.success("Community Created!");    
+            }
+            else{
+                handleNavigate("community/" + community.id);
+            }
+        } catch (error) {
+            console.log("Error:", error);
+        }
+    }    
+
+    useEffect(() => {
+        const getCommunity = async() => {
+            const response = await getCommunityByArtist(userId);
+            if(response){
+                setIsCreated(true);
+                setCommunity(response);
+            }
+        }
+        getCommunity();
+    }, [isCreated]);
 
     useEffect(() => {
         getUserInfor(userId).then((res) => {
@@ -47,9 +95,15 @@ const UserDetailPage = ({ owned }) => {
                     <div className="text-lg text-primaryText dark:text-textNormalDark opacity-80">
                         <span>Bio:</span>{" "}{userInfor.userBio}
                     </div>
-                    <div className=''>
-                        <button className='h-10 px-3 text-base transition-colors duration-150 border rounded-lg border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70'>Create Community</button>
-                    </div>
+                    {userInfor.role == "ARTIST" &&
+                        <div className=''>
+                            <button 
+                                onClick={handleCreateCommunity}
+                                className='h-10 px-3 text-base transition-colors duration-150 border rounded-lg border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70'>
+                                {!isCreated ? 'Create Community' : 'Your community'}
+                            </button>
+                        </div>
+                    }
                 </div>
             </div>
             <div className='flex flex-row items-start justify-center w-full'>

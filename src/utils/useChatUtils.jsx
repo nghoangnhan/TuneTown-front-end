@@ -228,8 +228,60 @@ export const useChatUtils = () => {
     } catch (error) {
       console.log("Error:", error);
     }
-  }
-  return { AcronymName, loadMessage, handleSocketReconnect, handleNavigate, getCommunityByHostId, joinRequest, outCommunity };
+  };
+  const createCommunity = async(artistId) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/community/create`,
+        {
+          communityId: artistId,
+          communityName: "Your community",
+          hosts:[{
+            id: artistId
+          }],
+          joinUsers:[{
+            id: artistId
+          }],
+          approveRequests: null,
+          communityAvatar: ''
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  const getCommunityByArtist = async(artistId) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/community/getByHostId?hostId=${artistId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  return { 
+    AcronymName, 
+    loadMessage, 
+    handleSocketReconnect, 
+    handleNavigate, 
+    getCommunityByHostId, 
+    joinRequest, 
+    outCommunity, 
+    createCommunity,
+    getCommunityByArtist 
+  };
 };
 
 export const useForumUtils = () => {

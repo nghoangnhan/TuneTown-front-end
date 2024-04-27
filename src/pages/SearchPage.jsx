@@ -97,7 +97,7 @@ const SearchPage = () => {
         >
           <Input
             name="keywords"
-            placeholder="Search by song, artist, lyric..."
+            placeholder="Search by song, artist, lyrics..."
             onChange={(e) => setKeywordsInput(e.target.value)}
             className="rounded-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary w-full h-14 text-lg"
           />

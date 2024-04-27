@@ -67,9 +67,10 @@ const ChatNavigate = () => {
           message = (!own ? userNameFirstWord + ": " : " ") + item.lastMessage.content;
         } else {
           // If the item contains community information
-          userName = `Community ${item.community.communityId}`;
+          userName = item.community.communityName;
           // Assuming the last message content is retrieved from the lastMessage object
           message = (item.lastMessage.type == 1 && !own ? userNameFirstWord + ": " : " ") + item.lastMessage.content;
+          avatar = item.community.communityAvatar;
           sendId = item.community.id;
         }
   
