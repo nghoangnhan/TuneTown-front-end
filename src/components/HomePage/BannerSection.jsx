@@ -51,8 +51,8 @@ const BannerSection = () => {
               alt="playlist-cover"
             ></img>
 
-            <div className={`${currentSlide === index ? "opacity-100" : "opacity-10"} ease-in-out transition-opacity duration-1000 absolute bottom-0 left-0 right-0 flex items-center justify-center h-20 bg-gradient-to-t from-green-400 to-transparent`}>
-              <div className="text-center text-white dark:text-primaryTextDark2">
+            <div className={`${currentSlide === index ? "opacity-100" : "opacity-10"} ease-in-out transition-opacity duration-1000 absolute bottom-0 left-0 right-0 flex items-center justify-center h-20 bg-gradient-to-t from-green-400 dark:from-slate-700 to-transparent`}>
+              <div className="absolute text-center text-primaryTextDark2 bottom-1 dark:text-primaryHoverOn">
                 <div className="text-lg font-bold">{playlistItem.playlistName}</div>
                 <div className="text-sm">{playlistItem.artistName}</div>
               </div>
