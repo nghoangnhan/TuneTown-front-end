@@ -21,8 +21,8 @@ const ArtistDetailPage = () => {
   const [follow, setFollow] = useState(false);
   const navigate = useNavigate();
   const { getCommunityByHostId, joinRequest, outCommunity } = useChatUtils();
-  const [ request, setRequest ] = useState();
-  const [ join, setJoin ] = useState();
+  const [request, setRequest] = useState();
+  const [join, setJoin] = useState();
 
   const handleNavigate = (path) => {
     dispatch(
@@ -69,10 +69,10 @@ const ArtistDetailPage = () => {
     const response = await handleGetCommunity(artistId);
     const communityId = response.id;
     // Approve request
-    if(!join){
+    if (!join) {
       const updatedRequest = await joinRequest(userId, communityId);
       setRequest(updatedRequest);
-    } else{
+    } else {
       // Navigate to joined community
       handleNavigate("community/" + communityId);
     }
@@ -85,14 +85,14 @@ const ArtistDetailPage = () => {
       try {
         const communityData = await handleGetCommunity(artistId);
         console.log("Community Data:", communityData);
-        for(const userRequest of communityData.approveRequests) {
-          if(userRequest.id == userId){
+        for (const userRequest of communityData.approveRequests) {
+          if (userRequest.id == userId) {
             setRequest(true);
             return;
           }
         }
-        for(const userJoin of communityData.joinUsers) {
-          if(userJoin.id == userId){
+        for (const userJoin of communityData.joinUsers) {
+          if (userJoin.id == userId) {
             setJoin(true);
             return;
           }
@@ -102,7 +102,7 @@ const ArtistDetailPage = () => {
         console.error("Error fetching community data:", error);
       }
     };
-  
+
     fetchData();
   }, [request, join, artistId]);
 
@@ -114,7 +114,7 @@ const ArtistDetailPage = () => {
   return (
     <div
       className={`${artistId ? " h-full" : "h-fit"
-        }min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
+        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
       <div className="mb-4">
         <TheHeader></TheHeader>

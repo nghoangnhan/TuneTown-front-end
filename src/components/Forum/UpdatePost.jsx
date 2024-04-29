@@ -71,7 +71,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                     id: postContent.author.id
                 },
                 content: contentParser,
-                song: { id: postContent.song?.id ? postContent.song.id : null },
+                song: postContent.song?.id ? { id: postContent.song.id } : null,
                 playlist: {
                     id: playlistChosen?.id
                 },

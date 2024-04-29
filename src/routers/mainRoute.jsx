@@ -23,6 +23,7 @@ import PostItemDetail from "../components/Forum/PostItemDetail";
 import ErrorPage from "../pages/ErrorPage";
 import SongDetailPage from "../pages/SongDetailPage";
 import UserDetailPage from "../pages/UserDetailPage";
+import EmptyLayout from "../components/layouts/EmptyLayout";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -103,6 +104,7 @@ export default function init(routes) {
 
   const artistRoute = {
     path: "/:sectionId?",
+    element: <EmptyLayout />,
     children: [
       {
         path: "artist/:artistId",
@@ -113,6 +115,7 @@ export default function init(routes) {
 
   const songRoute = {
     path: "/:sectionId?",
+    element: <EmptyLayout />,
     children: [
       {
         path: "song/:songId",
