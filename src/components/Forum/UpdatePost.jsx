@@ -14,11 +14,14 @@ import useIconUtils from "../../utils/useIconUtils";
 import ModalPlaylistPost from "./ModalPlaylistPost";
 import Proptypes from "prop-types";
 import { Button } from "antd/es/radio";
+import { useDispatch } from "react-redux";
+import { setRefreshPost } from "../../redux/slice/social";
 
 
 const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     const [form] = Form.useForm();
     const userId = parseInt(localStorage.getItem("userId"));
+    const dispatch = useDispatch();
     const { getToken } = UseCookie();
     const { access_token } = getToken();
     const { LoadingLogo } = useIconUtils();
@@ -81,11 +84,12 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                     Authorization: `Bearer ${access_token}`,
                 }
             });
-            if (response.status === 200) {
-                message.success("Post Created Successfully", 2);
-            }
+            dispatch(setRefreshPost(true));
+            message.success("Post Updated Successfully", 2);
             setOpenModalUpdate(false);
+            return response;
         } catch (error) {
+            message.error("Error Updating Post", 2);
             console.log("Error:", error);
         }
     };

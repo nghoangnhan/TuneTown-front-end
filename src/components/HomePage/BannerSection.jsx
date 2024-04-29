@@ -1,12 +1,29 @@
-import { Carousel } from "antd";
 import { useEffect, useState } from "react";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import { useNavigate } from "react-router-dom";
+import useConfig from "../../utils/useConfig";
+import Slider from "react-slick";
 
 const BannerSection = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const settings = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "20px",
+    slidesToShow: 3,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    beforeChange: (current, index) => {
+      setCurrentSlide(index);
+    },
+
+  };
   const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState();
   const { getUserPlaylist } = useMusicAPIUtils();
+  const { Base_AVA } = useConfig();
   const navigate = useNavigate();
   const navigateToPlaylist = (playlistId) => {
     navigate(`/detail-playlist/${playlistId}`);
@@ -17,37 +34,33 @@ const BannerSection = () => {
     });
   }, []);
   return (
-    <div className="mx-2 overflow-hidden rounded-md max-w-7xl max-h-80">
-      <Carousel autoplay autoplaySpeed={3000}>
-        {
-          // Get First 4 playlist
-          playlistList &&
-          playlistList.slice(0, 5).map((playlistItem) => (
-            <div
-              className="w-fit h-[400px] flex items-center rounded-lg"
-              key={playlistItem.id}
-            >
-              <img
-                className="relative object-cover h-full m-auto rounded-lg cursor-pointer w-fit"
-                onClick={() => navigateToPlaylist(playlistItem.id)}
-                src={
-                  playlistItem.coverArt
-                    ? playlistItem.coverArt
-                    : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
-                }
-                alt="playlist-cover"
-              />
+    <div className="mx-2 overflow-hidden rounded-md slider-container max-w-7xl max-h-80">
+      <Slider {...settings} >
+        {playlistList && playlistList.slice(0, 5).map((playlistItem, index) => (
+          <div className={`${currentSlide === index ? "opacity-100" : "opacity-40"} relative ease-in transition-opacity duration-1000 flex items-center w-full h-full rounded-lg cursor-pointer`}
+            key={index}
+          >
+            <img
+              className="relative object-cover m-auto rounded-lg shadow-md cursor-pointer max-h-80 h-fit min-w-fit"
+              onClick={() => navigateToPlaylist(playlistItem.id)}
+              src={
+                playlistItem.coverArt
+                  ? playlistItem.coverArt
+                  : Base_AVA
+              }
+              alt="playlist-cover"
+            ></img>
 
-              <div className="absolute text-2xl font-bold text-white bottom-10 left-10">
-                {playlistItem.playlistName}
-              </div>
-              <div className="absolute text-sm font-bold text-white bottom-2 left-10">
-                {playlistItem.artistName}
+            <div className={`${currentSlide === index ? "opacity-100" : "opacity-10"} ease-in-out transition-opacity duration-1000 absolute bottom-0 left-0 right-0 flex items-center justify-center h-20 bg-gradient-to-t from-green-400 to-transparent`}>
+              <div className="text-center text-white dark:text-primaryTextDark2">
+                <div className="text-lg font-bold">{playlistItem.playlistName}</div>
+                <div className="text-sm">{playlistItem.artistName}</div>
               </div>
             </div>
-          ))
+          </div>
+        ))
         }
-      </Carousel>
+      </Slider>
     </div>
   );
 };

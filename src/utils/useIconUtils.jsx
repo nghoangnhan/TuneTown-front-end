@@ -75,10 +75,14 @@ const useIconUtils = () => {
         );
     };
 
-    const PlayButton = () => {
+    const PlayButton = ({ size }) => {
+        size = size || 2;
         return (
-            <FontAwesomeIcon className='text-xl text-primary' icon={faPlayCircle} />
+            <FontAwesomeIcon className={`text-${size}xl text-primary`} icon={faPlayCircle} />
         );
+    };
+    PlayButton.propTypes = {
+        size: PropTypes.number,
     };
 
     const PauseButton = () => {

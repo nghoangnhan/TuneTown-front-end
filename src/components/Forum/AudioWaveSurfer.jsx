@@ -53,12 +53,12 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
         if (!audio || isLoading) return;
         wavesurfer.current = WaveSurfer.create({
             container: wavesurferRef.current,
-            waveColor: "#00cc00",
-            progressColor: "green",
-            barWidth: 3,
-            cursorWidth: 1,
+            waveColor: "#6aca72",
+            progressColor: "#00cc00",
+            barWidth: 1.7,
+            cursorWidth: 0.2,
             height: 45,
-            barGap: 2,
+            barGap: 3,
             url: audio,
         });
         wavesurfer.current.load(audio);

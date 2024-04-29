@@ -12,7 +12,7 @@ import TheHeader from "../components/Header/TheHeader";
 const SongDetailPage = () => {
     const { songId } = useParams();
     const { Base_AVA } = useConfig();
-    const { BackButton } = useIconUtils();
+    const { BackButton, PlayButton } = useIconUtils();
     const { rgbToHex } = useSongUtils();
     const { getSongById } = useMusicAPIUtils();
     const [colorBG, setColorBG] = useState("");
@@ -64,7 +64,7 @@ const SongDetailPage = () => {
                 <TheHeader></TheHeader>
             </div>
             <div className={`flex flex-col items-start p-5 shadow-md rounded-xl`} style={{
-                background: `linear-gradient(to top right ,#ecf2fd, ${colorBG} 98%)`
+                background: `linear-gradient(to top right , transparent, ${colorBG} 98%)`
             }}>
                 <div className="mb-4">
                     <BackButton></BackButton>
@@ -74,8 +74,8 @@ const SongDetailPage = () => {
                         songDetail.poster : Base_AVA
                     } alt="song-poster" className="w-20 h-20 rounded-md xl:w-56 xl:h-56" />
                     <div className="flex flex-col items-start gap-5">
-                        <div className="font-bold text-center text-7xl text-primaryText">{songDetail?.songName}</div>
-                        <div className="flex flex-row items-center gap-2 text-primaryText">
+                        <div className="font-bold text-center text-7xl text-primaryDarkmode dark:text-primaryDarkmode">{songDetail?.songName}</div>
+                        <div className="flex flex-row items-center gap-2 text-primaryDarkmode dark:text-primaryDarkmode">
                             {songDetail.artists?.map((artist) => {
                                 return (
                                     <div className="flex flex-row items-center gap-2" key={artist.id}>
@@ -88,8 +88,10 @@ const SongDetailPage = () => {
                     </div>
                 </div>
                 <div className="flex flex-row items-center gap-4 mt-4">
-                    <button className="px-2 py-1 font-bold text-white rounded-md bg-primary hover:opacity-70 dark:bg-primaryDarkmode">Play</button>
-                    <button className="px-2 py-1 font-bold text-white rounded-md bg-primary hover:opacity-70 dark:bg-primaryDarkmode">Add to Playlist</button>
+
+                    <PlayButton size={3}></PlayButton>
+
+                    <button className="px-2 py-2 font-bold text-white rounded-md bg-primary hover:opacity-70 dark:bg-primaryDarkmode">Add to Playlist</button>
                 </div>
             </div>
 
