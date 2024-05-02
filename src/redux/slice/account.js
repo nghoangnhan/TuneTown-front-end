@@ -17,10 +17,11 @@ const accountStore = createSlice({
     },
     account: [],
     listAccount: [],
+    refreshAccount: false,
   },
   reducers: {
-    authLogin: () => {},
-    authRegister: () => {},
+    authLogin: () => { },
+    authRegister: () => { },
     setListUser: (state, action) => {
       return {
         ...state,
@@ -48,18 +49,22 @@ const accountStore = createSlice({
     setUserRole: (state, action) => {
       state.usersInfor.role = action.payload;
     },
+    setUserAccount: (state, action) => {
+      return {
+        ...state,
+        account: action.payload,
+      };
+    },
+    setRefershAccount: (state, action) => {
+      state.refreshAccount = action.payload;
+    }
   },
 });
 //Action
 export const {
-  authLogin,
-  authRegister,
-  setUser,
-  setListAccount,
-  setUserInfor,
-  setUserId,
-  setUserName,
-  setUserRole,
+  authLogin, authRegister, setRefershAccount,
+  setUser, setListAccount, setUserInfor, setUserId,
+  setUserName, setUserRole, setUserAccount,
 } = accountStore.actions;
 //Reducer
 export default accountStore.reducer;

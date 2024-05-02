@@ -19,7 +19,6 @@ const UserManagement = () => {
   const [searchValue, setSearchValue] = useState("");
   const [refresh, setRefresh] = useState(false);
   const handSearch = (e) => {
-    console.log("value", e.target.value);
     setSearchValue(e.target.value);
   };
   // Call this function when you want to refresh the playlist
@@ -61,9 +60,9 @@ const UserManagement = () => {
           },
         }
       );
-      console.log("changeUserRole Response", response.data);
       if (response.status === 200) {
         // Return a success flag or any relevant data
+        setRefresh(true);
         message.success("Change role successfully");
         return { success: true, data: response.data };
       }
@@ -77,13 +76,13 @@ const UserManagement = () => {
   // http://localhost:8080/users
   const GetListUser = async () => {
     try {
-      console.log("auth", access_token);
       const response = await axios.get(`${Base_URL}/users`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("UserList Response", response.data.users);
+      // console.log("UserList Response", response.data.users);
+      setRefresh(true);
       setUserList(response.data.users);
       return response.data;
     } catch (error) {
@@ -105,70 +104,14 @@ const UserManagement = () => {
         if (response.status === 200) {
           message.success("Delete User successfully!");
         }
-        // Refresh the component
-        setRefresh(false);
+        setRefresh(true);
         return response.status;
       }
     } catch (error) {
       console.log("Error:", error);
     }
   };
-  // Data Test
-  // const data = [
-  //   {
-  //     id: 1,
-  //     userName: null,
-  //     email: "nam@gmail.com",
-  //     password: "$2a$10$N6GkJoW2TfhsSRAW4Z4csOtYLFfGdQcJI0kETDFgrIdP.PEgBjMf.",
-  //     role: "USER",
-  //     birthDate: "2023-10-23",
-  //     userBio: null,
-  //     avatar:
-  //       "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Flogo.png?alt=media&token=bf46ca20-ec6b-42b6-a330-a77663b450de",
-  //     history: [],
-  //     favoriteGenres: [],
-  //     followingArtists: [],
-  //   },
-  //   {
-  //     id: 2,
-  //     userName: null,
-  //     email: "test3@gmail.com",
-  //     password: "$2a$10$GGZ1GbbSI5a.Ns0OHR.BM.L/U9UHl7BhxhUmRPvOPMU3ZOjiyDAJm",
-  //     role: "USER",
-  //     birthDate: "2000-08-01",
-  //     userBio: null,
-  //     avatar: null,
-  //     history: [],
-  //     favoriteGenres: [],
-  //     followingArtists: [],
-  //   },
-  //   {
-  //     id: 504,
-  //     userName: "Nguyen Hoang Nhan",
-  //     email: "nguyen.hngnhan21@gmail.com",
-  //     password: "$2a$10$JUp.tzHb6H816tt1IyICe.hNisd/93uJQPI0LN1PXeorOv/njV.ay",
-  //     role: "ARTIST",
-  //     birthDate: "2002-07-21",
-  //     userBio: null,
-  //     avatar: null,
-  //     history: [],
-  //     favoriteGenres: [],
-  //     followingArtists: [],
-  //   },
-  //   {
-  //     id: 505,
-  //     userName: "Nguyen Hoang Nhan",
-  //     email: "test@gmail.com",
-  //     password: "$2a$10$biLULL30K.AT7PFGM3in3OBAfP0HiYClyYOwtxNuNWAwvhv06S10.",
-  //     role: "ADMIN",
-  //     birthDate: "2002-07-21",
-  //     userBio: "asds",
-  //     avatar: null,
-  //     history: [],
-  //     favoriteGenres: [],
-  //     followingArtists: [],
-  //   },
-  // ];
+
   const columns = [
     {
       title: "ID",
@@ -280,10 +223,18 @@ const UserManagement = () => {
     },
     {},
   ];
+
   useEffect(() => {
-    setRefresh(true);
     GetListUser();
-  }, [isModalOpen, isModalOpenUpdate, refresh]);
+  }, []);
+
+  useEffect(() => {
+    if (isModalOpen || isModalOpenUpdate || refresh) {
+      GetListUser().then(() => {
+        setRefresh(false);
+      })
+    }
+  }, [refresh]);
   return (
     <div>
       <div className="text-2xl font-bold">User Management</div>

@@ -4,7 +4,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
 import { setUserId } from "../../redux/slice/account";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useIconUtils from "../../utils/useIconUtils";
 import useUserUtils from "../../utils/useUserUtils";
 import DarkMode from "../DarkMode/DarkMode";
@@ -17,6 +17,7 @@ const TheHeader = () => {
   const { removeToken } = UseCookie();
   const { getUserInfor } = useUserUtils();
   const { Base_AVA } = useConfig();
+  const refreshAccount = useSelector((state) => state.account.refreshAccount);
   const userRole = localStorage.getItem("userRole");
   const userId = localStorage.getItem("userId");
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,6 +43,17 @@ const TheHeader = () => {
     });
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
+
+  useEffect(() => {
+    if (refreshAccount === true) {
+      getUserInfor(userId).then((res) => {
+        setUserInfor(res.user);
+        localStorage.setItem("userName", res.user.userName);
+        console.log("The Header || UserInfor", res.user);
+      });
+    }
+  }, [refreshAccount]);
+
   return (
     <header className="sticky top-0 z-50 w-full h-[60px] xl:w-full py-1 gap-x-7 flex justify-center items-center font-bold bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="absolute flex flex-row items-center justify-center mt-2 xl:right-5 right-3">
@@ -99,12 +111,12 @@ const TheHeader = () => {
             >
               <button>My Profile</button>
             </div>
-            <div
+            {/* <div
               onClick={() => handleOnclick("edit-user")}
               className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
             >
               <button>Edit User Information</button>
-            </div>
+            </div> */}
             <div
               onClick={() => handleOnclick("history")}
               className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"

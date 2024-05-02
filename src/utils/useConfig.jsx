@@ -22,14 +22,11 @@ const useConfig = () => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-
         const newSocket = io.connect("ws://localhost:3000");
         // const newSocket = io.connect("https://socketserver-v6lc.onrender.com");
         setSocket(newSocket);
-
         // Clean up the connection when the component unmounts
         return () => newSocket.disconnect();
-
     }, []);
 
 

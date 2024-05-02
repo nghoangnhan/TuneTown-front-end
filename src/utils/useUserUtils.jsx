@@ -4,12 +4,15 @@ import axios from "axios";
 import UseCookie from "../hooks/useCookie";
 import { useState } from "react";
 import useConfig from "./useConfig";
+import { message } from "antd";
+import { setRefershAccount } from "../redux/slice/account";
+import { useDispatch } from "react-redux";
 
 const useUserUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
-
+  const dispatch = useDispatch();
   const CheckCookie = () => {
     if (access_token) {
       return true;
@@ -24,9 +27,9 @@ const useUserUtils = () => {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-        body: {},
       });
       console.log(response.data, response.status);
+      dispatch(setRefershAccount(false));
       return response.data;
     } catch (error) {
       // Handle network errors or other exceptions
@@ -113,6 +116,47 @@ const useUserUtils = () => {
     }
   }
 
-  return { CheckCookie, getUserInfor, getArtistByArtistId, getUserPost, followArtist, unfollowArtist };
+  const getAllGenres = async () => {
+    try {
+      const response = await axios.get(`${Base_URL}/songs/getAllGenres`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      console.log("getAllGenres Response", response.data);
+      return response.data;
+    }
+    catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  // Update user infor to API
+  const editUser = async (values) => {
+    try {
+      const response = await axios.put(`${Base_URL}/users`, values, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      dispatch(setRefershAccount(true));
+      if (response.status === 200) {
+        // Handle success
+        console.log("User edited successfully:", response.data);
+        message.success("User edited successfully");
+      }
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("Error edited user:", error.message);
+      message.error(`Error edited user ${error.message}`);
+    }
+  };
+
+
+  return {
+    CheckCookie, getUserInfor,
+    getArtistByArtistId, getAllGenres, getUserPost,
+    followArtist, unfollowArtist, editUser
+  };
 };
 export default useUserUtils;

@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, message } from "antd";
 import UseCookie from "../../hooks/useCookie";
-import UploadAvatar from "./UploadAvatar";
 import dayjs from "dayjs";
 import useConfig from "../../utils/useConfig";
+import useUserUtils from "../../utils/useUserUtils";
+import { useDispatch, useSelector } from "react-redux";
+import { setRefershAccount } from "../../redux/slice/account";
+import UploadFileDropZone from "../../utils/useDropZone";
+import useDataUtils from "../../utils/useDataUtils";
+import { useForm } from "antd/es/form/Form";
+import PropTypes from "prop-types";
 
 const layout = {
   labelCol: {
@@ -21,134 +26,111 @@ const tailLayout = {
   },
 };
 
-// eslint-disable-next-line react/prop-types
-const EditUserForm = ({ editUserId, isAdmin }) => {
+// eslint-disable-next-line no-unused-vars
+const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const { Base_URL } = useConfig();
-  const userId = editUserId || localStorage.getItem("userId");
-  const [form] = Form.useForm();
-  const formRef = useRef(null);
-  const [userInfor, setUserInfor] = useState({});
-  const [fileIMG, setFileIMG] = useState();
+  const userId = localStorage.getItem("userId");
+  const { default_Img } = useConfig();
+  const dispatch = useDispatch();
+  const { editUser, getUserInfor } = useUserUtils();
+  const { handleUploadFileIMG, } = useDataUtils();
+  const refreshAccount = useSelector((state) => state.account.refreshAccount);
+  const [form] = useForm();
+  const [userInfor, setUserInfor] = useState();
+  const [fileImg, setFileImg] = useState();
+  const [uploadedFile, setUploadedFile] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  // Get user information from API
-  const getUserInfor = async () => {
-    try {
-      const response = await axios.get(`${Base_URL}/users?userId=${userId}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-      console.log(response.data, response.status);
-      setUserInfor(response.data.user);
-      // setUserName(response.data.user.userName);
-    } catch (error) {
-      // Handle network errors or other exceptions
-      console.error("Error edited user:", error.message);
-    }
-  };
-
-  // Update user infor to API
-  const editUser = async (values) => {
-    try {
-      const response = await axios.put(`${Base_URL}/users`, values, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-      if (response.status === 200) {
-        // Handle success
-        console.log("User edited successfully:", response.data);
-        message.success("User edited successfully");
+  const UploadIMGfile = async (file) => {
+    setLoading(true);
+    message.loading("Uploading Image", 1);
+    await handleUploadFileIMG(file).then((res) => {
+      if (res.status === 200) {
+        setFileImg(res.data);
+        message.success("Image Uploaded Successfully", 2);
+        setLoading(false);
       }
-    } catch (error) {
-      // Handle network errors or other exceptions
-      console.error("Error edited user:", error.message);
-      message.error(`Error edited user ${error.message}`);
-    }
+    });
   };
 
   const onFinish = (values) => {
-    console.log("Received values:", values);
-    console.log("FileIMG", fileIMG);
-    // Value in Inpurt
-    const { userName, userBio, email, birthDate } = values;
-    if (fileIMG === null || fileIMG === undefined) {
+    if (fileImg === null || fileImg === undefined) {
       message.error("Please upload jpg, jpeg or png");
       return;
     }
     const postData = {
       id: userId,
-      avatar: fileIMG,
-      userName: userName,
-      userBio: userBio,
-      email: email,
-      birthDate: birthDate.format("YYYY-MM-DD"),
+      avatar: fileImg,
+      userName: values.userName,
+      userBio: values.userBio,
+      email: values.email,
+      birthDate: values.birthDate.format("YYYY-MM-DD"),
     };
-    console.log("Token", access_token);
-    console.log("Posting Data", postData);
-    editUser(postData); // Call the function to post the song data
+    editUser(postData).then(dispatch(setRefershAccount(true))); // Call the function to post the song data
+    setOpenModalEditUser(false);
   };
 
-  //Upload
+  useEffect(() => {
+    getUserInfor(userId).then((res) => {
+      setUserInfor(res.user);
+    });
+    if (userInfor?.avatar) {
+      setFileImg(userInfor.avatar);
+    }
+    form.setFieldsValue({
+      userId: userInfor?.id,
+      userName: userInfor?.userName,
+      userBio: userInfor?.userBio,
+      email: userInfor?.email,
+      birthDate: dayjs(userInfor?.birthDate),
+    });
+  }, [userId, userInfor?.id]);
+
 
   useEffect(() => {
     if (access_token == null) {
       window.location.href = "/";
     }
-    getUserInfor();
-    form.setFieldsValue({
-      userName: userInfor.userName,
-      email: userInfor.email,
-      ...(userInfor.birthDate && { birthDate: dayjs(userInfor.birthDate) }),
-      userBio: userInfor.userBio,
-    });
+  }, [access_token]);
 
-    console.log("userName", userInfor);
-  }, [
-    access_token,
-    userInfor.userName,
-    userInfor.email,
-    userInfor.userBio,
-    editUserId,
-    userId,
-  ]);
+
+  useEffect(() => {
+    if (refreshAccount == true) { getUserInfor(userId); }
+  }, [refreshAccount]);
+
   return (
-    <section
-      className={`${isAdmin ? "justify-center" : " pt-10 w-full min-h-screen"
-        } relative flex flex-col  items-center bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}
-    >
+    <section className={`${isModal ? "" : "h-fit pt-6 pb-20"} bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}>
       <Form
         {...layout}
-        ref={formRef}
         name="control-ref"
         form={form}
         onFinish={onFinish}
-        className={`relative  border ${isAdmin ? "mx-auto w-full rounded-md" : ""
-          } p-5 bg-[#f9f9f9]`}
+        className={`
+        ${isModal ? "w-full" : "w-1/2"} m-auto bg-backgroundPlaylist text-primaryText2 p-5 rounded-lg`}
       >
         <div className="w-full mb-5 text-center">
-          <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
+          <h2 className="text-3xl font-bold uppercase font-monserrat ">
             Edit User Information
           </h2>
         </div>
+
         {/* Avatar Image */}
         <Form.Item
-          name="avatar"
-          label="Upload Avatar"
-          valuePropName="fileList"
-          extra="Upload your cover image png, jpg, jpeg"
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
-          <UploadAvatar
-            setFileIMG={setFileIMG}
-            accept="image/jpeg, image/png"
-          ></UploadAvatar>
+          name="songCoverArt"
+          label="Upload Cover Art"
+          extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
+          getValueFromEvent={(e) => e && e.fileList}
+          valuePropName="fileList">
+          <div className="flex flex-row items-center gap-2">
+            <UploadFileDropZone
+              uploadedFile={uploadedFile}
+              setUploadedFile={setUploadedFile}
+              handleUploadFile={UploadIMGfile}
+              accept="image/*"
+            />
+            {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
+          </div>
         </Form.Item>
         <Form.Item
           name="userName"
@@ -201,9 +183,18 @@ const EditUserForm = ({ editUserId, isAdmin }) => {
             Submit
           </Button>
         </Form.Item>
+        {loading && (
+          <div className="overlay">
+            <img src={default_Img} alt="Loading..." width={100} height={100} className="zoom-in-out" />
+          </div>
+        )}
       </Form>
-    </section>
-  );
+    </section>);
 };
 
+EditUserForm.propTypes = {
+  isAdmin: PropTypes.bool.isRequired,
+  isModal: PropTypes.bool.isRequired,
+  setOpenModalEditUser: PropTypes.func.isRequired,
+};
 export default EditUserForm;

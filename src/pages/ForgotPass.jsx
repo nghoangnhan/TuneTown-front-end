@@ -119,7 +119,7 @@ const ForgotPass = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center mt-10">
-          <h1 className="font-bold text-headingText dark:text-headingTextDark text-3xl mb-10">
+          <h1 className="mb-10 text-3xl font-bold text-headingText dark:text-headingTextDark">
             Forget Password
           </h1>
 
@@ -195,7 +195,7 @@ const ForgotPass = () => {
             >
               <button
                 onClick={handleChangePassword}
-                className="bg-[#38a870] text-white hover:bg-[#54ce91] hover:text-[#fff] py-2 px-3 w-max rounded-lg font-semibold"
+                className="px-3 py-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 w-max"
               >
                 Submit
               </button>
@@ -205,7 +205,7 @@ const ForgotPass = () => {
           <div>
             <p className="text-headingText dark:text-headingTextDark">
               Back to Login?
-              <NavLink to="/" className="text-[#34a56d] ml-1 text-sm">
+              <NavLink to="/" className="ml-1 text-sm text-primary">
                 Sign in
               </NavLink>
             </p>

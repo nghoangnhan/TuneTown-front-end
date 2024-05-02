@@ -144,7 +144,7 @@ const LoginPage = () => {
           </Form.Item>
 
           <Form.Item className="flex flex-row items-center justify-center">
-            <button className="bg-primary text-white hover:bg-primaryHoverOn hover:text-[#aaaaaa] rounded shadow-lg mt-2 py-2 px-3 w-max font-semibold">
+            <button className="px-3 py-2 mt-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 w-max">
               Login
             </button>
           </Form.Item>
@@ -153,13 +153,13 @@ const LoginPage = () => {
         <div className="flex flex-col items-center justify-center gap-2 xl:gap-4">
           <p className="text-headingText dark:text-headingTextDark">
             Don&apos;t have account?
-            <NavLink to="/signup" className="text-[#34a56d] ml-1 text-sm">
+            <NavLink to="/signup" className="ml-1 text-sm text-primary">
               Sign up
             </NavLink>
           </p>
           <p className="mb-3 text-headingText dark:text-headingTextDark">
             Forget Your Password?
-            <NavLink to="/forgotpass" className="text-[#34a56d] ml-1 text-sm">
+            <NavLink to="/forgotpass" className="ml-1 text-sm text-primary">
               Forget Password
             </NavLink>
           </p>

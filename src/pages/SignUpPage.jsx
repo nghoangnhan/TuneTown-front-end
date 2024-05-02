@@ -63,7 +63,7 @@ const SignUpPage = () => {
 
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-8">
-          <h1 className="font-bold text-headingText dark:text-headingTextDark text-3xl">Sign up</h1>
+          <h1 className="text-3xl font-bold text-headingText dark:text-headingTextDark">Sign up</h1>
         </div>
         <Form
           className="w-full"
@@ -178,7 +178,7 @@ const SignUpPage = () => {
           </Form.Item>
 
           <Form.Item className="flex flex-row items-center justify-center">
-            <button className="bg-primary text-white hover:bg-primaryHoverOn hover:text-[#aaaaaa] rounded shadow-lg mt-2 py-2 px-3 w-max font-semibold">
+            <button className="px-3 py-2 mt-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 w-max">
               Sign Up
             </button>
           </Form.Item>

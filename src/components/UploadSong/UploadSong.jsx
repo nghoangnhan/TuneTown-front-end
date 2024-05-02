@@ -158,8 +158,8 @@ const UploadSong = () => {
         label="Upload Cover Art"
         extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
         getValueFromEvent={(e) => e && e.fileList}
-        valuePropName="fileList"
-      ><div className="flex flex-row items-center gap-2">
+        valuePropName="fileList">
+        <div className="flex flex-row items-center gap-2">
           <UploadFileDropZone
             uploadedFile={uploadedFile}
             setUploadedFile={setUploadedFile}
