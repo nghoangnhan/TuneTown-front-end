@@ -69,10 +69,10 @@ export const useSongUtils = () => {
 
   const NavigatePlaylist = (playlistId, owned) => {
     if (owned == true) {
-      navigate(`my-detail-playlist/${playlistId}`);
+      navigate(`/my-detail-playlist/${playlistId}`);
     }
     else {
-      navigate(`detail-playlist/${playlistId}`);
+      navigate(`/detail-playlist/${playlistId}`);
     }
 
   };
