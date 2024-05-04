@@ -12,7 +12,7 @@ import useConfig from "../../utils/useConfig";
 import { useForm } from "antd/es/form/Form";
 import { Form, Input } from "antd";
 import useDebounce from "../../hooks/useDebounce";
-import useUserUtils from "../../utils/useUserUtils";
+import DarkMode from "../DarkMode/DarkMode";
 
 const ChatNavigate = () => {
   const userId = parseInt(localStorage.getItem("userId"), 10);
@@ -42,7 +42,7 @@ const ChatNavigate = () => {
         }
       );
       const data = await response.data;
-      console.log("data: " , data)
+      console.log("data: ", data)
 
       const sortedData = Object.values(data).sort((a, b) => {
         return (
@@ -73,7 +73,7 @@ const ChatNavigate = () => {
           avatar = item.community.communityAvatar;
           sendId = item.community.id;
         }
-  
+
         return {
           chatId: sendId,
           userName: userName,
@@ -89,7 +89,7 @@ const ChatNavigate = () => {
           communityId: item.community ? item.community.id : null,
         };
       });
-  
+
       setConverList(updatedConverList);
       console.log("CONVERRRRRRRRR ", updatedConverList);
     } catch (error) {
@@ -101,11 +101,11 @@ const ChatNavigate = () => {
   const handleChatChosen = async (conver) => {
     console.log(conver.userName + " " + conver.message + " " + conver.seen);
     dispatch(setChatChosen(conver));
-    if(!conver.communityId){
+    if (!conver.communityId) {
       // Private message
-      navigate(`/chat/${conver.chatId}`);  
+      navigate(`/chat/${conver.chatId}`);
     }
-    else{
+    else {
       // Artist community
       navigate(`/chat/community/${conver.communityId}`);
     }
@@ -167,19 +167,19 @@ const ChatNavigate = () => {
   }, [isNewMessage]);
 
   return (
-    <div className={`${isMobile ? "w-full" : "w-80"} min-h-screen px-1 bg-gray-100 border-gray-200  h-fit`}>
+    <div className={`${isMobile ? "w-full" : "w-80"} min-h-screen px-1 bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary border-gray-200  h-fit`}>
       <div
         className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
         onClick={() => navigate("/home")}
       >
         <div>
-          <img src={defaultAva} className="h-12 rounded-lg" alt="" />
+          <img src={defaultAva} className="h-12 bg-white rounded-full" alt="" />
         </div>
-        <div className="text-headingText dark:text-headingTextDark">TuneTown</div>
+        <div className="text-primary dark:text-primaryDarkmode">TuneTown</div>
       </div>
 
-      <div className="relative">
-        <Form className="flex flex-col justify-center" form={form}>
+      <div className="relative ">
+        <Form className="flex flex-row items-center justify-center gap-3 mt-6" form={form}>
           <Form.Item
             name="search"
             rules={[
@@ -191,19 +191,22 @@ const ChatNavigate = () => {
             <Input
               name="keywords"
               placeholder="Search..."
+              placeholderTextColor="text-primaryText2 dark:text-primaryTextDark2"
               onChange={(e) => setKeywordsInput(e.target.value)}
-              className="w-full h-12 text-lg rounded-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary"
+              className="w-full text-lg rounded-md text-primaryText dark:text-primaryTextDark2 "
             />
           </Form.Item>
+          <Form.Item>
+            <DarkMode></DarkMode>
+          </Form.Item>
         </Form>
-
         {/* Render userResults absolutely positioned below the search input */}
         {userRs && (
           <div className="absolute left-0 right-0 bg-white shadow-md top-full">
-            <ul className="px-4 py-2">
+            <ul className="px-4 py-1">
               {userRs.map(user => (
                 <li key={user.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100" onClick={() => handleUserItemClick(user)}>
-                  <img src={`${user.avatar ? user.avatar : defaultAva}`} alt="User Avatar" className="w-8 h-8 rounded-full" />
+                  <img src={`${user.avatar ? user.avatar : defaultAva}`} alt="User Avatar" className="w-8 h-8 bg-white rounded-full" />
                   <span>{user.userName}</span>
                 </li>
               ))}
@@ -211,15 +214,17 @@ const ChatNavigate = () => {
           </div>
         )}
       </div>
+
       <div className="ml-2">
         <BackButton></BackButton>
       </div>
+
       <div className="flex flex-col justify-center gap-2 mt-5">
         {converList.map((conver) => (
           <div
             key={conver.chatId}
-            className={`${converChosen.chatId == conver.chatId ? "bg-slate-300" : ""
-              } flex flex-row items-center hover:bg-slate-300 gap-3 p-2 cursor-pointer w-full rounded-sm`}
+            className={`${converChosen.chatId == conver.chatId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : ""
+              } flex flex-row items-center  dark:bg-backgroundPlaylistDark hover:opacity-60 gap-3 p-2 cursor-pointer w-full rounded-sm`}
             onClick={() => {
               handleChatChosen(conver);
             }}
@@ -228,22 +233,21 @@ const ChatNavigate = () => {
               <img
                 src={conver.avatar ? conver.avatar : defaultAva}
                 alt="user"
-                className="rounded-full"
+                className="bg-white rounded-full"
               />
             </div>
-            <div className="w-3/4">
+            <div className="w-3/4 text-primaryText2 dark:text-primaryTextDark2">
               <h3 className="text-base font-bold">
                 {AcronymName(conver.userName, 17)}
               </h3>
               <p
-                className={`text-sm ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : "font-italic"
+                className={`text-sm ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : "font-thin"
                   }`}
               >
-                {" "}
                 {AcronymName(conver.message, 22)}
               </p>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center text-primaryText2 dark:text-primaryTextDark2">
               <p className={`text-sm w-16 ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : ""} `}>
                 {conver.time}
               </p>

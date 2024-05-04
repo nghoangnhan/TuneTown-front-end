@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
-import LoginPage from "../pages/LoginPage";
-import SignupPage from "../pages/SignUpPage";
-import ForgotPass from "../pages/ForgotPass";
+import SignUpPage from "../pages/Auth/SignUpPage";
+import LoginPage from "../pages/Auth/LoginPage";
+import ForgotPass from "../pages/Auth/ForgotPass";
+
 // import GuardRoute from "./GuardRoute";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
@@ -30,7 +31,7 @@ export default function init(routes) {
         path: "signup",
         element: (
           //<GuardRoute>
-          <SignupPage />
+          <SignUpPage />
           //</GuardRoute>
         ),
       },

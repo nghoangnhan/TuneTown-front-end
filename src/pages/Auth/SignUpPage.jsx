@@ -3,8 +3,8 @@ import { DatePicker, Form, Input, message } from "antd";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import UseCookie from "../hooks/useCookie";
-import useConfig from "../utils/useConfig";
+import UseCookie from "../../hooks/useCookie";
+import useConfig from "../../utils/useConfig";
 
 const SignUpPage = () => {
   const passwordRef = useRef();

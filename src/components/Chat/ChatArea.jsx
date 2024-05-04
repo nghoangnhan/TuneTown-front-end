@@ -98,18 +98,18 @@ const ChatArea = () => {
 
   useEffect(() => {
     if (socket) {
-        handleSocketReconnect(socket);
+      handleSocketReconnect(socket);
     }
-}, [socket]);
+  }, [socket]);
 
   useEffect(() => {
-    if (socket){
+    if (socket) {
       socket.on("receive_message", (message) => {
         console.log("Received message:", message);
         loadMessage(userId, chatId).then((data) => {
           setChatContent(data);
         });
-        dispatch(setIsNewMessage(true));  
+        dispatch(setIsNewMessage(true));
       })
     }
 
@@ -121,16 +121,16 @@ const ChatArea = () => {
 
   return (
     <div className="xl:w-4/5">
-      <div className="fixed flex flex-row items-center w-full h-20 pl-3 bg-slate-50">
+      <div className="fixed flex flex-row items-center w-full h-20 pl-3 bg-slate-50 dark:bg-backgroundChattingInputNavDark">
         <BackIcon></BackIcon>
         <div className="w-10">
           <img
             src={`${converChosen.avatar ? converChosen.avatar : defaultAva}`}
             alt="user"
-            className="rounded-full"
+            className="bg-white rounded-full"
           />
         </div>
-        <h2 className="z-50 flex items-center h-full pl-3 font-bold text-black">
+        <h2 className="z-50 flex items-center h-full pl-3 font-bold text-primary dark:text-primaryDarkmode">
           {converChosen.userName ? converChosen.userName : "Unknown"}
         </h2>
       </div>
@@ -142,11 +142,11 @@ const ChatArea = () => {
       {/* Load message content */}
 
       {/* Chat input area */}
-      <div className="fixed bottom-0 flex flex-row items-center w-full h-20 pl-3 bg-slate-200">
+      <div className="fixed bottom-0 flex flex-row items-center w-full h-20 pl-3 bg-slate-200 dark:bg-backgroundChattingInputNavDark">
         <div className="w-[1050px] h-12 mx-2">
           <input
             type="text"
-            className="w-full p-3 rounded-md"
+            className="w-full p-3 rounded-md bg-backgroundChattingInput dark:bg-backgroundChattingInputDark"
             placeholder="Type a message..."
             value={newMessage}
             onChange={handleMessageChange}
@@ -159,7 +159,7 @@ const ChatArea = () => {
         </div>
         <div className="w-[130px] p-2">
           <button
-            className="w-full p-3 rounded-md bg-slate-300"
+            className="w-full p-3 text-white rounded-lg bg-primary hover:opacity-50 dark:bg-primaryDark"
             onClick={() => sendMessage(userId, chatId, newMessage)}
           >
             Send

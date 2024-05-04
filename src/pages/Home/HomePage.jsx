@@ -1,7 +1,7 @@
-import BannerSection from "../components/HomePage/BannerSection";
-import PlaylistSection from "../components/HomePage/PlaylistSection";
-import SongChart from "../components/HomePage/SongChart";
-import SongSection from "../components/HomePage/SongSection";
+import BannerSection from "../../components/HomePage/BannerSection";
+import PlaylistSection from "../../components/HomePage/PlaylistSection";
+import SongChart from "../../components/HomePage/SongChart";
+import SongSection from "../../components/HomePage/SongSection";
 
 const HomePage = () => {
   const userName = localStorage.getItem("userName");

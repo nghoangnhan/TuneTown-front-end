@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import defaultAva from "../assets/img/logo/logo.png";
-import SongItem from "../components/Song/SongItem";
-import { setChatChosen } from "../redux/slice/social";
+import SongItem from "../../components/Song/SongItem";
+import { setChatChosen } from "../../redux/slice/social";
 import { useDispatch } from "react-redux";
-import useUserUtils from "../utils/useUserUtils";
-import useIconUtils from "../utils/useIconUtils";
-import TheHeader from "../components/Header/TheHeader";
-import useChatUtils from "../utils/useChatUtils";
+import useUserUtils from "../../utils/useUserUtils";
+import useIconUtils from "../../utils/useIconUtils";
+import TheHeader from "../../components/Header/TheHeader";
+import useChatUtils from "../../utils/useChatUtils";
+import useConfig from "../../utils/useConfig";
 
 const ArtistDetailPage = () => {
   const { artistId } = useParams();
+  const { Base_AVA } = useConfig();
   const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
-  const { followArtist, unfollowArtist } = useUserUtils();
-  const { getArtistByArtistId } = useUserUtils();
+  const { followArtist, unfollowArtist, getArtistByArtistId } = useUserUtils();
   const { UserCheck, BackButton } = useIconUtils();
   const [artistDetail, setArtistDetail] = useState({});
   const [songListArtist, setSongListArtist] = useState([]);
@@ -76,33 +76,31 @@ const ArtistDetailPage = () => {
       // Navigate to joined community
       handleNavigate("community/" + communityId);
     }
-
   }
 
+  const fetchData = async () => {
+    try {
+      const communityData = await handleGetCommunity(artistId);
+      console.log("Community Data:", communityData);
+      for (const userRequest of communityData.approveRequests) {
+        if (userRequest.id == userId) {
+          setRequest(true);
+          return;
+        }
+      }
+      for (const userJoin of communityData.joinUsers) {
+        if (userJoin.id == userId) {
+          setJoin(true);
+          return;
+        }
+      }
+      setJoin(false);
+    } catch (error) {
+      console.error("Error fetching community data:", error);
+    }
+  };
   useEffect(() => {
     console.log("ISREQUEST ", request);
-    const fetchData = async () => {
-      try {
-        const communityData = await handleGetCommunity(artistId);
-        console.log("Community Data:", communityData);
-        for (const userRequest of communityData.approveRequests) {
-          if (userRequest.id == userId) {
-            setRequest(true);
-            return;
-          }
-        }
-        for (const userJoin of communityData.joinUsers) {
-          if (userJoin.id == userId) {
-            setJoin(true);
-            return;
-          }
-        }
-        setJoin(false);
-      } catch (error) {
-        console.error("Error fetching community data:", error);
-      }
-    };
-
     fetchData();
   }, [request, join, artistId]);
 
@@ -126,7 +124,7 @@ const ArtistDetailPage = () => {
         <div className="relative flex flex-row items-start mt-5 mb-5">
           <img
             className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
-            src={artistDetail.avatar ? artistDetail.avatar : defaultAva}
+            src={artistDetail.avatar ? artistDetail.avatar : Base_AVA}
             alt="artist-avatar"
           />
         </div>

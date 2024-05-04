@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import MyPlaylistSection from "../components/Users/MyPlaylistSection";
-import useIconUtils from "../utils/useIconUtils";
+import MyPlaylistSection from "../../components/Users/MyPlaylistSection";
+import useIconUtils from "../../utils/useIconUtils";
 
 const PlaylistPage = () => {
   // const [playlistList, setPlaylistList] = useState();

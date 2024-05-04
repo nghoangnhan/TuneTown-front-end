@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
-import useIconUtils from '../utils/useIconUtils';
-import useConfig from '../utils/useConfig';
-import useUserUtils from '../utils/useUserUtils';
+import useIconUtils from '../../utils/useIconUtils';
+import useConfig from '../../utils/useConfig';
+import useUserUtils from '../../utils/useUserUtils';
 import { useEffect, useState } from 'react';
-import PostSection from '../components/Forum/PostSection';
-import useChatUtils from '../utils/useChatUtils';
+import PostSection from '../../components/Forum/PostSection';
+import useChatUtils from '../../utils/useChatUtils';
 import { Modal, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { setChatChosen } from "../redux/slice/social";
+import { setChatChosen } from "../../redux/slice/social";
 import { useDispatch, useSelector } from "react-redux";
-import EditUserForm from '../components/Users/EditUserForm';
-import EditGenreForm from '../components/Users/EditGenreForm';
+import EditUserForm from '../../components/Users/EditUserForm';
+import EditGenreForm from '../../components/Users/EditGenreForm';
 
 // eslint-disable-next-line no-unused-vars
 const UserDetailPage = ({ owned }) => {

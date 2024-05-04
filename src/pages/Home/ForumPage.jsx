@@ -1,13 +1,13 @@
 import { Modal } from "antd";
-import CreatePost from "../components/Forum/CreatePost";
-import PostSection from "../components/Forum/PostSection";
+import CreatePost from "../../components/Forum/CreatePost";
+import PostSection from "../../components/Forum/PostSection";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import SongChart from "../components/HomePage/SongChart";
-import { useForumUtils } from "../utils/useChatUtils";
-import useConfig from "../utils/useConfig";
+import SongChart from "../../components/HomePage/SongChart";
+import { useForumUtils } from "../../utils/useChatUtils";
+import useConfig from "../../utils/useConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { setRefreshPost } from "../redux/slice/social";
+import { setRefreshPost } from "../../redux/slice/social";
 
 const ForumPage = () => {
   const { getAllPost } = useForumUtils();

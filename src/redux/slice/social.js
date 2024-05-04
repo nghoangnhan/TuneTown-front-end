@@ -12,6 +12,13 @@ const socialStore = createSlice({
       time: "",
       avatar: null,
     },
+    currentCommunity: {
+      communityId: null,
+      communityName: "",
+      communityAvatar: "",
+      communityHost: "",
+      communityMembers: [],
+    },
     isReplying: false,
     replyComment: {
       replyCommentId: null,
@@ -28,6 +35,13 @@ const socialStore = createSlice({
     setChatChosen: (state, action) => {
       state.currentChat = action.payload;
     },
+    setCurrentCommunity: (state, action) => {
+      state.currentCommunity = action.payload;
+    },
+    setCommunityId: (state, action) => {
+      state.currentCommunity.communityId = action.payload;
+    }
+    ,
     setIsNewMessage: (state, action) => {
       state.isNewMessage = action.payload;
     },
@@ -54,6 +68,7 @@ const socialStore = createSlice({
 export const {
   setChatChosen,
   setChatId,
+  setCurrentCommunity, setCommunityId,
   setIsNewMessage,
   setIsReply,
   setReplyCommentId,

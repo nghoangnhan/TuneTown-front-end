@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
-import AudioWaveSurfer from "../components/Forum/AudioWaveSurfer";
-import useConfig from "../utils/useConfig";
-import useIconUtils from "../utils/useIconUtils";
+import AudioWaveSurfer from "../../components/Forum/AudioWaveSurfer";
+import useConfig from "../../utils/useConfig";
+import useIconUtils from "../../utils/useIconUtils";
 import ColorThief from "colorthief";
 import { useEffect, useState } from "react";
-import useSongUtils from "../utils/useSongUtils";
-import LyricSection from "../components/HomePage/LyricSection";
-import { useMusicAPIUtils } from "../utils/useMusicAPIUtils";
-import TheHeader from "../components/Header/TheHeader";
+import useSongUtils from "../../utils/useSongUtils";
+import LyricSection from "../../components/HomePage/LyricSection";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import TheHeader from "../../components/Header/TheHeader";
 
 const SongDetailPage = () => {
     const { songId } = useParams();

@@ -2,11 +2,11 @@
 import { Form, Input } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import UseCookie from "../hooks/useCookie";
+import UseCookie from "../../hooks/useCookie";
 import { useForm } from "antd/es/form/Form";
-import SongItemSearch from "../components/Song/SongItemSearch";
-import useDebounce from "../hooks/useDebounce";
-import useConfig from "../utils/useConfig";
+import SongItemSearch from "../../components/Song/SongItemSearch";
+import useDebounce from "../../hooks/useDebounce";
+import useConfig from "../../utils/useConfig";
 
 const SearchPage = () => {
   const { getToken } = UseCookie();
@@ -85,7 +85,7 @@ const SearchPage = () => {
     }
   }, [keywordsInputDebounce]);
   return (
-    <div className="text-white bg-backgroundPrimary dark:bg-backgroundDarkPrimary min-h-screen pt-16 px-5">
+    <div className="min-h-screen px-5 pt-16 text-white bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <Form className="flex flex-col justify-center" form={form}>
         <Form.Item
           name="search"
@@ -99,12 +99,12 @@ const SearchPage = () => {
             name="keywords"
             placeholder="Search by song, artist, lyrics..."
             onChange={(e) => setKeywordsInput(e.target.value)}
-            className="rounded-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary w-full h-14 text-lg"
+            className="w-full text-lg rounded-md bg-backgroundComponentPrimary text-primaryText2 dark:text-primaryTextDark2 dark:bg-backgroundComponentDarkPrimary h-14"
           />
         </Form.Item>
       </Form>
       {songRs != null && (
-        <div className="bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl m-auto ml-2 mr-2 mt-2 pt-5 pl-5 pr-5 pb-5">
+        <div className="pt-5 pb-5 pl-5 pr-5 m-auto mt-2 ml-2 mr-2 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
           {songRs.map((song, index) => (
             <SongItemSearch key={song.id} songOrder={index + 1} song={song} />
           ))}

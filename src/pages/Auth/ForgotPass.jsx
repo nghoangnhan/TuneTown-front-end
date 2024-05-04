@@ -2,7 +2,7 @@ import { useForm } from "antd/es/form/Form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Form, Input, message } from "antd";
 import axios from "axios";
-import useConfig from "../utils/useConfig";
+import useConfig from "../../utils/useConfig";
 
 const ForgotPass = () => {
   const [form] = useForm();

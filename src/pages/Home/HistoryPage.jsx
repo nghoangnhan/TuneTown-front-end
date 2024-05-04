@@ -1,4 +1,4 @@
-import HistorySection from "../components/Users/HistorySection";
+import HistorySection from "../../components/Users/HistorySection";
 
 const HistoryPage = () => {
   return (

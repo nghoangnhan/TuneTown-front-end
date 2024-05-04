@@ -3,13 +3,13 @@ import axios from "axios";
 import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { NavLink, useNavigate } from "react-router-dom";
-import UseCookie from "../hooks/useCookie";
 import { useDispatch } from "react-redux";
-import { setUserInfor } from "../redux/slice/account";
-import GoogleLoginButton from "../components/AuthLogin/AuthGoogleLogin";
+import { setUserInfor } from "../../redux/slice/account";
+import GoogleLoginButton from "../../components/AuthLogin/AuthGoogleLogin";
 import { gapi } from "gapi-script";
-import LoginFacebook from "../components/AuthLogin/AuthFacebookLogin";
-import useConfig from "../utils/useConfig";
+import LoginFacebook from "../../components/AuthLogin/AuthFacebookLogin";
+import useConfig from "../../utils/useConfig";
+import UseCookie from "../../hooks/useCookie";
 
 const clientId =
   "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";

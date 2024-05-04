@@ -100,25 +100,25 @@ export const useChatUtils = () => {
   const loadMessage = async (sendUserId, receiveUserId) => {
     try {
       const response = await axios.post(
-          `${Base_URL}/messages/loadMessage`,
-          {
-              sendUser: {
-                id: parseInt(sendUserId)
-              },
-              receiveUserId: parseInt(receiveUserId),
+        `${Base_URL}/messages/loadMessage`,
+        {
+          sendUser: {
+            id: parseInt(sendUserId)
           },
-          {
-              headers: {
-                  Authorization: `Bearer ${access_token}`,
-              },
-          }
+          receiveUserId: parseInt(receiveUserId),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
       );
       const messages = response.data;
       console.log("MESSAGES", messages);
       if (response.status !== 200) {
-          throw new Error("Failed to fetch messages");
+        throw new Error("Failed to fetch messages");
       }
-    
+
       // Extract the necessary information from the regular message response
       const updatedChatContent = [];
       for (const key in messages) {
@@ -129,44 +129,46 @@ export const useChatUtils = () => {
           console.log("MESSAGES ", messages);
           for (const msg of message.community.communityMessages) {
             const own = userId === msg.sendUser.id;
-            const name = msg.type == 2 ? "SYSTEM MESSAGE" : (own ? " " : msg.sendUser.userName);  
+            const name = msg.type == 2 ? "SYSTEM MESSAGE" : (own ? " " : msg.sendUser.userName);
             updatedChatContent.push({
-                id: message.community.id,
-                name: name,
-                own: own,
-                message: msg.content,
-                time: new Date(msg.messageDate).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                }),
-                avatar: "",
-                sentUserAvatar: msg.sendUser.avatar,
-                seen: msg.seen
-            });
-          }
-        } 
-        else {
-          const own = userId === message.message.sendUser.id;
-          const name = own ? " " : message.sentUser.userName;  
-          updatedChatContent.push({
-              id: message.sentUser.id,
+              id: message.community.id,
               name: name,
               own: own,
-              message: message.message.content,
-              time: new Date(message.message.messageDate).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
+              message: msg.content,
+              time: new Date(msg.messageDate).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
               }),
-              avatar: message.message.sendUser.avatar,
-              sentUserAvatar: message.sentUser.avatar,
-              seen: message.message.seen
+              avatar: "",
+              sentUserAvatar: msg.sendUser.avatar,
+              seen: msg.seen,
+              type: msg.type
+            });
+          }
+        }
+        else {
+          const own = userId === message.message.sendUser.id;
+          const name = own ? " " : message.sentUser.userName;
+          updatedChatContent.push({
+            id: message.sentUser.id,
+            name: name,
+            own: own,
+            message: message.message.content,
+            time: new Date(message.message.messageDate).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            avatar: message.message.sendUser.avatar,
+            sentUserAvatar: message.sentUser.avatar,
+            seen: message.message.seen,
+            type: message.message.type
           });
         }
       }
       // console.log("UPDATE ", updatedChatContent);
       return updatedChatContent;
     } catch (error) {
-        console.error("Error fetching messages:", error);
+      console.error("Error fetching messages:", error);
     }
   };
   const handleNavigate = (path, artistDetail) => {
@@ -229,17 +231,17 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   };
-  const createCommunity = async(artistId) => {
+  const createCommunity = async (artistId) => {
     try {
       const response = await axios.post(
         `${Base_URL}/community/create`,
         {
           communityId: artistId,
           communityName: "Your community",
-          hosts:[{
+          hosts: [{
             id: artistId
           }],
-          joinUsers:[{
+          joinUsers: [{
             id: artistId
           }],
           approveRequests: null,
@@ -256,7 +258,7 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   };
-  const getCommunityByArtist = async(artistId) => {
+  const getCommunityByArtist = async (artistId) => {
     try {
       const response = await axios.get(
         `${Base_URL}/community/getByHostId?hostId=${artistId}`,
@@ -271,16 +273,16 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   };
-  return { 
-    AcronymName, 
-    loadMessage, 
-    handleSocketReconnect, 
-    handleNavigate, 
-    getCommunityByHostId, 
-    joinRequest, 
-    outCommunity, 
+  return {
+    AcronymName,
+    loadMessage,
+    handleSocketReconnect,
+    handleNavigate,
+    getCommunityByHostId,
+    joinRequest,
+    outCommunity,
     createCommunity,
-    getCommunityByArtist 
+    getCommunityByArtist
   };
 };
 

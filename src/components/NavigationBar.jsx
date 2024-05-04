@@ -4,7 +4,7 @@ import useConfig from "../utils/useConfig";
 
 const NavigationBar = () => {
   const navigate = useNavigate();
-  const { isMobile } = useConfig();
+  const { isMobile, Base_AVA } = useConfig();
   const { HomeIcon, SearchIcon, EarthIcon, PlaylistIcon } = useIconUtils();
   return (
     <div>
@@ -17,8 +17,8 @@ const NavigationBar = () => {
           >
             <div>
               <img
-                src="src\assets\img\logo\logo.png"
-                className="h-12 rounded-lg"
+                src={Base_AVA}
+                className="h-12 bg-white rounded-full"
                 alt=""
               />
             </div>

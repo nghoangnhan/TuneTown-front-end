@@ -1,10 +1,10 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import ChatNavigate from "../components/Chat/ChatNavigate";
+import ChatNavigate from "../../components/Chat/ChatNavigate";
 import { useEffect, useState } from "react";
-import UseCookie from "../hooks/useCookie";
+import UseCookie from "../../hooks/useCookie";
 import { Modal } from "antd";
 import { useSelector } from "react-redux";
-import useConfig from "../utils/useConfig";
+import useConfig from "../../utils/useConfig";
 
 const ChattingPage = () => {
   const [open, setOpen] = useState(false);

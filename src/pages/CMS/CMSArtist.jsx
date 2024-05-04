@@ -1,18 +1,17 @@
 import axios from "axios";
-import defaultAva from "../assets/img/logo/logo.png";
-import UseCookie from "../hooks/useCookie";
+import UseCookie from "../../hooks/useCookie";
 import { useEffect, useState } from "react";
 import { Form, Input, Modal, Space, Table, message } from "antd";
-import UpdateSong from "../components/UploadSong/UpdateSong";
-import useUserUtils from "../utils/useUserUtils";
-import useConfig from "../utils/useConfig";
-import UploadSong from "../components/UploadSong/UploadSong";
-import useIconUtils from "../utils/useIconUtils";
+import UpdateSong from "../../components/UploadSong/UpdateSong";
+import useUserUtils from "../../utils/useUserUtils";
+import useConfig from "../../utils/useConfig";
+import UploadSong from "../../components/UploadSong/UploadSong";
+import useIconUtils from "../../utils/useIconUtils";
 
 const CMSArtist = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const { Base_URL } = useConfig();
+  const { Base_URL, Base_AVA } = useConfig();
   const { PlusIcon } = useIconUtils();
   const userId = localStorage.getItem("userId");
   const [form] = Form.useForm();
@@ -112,7 +111,7 @@ const CMSArtist = () => {
         return (
           <div className="flex items-center justify-center">
             <img
-              src={poster.props.src ? poster.props.src : defaultAva}
+              src={poster.props.src ? poster.props.src : Base_AVA}
               alt="poster"
               className="w-12 h-12 rounded-lg"
             />

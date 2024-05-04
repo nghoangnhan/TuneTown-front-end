@@ -1,9 +1,9 @@
 import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
-import LeftSideBar from "../components/CMS/LeftSideBar";
-import FooterSection from "../components/CMS/FooterSection";
-import ContentPage from "../components/CMS/pages/ContentPage";
-import TheHeader from "../components/Header/TheHeader";
+import LeftSideBar from "../../components/CMS/LeftSideBar";
+import FooterSection from "../../components/CMS/FooterSection";
+import ContentPage from "../../components/CMS/pages/ContentPage";
+import TheHeader from "../../components/Header/TheHeader";
 
 const CMSPage = () => {
   return (
