@@ -77,14 +77,10 @@ const MyPlaylistSection = () => {
   useEffect(() => {
     getUserPlaylist(userId).then((data) => {
       setPlaylistList(data);
-      console.log("playlistttt", playlistList);
+
       dispatch(setMyPLaylistList(playlistList));
     });
   }, [refresh]);
-
-  // dispatch(setPlaylistList(playlistList));
-  // if (!playlistList) return null;
-  // console.log("playlistttt", playlistList);
 
   if (!playlistList)
     return (
