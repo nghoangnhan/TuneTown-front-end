@@ -311,14 +311,18 @@ const useIconUtils = () => {
         return <FontAwesomeIcon icon={faMoon}></FontAwesomeIcon>
     }
 
-    const CreatePlaylistButton = (CreateNewPlaylist) => {
+    const CreatePlaylistButton = ({ CreateNewPlaylist }) => {
         return <button
-            onClick={CreateNewPlaylist}
-            className="mt-3 mb-5 ml-3 border border-solid rounded-md border-primary text-primary hover:text-backgroundPrimary bg-backgroundPrimary hover:bg-primaryDarkmode dark:text-primaryTextDark2 dark:bg-primary dark:hover:bg-primaryTextDark2 dark:hover:text-primary "
+            onClick={() => CreateNewPlaylist()}
+            className="mt-3 mb-5 ml-3 bg-white border border-solid rounded-md border-primary text-primary hover:opacity-60"
         >
             <div className="px-2 py-2 font-bold">+ Create New Playlist</div>
         </button>
     }
+    CreatePlaylistButton.propTypes = {
+        CreateNewPlaylist: PropTypes.func.isRequired,
+    }
+
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
