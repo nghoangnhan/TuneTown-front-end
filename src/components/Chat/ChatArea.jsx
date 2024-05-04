@@ -95,18 +95,23 @@ const ChatArea = () => {
     }
   }, [converChosen]);
 
-  useEffect(() => {
-    handleSocketReconnect(socket);
-  }, []);
 
   useEffect(() => {
-    socket.on("receive_message", (message) => {
-      console.log("Received message:", message);
-      loadMessage(userId, chatId).then((data) => {
-        setChatContent(data);
-      });
-      dispatch(setIsNewMessage(true));
-    });
+    if (socket) {
+        handleSocketReconnect(socket);
+    }
+}, [socket]);
+
+  useEffect(() => {
+    if (socket){
+      socket.on("receive_message", (message) => {
+        console.log("Received message:", message);
+        loadMessage(userId, chatId).then((data) => {
+          setChatContent(data);
+        });
+        dispatch(setIsNewMessage(true));  
+      })
+    }
 
     // // Ngắt kết nối khi component unmounts
     // return () => {
