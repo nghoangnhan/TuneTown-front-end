@@ -15,7 +15,7 @@ const MessageSection = ({ chatContent }) => {
     scollToBottom(windownEndRef);
   }, [chatContent]);
   return (
-    <div className="flex flex-col h-screen min-h-screen py-20 overflow-auto bg-backgroundChat dark:bg-backgroundChattingDark xl:w-full">
+    <div className="flex flex-col w-full h-screen min-h-screen py-20 overflow-auto bg-backgroundChat dark:bg-backgroundChattingDark">
       {chatContent != null &&
         chatContent.map((chat, index) => (
           <div

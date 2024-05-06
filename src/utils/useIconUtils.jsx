@@ -2,6 +2,7 @@ import { faComments } from '@fortawesome/free-regular-svg-icons';
 import {
     faArrowTrendUp, faBackwardStep, faCaretLeft, faCheckCircle, faEarthAmerica, faForwardStep, faHeadphones, faHouse, faList
     , faListOl, faMoon, faPause, faPauseCircle, faPlay, faPlayCircle, faPlus, faRepeat, faSearch, faShuffle, faSun, faUserCheck,
+    faUserGroup,
     faVolumeHigh,
     faVolumeLow
 } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +13,7 @@ const useIconUtils = () => {
     const BackButton = () => {
         return (
             <button
-                className="bg-[#59c26d] text-white font-bold shadow-md py-2 px-4 rounded-lg"
+                className="px-4 py-2 font-bold text-white rounded-lg shadow-md bg-primary dark:bg-primaryDarkmode"
                 onClick={() => window.history.back()}
             >
                 <FontAwesomeIcon
@@ -323,6 +324,10 @@ const useIconUtils = () => {
         CreateNewPlaylist: PropTypes.func.isRequired,
     }
 
+    const UserGroupIcon = () => {
+        return <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>
+    }
+
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
@@ -332,7 +337,8 @@ const useIconUtils = () => {
         LightTheme, DarkTheme,
         HomeIcon, SearchIcon, EarthIcon, PlaylistIcon,
         ShuffleIcon, RepeatIcon, PlayIcon, PauseIcon, SkipNextIcon, SkipPreviousIcon,
-        VolumeLowIcon, VolumeHighIcon, LyricIcon, QueueIcon, CreatePlaylistButton
+        VolumeLowIcon, VolumeHighIcon, LyricIcon, QueueIcon, CreatePlaylistButton,
+        UserGroupIcon
     };
 };
 

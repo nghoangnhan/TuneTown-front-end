@@ -15,7 +15,8 @@ import EditGenreForm from '../../components/Users/EditGenreForm';
 // eslint-disable-next-line no-unused-vars
 const UserDetailPage = ({ owned }) => {
     // const { userId } = useParams();
-    const userId = localStorage.getItem("userId")
+    const userId = localStorage.getItem("userId");
+    const userName = localStorage.getItem("userName");
     const { BackButton, UserCheck } = useIconUtils();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const UserDetailPage = ({ owned }) => {
                 chatId: path,
                 name: community.communityName,
                 avatar: community.communityAvatar,
+                communityId: community.communityId,
             })
         );
         console.log("COMMUNITY ", community);
@@ -44,13 +46,21 @@ const UserDetailPage = ({ owned }) => {
 
     const handleCreateCommunity = async () => {
         try {
+            console.log("Community", community);
             if (!isCreated) {
-                await createCommunity(userId);
+                await createCommunity(userId, userName);
                 setIsCreated(true);
                 message.success("Community Created!");
             }
             else {
-                handleNavigate("community/" + community.id);
+                dispatch(setChatChosen({
+                    chatId: "community/" + community.id,
+                    userName: community.communityName,
+                    avatar: community.communityAvatar,
+                    communityId: community.communityId
+                })
+                );
+                handleNavigate("community/" + community.communityId);
             }
         } catch (error) {
             console.log("Error:", error);
@@ -81,7 +91,11 @@ const UserDetailPage = ({ owned }) => {
     }, [refreshAccount]);
 
     useEffect(() => {
+        if (userId === null) {
+            navigate("/login");
+        }
         getUserInfor(userId).then((res) => {
+            console.log("USER INFOR", res);
             setUserInfor(res.user)
         });
         getUserPost(userId).then((res) => {

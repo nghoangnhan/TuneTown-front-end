@@ -38,7 +38,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
     }
     return (
         <div>
-            <Menu id={id}>
+            <Menu id={id} className='contexify-menu'>
                 <Item onClick={() => dispatch(setRefreshPost(true))}>Refresh</Item>
                 {owned == true && <Item onClick={() => handleOpenModalUpdate()}>Update Post</Item>}
                 {owned == true && <Item onClick={() => handleDeletePost(postId)}>Delete Post</Item>}

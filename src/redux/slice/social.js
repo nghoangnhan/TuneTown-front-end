@@ -11,14 +11,15 @@ const socialStore = createSlice({
       message: "",
       time: "",
       avatar: null,
-    },
-    currentCommunity: {
       communityId: null,
       communityName: "",
       communityAvatar: "",
       communityHost: "",
-      communityMembers: [],
+      approveRequests: [],
+      hosts: {},
+      joinUSers: {},
     },
+
     isReplying: false,
     replyComment: {
       replyCommentId: null,
@@ -26,6 +27,7 @@ const socialStore = createSlice({
       content: "",
       time: "",
     },
+    refreshChatList: false,
     refreshPost: false,
   },
   reducers: {
@@ -62,6 +64,9 @@ const socialStore = createSlice({
     setRefreshPost: (state, action) => {
       state.refreshPost = action.payload;
     },
+    setRefreshChat: (state, action) => {
+      state.refreshChatList = action.payload;
+    }
   },
 });
 
@@ -72,6 +77,6 @@ export const {
   setIsNewMessage,
   setIsReply,
   setReplyCommentId,
-  setReplyComment, setRefreshPost
+  setReplyComment, setRefreshPost, setRefreshChat
 } = socialStore.actions;
 export default socialStore.reducer;

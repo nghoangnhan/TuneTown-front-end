@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import defaultAva from "../../assets/img/logo/logo.png";
-import { useChatUtils } from "../../utils/useChatUtils";
 import UseCookie from "../../hooks/useCookie";
-import { setChatChosen } from "../../redux/slice/social";
+import { setChatChosen, setRefreshChat } from "../../redux/slice/social";
 import { setIsNewMessage } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
@@ -13,10 +12,12 @@ import { useForm } from "antd/es/form/Form";
 import { Form, Input } from "antd";
 import useDebounce from "../../hooks/useDebounce";
 import DarkMode from "../DarkMode/DarkMode";
+import ListChatSection from "./ListChatSection";
+import useChatUtils from "../../utils/useChatUtils";
 
 const ChatNavigate = () => {
   const userId = parseInt(localStorage.getItem("userId"), 10);
-  const { AcronymName, searchCommunityByName } = useChatUtils();
+  const { searchCommunityByName } = useChatUtils();
   const { getToken } = UseCookie();
   const [form] = useForm();
   const navigate = useNavigate();
@@ -24,10 +25,12 @@ const ChatNavigate = () => {
   const { BackButton } = useIconUtils();
   const { isMobile, Base_URL } = useConfig();
   const { access_token } = getToken();
-  const [converList, setConverList] = useState([]);
+  const refreshChatList = useSelector((state) => state.social.refreshChatList);
   const converChosen = useSelector((state) => state.social.currentChat);
   const isNewMessage = useSelector((state) => state.social.isNewMessage);
   const [keywordsInput, setKeywordsInput] = useState("");
+  const [converList, setConverList] = useState([]);
+  const [converListRaw, setChatListRaw] = useState([]);
   const [chatRs, setChatRs] = useState([]);
   const keywordsInputDebounce = useDebounce(keywordsInput, 500);
 
@@ -42,7 +45,8 @@ const ChatNavigate = () => {
         }
       );
       const data = await response.data;
-      console.log("data: ", data)
+      console.log("Fetch Chat List: ", data)
+      setChatListRaw(data);
 
       const sortedData = Object.values(data).sort((a, b) => {
         return (
@@ -64,7 +68,7 @@ const ChatNavigate = () => {
           userName = item.user.userName;
           sendId = item.user.id;
           avatar = item.user.avatar;
-          message = (item.lastMessage.type == 0 && own ?  "You: " : " ") + item.lastMessage.content;
+          message = (item.lastMessage.type == 0 && own ? "You: " : " ") + item.lastMessage.content;
         } else {
           // If the item contains community information
           userName = item.community.communityName;
@@ -86,28 +90,20 @@ const ChatNavigate = () => {
           avatar: avatar,
           seen: item.lastMessage.seen,
           // Add communityId if available
-          communityId: item.community ? item.community.id : null,
+          communityId: item.community ? item.community.communityId : null,
+          communityName: item.community ? item.community.communityName : "",
+          communityAvatar: item.community ? item.community.communityAvatar : "",
+          communityHost: item.community ? item.community.host : "",
+          approveRequests: item.community ? item.community.approveRequests : [],
+          hosts: item.community ? item.community.hosts : {},
+          joinUSers: item.community ? item.community.joinUSers : {},
         };
       });
 
       setConverList(updatedConverList);
-      console.log("CONVERRRRRRRRR ", updatedConverList);
+      console.log("Chat Navigate 94 Converlist ", updatedConverList);
     } catch (error) {
       console.error("Error fetching chat list:", error);
-    }
-  };
-
-  // Handle chat chosen
-  const handleChatChosen = async (conver) => {
-    console.log(conver.userName + " " + conver.message + " " + conver.seen);
-    dispatch(setChatChosen(conver));
-    if (!conver.communityId) {
-      // Private message
-      navigate(`/chat/${conver.chatId}`);
-    }
-    else {
-      // Artist community
-      navigate(`/chat/community/${conver.communityId}`);
     }
   };
 
@@ -152,7 +148,8 @@ const ChatNavigate = () => {
   };
 
   const handleChatItemClick = async (chat) => {
-    if(!chat.userName){
+    console.log("Chat Item Click", chat);
+    if (!chat.userName) {
       chat.userName = chat.communityName;
     }
     dispatch(setChatChosen(chat));
@@ -170,8 +167,13 @@ const ChatNavigate = () => {
   }, [keywordsInputDebounce]);
 
   useEffect(() => {
+    if (refreshChatList === true) {
+      fetchChatList().then(() => {
+        dispatch(setRefreshChat(false));
+      });
+    }
     fetchChatList();
-  }, [converChosen.seen]);
+  }, [converChosen.seen, refreshChatList]);
 
   useEffect(() => {
     if (isNewMessage == true) {
@@ -189,7 +191,7 @@ const ChatNavigate = () => {
         onClick={() => navigate("/home")}
       >
         <div>
-          <img src={defaultAva} className="h-12 bg-white rounded-full" alt="" />
+          <img src={defaultAva} className="h-12 bg-white rounded-full" alt="Logo TuneTown" />
         </div>
         <div className="text-primary dark:text-primaryDarkmode">TuneTown</div>
       </div>
@@ -207,7 +209,7 @@ const ChatNavigate = () => {
             <Input
               name="keywords"
               placeholder="Search..."
-              placeholderTextColor="text-primaryText2 dark:text-primaryTextDark2"
+              placeholdertextcolor="text-primaryText2 dark:text-primaryTextDark2"
               onChange={(e) => setKeywordsInput(e.target.value)}
               className="w-full text-lg rounded-md text-primaryText dark:text-primaryTextDark2 "
             />
@@ -221,7 +223,8 @@ const ChatNavigate = () => {
           <div className="absolute left-0 right-0 bg-white shadow-md top-full">
             <ul className="px-4 py-1">
               {chatRs.map(chat => (
-                <li key={chat.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100" onClick={() => handleChatItemClick(chat)}>
+                <li key={chat.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100"
+                  onClick={() => handleChatItemClick(chat)}>
                   <img src={`${chat.avatar ? chat.avatar : defaultAva}`} alt="Chat Avatar" className="w-8 h-8 bg-white rounded-full" />
                   <span>{chat.userName ? chat.userName : chat.communityName}</span>
                 </li>
@@ -235,42 +238,8 @@ const ChatNavigate = () => {
         <BackButton></BackButton>
       </div>
 
-      <div className="flex flex-col justify-center gap-2 mt-5">
-        {converList.map((conver) => (
-          <div
-            key={conver.chatId}
-            className={`${converChosen.chatId == conver.chatId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : ""
-              } flex flex-row items-center  dark:bg-backgroundPlaylistDark hover:opacity-60 gap-3 p-2 cursor-pointer w-full rounded-sm`}
-            onClick={() => {
-              handleChatChosen(conver);
-            }}
-          >
-            <div className="w-14">
-              <img
-                src={conver.avatar ? conver.avatar : defaultAva}
-                alt="user"
-                className="bg-white rounded-full"
-              />
-            </div>
-            <div className="w-3/4 text-primaryText2 dark:text-primaryTextDark2">
-              <h3 className="text-base font-bold">
-                {AcronymName(conver.userName, 17)}
-              </h3>
-              <p
-                className={`text-sm ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : "font-thin"
-                  }`}
-              >
-                {AcronymName(conver.message, 22)}
-              </p>
-            </div>
-            <div className="flex justify-center text-primaryText2 dark:text-primaryTextDark2">
-              <p className={`text-sm w-16 ${conver.seen === 0 && conver.sendId !== userId ? "font-bold" : ""} `}>
-                {conver.time}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Chat List  */}
+      <ListChatSection chatList={converList} chatListRaw={converListRaw} converChosen={converChosen} ></ListChatSection>
     </div>
   );
 };

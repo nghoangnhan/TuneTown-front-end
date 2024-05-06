@@ -84,7 +84,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
       {contextHolder}
       {/* Context Menu */}
-      <Menu id={`songOption_${songInforObj.id}`}>
+      <Menu id={`songOption_${songInforObj.id}`} className="contexify-menu">
         <Item onClick={refreshPlaylist}>Refresh</Item>
         <Item
           onClick={() => {

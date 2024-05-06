@@ -99,6 +99,7 @@ const ArtistDetailPage = () => {
       console.error("Error fetching community data:", error);
     }
   };
+
   useEffect(() => {
     console.log("ISREQUEST ", request);
     fetchData();

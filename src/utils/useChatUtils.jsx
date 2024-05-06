@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import useUserUtils from "./useUserUtils";
 
+// CHAT UTILS 
 export const useChatUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
@@ -118,7 +119,6 @@ export const useChatUtils = () => {
       if (response.status !== 200) {
         throw new Error("Failed to fetch messages");
       }
-
       // Extract the necessary information from the regular message response
       const updatedChatContent = [];
       for (const key in messages) {
@@ -171,6 +171,7 @@ export const useChatUtils = () => {
       console.error("Error fetching messages:", error);
     }
   };
+
   const handleNavigate = (path, artistDetail) => {
     dispatch(
       setChatChosen({
@@ -181,6 +182,7 @@ export const useChatUtils = () => {
     );
     navigate(`/chat/${path}`);
   };
+
   const getCommunityByHostId = async (hostId) => {
     try {
       const response = await axios.get(
@@ -191,12 +193,12 @@ export const useChatUtils = () => {
           },
         }
       );
-
       return response.data;
     } catch (error) {
       console.log("Error:", error);
     }
   };
+
   const joinRequest = async (userId, communityId) => {
     try {
       const response = await axios.post(
@@ -214,6 +216,7 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   };
+
   const outCommunity = async (userId, communityId) => {
     try {
       const response = await axios.post(
@@ -225,19 +228,19 @@ export const useChatUtils = () => {
           },
         }
       );
-
       return response.data;
     } catch (error) {
       console.log("Error:", error);
     }
   };
-  const createCommunity = async (artistId) => {
+
+  const createCommunity = async (artistId, userName) => {
     try {
       const response = await axios.post(
         `${Base_URL}/community/create`,
         {
           communityId: artistId,
-          communityName: "Your community",
+          communityName: `${userName}'s community`,
           hosts: [{
             id: artistId
           }],
@@ -258,6 +261,7 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   };
+
   const getCommunityByArtist = async (artistId) => {
     try {
       const response = await axios.get(
@@ -273,7 +277,7 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   };
-  const searchCommunityByName = async(communityName) => {
+  const searchCommunityByName = async (communityName) => {
     try {
       const response = await axios.get(
         `${Base_URL}/community/searchByName?communityName=${communityName}`,
@@ -288,6 +292,66 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   }
+
+  const deleteConversation = async (chatId) => {
+    try {
+      if (!chatId) return;
+      if (confirm("Are you sure you want to delete this conversation?") === false) return;
+      const response = await axios.delete(
+        `${Base_URL}/messages/deleteConversation?chatId=${chatId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  const deleteCommunity = async (communityId) => {
+    try {
+      if (!communityId) return;
+      if (confirm("Are you sure you want to delete this community?") === false) return;
+      const response = await axios.delete(
+        `${Base_URL}/community?hostId=${communityId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    }
+    catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  const ApproveRequest = async (userId, userRequest, isApprove) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/community/approve`,
+        {
+          "isApprove": isApprove === true ? 1 : 0, // 1: Approve, !1: Refuse
+          "hostId": userId,
+          "approveUserId": userRequest
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+
   return {
     AcronymName,
     loadMessage,
@@ -297,11 +361,13 @@ export const useChatUtils = () => {
     joinRequest,
     outCommunity,
     createCommunity,
+    searchCommunityByName,
     getCommunityByArtist,
-    searchCommunityByName
+    deleteConversation, deleteCommunity, ApproveRequest
   };
 };
 
+// FORUM UTILS
 export const useForumUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();

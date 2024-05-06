@@ -37,12 +37,15 @@ const ChattingPage = () => {
 
   return (
     <div>
+      {/* Desktop Layout */}
       {!isMobile && (
         <div className="flex flex-row w-full h-full min-h-screen min-w-screen">
           <ChatNavigate></ChatNavigate>
           <Outlet></Outlet>
         </div>
       )}
+      {/* End Desktop Layout */}
+      {/* Mobile Layout */}
       {isMobile && chatId == undefined && chatId == null && (
         <div className="flex w-full h-full min-h-screen ">
           <ChatNavigate></ChatNavigate>
@@ -52,6 +55,7 @@ const ChattingPage = () => {
         isMobile && chatId != undefined && chatId != null &&
         <Outlet></Outlet>
       }
+      {/* End Mobile Layout  */}
       <Modal
         title="Authorization Error"
         open={open}

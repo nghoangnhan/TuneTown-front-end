@@ -1,9 +1,61 @@
-/* --contexify-menu-bgColor: #fff;
---contexify-separator-color: rgba(0, 0, 0, 0.2);
---contexify-item-color: #333;
---contexify-activeItem-color: #fff;
---contexify-activeItem-bgColor: #3498db;
---contexify-rightSlot-color: #6f6e77;
---contexify-activeRightSlot-color: #fff;
---contexify-arrow-color: #6f6e77;
---contexify-activeArrow-color: #fff; */
+/* primary Text: "#59c26d", */
+/* backgroundPrimary: "#ecf2fd", */
+
+.contexify {
+  background-color: #ecf2fd;
+  border: 1px solid #d8e1f1;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  color: #59c26d;
+}
+
+.contexify__submenu--is-open,
+.contexify__submenu--is-open > .contexify__item__content {
+  background-color: #ecf2fd;
+  color: #59c26d;
+}
+
+.contexify__submenu--is-open > .contexify__submenu {
+}
+
+.contexify .contexify__submenu {
+}
+
+.contexify__submenu-arrow {
+}
+
+.contexify__separator {
+}
+
+.contexify__will-leave--disabled {
+}
+
+.contexify__item {
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #59c26d;
+  font-size: 14px;
+}
+
+.contexify__item:not(.contexify__item--disabled):focus {
+}
+
+.contexify__item:not(.contexify__item--disabled):hover
+  > .contexify__item__content,
+.contexify__item:not(.contexify__item--disabled):focus
+  > .contexify__item__content {
+  color: #59c26d;
+  background-color: #ecf2fd;
+}
+
+.contexify__item:not(.contexify__item--disabled):hover > .contexify__submenu {
+}
+
+.contexify__item--disabled {
+}
+
+.contexify__item__content {
+}
