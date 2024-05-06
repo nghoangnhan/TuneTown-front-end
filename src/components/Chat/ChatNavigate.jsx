@@ -16,7 +16,7 @@ import DarkMode from "../DarkMode/DarkMode";
 
 const ChatNavigate = () => {
   const userId = parseInt(localStorage.getItem("userId"), 10);
-  const { AcronymName } = useChatUtils();
+  const { AcronymName, searchCommunityByName } = useChatUtils();
   const { getToken } = UseCookie();
   const [form] = useForm();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const ChatNavigate = () => {
   const converChosen = useSelector((state) => state.social.currentChat);
   const isNewMessage = useSelector((state) => state.social.isNewMessage);
   const [keywordsInput, setKeywordsInput] = useState("");
-  const [userRs, setUserRs] = useState([]);
+  const [chatRs, setChatRs] = useState([]);
   const keywordsInputDebounce = useDebounce(keywordsInput, 500);
 
   const fetchChatList = async () => {
@@ -64,7 +64,7 @@ const ChatNavigate = () => {
           userName = item.user.userName;
           sendId = item.user.id;
           avatar = item.user.avatar;
-          message = (!own ? userNameFirstWord + ": " : " ") + item.lastMessage.content;
+          message = (item.lastMessage.type == 0 && own ?  "You: " : " ") + item.lastMessage.content;
         } else {
           // If the item contains community information
           userName = item.community.communityName;
@@ -128,25 +128,41 @@ const ChatNavigate = () => {
     }
   };
 
-  const handleSearch = async (keywords) => {
-    // Checkk if keywords is empty
-    if (keywords === "") return;
-    const searchUser = await searchUserByName(keywords);
-    if (searchUser.length === 0) return;
-    else {
-      setUserRs(searchUser);
+  const searchCommunity = async (keywords) => {
+    try {
+      const data = searchCommunityByName(keywords);
+      return data;
+    } catch (error) {
+      // Handle network errors or other exceptions
+      console.error("Error search community:", error.message);
     }
   };
 
-  const handleUserItemClick = async (user) => {
-    dispatch(setChatChosen(user));
-    navigate(`/chat/${user.id}`);
+  const handleSearch = async (keywords) => {
+    // Checkk if keywords is empty
+    if (keywords === "") return;
+    const userList = await searchUserByName(keywords);
+    // Remove self from list
+    const filteredUserList = userList.filter(user => user.id !== userId);
+    const communityList = await searchCommunity(keywords);
+    if (filteredUserList.length === 0 && communityList.length === 0) return;
+    else {
+      setChatRs([...filteredUserList, ...communityList]);
+    }
+  };
+
+  const handleChatItemClick = async (chat) => {
+    if(!chat.userName){
+      chat.userName = chat.communityName;
+    }
+    dispatch(setChatChosen(chat));
+    navigate(`/chat/${chat.id}`);
     setKeywordsInput('');
   }
 
   useEffect(() => {
     if (keywordsInputDebounce === "") {
-      setUserRs(null);
+      setChatRs(null);
     }
     if (keywordsInputDebounce) {
       handleSearch(keywordsInputDebounce);
@@ -201,13 +217,13 @@ const ChatNavigate = () => {
           </Form.Item>
         </Form>
         {/* Render userResults absolutely positioned below the search input */}
-        {userRs && (
+        {chatRs && (
           <div className="absolute left-0 right-0 bg-white shadow-md top-full">
             <ul className="px-4 py-1">
-              {userRs.map(user => (
-                <li key={user.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100" onClick={() => handleUserItemClick(user)}>
-                  <img src={`${user.avatar ? user.avatar : defaultAva}`} alt="User Avatar" className="w-8 h-8 bg-white rounded-full" />
-                  <span>{user.userName}</span>
+              {chatRs.map(chat => (
+                <li key={chat.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100" onClick={() => handleChatItemClick(chat)}>
+                  <img src={`${chat.avatar ? chat.avatar : defaultAva}`} alt="Chat Avatar" className="w-8 h-8 bg-white rounded-full" />
+                  <span>{chat.userName ? chat.userName : chat.communityName}</span>
                 </li>
               ))}
             </ul>

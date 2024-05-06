@@ -73,24 +73,21 @@ const CreatePost = () => {
           id: userId
         },
         content: contentParser,
-        song: values.id ? { id: values.id } : null,
-        playlist: {
-          id: playlistChosen?.id
-        },
+        song: null,
+        playlist: playlistChosen ? {
+          id: playlistChosen.id
+        } : null,
         likes: null,
         listComments: null,
-        mp3Link: fileMP3
+        mp3Link: fileMP3 ? fileMP3 : ''
       }, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         }
       }
       );
-      if (response.status === 200) {
-        message.success("Post Created Successfully", 2);
-      }
       form.resetFields();
-      message.loading("Posting", 2);
+      message.success("Post Created Successfully", 2);
       dispatch(setRefreshPost(true));
       setOpenModalChosePlaylist(false);
     } catch (error) {
@@ -150,7 +147,7 @@ const CreatePost = () => {
         </Form.Item>
 
         {/* Upload Cover Art  */}
-        <Form.Item
+        {/* <Form.Item
           name="songCoverArt"
           label="Upload Cover Art"
           extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
@@ -165,7 +162,7 @@ const CreatePost = () => {
             />
             {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
           </div>
-        </Form.Item>
+        </Form.Item> */}
 
         {/* Upload Song  */}
         <Form.Item

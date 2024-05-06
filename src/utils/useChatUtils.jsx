@@ -273,6 +273,21 @@ export const useChatUtils = () => {
       console.log("Error:", error);
     }
   };
+  const searchCommunityByName = async(communityName) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/community/searchByName?communityName=${communityName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
   return {
     AcronymName,
     loadMessage,
@@ -282,7 +297,8 @@ export const useChatUtils = () => {
     joinRequest,
     outCommunity,
     createCommunity,
-    getCommunityByArtist
+    getCommunityByArtist,
+    searchCommunityByName
   };
 };
 
@@ -326,32 +342,32 @@ export const useForumUtils = () => {
   };
 
   // Create Post API
-  const createPost = async (post) => {
-    try {
-      const response = await axios.post(
-        `${Base_URL}/post`,
-        {
-          author: { id: post.author },
-          content: post.content,
-          postContent: post.content,
-          song: { id: post.song },
-          playlist: { id: post.playlist },
-          likes: 0,
-          dislikes: 0,
-          listCommetnts: null,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
+  // const createPost = async (post) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${Base_URL}/post/create`,
+  //       {
+  //         author: { id: post.author.id },
+  //         content: post.content,
+  //         postContent: post.content,
+  //         song: { id: post.song.id },
+  //         playlist: { id: post.playlist.id },
+  //         likes: null,
+  //         listCommetnts: null,
+  //         mp3Link: ''
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${access_token}`,
+  //         },
+  //       }
+  //     );
 
-      return response.data;
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
+  //     return response.data;
+  //   } catch (error) {
+  //     console.log("Error:", error);
+  //   }
+  // };
 
   const updatePost = async (post) => {
     try {
@@ -528,7 +544,7 @@ export const useForumUtils = () => {
   return {
     getAllPost,
     getPostById,
-    createPost,
+    // createPost,
     updatePost,
     deletePost,
     createComment,
