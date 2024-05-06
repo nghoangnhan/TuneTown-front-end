@@ -64,7 +64,7 @@ export const useSongUtils = () => {
   };
 
   const NavigateSong = (songId) => {
-    navigate(`song/${songId}`);
+    navigate(`/song/${songId}`);
   };
 
   const NavigatePlaylist = (playlistId, owned) => {

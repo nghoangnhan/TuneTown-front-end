@@ -141,7 +141,7 @@ const PostItem = ({ postContent }) => {
         {postContent.playlist && (
           <div className="flex flex-row items-center justify-start gap-2 mt-2">
             {/* PlaylistInfo  */}
-            <div className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => NavigatePlaylist(postContent.playlist?.id, true)}>
+            <div className="flex flex-row items-center justify-center gap-1 cursor-pointer">
               <div className="rounded-md dark:bg-white">
                 <img className="rounded-md max-w-14 max-h-14 w-fit h-fit" src={postContent.playlist.coverArt ? postContent.playlist.coverArt : Base_AVA} alt="Cover Art Playlist" />
               </div>

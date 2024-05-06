@@ -6,6 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsReply } from "../../redux/slice/social.js";
 import useIconUtils from "../../utils/useIconUtils.jsx";
 import AudioWaveSurfer from "./AudioWaveSurfer.jsx";
+import useConfig from "../../utils/useConfig";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import { useSongUtils } from "../../utils/useSongUtils";
+
 
 const PostItemDetail = () => {
   const { postId } = useParams();
@@ -13,6 +17,7 @@ const PostItemDetail = () => {
   const dispatch = useDispatch();
   const userId = parseInt(localStorage.getItem("userId"));
   const commentRef = useRef(null);
+  const { Base_AVA } = useConfig();
   const windownEndRef = useRef(null);
   const [refresh, setRefresh] = useState(false);
   const [postContent, setPostContent] = useState();
@@ -21,6 +26,9 @@ const PostItemDetail = () => {
   const isReplying = useSelector((state) => state.social.isReplying);
   const replyCommentId = useSelector((state) => state.social.replyComment.replyCommentId);
   const replyComment = useSelector((state) => state.social.replyComment)
+  const [songPlaylist, setSongPlaylist] = useState(null);
+  const { getListSongPlaylist } = useMusicAPIUtils();
+  const { showArtistV2, NavigateSong, NavigatePlaylist } = useSongUtils();
 
   const countTime = new Date(
     postContent?.postTime || Date.now()
@@ -88,9 +96,25 @@ const PostItemDetail = () => {
     setRefresh(false);
   }, [refresh]);
 
-  // useEffect(() => {
-  //   scrollToBottom(windownEndRef);
-  // }, [postContent]);
+  const getSongFromPlaylist = async (playlistId) => {
+    try {
+      const data = await getListSongPlaylist(playlistId);
+      return data.map(item => item.song);
+    } catch (error) {
+      console.error("Error fetching song:", error);
+      return null;
+    }
+  }
+  console.log("AAAA ", postContent)
+  useEffect(() => {
+    if (postContent && postContent.playlist) {
+      getSongFromPlaylist(postContent.playlist.id)
+        .then(song => {
+          setSongPlaylist(song)
+        })
+        .catch(error => console.error("Error:", error));
+    }
+  }, [postContent]);
 
   if (!postContent) return null;
 
@@ -112,9 +136,45 @@ const PostItemDetail = () => {
 
         {/* Post Content */}
         <div className="text-md">{postContent?.content}</div>
-        <div className="text-primary">
-          <AudioWaveSurfer song={postContent?.song?.songData}></AudioWaveSurfer>
-        </div>
+        {(postContent.song || postContent.mp3Link) && (
+          <div className="flex flex-row items-center justify-center gap-2 mt-2">
+            <div className="items-center rounded-md dark:bg-white ">
+              <img className="rounded-md max-w-20 max-h-20 w-fit h-fit" src={postContent.song?.poster ? postContent.song.poster : Base_AVA} alt="Cover Art Song" />
+            </div>
+            <div className="w-full">
+              <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link} />
+            </div></div>
+        )}
+        {/* Playlist */}
+        {postContent.playlist && (
+          <div className="flex flex-row items-center justify-start gap-2 mt-2">
+            {/* PlaylistInfo  */}
+            <div className="flex flex-row items-center justify-center gap-1 cursor-pointer">
+              <div className="rounded-md dark:bg-white">
+                <img className="rounded-md max-w-14 max-h-14 w-fit h-fit" src={postContent.playlist.coverArt ? postContent.playlist.coverArt : Base_AVA} alt="Cover Art Playlist" />
+              </div>
+              <div >
+                <h2 className="text-lg font-bold text-primary dark:text-primaryDarkmode">{postContent.playlist.playlistName}</h2>
+                <h2 className="text-base text-primaryText2 dark:text-primaryTextDark">
+                  {postContent.playlist.user.userName ? postContent.playlist.user.userName : "Unknown User"}
+                </h2>
+              </div>
+            </div>
+            {/* Song Playlist */}
+            {songPlaylist &&
+              <div className="grid grid-cols-3 gap-x-10 gap-y-4">
+                {songPlaylist.slice(0, 6).map((song, index) => (
+                  <div key={index} className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => NavigateSong(song.id)}>
+                    <img className="rounded-md max-w-8 max-h-8 w-fit h-fit" src={song.poster ? song.poster : Base_AVA} alt="Cover Art Song" />
+                    <div>
+                      <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">{song.songName}</div>
+                      <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">{showArtistV2(song.artists)}</div></div>
+                  </div>
+                ))}
+              </div>
+            }
+          </div>
+        )}
         {/* Control Reaction */}
         <div className="flex flex-row items-center justify-center gap-5 mt-2 font-bold text-primary dark:text-primaryDarkmode">
           {/* Like  */}
