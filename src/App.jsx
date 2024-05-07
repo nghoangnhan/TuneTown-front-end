@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./routers/router";
+import { Helmet } from "react-helmet";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
     //   </BrowserRouter>
     // </Fragment>
     <div>
+      <Helmet>
+        <meta httpEquiv="X-Frame-Options" content="DENY" />
+      </Helmet>
       <RouterProvider router={router} />
     </div>
   );
