@@ -10,12 +10,12 @@ import { setIsNewMessage, setRefreshChat } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
 import { Item, Menu, useContextMenu } from "react-contexify";
-import { Modal, message } from "antd";
+import { message } from "antd";
 import ModalApprove from "./ModalApprove";
 
 const ChatArea = () => {
   const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest } = useChatUtils();
-  const { Base_URL, Base_AVA, socket } = useConfig();
+  const { Base_URL, socket } = useConfig();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const navigate = useNavigate();

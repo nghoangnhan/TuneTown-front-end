@@ -131,7 +131,7 @@ const SongItem = ({ song, songOrder, songListen }) => {
         <div
           className="flex items-center justify-center mx-2 font-bold xl:w-12 xl:h-12 xl:mx-3 text-primary dark:text-primaryDarkmode "
         >
-          <span>{songOrder + 1}</span>
+          <span>{songOrder}</span>
         </div>
         <img
           className="object-cover w-12 h-12 mr-3 rounded-lg xl:w-14 xl:h-14"

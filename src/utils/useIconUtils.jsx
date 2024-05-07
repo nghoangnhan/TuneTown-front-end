@@ -8,8 +8,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
+import useConfig from './useConfig';
 
 const useIconUtils = () => {
+    const { Base_AVA } = useConfig();
     const BackButton = () => {
         return (
             <button
@@ -107,7 +109,7 @@ const useIconUtils = () => {
     const LoadingLogo = ({ loading }) => {
         return loading && (
             <div className="overlay">
-                <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out" />
+                <img src={Base_AVA} alt="Loading..." width={100} height={100} className="zoom-in-out" />
             </div>
         )
     }

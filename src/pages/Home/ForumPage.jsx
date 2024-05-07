@@ -35,7 +35,7 @@ const ForumPage = () => {
       {/* Desktop  */}
       {!isMobile &&
         <div className="flex flex-row">
-          <div className="flex-1 py-3">
+          <div className="flex-1 px-5 py-3">
             <div className="mb-2 text-4xl font-bold">Forum</div>
             <div className="text-xl font-bold">Welcome to the Forum!</div>
             <button

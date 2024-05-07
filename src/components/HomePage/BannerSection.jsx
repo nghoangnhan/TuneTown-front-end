@@ -3,6 +3,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import { useNavigate } from "react-router-dom";
 import useConfig from "../../utils/useConfig";
 import Slider from "react-slick";
+import PropTypes from "prop-types";
 
 const BannerSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -18,6 +19,24 @@ const BannerSection = () => {
     beforeChange: (current, index) => {
       setCurrentSlide(index);
     },
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+    // Arrow 
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+
 
   };
   const userId = localStorage.getItem("userId");
@@ -34,15 +53,15 @@ const BannerSection = () => {
     });
   }, []);
   return (
-    <div className="mx-2 overflow-hidden rounded-md slider-container max-w-7xl max-h-80">
+    <div className="w-full overflow-hidden rounded-md slider-container">
       <Slider {...settings} >
         {playlistList && playlistList.slice(0, 5).map((playlistItem, index) => (
-          <div className={`${currentSlide === index ? "opacity-100" : "opacity-40"} relative ease-in transition-opacity duration-1000 flex items-center w-full h-full rounded-lg cursor-pointer`}
+          <div className={`${currentSlide === index ? "opacity-100" : "opacity-40"} relative ease-in transition-opacity duration-1000 flex items-center min-h-fit w-full h-full rounded-lg cursor-pointer`}
             key={index}
           >
             <img
               className="relative object-cover m-auto rounded-lg shadow-md cursor-pointer max-h-80 h-fit min-w-fit"
-              onClick={() => navigateToPlaylist(playlistItem.id)}
+              onDoubleClick={() => navigateToPlaylist(playlistItem.id)}
               src={
                 playlistItem.coverArt
                   ? playlistItem.coverArt
@@ -63,5 +82,58 @@ const BannerSection = () => {
       </Slider>
     </div>
   );
+};
+const NextArrow = ({ onClick }) => {
+  return (
+    <div
+      className="absolute right-0 z-50 flex items-center justify-center w-10 h-10 rounded-lg cursor-pointer top-1/2 text-primary hover:opacity-60 "
+      onClick={onClick}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    </div>
+  );
+}
+const PrevArrow = ({ onClick }) => {
+  return (
+    <div
+      className="absolute left-0 z-50 flex items-center justify-center w-10 h-10 rounded-lg cursor-pointer top-1/2 text-primary hover:opacity-60 "
+      onClick={onClick}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-6 h-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M15 19l-7-7 7-7"
+        />
+      </svg>
+    </div>
+  );
+}
+
+NextArrow.propTypes = {
+  onClick: PropTypes.func,
+};
+PrevArrow.propTypes = {
+  onClick: PropTypes.func,
 };
 export default BannerSection;
