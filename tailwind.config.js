@@ -47,6 +47,7 @@ export default {
         // Background color
         backgroundPrimary: "#ecf2fd",
         backgroundDarkPrimary: "#1a202c",
+        backgroundModalPrimary: "#ffffff",
         backgroundComponentPrimary: "#FFFFFFCC",
         backgroundComponentDarkPrimary: "#2d3748",
         backgroundMusicControl: "#f5f5f5",

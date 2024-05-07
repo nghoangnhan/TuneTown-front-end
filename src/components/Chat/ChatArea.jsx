@@ -11,6 +11,7 @@ import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { Modal, message } from "antd";
+import ModalApprove from "./ModalApprove";
 
 const ChatArea = () => {
   const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest } = useChatUtils();
@@ -213,31 +214,12 @@ const ChatArea = () => {
         </Item>
       </Menu>
       {/* Approved List */}
-      <Modal open={openApprovedList} onCancel={() => setOpenApprovedList(false)}
-        footer={null} className="bg-backgroundPrimary" centered>
-        <div className="flex flex-col items-center justify-center gap-3 p-5 bg-backgroundPrimary ">
-          <h2 className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Approved List</h2>
-          <div className="w-full overflow-auto h-96">
-            {converChosen && converChosen.approveRequests.map((item) => (
-              <div className="flex flex-row items-center justify-around gap-2 rounded-md bg-backgroundComponentPrimary" key={item.id}>
-                <img src={item.avatar ? item.avatar : Base_AVA} className="max-h-9" alt="" />
-                <h2 className="p-2">{item.userName}</h2>
-                <h2 className="p-2">{item.role}</h2>
-                <h2 className="flex gap-2 p-2">
-                  <button className="w-20 px-2 py-1 border rounded-md border-primary text-primary hover:opacity-70"
-                    onClick={() => {
-                      handleApproveRequest(userId, item.id, true)
-                    }}>Approve</button>
-                  <button className="w-20 px-2 py-1 text-red-600 border border-red-600 rounded-md hover:opacity-70"
-                    onClick={() => {
-                      handleApproveRequest(userId, item.id, false)
-                    }}>Reject</button>
-                </h2>
-              </div>)
-            )}
-          </div>
-        </div>
-      </Modal>
+      <ModalApprove
+        openApprovedList={openApprovedList}
+        setOpenApprovedList={setOpenApprovedList}
+        converChosen={converChosen}
+        handleApproveRequest={handleApproveRequest}
+      ></ModalApprove>
 
     </div>
   );
