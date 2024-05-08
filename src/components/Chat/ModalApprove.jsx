@@ -6,7 +6,7 @@ import useChatUtils from '../../utils/useChatUtils';
 const ModalApprove = ({ openApprovedList, setOpenApprovedList, converChosen }) => {
     const { Base_AVA } = useConfig();
     const userId = parseInt(localStorage.getItem("userId"), 10);
-    const { handleApproveRequest } = useChatUtils();
+    const { ApproveRequest } = useChatUtils();
     return (
         <Modal open={openApprovedList} onCancel={() => setOpenApprovedList(false)}
             footer={null} className="bg-backgroundModalPrimary" centered>
@@ -21,11 +21,11 @@ const ModalApprove = ({ openApprovedList, setOpenApprovedList, converChosen }) =
                             <h2 className="flex gap-2 p-2">
                                 <button className="w-20 px-2 py-1 border rounded-md border-primary text-primary hover:opacity-70"
                                     onClick={() => {
-                                        handleApproveRequest(userId, item.id, true)
+                                        ApproveRequest(userId, item.id, true)
                                     }}>Approve</button>
                                 <button className="w-20 px-2 py-1 text-red-600 border border-red-600 rounded-md hover:opacity-70"
                                     onClick={() => {
-                                        handleApproveRequest(userId, item.id, false)
+                                        ApproveRequest(userId, item.id, false)
                                     }}>Reject</button>
                             </h2>
                         </div>)
