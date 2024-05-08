@@ -1,27 +1,24 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, UserOutlined, GlobalOutlined, PlayCircleOutlined, GroupOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
+import useIconUtils from "../../utils/useIconUtils";
 
 const LeftSideBar = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { removeToken, getToken } = UseCookie();
+  // const dispatch = useDispatch();
+  // const { Base_AVA  } = useConfig();
+  const { removeToken } = UseCookie();
 
   function getItem(label, key, icon, children) {
     return { label, key, icon, children };
   }
   const siderItems = [
-    getItem("Profile Edit", "profile", <UploadOutlined />),
+    getItem("Profile Edit", "profile", <EditOutlined />),
     getItem("User Management", "usermanagement", <UserOutlined />),
-    getItem("Song Management", "songmanagement", <UserOutlined />),
+    getItem("Post Management", "postmanagement", <GlobalOutlined />),
+    getItem("Song Management", "songmanagement", <PlayCircleOutlined />),
+    getItem("Playlist Management", "playlistmanagement", <GroupOutlined />),
   ];
   const handleContents = (data) => {
     switch (data.key) {
@@ -45,13 +42,13 @@ const LeftSideBar = () => {
   };
   return (
     <Menu
-      theme="dark"
-      className="mt-14 "
+      className="w-full h-full pt-14 dark:bg-backgroundComponentDarkPrimary text-primaryText2 dark:text-primaryTextDark2 bg-backgroundComponentPrimary"
       mode="inline"
       defaultSelectedKeys={["0"]}
       items={siderItems}
       onClick={(e) => handleContents(e)}
-    />
+    >
+    </Menu>
   );
 };
 

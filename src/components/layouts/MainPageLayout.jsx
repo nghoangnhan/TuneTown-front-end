@@ -5,6 +5,7 @@ import TheHeader from "../Header/TheHeader";
 import MusicControlBar from "../MusicControlBar";
 import { Modal } from "antd";
 import UseCookie from "../../hooks/useCookie";
+import FooterSection from "../FooterSection";
 
 const MainPageLayout = () => {
   const [open, setOpen] = useState(false);
@@ -32,16 +33,16 @@ const MainPageLayout = () => {
   }, [access_token]);
   return (
     <Fragment>
-
       <div className="flex flex-col bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
         <div className="xl:flex xl:flex-row">
           <div className="sticky h-full xl:w-2/12 min-h-fit bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
             <NavigationBar></NavigationBar>
           </div>
           <div className="xl:w-10/12">
-            <div className="flex flex-col">
+            <div className="flex flex-col pb-12 min-h-fit">
               <TheHeader></TheHeader>
               <Outlet></Outlet>
+              <FooterSection></FooterSection>
             </div>
           </div>
         </div>

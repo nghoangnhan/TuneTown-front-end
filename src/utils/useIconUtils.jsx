@@ -330,6 +330,11 @@ const useIconUtils = () => {
         return <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>
     }
 
+    const UserGroupIconOutlined = () => {
+        return <FontAwesomeIcon icon={faUserGroup} />
+    }
+
+
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
@@ -340,7 +345,7 @@ const useIconUtils = () => {
         HomeIcon, SearchIcon, EarthIcon, PlaylistIcon,
         ShuffleIcon, RepeatIcon, PlayIcon, PauseIcon, SkipNextIcon, SkipPreviousIcon,
         VolumeLowIcon, VolumeHighIcon, LyricIcon, QueueIcon, CreatePlaylistButton,
-        UserGroupIcon
+        UserGroupIcon, UserGroupIconOutlined
     };
 };
 

@@ -5,15 +5,13 @@ import { Outlet, useParams } from "react-router-dom";
 import EditInfor from "./EditInforCMS";
 import RegisterTopic from "./UserManagement";
 import BrowserTopic from "./SongManagement";
+import FooterSection from "../../FooterSection";
 
 const ContentPage = () => {
   const params = useParams();
   return (
     <Content
-      className="min-h-screen "
-      style={{
-        background: "#ecf2fd",
-      }}
+      className=" bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-primaryText2 dark:text-primaryTextDark2"
     >
       <div
         style={{
@@ -22,6 +20,7 @@ const ContentPage = () => {
         }}
       >
         <Outlet></Outlet>
+        <FooterSection></FooterSection>
       </div>
     </Content>
   );

@@ -6,7 +6,7 @@ import useConfig from "../../utils/useConfig";
 
 const ForgotPass = () => {
   const [form] = useForm();
-  const { Base_URL } = useConfig();
+  const { Base_URL, Base_AVA } = useConfig();
   const navigate = useNavigate();
   // Get OTP
   const GetOTP = async (emailInput) => {
@@ -108,108 +108,101 @@ const ForgotPass = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
-      <div className="relative flex flex-col items-center flex-1">
-        <div className="hidden mt-10 mb-5 xl:block">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/10480/10480727.png"
-            className="object-cover w-auto h-48"
-            alt=""
-          />
+    <div className="flex flex-col items-center justify-center h-full min-h-screen bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
+      <div
+        className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer">
+        <div>
+          <img src={Base_AVA} className="bg-white rounded-full h-28" alt="Logo TuneTown" />
         </div>
-
-        <div className="flex flex-col items-center justify-center mt-10">
-          <h1 className="mb-10 text-3xl font-bold text-headingText dark:text-headingTextDark">
-            Forget Password
-          </h1>
-
-          <Form
-            form={form}
-            className="w-full"
-            name="basic"
-            labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 16,
-            }}
-            style={{
-              maxWidth: 600,
-            }}
-            initialValues={{
-              remember: true,
-            }}
+        <div className="text-primary dark:text-primaryDarkmode">TuneTown</div>
+      </div>
+      <div className="flex flex-col items-center justify-center mt-10">
+        <h1 className="mb-10 text-3xl font-bold text-headingText dark:text-headingTextDark">
+          Forget Password
+        </h1>
+        <Form
+          form={form}
+          className="w-full"
+          name="basic"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          style={{
+            maxWidth: 600,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+        >
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+            ]}
           >
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your email!",
-                },
-              ]}
-            >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="OTP"
+            name="OTP"
+            className=""
+            rules={[
+              {
+                required: true,
+                message: "Please input your OTP!",
+              },
+            ]}
+          >
+            <div className="flex flex-row gap-2">
               <Input />
-            </Form.Item>
-
-            <Form.Item
-              label="OTP"
-              name="OTP"
-              className=""
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your OTP!",
-                },
-              ]}
-            >
-              <div className="flex flex-row gap-2">
-                <Input />
-                <button
-                  className="h-12 px-1 py-1 text-white bg-green-500 rounded-md w-28"
-                  onClick={() => handleSendOTP()}
-                >
-                  Get OTP
-                </button>
-              </div>
-            </Form.Item>
-            <Form.Item
-              label="New Password"
-              name="newPassword"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input new password!",
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-            <Form.Item
-              className="flex flex-row items-center justify-center"
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            >
               <button
-                onClick={handleChangePassword}
-                className="px-3 py-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 w-max"
+                className="h-12 px-1 py-1 text-white bg-green-500 rounded-md w-28"
+                onClick={() => handleSendOTP()}
               >
-                Submit
+                Get OTP
               </button>
-            </Form.Item>
-          </Form>
+            </div>
+          </Form.Item>
+          <Form.Item
+            label="New Password"
+            name="newPassword"
+            rules={[
+              {
+                required: true,
+                message: "Please input new password!",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            className="flex flex-row items-center justify-center"
 
-          <div>
-            <p className="text-headingText dark:text-headingTextDark">
-              Back to Login?
-              <NavLink to="/" className="ml-1 text-sm text-primary">
-                Sign in
-              </NavLink>
-            </p>
-          </div>
+          >
+            <button
+              onClick={handleChangePassword}
+              className="px-3 py-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 "
+            >
+              Submit
+            </button>
+          </Form.Item>
+        </Form>
+
+        <div className="">
+          <p className="text-headingText dark:text-headingTextDark">
+            Back to Login?
+            <NavLink to="/" className="ml-1 text-sm text-primary">
+              Sign in
+            </NavLink>
+          </p>
         </div>
       </div>
     </div>

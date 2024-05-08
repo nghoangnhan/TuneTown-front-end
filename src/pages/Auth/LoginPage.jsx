@@ -171,7 +171,7 @@ const LoginPage = () => {
           <LoginFacebook />
         </div>
         <footer className="absolute bottom-5 ">
-          <p className="text-[#8d8d8d]">© 2023 TuneTown</p>
+          <p className="text-[#8d8d8d]">TuneTown ©2024</p>
         </footer>
       </div>
       <div className="hidden xl:block xl:w-1/2">

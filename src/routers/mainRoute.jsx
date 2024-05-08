@@ -24,6 +24,7 @@ import ErrorPage from "../pages/ErrorPage";
 import SongDetailPage from "../pages/Home/SongDetailPage";
 import UserDetailPage from "../pages/Home/UserDetailPage";
 import EmptyLayout from "../components/layouts/EmptyLayout";
+import PostManagement from "../components/CMS/pages/PostManagement";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
@@ -168,6 +169,10 @@ export default function init(routes) {
         path: "playlistmanagement",
         element: <PlaylistManagement />,
       },
+      {
+        path: "postmanagement",
+        element: <PostManagement />,
+      }
     ],
   };
 

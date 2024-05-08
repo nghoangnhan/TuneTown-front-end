@@ -3,7 +3,6 @@ import axios from "axios";
 import UseCookie from "../../../hooks/useCookie";
 import { useEffect, useState } from "react";
 import EditUserForm from "../../Users/EditUserForm";
-import defaultAva from "../../../assets/img/logo/logo.png";
 import { useForm } from "antd/es/form/Form";
 import useConfig from "../../../utils/useConfig";
 /* eslint-disable no-unused-vars */
@@ -11,7 +10,7 @@ const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [formRole] = useForm();
-  const { Base_URL } = useConfig();
+  const { Base_URL, Base_AVA } = useConfig();
   const [userList, setUserList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
@@ -128,7 +127,7 @@ const UserManagement = () => {
       render: (avatar) => {
         return (
           <img
-            src={avatar ? avatar : defaultAva}
+            src={avatar ? avatar : Base_AVA}
             alt="avatar"
             className="object-cover rounded-full w-11 h-11"
           />
@@ -237,7 +236,7 @@ const UserManagement = () => {
   }, [refresh]);
   return (
     <div>
-      <div className="text-2xl font-bold">User Management</div>
+      <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">User Management</div>
       <div className="flex flex-col gap-3 ">
         <div className="flex flex-row justify-between mt-5 mb-5 ">
           <div className="">
@@ -258,7 +257,7 @@ const UserManagement = () => {
               autoComplete="off"
             >
               <Form.Item label="" name="userName" className="">
-                <Input placeholder="Search User Name" onChange={handSearch} />
+                <Input placeholder="Search..." onChange={handSearch} />
               </Form.Item>
             </Form>
           </div>

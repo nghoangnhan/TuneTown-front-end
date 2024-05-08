@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { Form, Input, Modal, Space, Table, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -148,6 +146,28 @@ const SongManagement = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
+      render: (status) => {
+        if (status === 0) {
+          return (
+            <div className="flex items-center justify-center">
+              <div
+                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md h-fit hover:opacity-70">
+                Deleted
+              </div>
+            </div>
+          );
+        } else if (status === 1) {
+          return (
+            <div className="flex items-center justify-center">
+              <div
+                className="w-16 px-1 py-1 border rounded-md h-fit text-primary dark:text-primaryDarkmode border-primary hover:opacity-70"
+              >
+                Public
+              </div>
+            </div>
+          );
+        }
+      },
     },
     {
       title: "Action",
@@ -196,7 +216,7 @@ const SongManagement = () => {
   if (!songList) return null;
   return (
     <div>
-      <div className="text-2xl font-bold">Song Management</div>
+      <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Song Management</div>
       <div className="flex flex-row justify-between mt-5 mb-5 ">
         <div className="">
           <Form
@@ -214,13 +234,13 @@ const SongManagement = () => {
             autoComplete="off"
           >
             <Form.Item label="" name="songName">
-              <Input placeholder="Search Song" onChange={handSearch} />
+              <Input placeholder="Search..." onChange={handSearch} />
             </Form.Item>
           </Form>
         </div>
         <div>
           <button
-            className="py-1 px-2  bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
+            className="px-4 py-2 text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
             onClick={showModal}
           >
             Create New Song

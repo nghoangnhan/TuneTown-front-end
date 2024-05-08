@@ -34,7 +34,7 @@ const DetailPlaylist = () => {
       className={`${songPlaylistList != null && songPlaylistList.length > 0
         ? "min-h-screen h-full"
         : "min-h-screen"
-        } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary mb-20`}
+        } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-20`}
     >
       <div className="my-4">
         <BackButton></BackButton>
