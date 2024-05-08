@@ -25,7 +25,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
         }
         else {
             // Artist community
-            navigate(`/chat/community/${conver.communityId}`);
+            navigate(`/chat/community/${conver.chatId}`);
         }
     };
 

@@ -60,7 +60,7 @@ const UserDetailPage = ({ owned }) => {
                     communityId: community.communityId
                 })
                 );
-                handleNavigate("community/" + community.communityId);
+                handleNavigate("community/" + community.id);
             }
         } catch (error) {
             console.log("Error:", error);
