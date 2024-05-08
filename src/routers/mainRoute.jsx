@@ -35,7 +35,6 @@ export default function init(routes) {
     // Element là AuthenLayout, các children muốn hiển thị được trong AuthenLayout thì trong Layout phải có outlet mới hiển thị được
     // outlet đóng vai trò tương tự children
     // Xem thêm ở https://reactrouter.com/en/main/components/outlet
-
     children: [
       {
         path: "home",
@@ -103,21 +102,14 @@ export default function init(routes) {
     ],
   };
 
-  const artistRoute = {
-    path: "/:sectionId?",
+  const signleRoute = {
+    path: "/",
     element: <EmptyLayout />,
     children: [
       {
         path: "artist/:artistId",
         element: <ArtistDetailPage />,
       },
-    ],
-  };
-
-  const songRoute = {
-    path: "/:sectionId?",
-    element: <EmptyLayout />,
-    children: [
       {
         path: "song/:songId",
         element: <SongDetailPage />
@@ -125,7 +117,7 @@ export default function init(routes) {
     ],
   };
 
-  // Error Page
+  // Error Page Route
   const errorRoute = {
     path: "*",
     element: <ErrorPage />,
@@ -179,8 +171,7 @@ export default function init(routes) {
   // Push route
   routes.push(route);
   routes.push(cmsRoute);
-  routes.push(artistRoute);
-  routes.push(songRoute);
+  routes.push(signleRoute);
   routes.push(chatRoute);
   routes.push(errorRoute);
 }

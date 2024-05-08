@@ -7,7 +7,7 @@ const ErrorPage = () => {
         <div>
             <div
                 className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
-                onClick={() => navigate("/home")}
+                onClick={() => navigate("/")}
             >
                 <div>
                     <img src={defaultAva} className="h-12 rounded-lg" alt="" />

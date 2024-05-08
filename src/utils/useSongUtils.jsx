@@ -42,7 +42,7 @@ export const useSongUtils = () => {
         <span
           key={artist.id}
           className="cursor-pointer hover:underline"
-          onClick={() => navigate(`artist/${artist.id}`)}
+          onClick={() => navigate(`/artist/${artist.id}`)}
         >
           {artist.userName}, &nbsp;
         </span>
@@ -53,7 +53,7 @@ export const useSongUtils = () => {
         <span
           key={artist.id}
           className="cursor-pointer hover:underline"
-          onClick={() => navigate(`artist/${artist.id}`)}
+          onClick={() => navigate(`/artist/${artist.id}`)}
         >
           {artist.userName}
         </span>
