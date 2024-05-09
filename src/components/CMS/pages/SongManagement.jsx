@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import UseCookie from "../../../hooks/useCookie";
 import UploadSong from "../../UploadSong/UploadSong";
 import UpdateSong from "../../UploadSong/UpdateSong";
-import defaultAva from "../../../assets/img/logo/logo.png";
 import useConfig from "../../../utils/useConfig";
 
 const SongManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
-  const { Base_URL } = useConfig();
+  const { Base_URL, Base_AVA } = useConfig();
   const { access_token } = getToken();
   const [songList, setSongList] = useState([]);
   const [songPage, setSongPage] = useState(1);
@@ -58,7 +57,6 @@ const SongManagement = () => {
   const deleteSong = async (songId) => {
     try {
       if (confirm(`Are you sure you want to delete this song?`) == true) {
-        console.log("auth", access_token);
         const response = await axios.delete(
           `${Base_URL}/songs/deleteSong?songId=${songId}`,
           {
@@ -108,7 +106,7 @@ const SongManagement = () => {
         return (
           <div className="flex items-center justify-center">
             <img
-              src={poster.props.src ? poster.props.src : defaultAva}
+              src={poster.props.src ? poster.props.src : Base_AVA}
               alt="poster"
               className="w-12 h-12 rounded-lg"
             />
@@ -174,15 +172,15 @@ const SongManagement = () => {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <Space>
+        <Space className="flex items-center justify-center">
           <button
-            className="py-1 px-2 h-8 w-14  bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
+            className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
             onClick={() => handUpdateSong(record.key, record.songName)}
           >
             Edit
           </button>
           <button
-            className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
+            className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-60"
             onClick={() => deleteSong(record.key)}
           >
             Delete
@@ -215,7 +213,7 @@ const SongManagement = () => {
 
   if (!songList) return null;
   return (
-    <div>
+    <div className="h-full min-h-screen">
       <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Song Management</div>
       <div className="flex flex-row justify-between mt-5 mb-5 ">
         <div className="">

@@ -1,99 +1,124 @@
-import PropTypes from 'prop-types';
-import { Form, Input, Modal, Space, Table, message } from "antd";
-import axios from "axios";
+import { Form, Input, Modal, Table } from "antd";
 import { useEffect, useState } from "react";
-import UseCookie from "../../../hooks/useCookie";
-import UploadSong from "../../UploadSong/UploadSong";
-import UpdateSong from "../../UploadSong/UpdateSong";
-import defaultAva from "../../../assets/img/logo/logo.png";
+import { useForumUtils } from "../../../utils/useChatUtils";
 import useConfig from "../../../utils/useConfig";
+import UpdatePost from "../../Forum/UpdatePost";
 
 const PostManagement = () => {
-    const { getToken } = UseCookie();
-    const [form] = Form.useForm();
-    const { Base_URL } = useConfig();
-    const { access_token } = getToken();
-    const [songList, setSongList] = useState([]);
-    const [songPage, setSongPage] = useState(1);
+    const { Base_AVA } = useConfig();
+    const [postList, setPostlist] = useState([
+        {
+            "id": 1,
+            "author": {
+                "id": 202,
+                "userName": "Nhat Nam Nguyen",
+                "email": "nguyennam2002pro@gmail.com",
+                "password": "$2a$10$w7YPO7I3A3ZynqnNfsgwOu5XqMewGSZj9nBrRmM9hY7kdOow353ES",
+                "role": "USER",
+                "birthDate": null,
+                "userBio": null,
+                "avatar": "https://lh3.googleusercontent.com/a/ACg8ocKgX_DfeFyEuTT--dwPLbWUbxn260uA_F3p0ZrZ4Y9N=s96-c",
+                "method": "GOOGLE",
+                "genres": []
+            },
+            "content": "Test post",
+            "song": {
+                "id": 602,
+                "songName": "Test 7",
+                "poster": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=d11360ab-a94e-4445-8539-609d7514e398",
+                "artists": [
+                    {
+                        "id": 1202,
+                        "userName": "The Weeknd",
+                        "email": "theweeknd@gmail.com",
+                        "password": "$2a$10$dngXenLKAEkkf7Ory.OiqeTdhGZyC6VVshcUTWy/jeGiKHLB1W8Ce",
+                        "role": "ARTIST",
+                        "birthDate": "2001-01-01",
+                        "userBio": "I am an artist",
+                        "avatar": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=3e23a99b-473d-4c0e-9b21-8847bc7ca0ba",
+                        "method": null,
+                        "genres": [
+                            {
+                                "id": 8,
+                                "genreName": "Indie"
+                            },
+                            {
+                                "id": 1,
+                                "genreName": "Pop"
+                            },
+                            {
+                                "id": 6,
+                                "genreName": "Classic"
+                            },
+                            {
+                                "id": 5,
+                                "genreName": "Country"
+                            }
+                        ]
+                    }
+                ],
+                "genres": [],
+                "songData": "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/BlindingLight/BlindingLight_",
+                "likes": 0,
+                "listens": 1,
+                "status": 1,
+                "lyric": null
+            },
+            "mp3Link": null,
+            "playlist": {
+                "id": 452,
+                "playlistName": "New playlist",
+                "user": {
+                    "id": 1202,
+                    "userName": "The Weeknd",
+                    "email": "theweeknd@gmail.com",
+                    "password": "$2a$10$dngXenLKAEkkf7Ory.OiqeTdhGZyC6VVshcUTWy/jeGiKHLB1W8Ce",
+                    "role": "ARTIST",
+                    "birthDate": "2001-01-01",
+                    "userBio": "I am an artist",
+                    "avatar": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=3e23a99b-473d-4c0e-9b21-8847bc7ca0ba",
+                    "method": null,
+                    "genres": [
+                        {
+                            "id": 8,
+                            "genreName": "Indie"
+                        },
+                        {
+                            "id": 1,
+                            "genreName": "Pop"
+                        },
+                        {
+                            "id": 6,
+                            "genreName": "Classic"
+                        },
+                        {
+                            "id": 5,
+                            "genreName": "Country"
+                        }
+                    ]
+                },
+                "playlistType": "Private",
+                "coverArt": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fdontoliver.jpg?alt=media&token=a15c7c74-84e7-4be0-a020-fb879bb6428c",
+                "playlistSongsList": null
+            },
+            "likes": [],
+            "comments": [],
+            "postTime": null
+        },
+    ]);
     const [refresh, setRefresh] = useState(false);
-    const [songData, setSongData] = useState({});
-    const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
-    const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
     const [searchValue, setSearchValue] = useState("");
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [postUpdate, setPostUpdate] = useState({});
+    const { getAllPost, deletePost } = useForumUtils();
+
     const handSearch = (e) => {
         console.log("value", e.target.value);
         setSearchValue(e.target.value);
     };
 
-    const getListSong = async (songPage) => {
-        try {
-            console.log("auth", access_token);
-            const response = await axios.get(`${Base_URL}/songs?page=${songPage}`, {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                },
-            });
-            const { songList, currentPage, totalPages } = response.data;
-            console.log("songList Response", songList, currentPage, totalPages);
-            setSongList(songList);
-
-            return response.data;
-        } catch (error) {
-            console.log("Error:", error);
-        }
-    };
-    // Update Song
-    const handUpdateSong = (songId, songName) => {
-        const songData = {
-            songId: songId,
-            songName: songName,
-        };
-        setSongData(songData);
-        setIsModalOpenUpdate(true);
-    };
-    // Call this function when you want to refresh the playlist
-    const showModal = () => {
-        setIsModalOpenUpload(true);
-    };
-    // Delete Song
-    const deleteSong = async (songId) => {
-        try {
-            if (confirm(`Are you sure you want to delete this song?`) == true) {
-                console.log("auth", access_token);
-                const response = await axios.delete(
-                    `${Base_URL}/songs/deleteSong?songId=${songId}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${access_token}`,
-                        },
-                    }
-                );
-                if (response.status === 200) {
-                    message.success("Delete song successfully!");
-                }
-                // Refresh the component
-                setRefresh(false);
-                return response.status;
-            }
-        } catch (error) {
-            console.log("Error:", error);
-        }
-    };
-
-    const handleOk = () => {
-        form.submit();
-        setIsModalOpenUpload(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpenUpload(false);
-        setIsModalOpenUpdate(false);
-    };
-
-    // Song Data {id,artists, genres, listens, poster, songData, songName, status}
-    // 0: {id: 3, songName: 'Out Of Time', poster: 'https://avatar-ex-swe.nixcdn.com/song/2022/01/07/2/5/8/e/1641534807286_640.jpg', artists: Array(1), genres: Array(0), …}
-    // 1: {id: 5, songName: 'Starboy', poster: 'https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png', artists: Array(1), genres: Array(0), …}
-
-    const columnsSong = [
+    const columnPost = [
+        // ID, Avatar, Name, Content, Song.poster, song.avatar,playlist.coverart, playlist.playlistName, Action.detail
         {
             title: "ID",
             dataIndex: "key",
@@ -101,123 +126,151 @@ const PostManagement = () => {
             align: "center",
         },
         {
-            title: "Poster",
-            dataIndex: "poster",
-            key: "poster",
+            title: "Author",
+            dataIndex: "author",
+            key: "author",
             align: "center",
-            render: (poster) => {
-                return (
-                    <div className="flex items-center justify-center">
-                        <img
-                            src={poster.props.src ? poster.props.src : defaultAva}
-                            alt="poster"
-                            className="w-12 h-12 rounded-lg"
-                        />
-                    </div>
-                );
-            },
+            render: (author) => (
+                <div className="flex flex-row items-center">
+                    <img
+                        src={author.avatar ? author.avatar : Base_AVA}
+                        alt="avatar"
+                        className="w-6 h-6 rounded-full"
+                    />
+                    <div className="ml-2">{author.userName}</div>
+                </div>
+            ),
         },
+        {
+            title: "Content",
+            dataIndex: "postContent",
+            key: "postContent",
+            align: "center",
+        }
+        ,
         {
             title: "Song Name",
             dataIndex: "songName",
             key: "songName",
             align: "center",
-            render: (text) => <a>{text}</a>,
         },
         {
             title: "Artist",
-            dataIndex: "artists", // key in dataSongs
-            key: "artists", // key in columnsSong
+            dataIndex: "artist",
+            key: "artist",
             align: "center",
         },
         {
-            title: "Genres",
-            dataIndex: "genres",
-            key: "genres",
+            title: "Playlist",
+            dataIndex: "playlist",
+            key: "playlist",
             align: "center",
+            render: (playlist) => (
+                <div className="flex flex-col items-center justify-center gap-1">
+                    <img
+                        src={playlist?.coverArt ? playlist.coverArt : Base_AVA}
+                        alt="avatar"
+                        className="w-10 h-10 rounded-md"
+                    />
+                    <div className="ml-2">{playlist?.playlistName ? playlist.playlistName : "No name playlist"}</div>
+                </div>
+            ),
         },
         {
-            title: "Listens",
-            dataIndex: "listens",
-            key: "listens",
-            align: "center",
+            title: "Likes",
+            dataIndex: "likes",
+            key: "likes", align: "center",
         },
         {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-            align: "center",
-            render: (status) => {
-                if (status === 0) {
-                    return (
-                        <div className="flex items-center justify-center">
-                            <div
-                                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md h-fit hover:opacity-70">
-                                Deleted
-                            </div>
-                        </div>
-                    );
-                } else if (status === 1) {
-                    return (
-                        <div className="flex items-center justify-center">
-                            <div
-                                className="w-16 px-1 py-1 border rounded-md h-fit text-primary dark:text-primaryDarkmode border-primary hover:opacity-70"
-                            >
-                                Public
-                            </div>
-                        </div>
-                    );
-                }
+            title: "Date",
+            dataIndex: "postTime",
+            key: "postTime", align: "center",
+            render(dateee) {
+                const date = new Date(dateee);
+                return (
+                    <div>
+                        {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
+                    </div>
+                );
             },
         },
         {
             title: "Action",
-            key: "action",
-            align: "center",
-            render: (_, record) => (
-                <Space>
+            dataIndex: "action",
+            key: "action", align: "center",
+            render: (text, record) => (
+                <div className="flex flex-row justify-center gap-2">
                     <button
-                        className="py-1 px-2 h-8 w-14  bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
-                        onClick={() => handUpdateSong(record.key, record.songName)}
+                        className="w-16 px-2 py-1 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-60"
+                        onClick={() => handleEdit(record)}
                     >
                         Edit
                     </button>
                     <button
-                        className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
-                        onClick={() => deleteSong(record.key)}
+                        className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:text-red-600 dark:border-red-600 hover:opacity-60"
+                        onClick={() => handleDelete(record)}
                     >
                         Delete
                     </button>
-                </Space>
+                </div>
             ),
+
         },
     ];
+    const handleDelete = (record) => {
+        console.log("Delete", record);
+        deletePost(record.key).then((res) => {
+            console.log("res", res);
+            setRefresh(true);
+        });
+    };
 
-    const dataSongs = songList.map((songItem) => ({
-        key: songItem.id.toString(), // Assuming id is unique
-        poster: (
-            <img
-                src={songItem.poster}
-                alt={songItem.songName}
-                className="rounded-md w-11 h-11"
-            />
-        ),
-        songName: songItem.songName,
-        artists: songItem.artists.map((artist) => artist.userName + " "), // Assuming artists is an array
-        genres: songItem.genres.map((genre) => genre.genreName + " "), // Assuming genres is an array
-        listens: songItem.listens,
-        status: songItem.status,
+    const handleEdit = (record) => {
+        console.log("Edit", record);
+        setOpenModalUpdate(true);
+        const postContent = {
+            id: record.key,
+            author: record.author,
+            content: record.postContent,
+            playlist: record.playlist,
+            mp3Link: record.mp3Link,
+        }
+        setPostUpdate(postContent);
+    };
+
+    const dataPosts = postList.length > 0 && postList.map((postItem) => ({
+        // ID, Avatar, Name, Content, Song.poster, song.avatar,playlist.coverart, playlist.playlistName, Action.detail
+        key: postItem.id,
+        author: postItem.author,
+        postContent: postItem.content,
+        songName: postItem.song?.songName,
+        artist: postItem.song?.artists.map((artist) => artist.userName).join(" "),
+        playlist: postItem.playlist,
+        listens: postItem.song?.listens,
+        likes: postItem.likes.length,
+        postTime: postItem?.postTime,
     }));
-    console.log("dataSongs", dataSongs);
-    useEffect(() => {
-        setRefresh(true);
-        getListSong(songPage);
-    }, [isModalOpenUpload, isModalOpenUpdate, refresh]);
+    console.log("dataPosts", dataPosts);
 
-    if (!songList) return null;
+    useEffect(() => {
+        getAllPost().then((res) => {
+            console.log("res", res);
+            setPostlist(res.postList);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (refresh === true)
+            getAllPost().then((res) => {
+                setRefresh(false);
+                setPostlist(res.postList);
+            });
+    }, [refresh]);
+
+    if (!postList) return null;
     return (
-        <div>
-            <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Song Management</div>
+        <div className="h-full min-h-screen">
+            <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Post Management</div>
             <div className="flex flex-row justify-between mt-5 mb-5 ">
                 <div className="">
                     <Form
@@ -234,7 +287,7 @@ const PostManagement = () => {
                         }}
                         autoComplete="off"
                     >
-                        <Form.Item label="" name="songName">
+                        <Form.Item label="" name="author">
                             <Input placeholder="Search..." onChange={handSearch} />
                         </Form.Item>
                     </Form>
@@ -242,42 +295,34 @@ const PostManagement = () => {
                 <div>
                     <button
                         className="px-4 py-2 text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
-                        onClick={showModal}
+                    // onClick={showModal}
                     >
-                        Create New Song
+                        Create New Post
                     </button>
                 </div>
             </div>
             <Table
-                columns={columnsSong}
+                columns={columnPost}
                 dataSource={
                     searchValue
-                        ? dataSongs.filter((song) =>
-                            song.songName.toLowerCase().includes(searchValue.toLowerCase())
-                        )
-                        : dataSongs
-                }
+                        ? dataPosts.filter((post) =>
+                            post.author.toLowerCase().includes(searchValue.toLowerCase())) : dataPosts}
                 pagination={{ pageSize: 8 }}
             />
-            {/* Upload Song  */}
             <Modal
-                open={isModalOpenUpload}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={[null, null]}
-                className="w-fit h-fit "
+                title="Update Post"
+                visible={false}
+                // onOk={handleOk}
+                onCancel={() => {
+                    setOpenModalUpdate(false);
+                }}
+                open={openModalUpdate}
+                footer={null}
             >
-                <UploadSong></UploadSong>
-            </Modal>
-            {/* Update Song  */}
-            <Modal
-                open={isModalOpenUpdate}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={[null, null]}
-                className="w-fit h-fit "
-            >
-                <UpdateSong songData={songData}></UpdateSong>
+                <UpdatePost
+                    postContent={postUpdate}
+                    setPostContent={setPostUpdate}
+                ></UpdatePost>
             </Modal>
         </div>
     );

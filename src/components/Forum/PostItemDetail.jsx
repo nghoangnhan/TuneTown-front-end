@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForumUtils } from "../../utils/useChatUtils";
 import { useEffect, useRef, useState } from "react";
 import PostItemComment from "./PostItemComment";
@@ -15,6 +15,7 @@ const PostItemDetail = () => {
   const { postId } = useParams();
   const { getPostById, createComment, createReply, scrollToBottom, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userId = parseInt(localStorage.getItem("userId"));
   const commentRef = useRef(null);
   const { Base_AVA } = useConfig();
@@ -28,7 +29,7 @@ const PostItemDetail = () => {
   const replyComment = useSelector((state) => state.social.replyComment)
   const [songPlaylist, setSongPlaylist] = useState(null);
   const { getListSongPlaylist } = useMusicAPIUtils();
-  const { showArtistV2, NavigateSong, NavigatePlaylist } = useSongUtils();
+  const { showArtistV2, NavigateSong } = useSongUtils();
 
   const countTime = new Date(
     postContent?.postTime || Date.now()
@@ -147,9 +148,9 @@ const PostItemDetail = () => {
         )}
         {/* Playlist */}
         {postContent.playlist && (
-          <div className="flex flex-row items-center justify-start gap-2 mt-2">
+          <div className="flex flex-row items-center gap-2 mt-2 justify-evenly">
             {/* PlaylistInfo  */}
-            <div className="flex flex-row items-center justify-center gap-1 cursor-pointer">
+            <div className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => navigate(`/detail-playlist/${postContent.playlist.id}`)}>
               <div className="rounded-md dark:bg-white">
                 <img className="rounded-md max-w-14 max-h-14 w-fit h-fit" src={postContent.playlist.coverArt ? postContent.playlist.coverArt : Base_AVA} alt="Cover Art Playlist" />
               </div>
@@ -162,10 +163,10 @@ const PostItemDetail = () => {
             </div>
             {/* Song Playlist */}
             {songPlaylist &&
-              <div className="grid grid-cols-3 gap-x-10 gap-y-4">
+              <div className="grid grid-cols-3 gap-x-10 gap-y-8">
                 {songPlaylist.slice(0, 6).map((song, index) => (
                   <div key={index} className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => NavigateSong(song.id)}>
-                    <img className="rounded-md max-w-8 max-h-8 w-fit h-fit" src={song.poster ? song.poster : Base_AVA} alt="Cover Art Song" />
+                    <img className="w-8 h-8 rounded-md max-w-8 max-h-8" src={song.poster ? song.poster : Base_AVA} alt="Cover Art Song" />
                     <div>
                       <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">{song.songName}</div>
                       <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">{showArtistV2(song.artists)}</div></div>
@@ -187,7 +188,7 @@ const PostItemDetail = () => {
           </button>
           {/* Share  */}
           <button className="mx-2 mt-2 font-bold text-md opacity-80" onClick={() => {
-            handleSharePost(postContent.id, true)
+            handleSharePost(postContent)
           }}>
             Share
           </button>

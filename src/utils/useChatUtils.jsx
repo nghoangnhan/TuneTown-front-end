@@ -371,7 +371,7 @@ export const useChatUtils = () => {
 export const useForumUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const { Base_URL } = useConfig();
+  const { Base_URL, Base_URL_FE } = useConfig();
   const userId = parseInt(localStorage.getItem("userId"), 10);
 
   // Get All Post API
@@ -467,6 +467,8 @@ export const useForumUtils = () => {
 
   const deletePost = async (postId) => {
     try {
+      if (!postId) return;
+      if (confirm("Are you sure you want to delete this post?") === false) return;
       const response = await axios.delete(
         `${Base_URL}/post?postId=${postId}`,
         {
@@ -588,19 +590,13 @@ export const useForumUtils = () => {
     if (!likes) return;
     return !!likes.find((like) => like.id === userId);
   };
-  const handleSharePost = (item, inside) => {
+
+  const handleSharePost = (item,) => {
     try {
-      const currentUrl = window.location.href;
-      if (inside == true) {
-        const songUrl = `${currentUrl}`;
-        navigator.clipboard.writeText(songUrl);
-        message.success("Link copied!");
-      }
-      else {
-        const songUrl = `${currentUrl}/${item.id}`;
-        navigator.clipboard.writeText(songUrl);
-        message.success("Link copied!");
-      }
+      // const currentUrl = window.location.href;    
+      const songUrl = `${Base_URL_FE}/forum/${parseInt(item.id)}`;
+      navigator.clipboard.writeText(songUrl);
+      message.success("Link copied!");
     } catch (error) {
       message.error("Error when coppying post link!!");
       console.error('Error:', error);

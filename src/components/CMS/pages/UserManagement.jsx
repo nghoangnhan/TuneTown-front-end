@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import EditUserForm from "../../Users/EditUserForm";
 import { useForm } from "antd/es/form/Form";
 import useConfig from "../../../utils/useConfig";
-/* eslint-disable no-unused-vars */
+
 const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
@@ -24,7 +24,6 @@ const UserManagement = () => {
   const showModalEdit = (id) => {
     setIsModalOpen(true);
     setUserId(id);
-    console.log("id", id);
   };
   const showModalEditRole = (id, role) => {
     setIsModalOpenUpdate(true);
@@ -33,7 +32,6 @@ const UserManagement = () => {
     formRole.setFieldsValue({
       role: role,
     });
-    console.log("id", id);
   };
   const handleOkRole = () => {
     changeUserRole(userId, formRole.getFieldValue("role"));
@@ -73,7 +71,7 @@ const UserManagement = () => {
   };
 
   // http://localhost:8080/users
-  const GetListUser = async () => {
+  const getListUser = async () => {
     try {
       const response = await axios.get(`${Base_URL}/users`, {
         headers: {
@@ -197,22 +195,22 @@ const UserManagement = () => {
       render: (_, record) => (
         <Space
           size="middle"
-          className="flex flex-row gap-2 "
+          className="flex flex-row items-center justify-between gap-2"
         >
           <button
-            className="py-1 px-2 h-8 w-14 bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
+            className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
             onClick={() => showModalEdit(record.id)}
           >
             Edit
           </button>
           <button
-            className="py-1 px-2 h-8 w-full border border-solid border-[#955ec9] hover:bg-[#6947c0] hover:text-white rounded-lg"
+            className="w-16 px-2 py-1 text-purple-600 border border-purple-600 rounded-md dark:border-purple-500 dark::border-red-500 dark:text-purple-500 hover:opacity-60"
             onClick={() => showModalEditRole(record.id, record.role)}
           >
             Role
           </button>
           <button
-            className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
+            className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark::border-red-500 dark:text-red-500 hover:opacity-60"
             onClick={() => deleteUser(record.id)}
           >
             Delete
@@ -224,18 +222,18 @@ const UserManagement = () => {
   ];
 
   useEffect(() => {
-    GetListUser();
+    getListUser();
   }, []);
 
   useEffect(() => {
     if (isModalOpen || isModalOpenUpdate || refresh) {
-      GetListUser().then(() => {
+      getListUser().then(() => {
         setRefresh(false);
       })
     }
   }, [refresh]);
   return (
-    <div>
+    <div className="h-full min-h-screen">
       <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">User Management</div>
       <div className="flex flex-col gap-3 ">
         <div className="flex flex-row justify-between mt-5 mb-5 ">

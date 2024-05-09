@@ -17,7 +17,7 @@ const PostItem = ({ postContent }) => {
   const { Base_AVA } = useConfig();
   const { getPostById, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
   const { ThumbsUpSolid, VerifyAccount, OptionsIcon } = useIconUtils();
-  const { showArtistV2, NavigateSong, NavigatePlaylist } = useSongUtils();
+  const { showArtistV2, NavigateSong } = useSongUtils();
   const [liked, setLiked] = useState();
   const [postDetail, setPostDetail] = useState();
   const { getListSongPlaylist } = useMusicAPIUtils();
@@ -141,7 +141,9 @@ const PostItem = ({ postContent }) => {
         {postContent.playlist && (
           <div className="flex flex-row items-center justify-start gap-2 mt-2">
             {/* PlaylistInfo  */}
-            <div className="flex flex-row items-center justify-center gap-1 cursor-pointer">
+            <div className="flex flex-row items-center gap-1 cursor-pointer justify-evenly" onClick={() =>
+              navigate(`/detail-playlist/${postContent.playlist.id}`)
+            }>
               <div className="rounded-md dark:bg-white">
                 <img className="rounded-md max-w-14 max-h-14 w-fit h-fit" src={postContent.playlist.coverArt ? postContent.playlist.coverArt : Base_AVA} alt="Cover Art Playlist" />
               </div>
@@ -157,7 +159,7 @@ const PostItem = ({ postContent }) => {
               <div className="grid grid-cols-3 gap-x-10 gap-y-4">
                 {songPlaylist.slice(0, 6).map((song, index) => (
                   <div key={index} className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => NavigateSong(song.id)}>
-                    <img className="rounded-md max-w-8 max-h-8 w-fit h-fit" src={song.poster ? song.poster : Base_AVA} alt="Cover Art Song" />
+                    <img className="w-8 h-8 rounded-md max-w-8 max-h-8" src={song.poster ? song.poster : Base_AVA} alt="Cover Art Song" />
                     <div>
                       <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">{song.songName}</div>
                       <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">{showArtistV2(song.artists)}</div></div>

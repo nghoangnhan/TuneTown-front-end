@@ -9,6 +9,7 @@ const useConfig = () => {
     const { getToken } = UseCookie();
     // Link to the backend server 
     // export const Base_URL = "https://tunetown-production.up.railway.app";
+    const Base_URL_FE = "http://localhost:5173";
     const Base_URL = "http://localhost:8080";
     const Base_AVA = Base_Ava
     const default_Img = Base_AVA;
@@ -44,7 +45,7 @@ const useConfig = () => {
         Base_AVA, default_Img,
         cliendId,
         socket,
-        auth,
+        auth, Base_URL_FE
     };
 };
 export default useConfig;

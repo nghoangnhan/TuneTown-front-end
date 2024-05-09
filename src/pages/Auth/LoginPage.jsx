@@ -48,7 +48,7 @@ const LoginPage = () => {
         message.success("Login Successfully");
         setTimeout(() => {
           if (response.data.role === "ADMIN") {
-            navigate("/cms/usermanagement");
+            navigate("/cms/profile");
           } else if (
             response.data.role === "USER" ||
             response.data.role === "ARTIST"

@@ -3,8 +3,10 @@ import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setRefreshPlaylist } from "../redux/slice/playlist";
+import useConfig from "./useConfig";
 
 export const useSongUtils = () => {
+  const { Base_URL_FE } = useConfig();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const refreshPlaylist = useSelector(
@@ -38,13 +40,17 @@ export const useSongUtils = () => {
   };
   const showArtistV2 = (artistName) => {
     if (artistName.length > 1) {
-      return artistName.map((artist) => (
-        <span
-          key={artist.id}
-          className="cursor-pointer hover:underline"
-          onClick={() => navigate(`/artist/${artist.id}`)}
-        >
-          {artist.userName}, &nbsp;
+      return artistName.map((artist, index) => (
+        <span key={artist.id} className="text-sm cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary">
+          {index == artistName.length - 1 ? (
+            <span onClick={() => navigate(`/artist/${artist.id}`)}>
+              {artist.userName}
+            </span>
+          ) : (
+            <span onClick={() => navigate(`/artist/${artist.id}`)}>
+              {artist.userName}, &nbsp;
+            </span>
+          )}
         </span>
       ));
     } else if (artistName.length == 1) {
@@ -52,7 +58,7 @@ export const useSongUtils = () => {
       return (
         <span
           key={artist.id}
-          className="cursor-pointer hover:underline"
+          className="text-sm cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary"
           onClick={() => navigate(`/artist/${artist.id}`)}
         >
           {artist.userName}
@@ -169,7 +175,7 @@ export const useSongUtils = () => {
   const handleShareSong = (songInforObj) => {
     try {
       const currentUrl = window.location.href;
-      const songUrl = `${currentUrl}/song/${songInforObj.id}`;
+      const songUrl = `${Base_URL_FE}/song/${songInforObj.id}`;
       navigator.clipboard.writeText(songUrl);
       message.success("Link copied!");
     } catch (error) {

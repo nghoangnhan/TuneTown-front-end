@@ -12,7 +12,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
     const dispatch = useDispatch();
 
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
-
+    console.log(postContent)
     const onCancel = () => {
         setOpenModalUpdate(false);
     };

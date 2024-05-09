@@ -102,7 +102,7 @@ export default function init(routes) {
     ],
   };
 
-  const signleRoute = {
+  const singleRoute = {
     path: "/",
     element: <EmptyLayout />,
     children: [
@@ -150,19 +150,19 @@ export default function init(routes) {
         element: <EditInforCMS />,
       },
       {
-        path: "usermanagement",
+        path: "user-management",
         element: <UserManagement />,
       },
       {
-        path: "songmanagement",
+        path: "song-management",
         element: <SongManagement />,
       },
       {
-        path: "playlistmanagement",
+        path: "playlist-management",
         element: <PlaylistManagement />,
       },
       {
-        path: "postmanagement",
+        path: "post-management",
         element: <PostManagement />,
       }
     ],
@@ -171,7 +171,7 @@ export default function init(routes) {
   // Push route
   routes.push(route);
   routes.push(cmsRoute);
-  routes.push(signleRoute);
+  routes.push(singleRoute);
   routes.push(chatRoute);
   routes.push(errorRoute);
 }

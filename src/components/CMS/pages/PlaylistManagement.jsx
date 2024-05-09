@@ -1,96 +1,104 @@
-import { Form, Input, Modal, Space, Table, message } from "antd";
-import axios from "axios";
+import { Form, Input, Modal, Space, Table, } from "antd";
 import { useEffect, useState } from "react";
-import UseCookie from "../../../hooks/useCookie";
 import UploadSong from "../../UploadSong/UploadSong";
 import UpdateSong from "../../UploadSong/UpdateSong";
 import defaultAva from "../../../assets/img/logo/logo.png";
-import useConfig from "../../../utils/useConfig";
+import { useMusicAPIUtils } from "../../../utils/useMusicAPIUtils";
 
 const PlaylistManagement = () => {
-  const { getToken } = UseCookie();
   const [form] = Form.useForm();
-  const { Base_URL } = useConfig();
-  const { access_token } = getToken();
-  const [songList, setSongList] = useState([]);
-  const [songPage, setSongPage] = useState(1);
+  const { getUserPlaylist } = useMusicAPIUtils();
+  const [playlistList, setPlaylistList] = useState([
+    {
+      "id": 452,
+      "playlistName": "New playlist",
+      "user": {
+        "id": 1202,
+        "userName": "The Weeknd",
+        "email": "theweeknd@gmail.com",
+        "password": "$2a$10$dngXenLKAEkkf7Ory.OiqeTdhGZyC6VVshcUTWy/jeGiKHLB1W8Ce",
+        "role": "ARTIST",
+        "birthDate": "2001-01-01",
+        "userBio": "I am an artist",
+        "avatar": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=3e23a99b-473d-4c0e-9b21-8847bc7ca0ba",
+        "method": null,
+        "genres": [
+          {
+            "id": 8,
+            "genreName": "Indie"
+          },
+          {
+            "id": 1,
+            "genreName": "Pop"
+          },
+          {
+            "id": 6,
+            "genreName": "Classic"
+          },
+          {
+            "id": 5,
+            "genreName": "Country"
+          }
+        ]
+      },
+      "playlistType": "Private",
+      "coverArt": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fdontoliver.jpg?alt=media&token=a15c7c74-84e7-4be0-a020-fb879bb6428c",
+      "playlistSongsList": null
+    },
+    {
+      "id": 453,
+      "playlistName": "New playlist",
+      "user": {
+        "id": 1202,
+        "userName": "The Weeknd",
+        "email": "theweeknd@gmail.com",
+        "password": "$2a$10$dngXenLKAEkkf7Ory.OiqeTdhGZyC6VVshcUTWy/jeGiKHLB1W8Ce",
+        "role": "ARTIST",
+        "birthDate": "2001-01-01",
+        "userBio": "I am an artist",
+        "avatar": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=3e23a99b-473d-4c0e-9b21-8847bc7ca0ba",
+        "method": null,
+        "genres": [
+          {
+            "id": 8,
+            "genreName": "Indie"
+          },
+          {
+            "id": 1,
+            "genreName": "Pop"
+          },
+          {
+            "id": 6,
+            "genreName": "Classic"
+          },
+          {
+            "id": 5,
+            "genreName": "Country"
+          }
+        ]
+      },
+      "playlistType": "Private",
+      "coverArt": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2F8ball.jpg?alt=media&token=69ab9607-e63f-4755-b22a-9d8e82f2ebdd",
+      "playlistSongsList": null
+    },
+  ]);
   const [refresh, setRefresh] = useState(false);
-  const [songData, setSongData] = useState({});
-  const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
+
   const handSearch = (e) => {
     console.log("value", e.target.value);
     setSearchValue(e.target.value);
   };
 
-  const getListSong = async (songPage) => {
-    try {
-      console.log("auth", access_token);
-      const response = await axios.get(`${Base_URL}/songs?page=${songPage}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-      const { songList, currentPage, totalPages } = response.data;
-      console.log("songList Response", songList, currentPage, totalPages);
-      setSongList(songList);
-
-      return response.data;
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
-  // Update Song
-  const handUpdateSong = (songId, songName) => {
-    const songData = {
-      songId: songId,
-      songName: songName,
-    };
-    setSongData(songData);
-    setIsModalOpenUpdate(true);
-  };
-  // Call this function when you want to refresh the playlist
-  const showModal = () => {
-    setIsModalOpenUpload(true);
-  };
-  // Delete Song
-  const deleteSong = async (songId) => {
-    try {
-      if (confirm(`Are you sure you want to delete this song?`) == true) {
-        console.log("auth", access_token);
-        const response = await axios.delete(
-          `${Base_URL}/songs/deleteSong?songId=${songId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          message.success("Delete song successfully!");
-        }
-        // Refresh the component
-        setRefresh(false);
-        return response.status;
-      }
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
-
   const handleOk = () => {
     form.submit();
-    setIsModalOpenUpload(false);
   };
   const handleCancel = () => {
-    setIsModalOpenUpload(false);
     setIsModalOpenUpdate(false);
   };
 
-  // Song Data {id,artists, genres, listens, poster, songData, songName, status}
-  // 0: {id: 3, songName: 'Out Of Time', poster: 'https://avatar-ex-swe.nixcdn.com/song/2022/01/07/2/5/8/e/1641534807286_640.jpg', artists: Array(1), genres: Array(0), …}
-  // 1: {id: 5, songName: 'Starboy', poster: 'https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png', artists: Array(1), genres: Array(0), …}
 
   const columnsSong = [
     {
@@ -100,33 +108,14 @@ const PlaylistManagement = () => {
       align: "center",
     },
     {
-      title: "Poster",
-      dataIndex: "poster",
-      key: "poster",
+      title: "Playlist Name",
+      dataIndex: "playlistName",
+      key: "playlistName",
       align: "center",
-      render: (poster) => {
-        return (
-          <div className="flex items-center justify-center">
-            <img
-              src={poster.props.src ? poster.props.src : defaultAva}
-              alt="poster"
-              className="w-12 h-12 rounded-lg"
-            />
-          </div>
-        );
-      },
-    },
-    {
-      title: "Song Name",
-      dataIndex: "songName",
-      key: "songName",
-      align: "center",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Artist",
-      dataIndex: "artists", // key in dataSongs
-      key: "artists", // key in columnsSong
+    }, {
+      title: "Owner",
+      dataIndex: "artists",
+      key: "artists",
       align: "center",
     },
     {
@@ -147,26 +136,33 @@ const PlaylistManagement = () => {
       key: "status",
       align: "center",
       render: (status) => {
-        if (status === 0) {
-          return (
-            <div className="flex items-center justify-center">
-              <div
-                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md h-fit hover:opacity-70">
-                Deleted
-              </div>
-            </div>
-          );
-        } else if (status === 1) {
-          return (
-            <div className="flex items-center justify-center">
-              <div
-                className="w-16 px-1 py-1 border rounded-md h-fit text-primary dark:text-primaryDarkmode border-primary hover:opacity-70"
-              >
-                Public
-              </div>
-            </div>
-          );
-        }
+        return (
+          <div className="flex items-center justify-center">
+            <span
+              className={`w-16 py-1 px-2 text-white rounded-md ${status === 1 ? "bg-green-500" : "bg-red-500"
+                }`}
+            >
+              {status === 1 ? "Active" : "Inactive"}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Poster",
+      dataIndex: "poster",
+      key: "poster",
+      align: "center",
+      render: (poster) => {
+        return (
+          <div className="flex items-center justify-center">
+            <img
+              src={poster.props.src ? poster.props.src : defaultAva}
+              alt="poster"
+              className="w-12 h-12 rounded-lg"
+            />
+          </div>
+        );
       },
     },
     {
@@ -174,16 +170,16 @@ const PlaylistManagement = () => {
       key: "action",
       align: "center",
       render: (_, record) => (
-        <Space>
+        <Space className="flex items-center justify-center">
           <button
-            className="py-1 px-2 h-8 w-14  bg-[#2e9b42db] hover:bg-[#47c053] text-white rounded-lg"
-            onClick={() => handUpdateSong(record.key, record.songName)}
+            className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
+          // onClick={() => handleUpdatePlaylist(record.key, record.playlistName)}
           >
             Edit
           </button>
           <button
-            className="py-1 px-2 h-8 w-14 bg-[#c42323e1] hover:bg-[#ea3f3f] text-white rounded-lg"
-            onClick={() => deleteSong(record.key)}
+            className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-60"
+          // onClick={() => deletePlaylist(record.key)}
           >
             Delete
           </button>
@@ -192,31 +188,40 @@ const PlaylistManagement = () => {
     },
   ];
 
-  const dataSongs = songList.map((songItem) => ({
-    key: songItem.id.toString(), // Assuming id is unique
-    poster: (
-      <img
-        src={songItem.poster}
-        alt={songItem.songName}
-        className="rounded-md w-11 h-11"
-      />
-    ),
-    songName: songItem.songName,
-    artists: songItem.artists.map((artist) => artist.userName + " "), // Assuming artists is an array
-    genres: songItem.genres.map((genre) => genre.genreName + " "), // Assuming genres is an array
-    listens: songItem.listens,
-    status: songItem.status,
+  const playlistData = playlistList.map((playlistItem) => ({
+    key: playlistItem.id.toString(), // Assuming id is unique
+    playlistName: playlistItem.playlistName,
+    artists: playlistItem.user.userName,
+    genres: playlistItem.user.genres.map((genre) => genre.genreName).join(", "),
+    listens: 0,
+    status: 1,
+    poster: {
+      props: {
+        src: playlistItem.coverArt,
+      },
+    },
   }));
-  console.log("dataSongs", dataSongs);
-  useEffect(() => {
-    setRefresh(true);
-    getListSong(songPage);
-  }, [isModalOpenUpload, isModalOpenUpdate, refresh]);
 
-  if (!songList) return null;
+  useEffect(() => {
+    getUserPlaylist(1202).then((res) => {
+      console.log("Playlist", res);
+      setPlaylistList(res);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (refresh === true) {
+      getUserPlaylist(1202).then((res) => {
+        console.log("Playlist", res);
+        setPlaylistList(res);
+      });
+    }
+  }, [refresh]);
+
+  if (!playlistList) return null;
   return (
-    <div>
-      <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Song Management</div>
+    <div className="h-full min-h-screen">
+      <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Playlist Management</div>
       <div className="flex flex-row justify-between mt-5 mb-5 ">
         <div className="">
           <Form
@@ -233,7 +238,7 @@ const PlaylistManagement = () => {
             }}
             autoComplete="off"
           >
-            <Form.Item label="" name="songName">
+            <Form.Item label="" name="playlistName">
               <Input placeholder="Search..." onChange={handSearch} />
             </Form.Item>
           </Form>
@@ -241,9 +246,9 @@ const PlaylistManagement = () => {
         <div>
           <button
             className="px-4 py-2 text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
-            onClick={showModal}
+            onClick={setIsModalOpenUpload}
           >
-            Create New Song
+            Create New Playlist
           </button>
         </div>
       </div>
@@ -251,10 +256,10 @@ const PlaylistManagement = () => {
         columns={columnsSong}
         dataSource={
           searchValue
-            ? dataSongs.filter((song) =>
-              song.songName.toLowerCase().includes(searchValue.toLowerCase())
+            ? playlistData.filter((playlist) =>
+              playlist.playlistName.toLowerCase().includes(searchValue.toLowerCase())
             )
-            : dataSongs
+            : playlistData
         }
         pagination={{ pageSize: 8 }}
       />
@@ -276,7 +281,7 @@ const PlaylistManagement = () => {
         footer={[null, null]}
         className="w-fit h-fit "
       >
-        <UpdateSong songData={songData}></UpdateSong>
+        <UpdateSong songData={playlistData}></UpdateSong>
       </Modal>
     </div>
   );
