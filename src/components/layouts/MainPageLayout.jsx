@@ -1,36 +1,13 @@
-import { Fragment, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Fragment } from "react";
+import { Outlet } from "react-router-dom";
 import NavigationBar from "../NavigationBar";
 import TheHeader from "../Header/TheHeader";
 import MusicControlBar from "../MusicControlBar";
-import { Modal } from "antd";
-import UseCookie from "../../hooks/useCookie";
+
 import FooterSection from "../FooterSection";
+import AuthorizationModal from "../AuthorizationModal";
 
 const MainPageLayout = () => {
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const { getToken } = UseCookie();
-  const { access_token } = getToken();
-  const handleOK = () => {
-    navigate("/");
-    setOpen(false);
-  };
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-  const handleCancel = () => {
-    setOpen(false);
-  };
-  useEffect(() => {
-    if (access_token == null) {
-      // Message to navigate to login page
-      setOpen(true);
-      console.log("CheckCookie", access_token);
-    } else {
-      console.log("CheckCookie", access_token);
-    }
-  }, [access_token]);
   return (
     <Fragment>
       <div className="flex flex-col bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
@@ -50,23 +27,7 @@ const MainPageLayout = () => {
           <MusicControlBar></MusicControlBar>
         </div>
       </div>
-
-      <Modal
-        title="Authorization Error"
-        open={open}
-        okButtonProps={{
-          onClick: handleOK,
-          style: { backgroundColor: "#6fa87c", color: "white" },
-        }}
-        cancelButtonProps={{
-          onClick: handleCancel,
-        }}
-        buttonProps={{
-          onClick: handleRefresh,
-        }}
-      >
-        <p>Cannot recognize user</p>
-      </Modal>
+      <AuthorizationModal></AuthorizationModal>
     </Fragment>
   );
 };

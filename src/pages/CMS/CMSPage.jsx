@@ -3,6 +3,7 @@ import Sider from "antd/es/layout/Sider";
 import LeftSideBar from "../../components/CMS/LeftSideBar";
 import ContentPage from "../../components/CMS/pages/ContentPage";
 import TheHeader from "../../components/Header/TheHeader";
+import AuthorizationModal from "../../components/AuthorizationModal";
 
 const CMSPage = () => {
   return (
@@ -27,6 +28,7 @@ const CMSPage = () => {
           <ContentPage></ContentPage>
         </Layout>
       </Layout>
+      <AuthorizationModal></AuthorizationModal>
     </div>
   );
 };
