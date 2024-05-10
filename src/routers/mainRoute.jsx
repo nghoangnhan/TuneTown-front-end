@@ -125,7 +125,7 @@ export default function init(routes) {
 
   // Chat Route
   const chatRoute = {
-    path: "chat/",
+    path: "/chat",
     element: <ChattingPage />,
     children: [
       {
@@ -141,7 +141,7 @@ export default function init(routes) {
 
   // Add the new route
   const cmsRoute = {
-    path: "cms/",
+    path: "/cms",
     element: <CMSPage />,
     children: [
       {
