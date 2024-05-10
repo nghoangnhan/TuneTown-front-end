@@ -20,7 +20,7 @@ const VolumeBar = () => {
     <div className="absolute right-0 flex-row items-center justify-center hidden mr-5 xl:flex">
       {/* Lyric Button  */}
       <button
-        className={`mr-2 pt-1 text-iconText dark:text-iconTextDark  ${!lyric ? "cursor-not-allowed" : "cursor-pointer hover:opacity-70"}`}
+        className={`mr-2 pt-1 text-iconText dark:text-iconTextDark  ${!lyric ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:opacity-70"}`}
         disabled={!lyric}
         onClick={() => navigate("/lyric")}
       >
