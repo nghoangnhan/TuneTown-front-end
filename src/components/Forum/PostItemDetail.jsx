@@ -209,7 +209,7 @@ const PostItemDetail = () => {
               type="text"
               placeholder={"Write a comment"}
               defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
-              className="w-full p-2 border-2 input:border-[#52aa61] text-primaryText2 dark:text-primaryTextDark2 rounded-lg"
+              className="w-full p-2 border-2 input:border-[#52aa61] text-primaryText2  rounded-lg"
             />
             {isReplying && (
               <svg

@@ -5,14 +5,15 @@ import UseCookie from "../../../hooks/useCookie";
 import UploadSong from "../../UploadSong/UploadSong";
 import UpdateSong from "../../UploadSong/UpdateSong";
 import useConfig from "../../../utils/useConfig";
+import { useMusicAPIUtils } from "../../../utils/useMusicAPIUtils";
 
 const SongManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
   const { Base_URL, Base_AVA } = useConfig();
   const { access_token } = getToken();
+  const { deleteSong } = useMusicAPIUtils();
   const [songList, setSongList] = useState([]);
-  const [songPage, setSongPage] = useState(1);
   const [refresh, setRefresh] = useState(false);
   const [songData, setSongData] = useState({});
   const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
@@ -25,7 +26,7 @@ const SongManagement = () => {
 
   const getListSong = async (songPage) => {
     try {
-      console.log("auth", access_token);
+      if (songPage === null || songPage === undefined) songPage = 1;
       const response = await axios.get(`${Base_URL}/songs?page=${songPage}`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -33,8 +34,6 @@ const SongManagement = () => {
       });
       const { songList, currentPage, totalPages } = response.data;
       console.log("songList Response", songList, currentPage, totalPages);
-      setSongList(songList);
-
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -54,28 +53,10 @@ const SongManagement = () => {
     setIsModalOpenUpload(true);
   };
   // Delete Song
-  const deleteSong = async (songId) => {
-    try {
-      if (confirm(`Are you sure you want to delete this song?`) == true) {
-        const response = await axios.delete(
-          `${Base_URL}/songs/deleteSong?songId=${songId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          message.success("Delete song successfully!");
-        }
-        // Refresh the component
-        setRefresh(false);
-        return response.status;
-      }
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
+  const handleDeleteSong = async (userId) => {
+    await deleteSong(userId).then(() => setRefresh(true))
+  }
+
 
   const handleOk = () => {
     form.submit();
@@ -85,10 +66,6 @@ const SongManagement = () => {
     setIsModalOpenUpload(false);
     setIsModalOpenUpdate(false);
   };
-
-  // Song Data {id,artists, genres, listens, poster, songData, songName, status}
-  // 0: {id: 3, songName: 'Out Of Time', poster: 'https://avatar-ex-swe.nixcdn.com/song/2022/01/07/2/5/8/e/1641534807286_640.jpg', artists: Array(1), genres: Array(0), …}
-  // 1: {id: 5, songName: 'Starboy', poster: 'https://upload.wikimedia.org/wikipedia/en/3/39/The_Weeknd_-_Starboy.png', artists: Array(1), genres: Array(0), …}
 
   const columnsSong = [
     {
@@ -181,7 +158,7 @@ const SongManagement = () => {
           </button>
           <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-60"
-            onClick={() => deleteSong(record.key)}
+            onClick={() => handleDeleteSong(record.key)}
           >
             Delete
           </button>
@@ -190,7 +167,7 @@ const SongManagement = () => {
     },
   ];
 
-  const dataSongs = songList.map((songItem) => ({
+  const dataSongs = songList.length > 0 && songList.map((songItem) => ({
     key: songItem.id.toString(), // Assuming id is unique
     poster: (
       <img
@@ -205,11 +182,20 @@ const SongManagement = () => {
     listens: songItem.listens,
     status: songItem.status,
   }));
-  console.log("dataSongs", dataSongs);
+
+
   useEffect(() => {
-    setRefresh(true);
-    getListSong(songPage);
-  }, [isModalOpenUpload, isModalOpenUpdate, refresh]);
+    getListSong().then((res) => { setSongList(res.songList); setRefresh(false) })
+  }, []);
+
+  useEffect(() => {
+    if (refresh == true) {
+      getListSong().then((res) => {
+        setSongList(res.songList)
+        setRefresh(false)
+      })
+    }
+  }, [refresh])
 
   if (!songList) return null;
   return (
@@ -232,7 +218,7 @@ const SongManagement = () => {
             autoComplete="off"
           >
             <Form.Item label="" name="songName">
-              <Input placeholder="Search..." onChange={handSearch} />
+              <Input placeholder="Search..." onChange={handSearch} className="text-primaryText2 dark:text-primaryTextDark2" />
             </Form.Item>
           </Form>
         </div>

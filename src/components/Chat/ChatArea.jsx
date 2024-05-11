@@ -180,7 +180,7 @@ const ChatArea = () => {
         <div className="w-[1050px] h-12 mx-2">
           <input
             type="text"
-            className="w-full p-3 rounded-md bg-backgroundChattingInput dark:bg-backgroundChattingInputDark"
+            className="w-full p-3 rounded-md text-primaryText2 "
             placeholder="Type a message..."
             value={newMessage}
             onChange={handleMessageChange}

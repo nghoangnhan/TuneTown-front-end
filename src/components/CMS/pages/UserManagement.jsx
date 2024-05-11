@@ -255,7 +255,7 @@ const UserManagement = () => {
               autoComplete="off"
             >
               <Form.Item label="" name="userName" className="">
-                <Input placeholder="Search..." onChange={handSearch} />
+                <Input placeholder="Search..." onChange={handSearch} className="text-primaryText2 dark:text-primaryTextDark2" />
               </Form.Item>
             </Form>
           </div>

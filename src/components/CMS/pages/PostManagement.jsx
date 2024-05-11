@@ -3,112 +3,15 @@ import { useEffect, useState } from "react";
 import { useForumUtils } from "../../../utils/useChatUtils";
 import useConfig from "../../../utils/useConfig";
 import UpdatePost from "../../Forum/UpdatePost";
+import CreatePost from "../../Forum/CreatePost";
 
 const PostManagement = () => {
     const { Base_AVA } = useConfig();
-    const [postList, setPostlist] = useState([
-        {
-            "id": 1,
-            "author": {
-                "id": 202,
-                "userName": "Nhat Nam Nguyen",
-                "email": "nguyennam2002pro@gmail.com",
-                "password": "$2a$10$w7YPO7I3A3ZynqnNfsgwOu5XqMewGSZj9nBrRmM9hY7kdOow353ES",
-                "role": "USER",
-                "birthDate": null,
-                "userBio": null,
-                "avatar": "https://lh3.googleusercontent.com/a/ACg8ocKgX_DfeFyEuTT--dwPLbWUbxn260uA_F3p0ZrZ4Y9N=s96-c",
-                "method": "GOOGLE",
-                "genres": []
-            },
-            "content": "Test post",
-            "song": {
-                "id": 602,
-                "songName": "Test 7",
-                "poster": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=d11360ab-a94e-4445-8539-609d7514e398",
-                "artists": [
-                    {
-                        "id": 1202,
-                        "userName": "The Weeknd",
-                        "email": "theweeknd@gmail.com",
-                        "password": "$2a$10$dngXenLKAEkkf7Ory.OiqeTdhGZyC6VVshcUTWy/jeGiKHLB1W8Ce",
-                        "role": "ARTIST",
-                        "birthDate": "2001-01-01",
-                        "userBio": "I am an artist",
-                        "avatar": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=3e23a99b-473d-4c0e-9b21-8847bc7ca0ba",
-                        "method": null,
-                        "genres": [
-                            {
-                                "id": 8,
-                                "genreName": "Indie"
-                            },
-                            {
-                                "id": 1,
-                                "genreName": "Pop"
-                            },
-                            {
-                                "id": 6,
-                                "genreName": "Classic"
-                            },
-                            {
-                                "id": 5,
-                                "genreName": "Country"
-                            }
-                        ]
-                    }
-                ],
-                "genres": [],
-                "songData": "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/BlindingLight/BlindingLight_",
-                "likes": 0,
-                "listens": 1,
-                "status": 1,
-                "lyric": null
-            },
-            "mp3Link": null,
-            "playlist": {
-                "id": 452,
-                "playlistName": "New playlist",
-                "user": {
-                    "id": 1202,
-                    "userName": "The Weeknd",
-                    "email": "theweeknd@gmail.com",
-                    "password": "$2a$10$dngXenLKAEkkf7Ory.OiqeTdhGZyC6VVshcUTWy/jeGiKHLB1W8Ce",
-                    "role": "ARTIST",
-                    "birthDate": "2001-01-01",
-                    "userBio": "I am an artist",
-                    "avatar": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fstarboy.jpg?alt=media&token=3e23a99b-473d-4c0e-9b21-8847bc7ca0ba",
-                    "method": null,
-                    "genres": [
-                        {
-                            "id": 8,
-                            "genreName": "Indie"
-                        },
-                        {
-                            "id": 1,
-                            "genreName": "Pop"
-                        },
-                        {
-                            "id": 6,
-                            "genreName": "Classic"
-                        },
-                        {
-                            "id": 5,
-                            "genreName": "Country"
-                        }
-                    ]
-                },
-                "playlistType": "Private",
-                "coverArt": "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Fdontoliver.jpg?alt=media&token=a15c7c74-84e7-4be0-a020-fb879bb6428c",
-                "playlistSongsList": null
-            },
-            "likes": [],
-            "comments": [],
-            "postTime": null
-        },
-    ]);
+    const [postList, setPostlist] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [openModalCreatePost, setModalCreatePost] = useState(false)
     const [postUpdate, setPostUpdate] = useState({});
     const { getAllPost, deletePost } = useForumUtils();
 
@@ -288,14 +191,14 @@ const PostManagement = () => {
                         autoComplete="off"
                     >
                         <Form.Item label="" name="author">
-                            <Input placeholder="Search..." onChange={handSearch} />
+                            <Input placeholder="Search..." onChange={handSearch} className="text-primaryText2 dark:text-primaryTextDark2" />
                         </Form.Item>
                     </Form>
                 </div>
                 <div>
                     <button
                         className="px-4 py-2 text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
-                    // onClick={showModal}
+                        onClick={() => setModalCreatePost(true)}
                     >
                         Create New Post
                     </button>
@@ -306,7 +209,7 @@ const PostManagement = () => {
                 dataSource={
                     searchValue
                         ? dataPosts.filter((post) =>
-                            post.author.toLowerCase().includes(searchValue.toLowerCase())) : dataPosts}
+                            post?.author.userName.toLowerCase().includes(searchValue.toLowerCase())) : dataPosts}
                 pagination={{ pageSize: 8 }}
             />
             <Modal
@@ -323,6 +226,18 @@ const PostManagement = () => {
                     postContent={postUpdate}
                     setPostContent={setPostUpdate}
                 ></UpdatePost>
+            </Modal>
+            <Modal
+                title="Update Post"
+                visible={false}
+                // onOk={handleOk}
+                onCancel={() => {
+                    setModalCreatePost(false);
+                }}
+                open={openModalCreatePost}
+                footer={null}
+            >
+                <CreatePost></CreatePost>
             </Modal>
         </div>
     );
