@@ -296,6 +296,22 @@ export const useMusicAPIUtils = () => {
       return { success: false, error: error.message };
     }
   }
+
+  const getRecommendPlaylist = async () => {
+    try {
+      const response = await axios.get(`${Base_URL}/playlists/get-recommend-songs`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
+      return response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     addSongToPlaylist,
     getListSong,
@@ -309,6 +325,6 @@ export const useMusicAPIUtils = () => {
     deleteSongInPlaylist,
     deleteSong,
     combineData,
-    getPlaylistByUserId,
+    getPlaylistByUserId, getRecommendPlaylist
   };
 };
