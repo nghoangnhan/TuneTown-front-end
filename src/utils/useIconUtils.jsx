@@ -1,7 +1,7 @@
 import { faComments } from '@fortawesome/free-regular-svg-icons';
 import {
     faArrowTrendUp, faBackwardStep, faCaretLeft, faCheckCircle, faEarthAmerica, faForwardStep, faHeadphones, faHouse, faList
-    , faListOl, faMoon, faPause, faPauseCircle, faPlay, faPlayCircle, faPlus, faRepeat, faSearch, faShuffle, faSun, faUserCheck,
+    , faListOl, faMoon, faPause, faPauseCircle, faPlay, faPlayCircle, faPlus, faRepeat, faRightFromBracket, faSearch, faShuffle, faSun, faUserCheck,
     faUserGroup,
     faVolumeHigh,
     faVolumeLow
@@ -317,9 +317,9 @@ const useIconUtils = () => {
     const CreatePlaylistButton = ({ CreateNewPlaylist }) => {
         return <button
             onClick={() => CreateNewPlaylist()}
-            className="mt-3 mb-5 ml-3 bg-white border border-solid rounded-md border-primary text-primary hover:opacity-60"
+            className="mt-3 mb-5 ml-3 border border-solid rounded-md border-primary dark:border-primaryDarkmode bg-backgroundPrimary dark:bg-backgroundPlaylistDark text-primary dark:text-primaryDarkmode hover:opacity-60"
         >
-            <div className="px-2 py-2 font-bold">+ Create New Playlist</div>
+            <div className="px-2 py-2 font-bold">Create New Playlist</div>
         </button>
     }
     CreatePlaylistButton.propTypes = {
@@ -334,7 +334,9 @@ const useIconUtils = () => {
         return <FontAwesomeIcon icon={faUserGroup} />
     }
 
-
+    const ExitCommunityIcon = () => {
+        return <FontAwesomeIcon icon={faRightFromBracket}></FontAwesomeIcon>
+    }
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
@@ -345,7 +347,7 @@ const useIconUtils = () => {
         HomeIcon, SearchIcon, EarthIcon, PlaylistIcon,
         ShuffleIcon, RepeatIcon, PlayIcon, PauseIcon, SkipNextIcon, SkipPreviousIcon,
         VolumeLowIcon, VolumeHighIcon, LyricIcon, QueueIcon, CreatePlaylistButton,
-        UserGroupIcon, UserGroupIconOutlined
+        UserGroupIcon, UserGroupIconOutlined, ExitCommunityIcon
     };
 };
 

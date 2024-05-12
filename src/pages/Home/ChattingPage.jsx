@@ -8,7 +8,7 @@ const ChattingPage = () => {
   const { isMobile } = useConfig();
   const chatId = useSelector((state) => state.social.currentChat.chatId);
   return (
-    <div>
+    <div className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       {/* Desktop Layout */}
       {!isMobile && (
         <div className="flex flex-row w-full h-full min-h-screen min-w-screen">

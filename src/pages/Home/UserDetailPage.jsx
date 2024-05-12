@@ -11,6 +11,9 @@ import { setChatChosen } from "../../redux/slice/social";
 import { useDispatch, useSelector } from "react-redux";
 import EditUserForm from '../../components/Users/EditUserForm';
 import EditGenreForm from '../../components/Users/EditGenreForm';
+import { useMusicAPIUtils } from '../../utils/useMusicAPIUtils';
+import MyPlaylistItem from '../../components/Users/MyPlaylistItem';
+import { setMyPLaylistList } from '../../redux/slice/playlist';
 
 // eslint-disable-next-line no-unused-vars
 const UserDetailPage = ({ owned }) => {
@@ -22,6 +25,7 @@ const UserDetailPage = ({ owned }) => {
     const dispatch = useDispatch();
     const refreshAccount = useSelector((state) => state.account.refreshAccount);
     const { defaultAva } = useConfig();
+    const { getUserPlaylist } = useMusicAPIUtils();
     const { getUserInfor, getUserPost } = useUserUtils();
     const [userInfor, setUserInfor] = useState({});
     const [postList, setPostList] = useState([]);
@@ -30,6 +34,7 @@ const UserDetailPage = ({ owned }) => {
     const [community, setCommunity] = useState();
     const [openModalEditUser, setOpenModalEditUser] = useState(false);
     const [openModalGenres, setOpenModalGenres] = useState(false);
+    const [playlistList, setPlaylistList] = useState([]);
 
     const handleNavigate = (path) => {
         dispatch(
@@ -87,6 +92,10 @@ const UserDetailPage = ({ owned }) => {
             getUserPost(userId).then((res) => {
                 setPostList(res.postList)
             });
+            getUserPlaylist(userId).then((data) => {
+                setPlaylistList(data);
+                dispatch(setMyPLaylistList(playlistList));
+            });
         }
     }, [refreshAccount]);
 
@@ -95,11 +104,14 @@ const UserDetailPage = ({ owned }) => {
             navigate("/login");
         }
         getUserInfor(userId).then((res) => {
-            console.log("USER INFOR", res);
             setUserInfor(res.user)
         });
         getUserPost(userId).then((res) => {
             setPostList(res.postList)
+        });
+        getUserPlaylist(userId).then((data) => {
+            setPlaylistList(data);
+            dispatch(setMyPLaylistList(playlistList));
         });
     }, [userId]);
 
@@ -145,8 +157,26 @@ const UserDetailPage = ({ owned }) => {
                 </div>
             </div>
             <div className='flex flex-row items-start justify-center w-full'>
-                <div className='min-w-[500px] bg-backgroundPlaylist min-h-screen rounded-2xl p-2 shadow-lg mt-4'>
-                    aaaaa
+                <div className='min-w-[600px]  bg-backgroundPlaylist dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 text-primaryText2 min-h-screen rounded-2xl p-2 shadow-lg mt-4'>
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-1 gap-x-5 xl:px-5">
+                        {playlistList &&
+                            playlistList.map((playlistItem) => (
+                                <div
+                                    className="flex justify-center mt-10 xl:w-full xl:h-full"
+                                    key={playlistItem.id}
+                                >
+                                    <MyPlaylistItem
+                                        key={playlistItem.id}
+                                        id={playlistItem.id}
+                                        playlistInfo={playlistItem}
+                                        playlistName={playlistItem.playlistName}
+                                        playlistType={playlistItem.playlistType}
+                                        users={playlistItem.users}
+                                        coverArt={playlistItem.coverArt}
+                                    ></MyPlaylistItem>
+                                </div>
+                            ))}
+                    </div>
                 </div>
                 <div>
                     <PostSection postList={postList}></PostSection>

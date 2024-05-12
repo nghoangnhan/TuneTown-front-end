@@ -35,6 +35,7 @@ const MessageSection = ({ chatContent }) => {
               </div>
 
               {/* Message */}
+              {/* 2 is SYSTEM, !2 is USERS */}
               {chat.type !== 2 && <div className="flex flex-col gap-2 mx-1">
                 <h3 className="font-bold text-primary dark:text-primaryDarkmode">
                   {chat.name ? chat.name : "Unknown"}

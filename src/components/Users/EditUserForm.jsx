@@ -107,7 +107,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
         form={form}
         onFinish={onFinish}
         className={`
-        ${isModal ? "w-full" : "w-1/2"} m-auto bg-backgroundPlaylist text-primaryText2 p-5 rounded-lg`}
+        ${isModal ? "w-full" : "w-1/2"} m-auto bg-backgroundPlaylist text-primaryText2 p-5 `}
       >
         <div className="w-full mb-5 text-center">
           <h2 className="text-3xl font-bold uppercase font-monserrat ">

@@ -14,7 +14,7 @@ const PlaylistPage = () => {
       {/* Button back to history */}
       <BackButton></BackButton>
       <div className="p-5 mt-5 rounded-md shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
-        <h1 className="mb-2 text-3xl font-bold text-center text-headingText dark:text-headingTextDark">
+        <h1 className="mb-2 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode">
           My Playlist
         </h1>
         <MyPlaylistSection></MyPlaylistSection>

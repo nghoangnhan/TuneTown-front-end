@@ -77,7 +77,6 @@ const MyPlaylistSection = () => {
   useEffect(() => {
     getUserPlaylist(userId).then((data) => {
       setPlaylistList(data);
-
       dispatch(setMyPLaylistList(playlistList));
     });
   }, [refresh]);

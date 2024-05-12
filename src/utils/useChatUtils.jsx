@@ -293,13 +293,16 @@ export const useChatUtils = () => {
     }
   }
 
-  const deleteConversation = async (chatId) => {
+  const deleteConversation = async (userId, sentUser) => {
     try {
-      if (!chatId) return;
       if (confirm("Are you sure you want to delete this conversation?") === false) return;
       const response = await axios.delete(
-        `${Base_URL}/messages/deleteConversation?chatId=${chatId}`,
+        `${Base_URL}/messages`,
         {
+          data: {
+            userId: userId,
+            sentUser: [sentUser]
+          },
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
@@ -335,7 +338,7 @@ export const useChatUtils = () => {
       const response = await axios.post(
         `${Base_URL}/community/approve`,
         {
-          "isApprove": isApprove === true ? 1 : 0, // 1: Approve, !1: Refuse
+          "isApprove": isApprove === true ? 1 : !1, // 1: Approve, !1: Refuse
           "hostId": userId,
           "approveUserId": userRequest
         },
@@ -345,7 +348,7 @@ export const useChatUtils = () => {
           },
         }
       );
-      return response.data;
+      return response.status;
     } catch (error) {
       console.log("Error:", error);
     }

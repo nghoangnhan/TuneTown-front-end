@@ -14,12 +14,12 @@ import { message } from "antd";
 import ModalApprove from "./ModalApprove";
 
 const ChatArea = () => {
-  const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest } = useChatUtils();
+  const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest, outCommunity } = useChatUtils();
   const { Base_URL, socket } = useConfig();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { BackIcon, UserGroupIcon, OptionsIcon } = useIconUtils();
+  const { BackIcon, UserGroupIcon, OptionsIcon, ExitCommunityIcon } = useIconUtils();
   const { access_token } = getToken();
   const { show } = useContextMenu();
   const userId = parseInt(localStorage.getItem("userId"), 10);
@@ -104,7 +104,19 @@ const ChatArea = () => {
     }
     );
   }
-
+  const handleOutCommunity = async (userId, communityId) => {
+    await outCommunity(userId, communityId).then((res) => {
+      if (res.status === 200) {
+        message.success(`Out community successfully user ${communityId}`);
+        dispatch(setRefreshChat(true));
+        navigate("/chat");
+      }
+      else {
+        message.error(`Failed to out community user ${communityId}`);
+        console.log("Error out community:", res);
+      }
+    });
+  }
   useEffect(() => {
     if (converChosen !== null && userId != null) {
       setChatInfo(converChosen);
@@ -162,6 +174,13 @@ const ChatArea = () => {
             </div>
             <div className="cursor-pointer" onClick={(e) => displayMenu(e, chatInfo.communityId)}>
               <OptionsIcon></OptionsIcon>
+            </div>
+          </div>
+        }
+        {chatInfo?.communityId !== null && chatInfo?.communityId !== userId &&
+          <div className="sticky right-0 flex flex-row items-center gap-2 px-4 text-primary dark:text-primaryDarkmode">
+            <div className="cursor-pointer" onClick={() => handleOutCommunity(userId, chatInfo.communityId)}>
+              <ExitCommunityIcon></ExitCommunityIcon>
             </div>
           </div>
         }

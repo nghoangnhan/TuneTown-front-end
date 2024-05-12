@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { Item, Menu, useContextMenu } from 'react-contexify';
 import useConfig from '../../utils/useConfig';
-import { setChatChosen } from '../../redux/slice/social';
+import { setChatChosen, setRefreshChat } from '../../redux/slice/social';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import useChatUtils from '../../utils/useChatUtils';
+import { message } from 'antd';
 
 // eslint-disable-next-line no-unused-vars
 const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
@@ -12,21 +13,58 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
     const navigate = useNavigate();
     const { show } = useContextMenu();
     const dispatch = useDispatch();
-    const { AcronymName } = useChatUtils();
+    const { AcronymName, deleteConversation } = useChatUtils();
     const userId = parseInt(localStorage.getItem("userId"), 10);
 
     // Handle chat chosen
     const handleChatChosen = async (conver) => {
-        console.log("ChatNavigate handleChatChosen", conver);
-        dispatch(setChatChosen(conver));
-        if (!conver.communityId || conver.communityId === null) {
-            // Private message
-            navigate(`/chat/${conver.chatId}`);
+        try {
+            const converDetail = {
+                chatId: conver.communityId ? null : conver.chatId,
+                userName: conver.userName,
+                avatar: conver.avatar,
+                communityId: conver.communityId,
+                communityName: conver.communityName,
+                communityAvatar: conver.communityAvatar,
+                communityHost: conver.communityHost,
+                approveRequests: conver.approveRequests,
+                hosts: conver.hosts,
+                joinUSers: conver.joinUSers,
+            };
+            console.log("ChatNavigate handleChatChosen", converDetail);
+
+            if (!conver || (!conver.communityId && conver.communityId !== null)) {
+                console.error("Invalid conversation data");
+                return;
+            }
+
+            dispatch(setChatChosen(converDetail));
+
+            if (!conver.communityId) {
+                // Private message
+                navigate(`/chat/${conver.chatId}`);
+            } else {
+                // Artist community
+                navigate(`/chat/community/${conver.communityId}`);
+            }
+        } catch (error) {
+            console.error("Error while handling chat chosen:", error);
         }
-        else {
-            // Artist community
-            navigate(`/chat/community/${conver.chatId}`);
+    };
+
+    const handleDeleteConversation = async (userId, sendUser) => {
+        if (!userId || !sendUser) {
+            message.error("Invalid user data");
+            return;
         }
+        await deleteConversation(userId, sendUser).then(() => {
+            message.success("Delete conversation successfully");
+            navigate("/chat");
+            dispatch(setRefreshChat(true));
+        }).catch(error => {
+            console.error("Failed to delete conversation:", error);
+            message.error("Failed to delete conversation. Please try again later.");
+        });
     };
 
     const displayMenu = (e, converId) => {
@@ -40,21 +78,23 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
 
     return (
         <div className="flex flex-col justify-center gap-2 mt-5">
-            {chatList.map((conver) => (
+            {chatList.map((conver, index) => (
                 <div
-                    onContextMenu={(e) => displayMenu(e, conver.chatId)}
-                    key={conver.chatId}
-                    className={`${converChosen.chatId == conver.chatId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : ""
-                        } flex flex-row items-center  dark:bg-backgroundPlaylistDark hover:opacity-60 gap-3 p-2 cursor-pointer w-full rounded-sm`}
+                    onContextMenu={(e) => displayMenu(e, index)}
+                    key={index}
+                    className={`flex flex-row items-center gap-3 p-2 cursor-pointer w-full rounded-sm
+                    ${converChosen.communityId !== null && converChosen.communityId === conver.communityId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : (converChosen.chatId !== null && conver.chatId === converChosen.chatId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : "")} `}
+
+
                     onClick={() => {
                         handleChatChosen(conver);
                     }}
                 >
 
-                    <Menu id={`converOption_${conver.chatId}`} className='contexify-menu'>
+                    <Menu id={`converOption_${index}`} className='contexify-menu'>
                         <Item
                             onClick={() => {
-                                console.log("Delete conversation");
+                                handleDeleteConversation(userId, conver.chatId);
                             }}
                         >
                             Delete Conversation
