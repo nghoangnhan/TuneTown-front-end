@@ -143,7 +143,7 @@ const ChatNavigate = () => {
     const communityList = await searchCommunity(keywords);
     if (filteredUserList.length === 0 && communityList.length === 0) return;
     else {
-      // setChatRs([...filteredUserList, ...communityList]);
+      setChatRs([...filteredUserList, ...communityList]);
     }
   };
 
