@@ -5,7 +5,6 @@ import useIconUtils from "../../utils/useIconUtils";
 
 const MessageSection = ({ chatContent }) => {
   const { Check, CheckSeen } = useIconUtils();
-  console.log("Chat Content:", chatContent);
   const windownEndRef = useRef(null);
   const scollToBottom = (windownEndRef) => {
     windownEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -21,8 +20,7 @@ const MessageSection = ({ chatContent }) => {
           <div
             key={index}
             className={`${chat.own == true && chat.type !== 2 ? "items-end" : (chat.own == false && chat.type !== 2 ? "items-start" : (chat.type == 2 ? "items-center"
-              : ""))} flex flex-col m-2 gap-2`}
-          >
+              : ""))} flex flex-col m-2 gap-2`}>
             <div className="flex flex-row items-end ">
               {/* Avatar  */}
               <div className="w-10">

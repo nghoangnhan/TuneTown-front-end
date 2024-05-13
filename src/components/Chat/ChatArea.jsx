@@ -19,11 +19,11 @@ const ChatArea = () => {
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { BackIcon, UserGroupIcon, OptionsIcon, ExitCommunityIcon } = useIconUtils();
+  const { BackIcon, UserGroupIcon, OptionsIcon, ExitCommunityIcon, SendIcon } = useIconUtils();
   const { access_token } = getToken();
   const { show } = useContextMenu();
   const userId = parseInt(localStorage.getItem("userId"), 10);
-  const chatId = useParams().chatId;
+  const { chatId } = useParams();
   const converChosen = useSelector((state) => state.social.currentChat);
   const [chatInfo, setChatInfo] = useState();
   const [newMessage, setNewMessage] = useState("");
@@ -52,7 +52,6 @@ const ChatArea = () => {
           },
         }
       );
-      console.log("Response sendMessage:", response.data);
       if (response.status !== 200) {
         throw new Error("Failed to send message");
       }
@@ -67,8 +66,9 @@ const ChatArea = () => {
         content: content,
       });
       // Update the chat list
-      loadMessage(userId, chatId).then((data) => {
+      await loadMessage(userId, converChosen.chatId).then((data) => {
         setChatContent(data);
+        console.log("Chat content:", data);
       });
       // Set isNewMessage to true
       dispatch(setIsNewMessage(true));
@@ -104,28 +104,32 @@ const ChatArea = () => {
     }
     );
   }
-  const handleOutCommunity = async (userId, communityId) => {
+  const handleOutCommunity = async (userId, communityId, communityName) => {
     await outCommunity(userId, communityId).then((res) => {
       if (res.status === 200) {
-        message.success(`Out community successfully user ${communityId}`);
+        message.success(`Left community ${communityName} successfully`);
         dispatch(setRefreshChat(true));
         navigate("/chat");
       }
       else {
-        message.error(`Failed to out community user ${communityId}`);
-        console.log("Error out community:", res);
+        message.error(`Failed to leave community ${communityName}`);
+        console.log("Error leave community:", res);
       }
     });
   }
+
+  const handleLoadmessage = async (userId, chatId) => {
+    await loadMessage(userId, chatId).then((data) => {
+      setChatContent(data);
+    });
+  }
+
   useEffect(() => {
-    if (converChosen !== null && userId != null) {
+    if (converChosen !== null && userId !== null) {
       setChatInfo(converChosen);
-      console.log("CHATINFO ", chatInfo);
-      loadMessage(userId, chatId).then((data) => {
-        setChatContent(data);
-      });
+      handleLoadmessage(userId, converChosen.chatId);
     }
-  }, [converChosen, userId, chatId]);
+  }, [converChosen]);
 
   useEffect(() => {
     if (socket) {
@@ -151,10 +155,10 @@ const ChatArea = () => {
   }, [socket]);
 
   return (
-    <div className="xl:w-4/5">
+    <div className="">
       <div className="fixed flex flex-row items-center justify-between w-full h-20 pl-3 bg-slate-50 dark:bg-backgroundChattingInputNavDark">
         <div className="flex flex-row items-center ">
-          <BackIcon></BackIcon>
+          <BackIcon url={"/chat"}></BackIcon>
           <div className="w-10">
             <img
               src={`${chatInfo?.avatar ? chatInfo.avatar : defaultAva}`}
@@ -177,9 +181,9 @@ const ChatArea = () => {
             </div>
           </div>
         }
-        {chatInfo?.communityId !== null && chatInfo?.communityId !== userId &&
+        {chatInfo?.communityId !== null && chatInfo?.communityId !== userId && chatInfo?.chatId !== null && chatInfo?.chatId !== userId &&
           <div className="sticky right-0 flex flex-row items-center gap-2 px-4 text-primary dark:text-primaryDarkmode">
-            <div className="cursor-pointer" onClick={() => handleOutCommunity(userId, chatInfo.communityId)}>
+            <div className="cursor-pointer" onClick={() => handleOutCommunity(userId, chatInfo.chatId, chatInfo.userName)}>
               <ExitCommunityIcon></ExitCommunityIcon>
             </div>
           </div>
@@ -195,30 +199,29 @@ const ChatArea = () => {
       {/* Load message content */}
 
       {/* Chat input area */}
-      <div className="fixed bottom-0 flex flex-row items-center w-full h-20 pl-3 bg-slate-200 dark:bg-backgroundChattingInputNavDark">
-        <div className="w-[1050px] h-12 mx-2">
-          <input
-            type="text"
-            className="w-full p-3 rounded-md text-primaryText2 "
-            placeholder="Type a message..."
-            value={newMessage}
-            onChange={handleMessageChange}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                sendMessage(userId, chatId, newMessage);
-              }
-            }}
-          />
-        </div>
-        <div className="w-[130px] p-2">
-          <button
-            className="w-full p-3 text-white rounded-lg bg-primary hover:opacity-50 dark:bg-primaryDark"
-            onClick={() => sendMessage(userId, chatId, newMessage)}
-          >
-            Send
-          </button>
-        </div>
+      <div className="fixed bottom-0 flex flex-row items-center w-full h-20 gap-3 pl-3 bg-slate-200 dark:bg-backgroundChattingInputNavDark">
+
+        <input
+          type="text"
+          className="w-[1000px] p-3 rounded-md outline-none text-primaryText2 "
+          placeholder="Type a message..."
+          value={newMessage}
+          onChange={handleMessageChange}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              sendMessage(userId, chatId, newMessage);
+            }
+          }}
+        />
+
+        <button
+          className="p-3 text-white rounded-lg bg-primary hover:opacity-50 dark:bg-primaryDark"
+          onClick={() => sendMessage(userId, chatId, newMessage)}
+        >
+          <SendIcon></SendIcon>
+        </button>
       </div>
+
       {/*  End of chat input area */}
       <Menu id={`communityOption_${chatInfo?.communityId}`} className='contexify-menu'>
         <Item
@@ -239,7 +242,6 @@ const ChatArea = () => {
         converChosen={converChosen}
         handleApproveRequest={handleApproveRequest}
       ></ModalApprove>
-
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { faComments } from '@fortawesome/free-regular-svg-icons';
 import {
     faArrowTrendUp, faBackwardStep, faCaretLeft, faCheckCircle, faEarthAmerica, faForwardStep, faHeadphones, faHouse, faList
-    , faListOl, faMoon, faPause, faPauseCircle, faPlay, faPlayCircle, faPlus, faRepeat, faRightFromBracket, faSearch, faShuffle, faSun, faUserCheck,
+    , faListOl, faMoon, faPaperPlane, faPause, faPauseCircle, faPlay, faPlayCircle, faPlus, faRepeat, faRightFromBracket, faSearch, faShuffle, faSun, faUserCheck,
     faUserGroup,
     faVolumeHigh,
     faVolumeLow
@@ -9,14 +9,16 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import useConfig from './useConfig';
+import { useNavigate } from 'react-router-dom';
 
 const useIconUtils = () => {
     const { Base_AVA } = useConfig();
-    const BackButton = () => {
+    const navigate = useNavigate();
+    const BackButton = ({ url }) => {
         return (
             <button
                 className="px-4 py-2 font-bold text-white rounded-lg shadow-md bg-primary dark:bg-primaryDarkmode"
-                onClick={() => window.history.back()}
+                onClick={() => navigate(url ? url : "/home")}
             >
                 <FontAwesomeIcon
                     icon={faCaretLeft}
@@ -24,17 +26,24 @@ const useIconUtils = () => {
             </button>
         );
     };
-    const BackIcon = () => {
+    BackButton.propTypes = {
+        url: PropTypes.string,
+    };
+
+    const BackIcon = ({ url }) => {
         return (
             <button
                 className="px-3 py-1 text-2xl font-bold text-primary hover:opacity-60"
-                onClick={() => window.history.back()}
+                onClick={() => navigate(url ? url : "/home")}
             >
                 <FontAwesomeIcon
                     icon={faCaretLeft}
                 ></FontAwesomeIcon>
             </button>
         );
+    };
+    BackIcon.propTypes = {
+        url: PropTypes.string,
     };
 
     // Nav  Icon 
@@ -337,6 +346,11 @@ const useIconUtils = () => {
     const ExitCommunityIcon = () => {
         return <FontAwesomeIcon icon={faRightFromBracket}></FontAwesomeIcon>
     }
+
+    const SendIcon = () => {
+        return <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
+    }
+
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
@@ -347,7 +361,7 @@ const useIconUtils = () => {
         HomeIcon, SearchIcon, EarthIcon, PlaylistIcon,
         ShuffleIcon, RepeatIcon, PlayIcon, PauseIcon, SkipNextIcon, SkipPreviousIcon,
         VolumeLowIcon, VolumeHighIcon, LyricIcon, QueueIcon, CreatePlaylistButton,
-        UserGroupIcon, UserGroupIconOutlined, ExitCommunityIcon
+        UserGroupIcon, UserGroupIconOutlined, ExitCommunityIcon, SendIcon
     };
 };
 

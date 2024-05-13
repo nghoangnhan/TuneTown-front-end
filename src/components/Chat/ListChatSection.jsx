@@ -20,7 +20,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
     const handleChatChosen = async (conver) => {
         try {
             const converDetail = {
-                chatId: conver.communityId ? null : conver.chatId,
+                chatId: conver.chatId,
                 userName: conver.userName,
                 avatar: conver.avatar,
                 communityId: conver.communityId,
@@ -33,13 +33,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
             };
             console.log("ChatNavigate handleChatChosen", converDetail);
 
-            if (!conver || (!conver.communityId && conver.communityId !== null)) {
-                console.error("Invalid conversation data");
-                return;
-            }
-
             dispatch(setChatChosen(converDetail));
-
             if (!conver.communityId) {
                 // Private message
                 navigate(`/chat/${conver.chatId}`);
@@ -84,8 +78,6 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
                     key={index}
                     className={`flex flex-row items-center gap-3 p-2 cursor-pointer w-full rounded-sm
                     ${converChosen.communityId !== null && converChosen.communityId === conver.communityId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : (converChosen.chatId !== null && conver.chatId === converChosen.chatId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : "")} `}
-
-
                     onClick={() => {
                         handleChatChosen(conver);
                     }}

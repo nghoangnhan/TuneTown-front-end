@@ -143,7 +143,7 @@ const ChatNavigate = () => {
     const communityList = await searchCommunity(keywords);
     if (filteredUserList.length === 0 && communityList.length === 0) return;
     else {
-      setChatRs([...filteredUserList, ...communityList]);
+      // setChatRs([...filteredUserList, ...communityList]);
     }
   };
 
@@ -185,7 +185,7 @@ const ChatNavigate = () => {
   }, [isNewMessage]);
 
   return (
-    <div className={`${isMobile ? "w-full" : "w-80"} min-h-screen px-1 bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary border-gray-200  h-fit`}>
+    <div className={`${isMobile ? "w-full" : "w-80"} sticky top-0 min-h-screen px-1 bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary border-gray-200  h-fit`}>
       <div
         className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
         onClick={() => navigate("/home")}
@@ -235,11 +235,13 @@ const ChatNavigate = () => {
       </div>
 
       <div className="ml-2">
-        <BackButton></BackButton>
+        <BackButton url={"/home"}></BackButton>
       </div>
 
       {/* Chat List  */}
-      <ListChatSection chatList={converList} chatListRaw={converListRaw} converChosen={converChosen} ></ListChatSection>
+      <div>
+        <ListChatSection chatList={converList} chatListRaw={converListRaw} converChosen={converChosen} ></ListChatSection>
+      </div>
     </div>
   );
 };

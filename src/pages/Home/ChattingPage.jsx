@@ -12,8 +12,12 @@ const ChattingPage = () => {
       {/* Desktop Layout */}
       {!isMobile && (
         <div className="flex flex-row w-full h-full min-h-screen min-w-screen">
-          <ChatNavigate></ChatNavigate>
-          <Outlet></Outlet>
+          <div className="">
+            <ChatNavigate></ChatNavigate>
+          </div>
+          <div className="flex-auto max-w-full">
+            <Outlet></Outlet>
+          </div>
         </div>
       )}
       {/* End Desktop Layout */}

@@ -219,6 +219,8 @@ export const useChatUtils = () => {
 
   const outCommunity = async (userId, communityId) => {
     try {
+      if (!userId || !communityId) return;
+      if (confirm("Are you sure you want to leave this community?") === false) return;
       const response = await axios.post(
         `${Base_URL}/community/outCommunity?userId=${userId}&communityId=${communityId}`,
         {},
@@ -228,7 +230,7 @@ export const useChatUtils = () => {
           },
         }
       );
-      return response.data;
+      return response;
     } catch (error) {
       console.log("Error:", error);
     }
