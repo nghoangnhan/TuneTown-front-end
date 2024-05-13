@@ -15,8 +15,8 @@ import QueueSection from "../components/HomePage/QueueSection";
 import PlaylistManagement from "../components/CMS/pages/PlaylistManagement";
 import UploadSongPage from "../pages/Home/UploadSongPage";
 import CMSArtist from "../pages/CMS/CMSArtist";
-import ChattingPage from "../pages/Home/ChattingPage";
-import ChatArea from "../components/Chat/ChatArea";
+// import ChattingPage from "../pages/Home/ChattingPage";
+// import ChatArea from "../components/Chat/ChatArea";
 import LyricSection from "../components/HomePage/LyricSection";
 import ForumPage from "../pages/Home/ForumPage";
 import PostItemDetail from "../components/Forum/PostItemDetail";
@@ -123,21 +123,21 @@ export default function init(routes) {
     element: <ErrorPage />,
   };
 
-  // Chat Route
-  const chatRoute = {
-    path: "/chat",
-    element: <ChattingPage />,
-    children: [
-      {
-        path: ":chatId",
-        element: <ChatArea />,
-      },
-      {
-        path: "community/:chatId",
-        element: <ChatArea />,
-      },
-    ],
-  };
+  // // Chat Route
+  // const chatRoute = {
+  //   path: "/chat",
+  //   element: <ChattingPage />,
+  //   children: [
+  //     {
+  //       path: ":chatId",
+  //       element: <ChatArea />,
+  //     },
+  //     {
+  //       path: "community/:chatId",
+  //       element: <ChatArea />,
+  //     },
+  //   ],
+  // };
 
   // Add the new route
   const cmsRoute = {
@@ -172,6 +172,6 @@ export default function init(routes) {
   routes.push(route);
   routes.push(cmsRoute);
   routes.push(signleRoute);
-  routes.push(chatRoute);
+  // routes.push(chatRoute);
   routes.push(errorRoute);
 }

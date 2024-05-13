@@ -60,12 +60,12 @@ const TheHeader = () => {
         <div>
           <DarkMode></DarkMode>
         </div>
-        <div
+        {/* <div
           className="flex items-center justify-center w-10 h-10 mt-1 mr-2 text-xl font-bold rounded-lg cursor-pointer text-iconText dark:text-iconTextDark hover:text-iconTextHover dark:hover:text-iconTextHoverDark dark:hover:bg-iconBackgroundDark"
           onClick={() => navigate("/chat")}
         >
           <ChatButton></ChatButton>
-        </div>
+        </div> */}
         {
           <div>
             <div className={`${userRole === "ADMIN" ? "text-[#f24e4e] dark:text-[#ff5050] border-[#f24e4e] dark:border-[#ff5050] font-bold" : (userRole === "USER" ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold" : (userRole === "ARTIST" ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold" : ""))} flex justify-center items-center p-1 border border-solid rounded-md mr-3`}>

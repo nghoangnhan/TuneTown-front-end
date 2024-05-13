@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { setUserInfor } from "../../redux/slice/account";
 import GoogleLoginButton from "../../components/AuthLogin/AuthGoogleLogin";
 import { gapi } from "gapi-script";
-import LoginFacebook from "../../components/AuthLogin/AuthFacebookLogin";
+// import LoginFacebook from "../../components/AuthLogin/AuthFacebookLogin";
 import useConfig from "../../utils/useConfig";
 import UseCookie from "../../hooks/useCookie";
 
@@ -168,7 +168,7 @@ const LoginPage = () => {
             <p className="text-[#a8a8ac]">Or login with</p>
           </div>
           <GoogleLoginButton />
-          <LoginFacebook />
+          {/* <LoginFacebook /> */}
         </div>
         <footer className="absolute bottom-5 ">
           <p className="text-[#8d8d8d]">TuneTown ©2024</p>
