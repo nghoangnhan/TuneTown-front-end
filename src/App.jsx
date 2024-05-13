@@ -24,7 +24,10 @@ function App() {
     // </Fragment>
     <div>
       <Helmet>
-        <meta httpEquiv="X-Frame-Options" content="DENY" />
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="frame-ancestors 'self'; form-action http://localhost:4173"
+        />
       </Helmet>
       <RouterProvider router={router} />
     </div>
