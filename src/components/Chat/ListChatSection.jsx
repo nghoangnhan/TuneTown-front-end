@@ -39,7 +39,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
                 navigate(`/chat/${conver.chatId}`);
             } else {
                 // Artist community
-                navigate(`/chat/community/${conver.communityId}`);
+                navigate(`/chat/community/${conver.chatId}`);
             }
         } catch (error) {
             console.error("Error while handling chat chosen:", error);
