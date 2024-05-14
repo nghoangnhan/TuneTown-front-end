@@ -10,11 +10,12 @@ export default defineConfig({
       "content-security-policy": JSON.stringify({
         "default-src": ["'self'"],
         "frame-ancestors": ["'self'"],
-        "form-action": ["http://localhost:4173"],
+        "form-action": ["http://localhost:4173", "http://localhost:5173", "https://tunetown-ute.vercel.app", "https://tunetown.netlify.app"],
       }),
     },
     cors: {
-      origin: ["http://localhost:8080", "http://localhost:3000"],
+      origin: ["http://localhost:8080", "http://localhost:3000"
+        , "http://localhost:4173", "http://localhost:5173", "https://tunetown-ute.vercel.app", "https://tunetown.netlify.app"],
     },
   },
 });
