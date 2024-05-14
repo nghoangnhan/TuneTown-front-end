@@ -177,8 +177,20 @@ const ForgotPass = () => {
             rules={[
               {
                 required: true,
-                message: "Please input new password!",
+                message: "Please input your password!",
               },
+              {
+                min: 8,
+                message: "Password must be at least 8 characters",
+              },
+              {
+                // Require uppercase, lowercase, number, and special character
+                pattern: new RegExp(
+                  "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])"
+                ),
+                message:
+                  "Password must contain at least one uppercase, one lowercase, one number and one special character",
+              }
             ]}
           >
             <Input.Password />
