@@ -1,4 +1,4 @@
-import { faComments } from '@fortawesome/free-regular-svg-icons';
+import { faCircleQuestion, faComments } from '@fortawesome/free-regular-svg-icons';
 import {
     faArrowTrendUp, faBackwardStep, faCaretLeft, faCheckCircle, faEarthAmerica, faForwardStep, faHeadphones, faHouse, faList
     , faListOl, faMoon, faPaperPlane, faPause, faPauseCircle, faPlay, faPlayCircle, faPlus, faRepeat, faRightFromBracket, faSearch, faShuffle, faSun, faUserCheck,
@@ -351,6 +351,10 @@ const useIconUtils = () => {
         return <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
     }
 
+    const HintIcon = () => {
+        return <FontAwesomeIcon icon={faCircleQuestion}> </FontAwesomeIcon>
+    }
+
     return {
         BackButton, ThumbsUpSolid, CheckSeen, Check, ThumbsUpRegular,
         BackIcon, VerifyAccount, UserCheck, OptionsIcon, PlayButton,
@@ -361,7 +365,7 @@ const useIconUtils = () => {
         HomeIcon, SearchIcon, EarthIcon, PlaylistIcon,
         ShuffleIcon, RepeatIcon, PlayIcon, PauseIcon, SkipNextIcon, SkipPreviousIcon,
         VolumeLowIcon, VolumeHighIcon, LyricIcon, QueueIcon, CreatePlaylistButton,
-        UserGroupIcon, UserGroupIconOutlined, ExitCommunityIcon, SendIcon
+        UserGroupIcon, UserGroupIconOutlined, ExitCommunityIcon, SendIcon, HintIcon
     };
 };
 

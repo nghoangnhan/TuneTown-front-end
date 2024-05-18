@@ -1,13 +1,45 @@
 import { useForm } from "antd/es/form/Form";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Form, Input, message } from "antd";
+import { Form, Input, Tour, message } from "antd";
 import axios from "axios";
 import useConfig from "../../utils/useConfig";
+import useIconUtils from "../../utils/useIconUtils";
+import { useRef, useState } from "react";
 
 const ForgotPass = () => {
   const [form] = useForm();
   const { Base_URL, Base_AVA } = useConfig();
+  const { HintIcon } = useIconUtils();
   const navigate = useNavigate();
+  const [openTour, setOpenTour] = useState(true);
+  const hintRef1 = useRef();
+  const hintRef2 = useRef();
+  const hintRef3 = useRef();
+  const hintRef4 = useRef();
+
+  const forgetTour = [
+    {
+      title: "Input Your Email",
+      description: "Please enter your email here.",
+      target: () => hintRef1.current,
+    },
+    {
+      title: "Get OTP",
+      description: "Click here to get OTP.",
+      target: () => hintRef2.current,
+    },
+    {
+      title: "Input OTP",
+      description: "Please enter the OTP you received here.",
+      target: () => hintRef3.current,
+    },
+    {
+      title: "Input New Password",
+      description: "Please enter your new password here.",
+      target: () => hintRef4.current,
+    },
+  ];
+
   // Get OTP
   const GetOTP = async (emailInput) => {
     try {
@@ -110,16 +142,21 @@ const ForgotPass = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full min-h-screen bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
       <div
-        className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer">
+        className="flex flex-row items-center justify-center gap-5 text-lg font-bold text-center uppercase cursor-pointer">
         <div>
           <img src={Base_AVA} className="bg-white rounded-full h-28" alt="Logo TuneTown" />
         </div>
         <div className="text-primary dark:text-primaryDarkmode">TuneTown</div>
       </div>
       <div className="flex flex-col items-center justify-center mt-10">
-        <h1 className="mb-10 text-3xl font-bold text-headingText dark:text-headingTextDark">
-          Forget Password
-        </h1>
+        <div className="flex flex-row items-center gap-3 mb-10 text-headingText dark:text-headingTextDark">
+          <h1 className="text-3xl font-bold ">
+            Forget Password
+          </h1>
+          <div onClick={() => setOpenTour(true)}>
+            <HintIcon></HintIcon>
+          </div>
+        </div>
         <Form
           form={form}
           className="w-full"
@@ -147,7 +184,9 @@ const ForgotPass = () => {
               },
             ]}
           >
-            <Input />
+            <div ref={hintRef1}>
+              <Input />
+            </div>
           </Form.Item>
 
           <Form.Item
@@ -162,10 +201,13 @@ const ForgotPass = () => {
             ]}
           >
             <div className="flex flex-row gap-2">
-              <Input />
+              <div ref={hintRef3}>
+                <Input />
+              </div>
               <button
-                className="h-12 px-1 py-1 text-white bg-green-500 rounded-md w-28"
+                className="h-10 px-1 py-1 text-white bg-green-500 rounded-md w-28"
                 onClick={() => handleSendOTP()}
+                ref={hintRef2}
               >
                 Get OTP
               </button>
@@ -193,7 +235,9 @@ const ForgotPass = () => {
               }
             ]}
           >
-            <Input.Password />
+            <div ref={hintRef4}>
+              <Input.Password />
+            </div>
           </Form.Item>
           <Form.Item
             className="flex flex-row items-center justify-center"
@@ -217,6 +261,27 @@ const ForgotPass = () => {
           </p>
         </div>
       </div>
+      <Tour
+        open={openTour}
+        onClose={() => setOpenTour(false)}
+        steps={forgetTour}
+        mask={{
+          style: {
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+          },
+          clickExit: true,
+        }}
+        indicatorsRender={(current, total) => (
+          <span>
+            {current + 1} / {total}
+          </span>
+        )}
+        nextButtonProps={{
+          style: {
+            backgroundColor: "#10B981",
+          },
+        }}
+      />
     </div>
   );
 };
