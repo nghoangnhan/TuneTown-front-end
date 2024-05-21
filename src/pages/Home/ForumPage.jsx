@@ -36,8 +36,8 @@ const ForumPage = () => {
       {!isMobile &&
         <div className="flex flex-row">
           <div className="flex-1 px-5 py-3">
-            <div className="mb-2 text-4xl font-bold">Forum</div>
-            <div className="text-xl font-bold">Welcome to the Forum!</div>
+            {/* <div className="mb-2 text-4xl font-bold">Forum</div>
+            <div className="text-xl font-bold">Welcome to the Forum!</div> */}
             <button
               className="px-4 py-2 mt-5 font-bold text-white transition duration-200 ease-in-out rounded-lg bg-primary hover:bg-primaryHoverOn"
               onClick={() => setOpenModal(true)}
@@ -55,8 +55,8 @@ const ForumPage = () => {
       {isMobile &&
         <div className="flex flex-col">
           <div className="p-2">
-            <div className="mb-2 text-4xl font-bold">Forum</div>
-            <div className="text-xl font-bold">Welcome to the Forum!</div>
+            {/* <div className="mb-2 text-4xl font-bold">Forum</div>
+            <div className="text-xl font-bold">Welcome to the Forum!</div> */}
             <button
               className="px-4 py-2 mt-5 font-bold text-white transition duration-200 ease-in-out rounded-lg bg-primary hover:bg-primaryHoverOn"
               onClick={() => setOpenModal(true)}
@@ -71,11 +71,12 @@ const ForumPage = () => {
 
       {/* Post Option  */}
       <Modal
-        title="Create a Post"
+        title="Share your thoughts!"
         open={openModal}
         onCancel={() => {
           setOpenModal(false);
         }}
+        className="modalStyle"
         footer={null}
       >
         <CreatePost />

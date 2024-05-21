@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { Button, Form, Input, Space, Table } from "antd";
+import { Table } from "antd";
 import axios from "axios";
 import UseCookie from "../../hooks/useCookie";
 import useConfig from "../../utils/useConfig";
@@ -8,18 +7,12 @@ import useConfig from "../../utils/useConfig";
 const HistorySection = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const { Base_URL } = useConfig();
+  const { Base_URL, Base_AVA } = useConfig();
   const [songList, setSongList] = useState([]);
-  const [refresh, setRefresh] = useState(false);
   const userId = localStorage.getItem("userId");
-
-  const refreshPlaylist = () => {
-    setRefresh(!refresh);
-  };
 
   const getListSongHistory = async () => {
     try {
-      console.log("auth", access_token);
       const response = await axios.post(
         `${Base_URL}/users/getHistory?userId=${userId}`,
         {},
@@ -40,8 +33,8 @@ const HistorySection = () => {
     key: songItem.id, // Assuming id is unique
     poster: (
       <img
-        src={songItem.song.poster}
-        alt={songItem.song.songName}
+        src={songItem.song.poster ? songItem.song.poster : Base_AVA}
+        alt={songItem.song.songName ? songItem.song.songName : "Song"}
         className="rounded-md w-11 h-11"
       />
     ),
@@ -51,22 +44,35 @@ const HistorySection = () => {
   }));
 
   const columnsSong = [
-    { title: "Poster", dataIndex: "poster", key: "poster" },
+    {
+      title: "Poster", dataIndex: "poster", key: "poster",
+      align: "center",
+      render: (poster) => {
+        return (
+          <div className="flex items-center justify-center">
+            {poster}
+          </div>
+        );
+      }
+    },
     {
       title: "Song Name",
       dataIndex: "songName",
       key: "songName",
+      align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Artist",
       dataIndex: "artists", // key in dataSongs
       key: "artists", // key in columnsSong
+      align: "center",
     },
     {
       title: "Genres",
       dataIndex: "genres",
       key: "genres",
+      align: "center",
     },
 
     // {
@@ -92,9 +98,9 @@ const HistorySection = () => {
 
   if (!songList) return null;
   return (
-    <div className="min-h-screen h-full xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary mb-20">
-      <div className="text-2xl font-bold">Song Management</div>
-      <div className="flex flex-row justify-between mt-5 mb-5 "></div>
+    <div className="h-full min-h-screen mb-20 xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
+      <div className="text-4xl font-bold text-primary dark:text-primaryDarkmode">Song Management</div>
+      <div className="my-4 text-2xl font-bold text-primaryText2 dark:text-primaryTextDark2">History</div>
       <Table columns={columnsSong} dataSource={dataSongTable} />
     </div>
   );

@@ -16,14 +16,6 @@ const EditGenreForm = ({ setOpenModalEditGenre }) => {
     const [genres, setGenres] = useState([]);
     const [form] = Form.useForm();
 
-    const layout = {
-        labelCol: {
-            span: 8,
-        },
-        wrapperCol: {
-            span: 16,
-        },
-    };
 
     const updatedGenres = async (values) => {
         try {
@@ -80,36 +72,39 @@ const EditGenreForm = ({ setOpenModalEditGenre }) => {
     }, [refreshAccount]);
 
     return (
-        <div>
+        <div className="flex items-center justify-center">
             <Form
                 form={form}
-                {...layout}
+
                 name="basic"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
-                className='p-4 rounded-md text-primaryText2 bg-backgroundComponentPrimary'
+                layout="vertical"
+                className='flex flex-col justify-center w-full h-full rounded-md formStyle'
             >
-                <div className="flex flex-col items-center justify-center mt-2">
-                    <h1 className="text-2xl font-bold">Edit Genre</h1>
+                <div className="w-full mb-5 text-center">
+                    <h1 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
+                        Edit Genre
+                    </h1>
                 </div>
 
                 <Form.Item
-                    label="Favourite Genre"
+                    label=" Genres"
                     name="genre"
                     rules={[{ required: true, message: "Please input your genre!" }]}
-                    className='mt-4'
+                    className='flex justify-center mt-4 '
                 >
-                    <Checkbox.Group>
+                    <Checkbox.Group className='grid items-center grid-cols-3 gap-8'>
                         {genres.map((genre, index) => (
-                            <Checkbox key={index} value={genre.id}>{genre.genreName}</Checkbox>
+                            <Checkbox key={index} className='text-primaryText2 dark:text-primaryTextDark2' value={genre.id}>{genre.genreName}</Checkbox>
                         ))}
                     </Checkbox.Group>
                 </Form.Item>
 
                 <Form.Item
                     wrapperCol={{ offset: 8, span: 16 }}>
-                    <button type="submit" className="w-1/4 h-10 text-white rounded-md bg-primary dark:text-primaryDarkmode hover:opacity-70">Submit</button>
+                    <button type="submit" className="w-1/4 h-10 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70">Submit</button>
                 </Form.Item>
             </Form>
         </div>

@@ -16,7 +16,7 @@ const MyDetailPlaylist = () => {
   const [form] = Form.useForm();
   const { editPlaylist, getListSongPlaylist, getPlaylistByPlaylistId } =
     useMusicAPIUtils();
-  const { default_Img } = useConfig();
+  const { Base_AVA } = useConfig();
   const { BackButton } = useIconUtils();
   const dispatch = useDispatch();
   const { handleUploadFileIMG } = useDataUtils();
@@ -46,7 +46,6 @@ const MyDetailPlaylist = () => {
     const data = await getListSongPlaylist(playlistId);
     if (data) {
       setSongPlaylistList(data);
-      console.log("GetListSong in Playlist", data);
     }
     dispatch(setRefreshPlaylist(false));
   };
@@ -105,7 +104,7 @@ const MyDetailPlaylist = () => {
             src={
               playlistDetail.coverArt
                 ? playlistDetail.coverArt
-                : default_Img
+                : Base_AVA
             }
             alt="artist-avatar"
           />
@@ -130,17 +129,9 @@ const MyDetailPlaylist = () => {
         title="Options"
         centered
         open={modalOpen}
-        okButtonProps={{ style: { backgroundColor: "#45cc79" } }}
-        onOk={() =>
-          handleOnclickEditForm(
-            playlistId,
-            form.getFieldValue("playlistName"),
-            form.getFieldValue("playlistType"),
-            coverArt
-          )
-        }
+        footer={null}
         onCancel={() => setModalOpen(false)}
-        className="text-[#359254] "
+        className="modalStyle"
       >
         <Form
           form={form}
@@ -151,12 +142,10 @@ const MyDetailPlaylist = () => {
           wrapperCol={{
             span: 16,
           }}
-          style={{
-            maxWidth: 600,
-          }}
           initialValues={{
             remember: true,
           }}
+          className="mx-auto formStyle"
         >
           <Form.Item
             name="playlistName"
@@ -181,7 +170,7 @@ const MyDetailPlaylist = () => {
                 src={
                   playlistDetail.coverArt
                     ? playlistDetail.coverArt
-                    : "https://i.pinimg.com/550x/f8/87/a6/f887a654bf5d47425c7aa5240239dca6.jpg"
+                    : Base_AVA
                 }
                 alt=""
               />
@@ -208,6 +197,21 @@ const MyDetailPlaylist = () => {
                 }
                 accept="image/jpeg, image/png"
               />
+            </Form.Item>
+            <Form.Item>
+              <button
+                onClick={() =>
+                  handleOnclickEditForm(
+                    playlistId,
+                    form.getFieldValue("playlistName"),
+                    form.getFieldValue("playlistType"),
+                    coverArt
+                  )
+                }
+                type="submit"
+                className="w-full px-4 py-2 border rounded-md border-primary hover:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70 dark:hover:text-backgroundDarkPrimary">
+                Save Changes
+              </button>
             </Form.Item>
           </div>
         </Form>

@@ -15,7 +15,9 @@ const clientId =
   "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
 
 const LoginPage = () => {
+  // eslint-disable-next-line no-unused-vars
   const { removeToken } = UseCookie();
+  // eslint-disable-next-line no-unused-vars
   const { Base_URL, auth } = useConfig();
   const [form] = useForm();
   const navigate = useNavigate();
@@ -75,10 +77,10 @@ const LoginPage = () => {
     console.log("Failed:", errorInfo);
   };
 
-  useEffect(() => {
-    console.log("Token removed", auth.access_token);
-    removeToken();
-  }, []);
+  // useEffect(() => {
+  //   console.log("Token removed", auth.access_token);
+  //   removeToken();
+  // }, []);
 
   useEffect(() => {
     function start() {
