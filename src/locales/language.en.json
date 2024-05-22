@@ -19,9 +19,54 @@
     "good": "Good",
     "morning": "Morning",
     "afternoon": "Afternoon",
-    "evening": "Evening"
+    "evening": "Evening",
+    "back": "Back",
+    "selectFile": "Select file",
+    "loadMore": "Load more"
   },
   "home": {
     "madeForYou": "Made For You"
+  },
+  "forum": {
+    "createAPost": "Create a post",
+    "comment": "Comment",
+    "share": "Share",
+    "report": "Report",
+    "refresh": "Refresh",
+    "updatePost": "Update post",
+    "deletePost": "Delete post"
+  },
+  "playlist": {
+    "myPlaylist": "My Playlist",
+    "createNewPlaylist": "Create new playlist",
+    "private": "Private",
+    "public": "Public",
+    "createYourNewPlaylist": "Create your new playlist",
+    "editPlaylist": "Edit playlist",
+    "madeBy": "Made by",
+    "playlistName": "Playlist Name",
+    "playlistPrivacy": "Playlist privacy",
+    "uploadCoverArt": "Upload cover art",
+    "coverArtExtra": "Upload your cover image",
+    "saveChanges": "Save changes",
+    "editOrderSong": "Edit songs' order"
+  },
+  "song": {
+    "title": "Title"
+  },
+  "accountOptions": {
+    "title": "Account Options",
+    "myProfile": "My Profile",
+    "listenHistory": "Listening History",
+    "signOut": "Sign out",
+    "songManagement": "Song Management"
+  },
+  "lyrics": {
+    "lyrics": "Lyrics"
+  },
+  "profile": {
+    "editProfile": "Edit profile",
+    "editFavouriteGenres": "Edit favourite genres",
+    "favouriteGenres": "Favourite genres"
   }
 }

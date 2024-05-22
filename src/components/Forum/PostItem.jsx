@@ -9,13 +9,15 @@ import OptionPostItem from "./OptionPostItem";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useSongUtils from "../../utils/useSongUtils";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
   const { show } = useContextMenu();
   const userId = parseInt(localStorage.getItem("userId"));
   const { Base_AVA } = useConfig();
-  const { getPostById, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
+  const { getPostById, likePost, handleCheckLiked, handleSharePost } =
+    useForumUtils();
   const { ThumbsUpSolid, VerifyAccount, OptionsIcon } = useIconUtils();
   const { showArtistV2, NavigateSong } = useSongUtils();
   const [liked, setLiked] = useState();
@@ -23,13 +25,12 @@ const PostItem = ({ postContent }) => {
   const { getListSongPlaylist } = useMusicAPIUtils();
   const [songPlaylist, setSongPlaylist] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const { t } = useTranslation();
 
   console.log("PostItem", postContent);
 
   // Get the time of the post
-  const countTime = new Date(
-    postContent?.postTime
-  ).toLocaleString();
+  const countTime = new Date(postContent?.postTime).toLocaleString();
   const handGetPostById = async () => {
     await getPostById(postContent.id).then((res) => {
       console.log("Get Post By ID", res);
@@ -40,12 +41,12 @@ const PostItem = ({ postContent }) => {
   const getSongFromPlaylist = async (playlistId) => {
     try {
       const data = await getListSongPlaylist(playlistId);
-      return data.map(item => item.song);
+      return data.map((item) => item.song);
     } catch (error) {
       console.error("Error fetching song:", error);
       return null;
     }
-  }
+  };
 
   function displayMenu(e, postId) {
     e.preventDefault();
@@ -86,10 +87,10 @@ const PostItem = ({ postContent }) => {
   useEffect(() => {
     if (postContent.playlist) {
       getSongFromPlaylist(postContent.playlist.id)
-        .then(song => {
-          setSongPlaylist(song)
+        .then((song) => {
+          setSongPlaylist(song);
         })
-        .catch(error => console.error("Error:", error));
+        .catch((error) => console.error("Error:", error));
     }
   }, [postContent.playlist]);
 
@@ -130,43 +131,81 @@ const PostItem = ({ postContent }) => {
         {(postContent.song || postContent.mp3Link) && (
           <div className="flex flex-row items-center justify-center gap-2 mt-2">
             <div className="items-center rounded-md dark:bg-white ">
-              <img className="rounded-md max-w-20 max-h-20 w-fit h-fit" src={postContent.song?.poster ? postContent.song.poster : Base_AVA} alt="Cover Art Song" />
+              <img
+                className="rounded-md max-w-20 max-h-20 w-fit h-fit"
+                src={
+                  postContent.song?.poster ? postContent.song.poster : Base_AVA
+                }
+                alt="Cover Art Song"
+              />
             </div>
             <div className="w-full">
-              <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link} />
-            </div></div>
+              <AudioWaveSurfer
+                song={postContent.song}
+                mp3Link={postContent.mp3Link}
+              />
+            </div>
+          </div>
         )}
 
         {/* Playlist */}
         {postContent.playlist && (
           <div className="flex flex-row items-center justify-start gap-2 mt-2">
             {/* PlaylistInfo  */}
-            <div className="flex flex-row items-center gap-1 cursor-pointer justify-evenly" onClick={() =>
-              navigate(`/detail-playlist/${postContent.playlist.id}`)
-            }>
+            <div
+              className="flex flex-row items-center gap-1 cursor-pointer justify-evenly"
+              onClick={() =>
+                navigate(`/detail-playlist/${postContent.playlist.id}`)
+              }
+            >
               <div className="rounded-md dark:bg-white">
-                <img className="rounded-md max-w-14 max-h-14 w-fit h-fit" src={postContent.playlist.coverArt ? postContent.playlist.coverArt : Base_AVA} alt="Cover Art Playlist" />
+                <img
+                  className="rounded-md max-w-14 max-h-14 w-fit h-fit"
+                  src={
+                    postContent.playlist.coverArt
+                      ? postContent.playlist.coverArt
+                      : Base_AVA
+                  }
+                  alt="Cover Art Playlist"
+                />
               </div>
-              <div >
-                <h2 className="text-lg font-bold text-primary dark:text-primaryDarkmode">{postContent.playlist.playlistName}</h2>
+              <div>
+                <h2 className="text-lg font-bold text-primary dark:text-primaryDarkmode">
+                  {postContent.playlist.playlistName}
+                </h2>
                 <h2 className="text-base text-primaryText2 dark:text-primaryTextDark">
-                  {postContent.playlist.user.userName ? postContent.playlist.user.userName : "Unknown User"}
+                  {postContent.playlist.user.userName
+                    ? postContent.playlist.user.userName
+                    : "Unknown User"}
                 </h2>
               </div>
             </div>
             {/* Song Playlist */}
-            {songPlaylist &&
+            {songPlaylist && (
               <div className="grid grid-cols-3 gap-x-10 gap-y-4">
                 {songPlaylist.slice(0, 6).map((song, index) => (
-                  <div key={index} className="flex flex-row items-center justify-center gap-1 cursor-pointer" onClick={() => NavigateSong(song.id)}>
-                    <img className="w-8 h-8 rounded-md max-w-8 max-h-8" src={song.poster ? song.poster : Base_AVA} alt="Cover Art Song" />
+                  <div
+                    key={index}
+                    className="flex flex-row items-center justify-center gap-1 cursor-pointer"
+                    onClick={() => NavigateSong(song.id)}
+                  >
+                    <img
+                      className="w-8 h-8 rounded-md max-w-8 max-h-8"
+                      src={song.poster ? song.poster : Base_AVA}
+                      alt="Cover Art Song"
+                    />
                     <div>
-                      <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">{song.songName}</div>
-                      <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">{showArtistV2(song.artists)}</div></div>
+                      <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">
+                        {song.songName}
+                      </div>
+                      <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">
+                        {showArtistV2(song.artists)}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
-            }
+            )}
           </div>
         )}
       </div>
@@ -177,10 +216,16 @@ const PostItem = ({ postContent }) => {
       {/* React Post  */}
       <div className="flex flex-row items-center justify-between gap-5 font-bold text-primary">
         {/* Like  */}
-        <button className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80 "
-          onClick={handleLikePost}>
+        <button
+          className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80 "
+          onClick={handleLikePost}
+        >
           <ThumbsUpSolid liked={liked}></ThumbsUpSolid>
-          <span>{postDetail != null ? postDetail.likes.length : postContent.likes.length}</span>
+          <span>
+            {postDetail != null
+              ? postDetail.likes.length
+              : postContent.likes.length}
+          </span>
         </button>
 
         {/* Control  */}
@@ -188,13 +233,16 @@ const PostItem = ({ postContent }) => {
           className="mx-2 mt-2 font-bold cursor-pointer text-md opacity-80"
           onClick={handlePostClick}
         >
-          Comment
+          {t("forum.comment")}
         </button>
-        <button className="mx-2 mt-2 font-bold text-md opacity-80" onClick={() => handleSharePost(postContent, false)}>
-          Share
+        <button
+          className="mx-2 mt-2 font-bold text-md opacity-80"
+          onClick={() => handleSharePost(postContent, false)}
+        >
+          {t("forum.share")}
         </button>
         <button className="mx-2 mt-2 font-bold text-md opacity-80">
-          Report
+          {t("forum.report")}
         </button>
       </div>
       {/* Context Menu */}

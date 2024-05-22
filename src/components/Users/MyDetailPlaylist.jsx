@@ -9,6 +9,7 @@ import { useDataUtils } from "../../utils/useDataUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 const MyDetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
@@ -28,6 +29,7 @@ const MyDetailPlaylist = () => {
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
   );
+  const { t } = useTranslation();
 
   // Get data from API and set for Edit Modal
   const fetchDataPlaylistInfor = async (playlistId) => {
@@ -82,10 +84,11 @@ const MyDetailPlaylist = () => {
   }, [uploadedFile]);
   return (
     <div
-      className={`${songPlaylistList != null && songPlaylistList.length > 0
-        ? "min-h-screen h-full"
-        : "min-h-screen"
-        } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-20`}
+      className={`${
+        songPlaylistList != null && songPlaylistList.length > 0
+          ? "min-h-screen h-full"
+          : "min-h-screen"
+      } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-20`}
     >
       {/* Button  */}
       <div className="flex flex-row items-center gap-4 mb-3">
@@ -94,28 +97,33 @@ const MyDetailPlaylist = () => {
           onClick={() => setModalOpen(true)}
           className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-[#40cf62] hover:text-backgroundPrimary hover:bg-[#40cf62] dark:hover:bg-primary  border border-solid border-[#40cf62] rounded-md"
         >
-          <div className="px-2 py-1 font-bold">Edit Playlist Information</div>
+          <div className="px-2 py-1 font-bold">
+            {t("playlist.editPlaylist")}
+          </div>
         </button>
       </div>
       <div className="flex flex-row items-start gap-4 mb-5 font-bold text-center text-7xl text-primary dark:text-primaryDarkmode">
         <div className="relative flex flex-row items-start">
           <img
             className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
-            src={
-              playlistDetail.coverArt
-                ? playlistDetail.coverArt
-                : Base_AVA
-            }
+            src={playlistDetail.coverArt ? playlistDetail.coverArt : Base_AVA}
             alt="artist-avatar"
           />
         </div>
         <div className="flex flex-col items-start gap-2">
           <div className="flex flex-row items-center justify-center gap-4">
-            {playlistDetail.playlistName} <span className="text-5xl">#{playlistId}</span>
+            {playlistDetail.playlistName}{" "}
+            <span className="text-5xl">#{playlistId}</span>
           </div>
           <div className="flex flex-col items-start justify-center gap-2">
-            <div className="text-2xl text-primary dark:text-primaryDarkmode">Made by {" "}{playlistDetail?.user?.userName}</div>
-            <div className="text-base text-primaryText2 dark:text-primaryTextDark">{playlistDetail.playlistType}{" "}playlist</div>
+            <div className="text-2xl text-primary dark:text-primaryDarkmode">
+              {t("playlist.madeBy")} {playlistDetail?.user?.userName}
+            </div>
+            <div className="text-base text-primaryText2 dark:text-primaryTextDark">
+              {t(
+                `playlist.${String(playlistDetail.playlistType).toLowerCase()}`
+              )}{" "}
+            </div>
           </div>
         </div>
       </div>
@@ -126,7 +134,7 @@ const MyDetailPlaylist = () => {
       ></MySongSectionPlaylist>
 
       <Modal
-        title="Options"
+        title={t("playlist.editPlaylist")}
         centered
         open={modalOpen}
         footer={null}
@@ -149,17 +157,17 @@ const MyDetailPlaylist = () => {
         >
           <Form.Item
             name="playlistName"
-            label="Playlist Name"
+            label={t("playlist.playlistName")}
             rules={[{ required: true }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item name="playlistType" label="Playlist Privacy">
+          <Form.Item name="playlistType" label={t("playlist.playlistPrivacy")}>
             <Select
               placeholder="Select one option..."
               options={[
-                { value: "Public", label: "Public" },
-                { value: "Private", label: "Private" },
+                { value: "Public", label: t("playlist.public") },
+                { value: "Private", label: t("playlist.private") },
               ]}
             ></Select>
           </Form.Item>
@@ -168,17 +176,15 @@ const MyDetailPlaylist = () => {
               <img
                 className="w-40 h-40 ml-10 rounded-md"
                 src={
-                  playlistDetail.coverArt
-                    ? playlistDetail.coverArt
-                    : Base_AVA
+                  playlistDetail.coverArt ? playlistDetail.coverArt : Base_AVA
                 }
                 alt=""
               />
             </Form.Item>
             <Form.Item
               name="coverArt"
-              label="Upload Cover Art"
-              extra="Upload your cover image png, jpg, jpeg"
+              label={t("playlist.uploadCoverArt")}
+              extra={`${t("playlist.coverArtExtra")} .png, .jpg, .jpeg`}
               getValueFromEvent={(e) => e && e.fileList}
               valuePropName="fileList"
               rules={[
@@ -209,8 +215,9 @@ const MyDetailPlaylist = () => {
                   )
                 }
                 type="submit"
-                className="w-full px-4 py-2 border rounded-md border-primary hover:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70 dark:hover:text-backgroundDarkPrimary">
-                Save Changes
+                className="w-full px-4 py-2 border rounded-md border-primary hover:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70 dark:hover:text-backgroundDarkPrimary"
+              >
+                {t("playlist.saveChanges")}
               </button>
             </Form.Item>
           </div>

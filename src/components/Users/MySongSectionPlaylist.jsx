@@ -10,6 +10,7 @@ import {
   setCurrentTime,
   setIsPlaying,
 } from "../../redux/slice/music";
+import { useTranslation } from "react-i18next";
 
 const MySongSectionPlaylist = ({ songData, playlistId }) => {
   const [songList, setSongList] = useState();
@@ -18,6 +19,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
   const refreshPlaylist = useSelector(
     (state) => state.playlist.refreshPlaylist
   );
+  const { t } = useTranslation();
 
   const handleAddSongToQueue = (songList) => {
     dispatch(setCurrentTime(0));
@@ -74,7 +76,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
             className=""
             onClick={() => dispatch(setDraggable(!draggable))}
           >
-            Edit Order Song
+            {t("playlist.editOrderSong")}
           </button>{" "}
         </div>
         <div>
@@ -101,8 +103,8 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
       </div>
       <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
         <div className="flex flex-row gap-8 ml-8">
-          <div className="font-bold text-center ">ID</div>
-          <div className="font-bold text-center ">Song Details</div>
+          <div className="font-bold text-center ">#</div>
+          <div className="font-bold text-center ">Title</div>
         </div>
         {/* <div>
           <div className="font-bold text-center ">Duration</div>

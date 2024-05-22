@@ -6,6 +6,7 @@ import UseCookie from "../../hooks/useCookie";
 import SongItem from "../Song/SongItem";
 import useConfig from "../../utils/useConfig";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 // eslint-disable-next-line react/prop-types
 const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
@@ -17,23 +18,30 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
   const [songPage, setSongPage] = useState(1);
   const titleSongChart = titleSong
     ? titleSong
-    : `Top 10 Songs in ${new Date().getMonth() < 3
-      ? "Spring"
-      : new Date().getMonth() < 6
-        ? "Summer"
-        : new Date().getMonth() < 9
+    : `Top 10 Songs in ${
+        new Date().getMonth() < 3
+          ? "Spring"
+          : new Date().getMonth() < 6
+          ? "Summer"
+          : new Date().getMonth() < 9
           ? "Autumn"
           : "Winter"
-    }`;
+      }`;
+  const { t } = useTranslation();
 
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1; // Adding 1 to get the correct month
 
   const startTime =
     StartTime ||
-    `${currentYear}-${currentMonth - 1 < 10 ? `0${currentMonth - 1}` : currentMonth - 1
+    `${currentYear}-${
+      currentMonth - 1 < 10 ? `0${currentMonth - 1}` : currentMonth - 1
     }-01`;
-  const endTime = EndTime || `${currentYear}-${currentMonth < 10 ? `0${currentMonth}` : currentMonth}-30`;
+  const endTime =
+    EndTime ||
+    `${currentYear}-${
+      currentMonth < 10 ? `0${currentMonth}` : currentMonth
+    }-30`;
 
   const getListSongPeriod = async () => {
     try {
@@ -71,8 +79,11 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
   }
 
   return (
-    <div className={`bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl shadow-md mt-4 py-3 xl:py-5 px-2 xl:h-fit xl:mx-2 xl:mt-8  ${inForum
-      ? "min-w-[500px]" : "min-w-[250px]"}`}>
+    <div
+      className={`bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl shadow-md mt-4 py-3 xl:py-5 px-2 xl:h-fit xl:mx-2 xl:mt-8  ${
+        inForum ? "min-w-[500px]" : "min-w-[250px]"
+      }`}
+    >
       <div className="flex flex-row items-center justify-center gap-3">
         <h1 className="text-xl font-bold text-primary">{titleSongChart}</h1>
         <TrendingIcon></TrendingIcon>
@@ -80,8 +91,8 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
       <div className="xl:w-full">
         <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary">
           <div className="flex flex-row gap-8 ml-8">
-            <div className="font-bold text-center ">ID</div>
-            <div className="font-bold text-center ">Song Details</div>
+            <div className="font-bold text-center ">#</div>
+            <div className="font-bold text-center ">{t("song.title")}</div>
           </div>
 
           <div className="flex flex-row items-center justify-center ">
@@ -98,7 +109,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
                 <SongItem
                   song={songItem.song}
                   songListen={songItem.count}
-                  songOrder={index}
+                  songOrder={index + 1}
                 />
               </div>
             ))}
