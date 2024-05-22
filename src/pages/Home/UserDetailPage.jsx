@@ -15,6 +15,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import MyPlaylistItem from "../../components/Users/MyPlaylistItem";
 import { setMyPLaylistList } from "../../redux/slice/playlist";
 import useSongUtils from "../../utils/useSongUtils";
+import { useTranslation } from "react-i18next";
 
 // eslint-disable-next-line no-unused-vars
 const UserDetailPage = ({ owned }) => {
@@ -39,6 +40,7 @@ const UserDetailPage = ({ owned }) => {
   const [openModalEditUser, setOpenModalEditUser] = useState(false);
   const [openModalGenres, setOpenModalGenres] = useState(false);
   const [playlistList, setPlaylistList] = useState([]);
+  const { t } = useTranslation();
 
   const handleNavigate = (path) => {
     dispatch(
@@ -169,13 +171,13 @@ const UserDetailPage = ({ owned }) => {
                 className="h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70"
                 onClick={() => setOpenModalEditUser(true)}
               >
-                Edit User Profile
+                {t("profile.editProfile")}
               </button>
               <button
                 className="h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70"
                 onClick={() => setOpenModalGenres(true)}
               >
-                Change Favourite Genres
+                {t("profile.editFavouriteGenres")}
               </button>
               {userInfor.role == "ARTIST" && (
                 <button
@@ -187,7 +189,7 @@ const UserDetailPage = ({ owned }) => {
               )}
             </div>
             <div className="flex items-center justify-center gap-2">
-              Favourite Genres:{" "}
+              {t("profile.favouriteGenres")}:{" "}
               {userInfor.genres?.map((genre, index) => (
                 <span
                   key={index}
