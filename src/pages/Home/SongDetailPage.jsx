@@ -13,7 +13,7 @@ const SongDetailPage = () => {
   const { songId } = useParams();
   const { Base_AVA } = useConfig();
   const { BackButton, PlayButton } = useIconUtils();
-  const { rgbToHex } = useSongUtils();
+  const { getPosterColor } = useSongUtils();
   const { getSongById } = useMusicAPIUtils();
   const [colorBG, setColorBG] = useState("");
   const [loading, setLoading] = useState(true);
@@ -22,26 +22,6 @@ const SongDetailPage = () => {
   const getSongDetailById = async () => {
     const response = await getSongById(parseInt(songId));
     setSongDetail(response);
-  };
-  const getPosterColor = async (poster) => {
-    return new Promise((resolve, reject) => {
-      const colorThief = new ColorThief();
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-
-      img.onload = () => {
-        const color = colorThief.getColor(img);
-        const hexColor = rgbToHex(color[0], color[1], color[2]);
-        setColorBG(hexColor);
-        console.log("Color", colorBG);
-        setLoading(false);
-      };
-
-      img.onerror = (error) => {
-        reject(error); // Reject the promise if there's an error loading the image
-      };
-      img.src = poster;
-    });
   };
 
   useEffect(() => {
@@ -53,7 +33,7 @@ const SongDetailPage = () => {
       setLoading(false);
       return;
     }
-    getPosterColor(songDetail.poster);
+    getPosterColor(songDetail.poster, colorBG, setColorBG, setLoading);
   }, [songDetail]);
 
   if (loading) {
@@ -66,9 +46,8 @@ const SongDetailPage = () => {
 
   return (
     <div
-      className={`${
-        songId ? "h-full" : "h-fit"
-      } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}
+      className={`${songId ? "h-full" : "h-fit"
+        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}
     >
       <div className="mb-4">
         <TheHeader></TheHeader>
@@ -86,7 +65,7 @@ const SongDetailPage = () => {
           <img
             src={songDetail?.poster ? songDetail.poster : Base_AVA}
             alt="song-poster"
-            className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
+            className="w-20 h-20 bg-white rounded-full xl:w-56 xl:h-56"
           />
           <div className="flex flex-col items-start gap-5">
             <div className="font-bold text-center text-7xl text-primaryDarkmode dark:text-primaryDarkmode">

@@ -8,6 +8,7 @@ import useIconUtils from "../../utils/useIconUtils";
 import TheHeader from "../../components/Header/TheHeader";
 import useChatUtils from "../../utils/useChatUtils";
 import useConfig from "../../utils/useConfig";
+import useSongUtils from "../../utils/useSongUtils";
 
 const ArtistDetailPage = () => {
   const { artistId } = useParams();
@@ -16,11 +17,14 @@ const ArtistDetailPage = () => {
   const dispatch = useDispatch();
   const { followArtist, unfollowArtist, getArtistByArtistId } = useUserUtils();
   const { UserCheck, BackButton } = useIconUtils();
+  const navigate = useNavigate();
+  const { getCommunityByHostId, joinRequest, outCommunity } = useChatUtils();
+  const { getPosterColor } = useSongUtils();
+  const [colorBG, setColorBG] = useState();
+  const [loading, setLoading] = useState(true);
   const [artistDetail, setArtistDetail] = useState({});
   const [songListArtist, setSongListArtist] = useState([]);
   const [follow, setFollow] = useState(false);
-  const navigate = useNavigate();
-  const { getCommunityByHostId, joinRequest, outCommunity } = useChatUtils();
   const [request, setRequest] = useState();
   const [join, setJoin] = useState();
 
@@ -100,8 +104,16 @@ const ArtistDetailPage = () => {
     }
   };
 
+
   useEffect(() => {
-    console.log("ISREQUEST ", request);
+    if (!artistDetail || !artistDetail.avatar) {
+      setLoading(false);
+      return;
+    }
+    getPosterColor(artistDetail.avatar, colorBG, setColorBG, setLoading);
+  }, [artistDetail]);
+
+  useEffect(() => {
     fetchData();
   }, [request, join, artistId]);
 
@@ -118,41 +130,49 @@ const ArtistDetailPage = () => {
       <div className="mb-4">
         <TheHeader></TheHeader>
       </div>
-      <div className="flex flex-row mb-2">
-        <BackButton></BackButton>
-      </div>
-      <div className="flex flex-row items-center justify-start gap-4">
-        <div className="relative flex flex-row items-start mt-5 mb-5">
-          <img
-            className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
-            src={artistDetail.avatar ? artistDetail.avatar : Base_AVA}
-            alt="artist-avatar"
-          />
+      <div className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
+        style={{
+          background: `linear-gradient(to top right , transparent, ${colorBG} 100%)`,
+        }}>
+        <div className="flex flex-row mb-2">
+          <BackButton></BackButton>
         </div>
-        <div className="flex flex-col">
-          <div className="text-[50px] text-textNormal dark:text-textNormalDark font-bold text-center mb-5">
-            <div className="flex flex-row items-center justify-center gap-2">
-              {artistDetail.name ? artistDetail.name : "Unknown Artist"}
-              <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">#{artistDetail.id}</span>
-              <span className="text-4xl text-primary dark:text-primaryDarkmode"><UserCheck></UserCheck></span>
-            </div>
+        <div className="flex flex-row items-center justify-start gap-4">
+          <div className="relative flex flex-row items-start mt-5 mb-5">
+            <img
+              className="w-20 h-20 rounded-full xl:w-56 xl:h-56"
+              src={artistDetail.avatar ? artistDetail.avatar : Base_AVA}
+              alt="artist-avatar"
+            />
           </div>
-          {
-            <div className="flex flex-row gap-4">
-              <button
-                onClick={() => handleFollow()}
-                className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
-              >
-                {follow == true ? "Unfollow" : "Follow"}
-              </button>
-              <button
-                className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
-                onClick={() => handleJoinCommunity()}
-              >
-                {request ? 'Request sent' : (join ? 'Community joined' : 'Join the artist community')}
-              </button>
+          <div className="flex flex-col">
+            <div className="text-[50px] text-textNormal dark:text-textNormalDark font-bold text-center mb-5">
+              <div className="flex flex-row items-center justify-center gap-2">
+                {artistDetail.name ? artistDetail.name : "Unknown Artist"}
+                <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">#{artistDetail.id}</span>
+                <span className="text-4xl text-primary dark:text-primaryDarkmode"><UserCheck></UserCheck></span>
+              </div>
             </div>
-          }
+            {artistDetail.artists?.userBio && <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
+              <span>Bio:</span>{" "}{artistDetail.artists?.userBio}
+            </div>}
+            {
+              <div className="flex flex-row gap-4">
+                <button
+                  onClick={() => handleFollow()}
+                  className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
+                >
+                  {follow == true ? "Unfollow" : "Follow"}
+                </button>
+                <button
+                  className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
+                  onClick={() => handleJoinCommunity()}
+                >
+                  {request ? 'Request sent' : (join ? 'Community joined' : 'Join the artist community')}
+                </button>
+              </div>
+            }
+          </div>
         </div>
       </div>
 

@@ -30,8 +30,6 @@ const useConfig = () => {
         return () => newSocket.disconnect();
     }, []);
 
-
-
     // Get token from cookie
     const token = getToken();
     const auth = {
