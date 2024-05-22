@@ -10,6 +10,7 @@ import { gapi } from "gapi-script";
 import LoginFacebook from "../../components/AuthLogin/AuthFacebookLogin";
 import useConfig from "../../utils/useConfig";
 import UseCookie from "../../hooks/useCookie";
+import { useTranslation } from "react-i18next";
 
 const clientId =
   "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
@@ -22,6 +23,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { saveToken } = UseCookie();
+  const { t } = useTranslation();
 
   const handleUserData = async (usersData) => {
     console.log("Data", usersData);
@@ -102,7 +104,9 @@ const LoginPage = () => {
     <div className="relative flex flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-20">
-          <h1 className="text-3xl font-bold text-headingText dark:text-headingTextDark">Login</h1>
+          <h1 className="text-3xl font-bold text-headingText dark:text-headingTextDark">
+            {t("auth.signIn")}
+          </h1>
         </div>
         <Form
           form={form}
@@ -138,7 +142,7 @@ const LoginPage = () => {
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={t("auth.password")}
             name="password"
             rules={[
               {
@@ -152,27 +156,27 @@ const LoginPage = () => {
 
           <Form.Item className="flex flex-row items-center justify-center">
             <button className="px-3 py-2 mt-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 w-max">
-              Login
+              {t("auth.signIn")}
             </button>
           </Form.Item>
         </Form>
 
         <div className="flex flex-col items-center justify-center gap-2 xl:gap-4">
           <p className="text-headingText dark:text-headingTextDark">
-            Don&apos;t have account?
+            {t("auth.dontHaveAccount")}?
             <NavLink to="/signup" className="ml-1 text-sm text-primary">
-              Sign up
+              {t("auth.signUp")}
             </NavLink>
           </p>
           <p className="mb-3 text-headingText dark:text-headingTextDark">
-            Forget Your Password?
+            {t("auth.dontRememberPassword")}?
             <NavLink to="/forgotpass" className="ml-1 text-sm text-primary">
-              Forget Password
+              {t("auth.forgetPassword")}
             </NavLink>
           </p>
 
           <div>
-            <p className="text-[#a8a8ac]">Or login with</p>
+            <p className="text-[#a8a8ac]">{t("auth.orLoginWith")}</p>
           </div>
           <GoogleLoginButton />
           <LoginFacebook />

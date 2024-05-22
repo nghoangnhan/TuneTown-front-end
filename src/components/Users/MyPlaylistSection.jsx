@@ -8,6 +8,7 @@ import MyPlaylistItem from "./MyPlaylistItem";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useConfig from "../../utils/useConfig";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 const MyPlaylistSection = () => {
   const { getToken } = UseCookie();
@@ -19,6 +20,7 @@ const MyPlaylistSection = () => {
   const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState();
   const [refresh, setRefresh] = useState(false);
+  const { t } = useTranslation();
 
   // Call this function when you want to refresh the playlist
   const refreshPlaylist = () => {
@@ -84,15 +86,19 @@ const MyPlaylistSection = () => {
   if (!playlistList)
     return (
       <div className="playlist-section xl:w-full xl:py-2">
-        <CreatePlaylistButton CreateNewPlaylist={CreateNewPlaylist}></CreatePlaylistButton>
+        <CreatePlaylistButton
+          CreateNewPlaylist={CreateNewPlaylist}
+        ></CreatePlaylistButton>
         <div className="text-3xl font-bold text-center text-primary dark:text-primaryDarkmode">
-          Create your new playlist!
+          {t("playlist.createYourNewPlaylist")}!
         </div>
       </div>
     );
   return (
     <div className="playlist-section xl:w-full xl:py-2">
-      <CreatePlaylistButton CreateNewPlaylist={CreateNewPlaylist}></CreatePlaylistButton>
+      <CreatePlaylistButton
+        CreateNewPlaylist={CreateNewPlaylist}
+      ></CreatePlaylistButton>
 
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-y-1 xl:px-5">
         {playlistList &&

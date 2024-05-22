@@ -9,6 +9,7 @@ import useIconUtils from "../../utils/useIconUtils";
 import useUserUtils from "../../utils/useUserUtils";
 import DarkMode from "../DarkMode/DarkMode";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 const TheHeader = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const TheHeader = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [userInfor, setUserInfor] = useState({});
   dispatch(setUserId(userId));
+  const { t } = useTranslation();
 
   const handleOnclick = (direction) => {
     navigate(`/${direction}`);
@@ -31,7 +33,7 @@ const TheHeader = () => {
   // Log Out
   const LogOut = () => {
     removeToken();
-    localStorage.clear()
+    localStorage.clear();
     navigate("/");
   };
 
@@ -68,8 +70,24 @@ const TheHeader = () => {
         </div>
         {
           <div>
-            <div className={`${userRole === "ADMIN" ? "text-[#f24e4e] dark:text-[#ff5050] border-[#f24e4e] dark:border-[#ff5050] font-bold" : (userRole === "USER" ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold" : (userRole === "ARTIST" ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold" : ""))} flex justify-center items-center p-1 border border-solid rounded-md mr-3`}>
-              {userRole === "ADMIN" ? "Admin" : (userRole === "USER" ? "User" : (userRole === "ARTIST" ? "Artist" : ""))}
+            <div
+              className={`${
+                userRole === "ADMIN"
+                  ? "text-[#f24e4e] dark:text-[#ff5050] border-[#f24e4e] dark:border-[#ff5050] font-bold"
+                  : userRole === "USER"
+                  ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold"
+                  : userRole === "ARTIST"
+                  ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold"
+                  : ""
+              } flex justify-center items-center p-1 border border-solid rounded-md mr-3`}
+            >
+              {userRole === "ADMIN"
+                ? "Admin"
+                : userRole === "USER"
+                ? "User"
+                : userRole === "ARTIST"
+                ? "Artist"
+                : ""}
             </div>
           </div>
         }
@@ -83,7 +101,12 @@ const TheHeader = () => {
               icon={<UserOutlined />}
               className="border-[3px] border-primaryText2 dark:border-primaryTextDark2 "
               size="large"
-              src={<img src={userInfor.avatar ? userInfor.avatar : Base_AVA} alt="avatar" />}
+              src={
+                <img
+                  src={userInfor.avatar ? userInfor.avatar : Base_AVA}
+                  alt="avatar"
+                />
+              }
             />
           </button>
         )}
@@ -94,7 +117,7 @@ const TheHeader = () => {
         )}
       </div>
       <Modal
-        title="Account Options"
+        title={t("accountOptions.title")}
         centered
         open={modalOpen}
         onOk={() => setModalOpen(false)}
@@ -110,13 +133,13 @@ const TheHeader = () => {
                 onClick={() => handleOnclick("my-profile")}
                 className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
               >
-                <button>My Profile</button>
+                <button>{t("accountOptions.myProfile")}</button>
               </div>
               <div
                 onClick={() => handleOnclick("history")}
                 className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
               >
-                <button>Listen History</button>
+                <button>{t("accountOptions.listenHistory")}</button>
               </div>
             </div>
           )}
@@ -132,7 +155,7 @@ const TheHeader = () => {
                 onClick={() => handleOnclick("artistCMS")}
                 className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark "
               >
-                <button>Song Management</button>
+                <button>{t("accountOptions.songManagement")}</button>
               </div>
             </div>
           )}
@@ -140,7 +163,7 @@ const TheHeader = () => {
             onClick={LogOut}
             className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
           >
-            <button>Log Out</button>
+            <button>{t("accountOptions.signOut")}</button>
           </div>
         </div>
       </Modal>

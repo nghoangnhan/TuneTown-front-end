@@ -7,6 +7,7 @@ import { setListSong } from "../../redux/slice/music";
 import UseCookie from "../../hooks/useCookie";
 import SongItem from "../Song/SongItem";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 // eslint-disable-next-line react/prop-types
 const SongSection = ({ titleSong }) => {
@@ -18,6 +19,7 @@ const SongSection = ({ titleSong }) => {
   const [hasMoreSongs, setHasMoreSongs] = useState(false);
   const [songPage, setSongPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
+  const { t } = useTranslation();
 
   const getListSong = async (songPage) => {
     try {
@@ -65,7 +67,7 @@ const SongSection = ({ titleSong }) => {
         {songList &&
           songList.map((songItem, index) => (
             <div key={index}>
-              <SongItem song={songItem} songOrder={index} />
+              <SongItem song={songItem} songOrder={index + 1} />
             </div>
           ))}
         {hasMoreSongs == true && (
@@ -74,7 +76,7 @@ const SongSection = ({ titleSong }) => {
               onClick={() => handleLoadMore()}
               className="px-2 py-2 transition duration-300 ease-in-out border border-solid rounded-md w-fit text-primary border-primary hover:text-white hover:bg-primary"
             >
-              Load More
+              {t("common.loadMore")}
             </button>
           </div>
         )}

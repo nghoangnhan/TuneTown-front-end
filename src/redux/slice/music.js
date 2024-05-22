@@ -84,6 +84,7 @@ const musicStore = createSlice({
       if (!state.isPlaying) {
         state.isPlaying = true;
       }
+      state.currentSong.currentTime = 0;
     },
     setPlaylist: (state, action) => {
       state.playlist = action.payload;
