@@ -1,0 +1,27 @@
+{
+  "auth": {
+    "signIn": "Sign In",
+    "password": "Password",
+    "dontHaveAccount": "Don't have account",
+    "dontRememberPassword": "Don't remember your password",
+    "forgetPassword": "Forget Your Password",
+    "orLoginWith": "Or login with",
+    "loginWithFacebook": "Login with Facebook",
+    "signUp": "Sign Up"
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "forum": "Forum",
+    "myPlaylist": "My Playlist"
+  },
+  "common": {
+    "good": "Good",
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening"
+  },
+  "home": {
+    "madeForYou": "Made For You"
+  }
+}

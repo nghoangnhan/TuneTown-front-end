@@ -1,0 +1,27 @@
+{
+  "auth": {
+    "signIn": "Đăng nhập",
+    "password": "Mật khẩu",
+    "dontHaveAccount": "Không có tài khoản",
+    "dontRememberPassword": "Không nhớ mật khẩu",
+    "forgetPassword": "Quên mật khẩu",
+    "orLoginWith": "Hoặc đăng nhập với",
+    "loginWithFacebook": "Đăng nhập với Facebook",
+    "signUp": "Đăng kí"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "search": "Tìm kiếm",
+    "forum": "Bảng tin",
+    "myPlaylist": "Danh sách phát"
+  },
+  "common": {
+    "good": "Chào",
+    "morning": "buổi sáng",
+    "afternoon": "buổi chiều",
+    "evening": "buổi tối"
+  },
+  "home": {
+    "madeForYou": "Dành cho bạn"
+  }
+}
