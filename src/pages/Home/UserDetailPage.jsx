@@ -14,6 +14,7 @@ import EditGenreForm from '../../components/Users/EditGenreForm';
 import { useMusicAPIUtils } from '../../utils/useMusicAPIUtils';
 import MyPlaylistItem from '../../components/Users/MyPlaylistItem';
 import { setMyPLaylistList } from '../../redux/slice/playlist';
+import useSongUtils from '../../utils/useSongUtils';
 
 // eslint-disable-next-line no-unused-vars
 const UserDetailPage = ({ owned }) => {
@@ -27,9 +28,12 @@ const UserDetailPage = ({ owned }) => {
     const { defaultAva, isMobile } = useConfig();
     const { getUserPlaylist } = useMusicAPIUtils();
     const { getUserInfor, getUserPost } = useUserUtils();
+    const { createCommunity, getCommunityByArtist } = useChatUtils();
+    const { getPosterColor } = useSongUtils();
+    const [loading, setLoading] = useState(true);
+    const [colorBG, setColorBG] = useState("");
     const [userInfor, setUserInfor] = useState({});
     const [postList, setPostList] = useState([]);
-    const { createCommunity, getCommunityByArtist } = useChatUtils();
     const [isCreated, setIsCreated] = useState(false);
     const [community, setCommunity] = useState();
     const [openModalEditUser, setOpenModalEditUser] = useState(false);
@@ -85,6 +89,14 @@ const UserDetailPage = ({ owned }) => {
     }, [isCreated]);
 
     useEffect(() => {
+        if (!userInfor || !userInfor.avatar) {
+            setLoading(false);
+            return;
+        }
+        getPosterColor(userInfor.avatar, colorBG, setColorBG, setLoading);
+    }, [userInfor]);
+
+    useEffect(() => {
         if (refreshAccount === true) {
             getUserInfor(userId).then((res) => {
                 setUserInfor(res.user);
@@ -117,42 +129,47 @@ const UserDetailPage = ({ owned }) => {
 
     return (
         <div className={`${userId ? " h-full" : "h-fit"} min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}>
-            <div className="flex flex-row mb-2">
-                <BackButton></BackButton>
-            </div>
-            <div className="flex flex-row items-center justify-start gap-4">
-                <div className="relative flex flex-row items-start mt-5 mb-5">
-                    <img src={userInfor.avatar ? userInfor.avatar : defaultAva}
-                        alt="Avatar"
-                        className="w-20 h-20 rounded-md xl:w-56 xl:h-56"
-                    />
+            <div className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
+                style={{
+                    background: `linear-gradient(to top right , transparent, ${colorBG} 100%)`,
+                }}>
+                <div className="flex flex-row mb-2">
+                    <BackButton></BackButton>
                 </div>
-                <div className="flex flex-col items-start gap-4 mb-5 font-bold text-center text-textNormal dark:text-textNormalDark">
-                    <div className='flex flex-row items-center gap-2'>
-                        <div className="text-xl xl:text-7xl text-primary dark:text-primaryDarkmode">{userInfor.userName}</div>
-                        {userInfor.role == "ARTIST" && <span className="text-4xl text-primary dark:text-primaryDarkmode"><UserCheck></UserCheck></span>}
+                <div className="flex flex-row items-center justify-start gap-4">
+                    <div className="relative flex flex-row items-start mt-5 mb-5">
+                        <img src={userInfor.avatar ? userInfor.avatar : defaultAva}
+                            alt="Avatar"
+                            className="w-20 h-20 rounded-full xl:w-56 xl:h-56"
+                        />
                     </div>
-                    <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
-                        <span>Bio:</span>{" "}{userInfor.userBio}
-                    </div>
-                    <div className='flex flex-row items-center justify-center gap-3'>
-                        <button className='h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70' onClick={() => setOpenModalEditUser(true)}>
-                            Edit User Profile
-                        </button>
-                        <button className='h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70' onClick={() => setOpenModalGenres(true)}>
-                            Change Favourite Genres
-                        </button>
-                        {userInfor.role == "ARTIST" &&
-                            <button onClick={handleCreateCommunity} className='h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70'>
-                                {!isCreated ? 'Create Community' : 'Your community'}
+                    <div className="flex flex-col items-start gap-4 mb-5 font-bold text-center text-textNormal dark:text-textNormalDark">
+                        <div className='flex flex-row items-center gap-2'>
+                            <div className="text-xl xl:text-7xl text-primary dark:text-primaryDarkmode">{userInfor.userName}</div>
+                            {userInfor.role == "ARTIST" && <span className="text-4xl text-primary dark:text-primaryDarkmode"><UserCheck></UserCheck></span>}
+                        </div>
+                        <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
+                            <span>Bio:</span>{" "}{userInfor.userBio}
+                        </div>
+                        <div className='flex flex-row items-center justify-center gap-3'>
+                            <button className='h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70' onClick={() => setOpenModalEditUser(true)}>
+                                Edit User Profile
                             </button>
-                        }
-                    </div>
-                    <div className='flex items-center justify-center gap-2'>
-                        Favourite Genres: {userInfor.genres?.map((genre, index) => (
-                            <span key={index} className='text-primary dark:text-primaryDarkmode'>{genre.genreName} </span>
-                        ))}
+                            <button className='h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70' onClick={() => setOpenModalGenres(true)}>
+                                Change Favourite Genres
+                            </button>
+                            {userInfor.role == "ARTIST" &&
+                                <button onClick={handleCreateCommunity} className='h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70'>
+                                    {!isCreated ? 'Create Community' : 'Your community'}
+                                </button>
+                            }
+                        </div>
+                        <div className='flex items-center justify-center gap-2'>
+                            Favourite Genres: {userInfor.genres?.map((genre, index) => (
+                                <span key={index} className='text-primary dark:text-primaryDarkmode'>{genre.genreName} </span>
+                            ))}
 
+                        </div>
                     </div>
                 </div>
             </div>

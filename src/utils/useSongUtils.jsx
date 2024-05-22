@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setRefreshPlaylist } from "../redux/slice/playlist";
 import useConfig from "./useConfig";
+import ColorThief from "colorthief";
 
 export const useSongUtils = () => {
   const { Base_URL_FE } = useConfig();
@@ -144,6 +145,27 @@ export const useSongUtils = () => {
     return hex.length === 1 ? '0' + hex : hex
   }).join('')
 
+  const getPosterColor = async (poster, colorBG, setColorBG, setLoading) => {
+    return new Promise((resolve, reject) => {
+      const colorThief = new ColorThief();
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+
+      img.onload = () => {
+        const color = colorThief.getColor(img);
+        const hexColor = rgbToHex(color[0], color[1], color[2]);
+        setColorBG(hexColor);
+        console.log("Color", colorBG);
+        setLoading(false);
+      };
+
+      img.onerror = (error) => {
+        reject(error); // Reject the promise if there's an error loading the image
+      };
+      img.src = poster;
+    });
+  };
+
   // Song Option
   const handleDownloadSong = async (songInforObj, setLoading, combineData) => {
     setLoading(true);
@@ -188,7 +210,7 @@ export const useSongUtils = () => {
     TimeConvert, GetSongFragment,
     showArtist, showArtistV2, NavigateSong, NavigatePlaylist,
     AcronymName, CheckPlaying, GetSongDuration, rgbToHex, handleDownloadSong, handleShareSong,
-    HandleRefreshPlaylist,
+    HandleRefreshPlaylist, getPosterColor
   };
 };
 export default useSongUtils;

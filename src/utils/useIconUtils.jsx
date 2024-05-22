@@ -90,7 +90,7 @@ const useIconUtils = () => {
     const PlayButton = ({ size }) => {
         size = size || 2;
         return (
-            <FontAwesomeIcon className={`text-${size}xl text-primary`} icon={faPlayCircle} />
+            <FontAwesomeIcon className={`text-${size}xl text-primary dark:text-primaryDarkmode`} icon={faPlayCircle} />
         );
     };
     PlayButton.propTypes = {
@@ -99,19 +99,19 @@ const useIconUtils = () => {
 
     const PauseButton = () => {
         return (
-            <FontAwesomeIcon className='text-xl text-primary' icon={faPauseCircle} />
+            <FontAwesomeIcon className='text-xl text-primary dark:text-primaryDarkmode' icon={faPauseCircle} />
         );
     };
 
     const CheckSeen = () => {
         return (
-            <FontAwesomeIcon className='text-primary' icon={faCheckCircle}></FontAwesomeIcon>
+            <FontAwesomeIcon className='text-primary dark:text-primaryDarkmode' icon={faCheckCircle}></FontAwesomeIcon>
         );
     }
 
     const Check = () => {
         return (
-            <FontAwesomeIcon className='text-primary' icon={faCheckCircle}></FontAwesomeIcon>
+            <FontAwesomeIcon className='text-primary dark:text-primaryDarkmode' icon={faCheckCircle}></FontAwesomeIcon>
         );
     }
 
@@ -134,7 +134,7 @@ const useIconUtils = () => {
                     height="18"
                     viewBox="0 -960 960 960"
                     width="18"
-                    className='fill-[#40cf62]'
+                    className='fill-primary dark:fill-primaryDarkmode'
                 >
                     <path d="m436-350 233-234-47-47-183 183-101-101-49 49 147 150Zm44.063 291Q331.105-96.81 234.552-230.909 138-365.007 138-522.837v-252.601L480-903l343 127.595v252.242q0 157.953-96.989 292.153Q629.021-96.81 480.063-59Z" />
                 </svg>
@@ -176,7 +176,7 @@ const useIconUtils = () => {
 
     const RepostButton = ({ handleRepostSong }) => {
         return (<button
-            className="p-1 hover:opacity-60 rounded-2xl text-primary"
+            className="p-1 hover:opacity-60 rounded-2xl text-primary dark:text-primaryDarkmode"
             onClick={handleRepostSong}
         >
             <svg
@@ -202,7 +202,7 @@ const useIconUtils = () => {
     const DownloadButton = ({ handleDownloadSong }) => {
         return (
             <button
-                className="p-1 hover:opacity-60 rounded-2xl text-primary"
+                className="p-1 hover:opacity-60 rounded-2xl text-primary dark:text-primaryDarkmode"
                 onClick={handleDownloadSong}
             >
                 <svg
@@ -229,7 +229,7 @@ const useIconUtils = () => {
     const ShareButton = ({ handleShareSong }) => {
         return (
             <button
-                className="p-1 hover:opacity-60 rounded-2xl text-primary"
+                className="p-1 hover:opacity-60 rounded-2xl text-primary dark:text-primaryDarkmode"
                 onClick={handleShareSong}
             >
                 <svg

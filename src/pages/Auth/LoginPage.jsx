@@ -17,7 +17,6 @@ const clientId =
 const LoginPage = () => {
   // eslint-disable-next-line no-unused-vars
   const { removeToken } = UseCookie();
-  // eslint-disable-next-line no-unused-vars
   const { Base_URL, auth } = useConfig();
   const [form] = useForm();
   const navigate = useNavigate();
@@ -81,6 +80,12 @@ const LoginPage = () => {
   //   console.log("Token removed", auth.access_token);
   //   removeToken();
   // }, []);
+
+  useEffect(() => {
+    if (auth.access_token) {
+      navigate("/home");
+    }
+  }, [auth.access_token]);
 
   useEffect(() => {
     function start() {
