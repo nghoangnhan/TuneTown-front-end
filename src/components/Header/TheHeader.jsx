@@ -31,7 +31,7 @@ const TheHeader = () => {
   // Log Out
   const LogOut = () => {
     removeToken();
-    localStorage.clear();
+    localStorage.clear()
     navigate("/");
   };
 
@@ -49,7 +49,7 @@ const TheHeader = () => {
       getUserInfor(userId).then((res) => {
         setUserInfor(res.user);
         localStorage.setItem("userName", res.user.userName);
-        console.log("The Header || UserInfor", res.user);
+        // console.log("The Header || UserInfor", res.user);
       });
     }
   }, [refreshAccount]);
@@ -94,58 +94,54 @@ const TheHeader = () => {
         )}
       </div>
       <Modal
-        title="Options"
+        title="Account Options"
         centered
         open={modalOpen}
         onOk={() => setModalOpen(false)}
         okButtonProps={{ style: { backgroundColor: "#45cc79" } }}
         onCancel={() => setModalOpen(false)}
         footer={null}
-        className="text-[#359254] font-bold flex flex-row justify-center items-center"
+        className="inset-0 flex font-bold modalStyle"
       >
-        {userRole != "ADMIN" && (
-          <div>
-            <div
-              onClick={() => handleOnclick("my-profile")}
-              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
-            >
-              <button>My Profile</button>
+        <div className="w-full h-full text-[#359254]">
+          {userRole != "ADMIN" && (
+            <div>
+              <div
+                onClick={() => handleOnclick("my-profile")}
+                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
+              >
+                <button>My Profile</button>
+              </div>
+              <div
+                onClick={() => handleOnclick("history")}
+                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
+              >
+                <button>Listen History</button>
+              </div>
             </div>
-            {/* <div
-              onClick={() => handleOnclick("edit-user")}
-              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
-            >
-              <button>Edit User Information</button>
-            </div> */}
-            <div
-              onClick={() => handleOnclick("history")}
-              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
-            >
-              <button>Listen History</button>
-            </div>
-          </div>
-        )}
-        {userRole == "ARTIST" && (
-          <div>
-            {/* <div
+          )}
+          {userRole == "ARTIST" && (
+            <div>
+              {/* <div
               onClick={() => handleOnclick("upload")}
-              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
+              className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark "
             >
               <button>Upload Song</button>
             </div> */}
-            <div
-              onClick={() => handleOnclick("artistCMS")}
-              className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10 "
-            >
-              <button>Song Management</button>
+              <div
+                onClick={() => handleOnclick("artistCMS")}
+                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark "
+              >
+                <button>Song Management</button>
+              </div>
             </div>
+          )}
+          <div
+            onClick={LogOut}
+            className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
+          >
+            <button>Log Out</button>
           </div>
-        )}
-        <div
-          onClick={LogOut}
-          className="flex justify-center items-center text-blue-950 hover:text-white font-semibold hover:bg-[#45cc79] bg-[#f1f1ef] rounded-lg mt-3 h-10"
-        >
-          <button>Log Out</button>
         </div>
       </Modal>
     </header>

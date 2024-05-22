@@ -44,7 +44,9 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
                 {owned == true && <Item onClick={() => handleDeletePost(postId)}>Delete Post</Item>}
             </Menu>
             <Modal open={openModalUpdate} onCancel={onCancel}
-                footer={null} title="Update Post">
+                footer={null} title="Update Post"
+                className='modalStyle'
+            >
                 <UpdatePost postContent={postContent}
                     setOpenModalUpdate={setOpenModalUpdate}
                 ></UpdatePost>

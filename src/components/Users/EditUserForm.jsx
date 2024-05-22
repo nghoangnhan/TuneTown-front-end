@@ -100,17 +100,17 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
   }, [refreshAccount]);
 
   return (
-    <section className={`${isModal ? "" : "h-fit pt-6 pb-20"} bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}>
+    <section className={`${isModal ? "" : "h-fit pt-6 pb-20"} `}>
       <Form
         {...layout}
         name="control-ref"
         form={form}
         onFinish={onFinish}
         className={`
-        ${isModal ? "w-full" : "w-1/2"} m-auto bg-backgroundPlaylist text-primaryText2 p-5 `}
+        ${isModal ? "w-full" : "w-1/2"} m-auto p-5 formStyle`}
       >
         <div className="w-full mb-5 text-center">
-          <h2 className="text-3xl font-bold uppercase font-monserrat ">
+          <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
             Edit User Information
           </h2>
         </div>

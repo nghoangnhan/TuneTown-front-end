@@ -120,7 +120,6 @@ const UploadSong = () => {
   // Check if user is logged in
   useEffect(() => {
     if (access_token == null) {
-      console.log("CheckCookie", getToken());
       window.location.href = "/";
     }
   }, [access_token]);
@@ -131,10 +130,10 @@ const UploadSong = () => {
       ref={formRef}
       name="control-ref"
       onFinish={onFinish}
-      className="border rounded-md mx-auto p-5 bg-[#f9f9f9]"
+      className="p-5 mx-auto rounded-md bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
     >
       <div className="w-full mb-5 text-center">
-        <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
+        <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
           Upload Your Masterpiece
         </h2>
       </div>

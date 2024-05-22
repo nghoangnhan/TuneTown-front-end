@@ -30,16 +30,17 @@ const AuthorizationModal = ({ isAdmin, isArtist }) => {
     return (
         <Modal
             title="Authorization Error"
+            centered
             open={open}
             okButtonProps={{
-                className: "bg-primary text-white",
-                style: { borderRadius: "6px" },
+                className: "bg-primary text-white hover:opacity-70 dark:bg-primaryDark dark:text-white dark:hover:opacity-70",
             }}
             onOk={handleOK}
+            className='modalStyle'
             cancelButtonProps={{ hidden: true, }}>
-            {userRole === "ADMIN" && <p className='text-primary dark:text-primaryDarkmode'>You are not authorized to access ADMIN PAGE</p>}
-            {userRole === "ARTIST" && <p className='text-primary dark:text-primaryDarkmode'>You are not authorized to access ARTIST PAGE</p>}
-            {userRole !== "ADMIN" && userRole !== "ARTIST" && <p className='text-primary dark:text-primaryDarkmode'>You are not authorized to access this page</p>}
+            {userRole === "ADMIN" && <p className='text-primaryText2 dark:text-primaryTextDark2'>You are not authorized to access ADMIN PAGE</p>}
+            {userRole === "ARTIST" && <p className='text-primaryText2 dark:text-primaryTextDark2'>You are not authorized to access ARTIST PAGE</p>}
+            {userRole !== "ADMIN" && userRole !== "ARTIST" && <p className='text-primaryText2 dark:text-primaryTextDark2'>You are not authorized to access this page</p>}
         </Modal>
     );
 };

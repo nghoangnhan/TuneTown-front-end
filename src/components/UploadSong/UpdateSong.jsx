@@ -8,6 +8,8 @@ import useDataUtils from "../../utils/useDataUtils";
 import UploadFileDropZone from "../../utils/useDropZone";
 import PropTypes from "prop-types";
 import useConfig from "../../utils/useConfig";
+import useIconUtils from "../../utils/useIconUtils";
+import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 
 const layout = {
   labelCol: {
@@ -29,20 +31,20 @@ const UpdateSong = ({ songData }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [form] = Form.useForm();
-  const { Base_URL } = useConfig();
-  const [uploadedFile, setUploadedFile] = useState({});
-  const [fileIMG, setFileIMG] = useState();
-  const [fileMP3, setFileMP3] = useState();
-  const [coverReady, setCoverReady] = useState(false);
-  const [songReady, setSongReady] = useState(false);
+  const { Check } = useIconUtils();
+  const { Base_URL, Base_AVA } = useConfig();
   const { handleUploadFileIMG, handleUploadFileMP3 } = useDataUtils();
+  const { getSongById } = useMusicAPIUtils();
+  const [uploadedFile, setUploadedFile] = useState({});
+  const [fileImg, setFileImg] = useState(songData?.poster);
+  const [fileMP3, setFileMP3] = useState(songData.songData);
 
   const UploadIMGfile = async (file) => {
     message.loading("Uploading Image", 1);
     await handleUploadFileIMG(file).then((res) => {
       if (res.status === 200) {
-        setFileIMG(res.data);
-        setCoverReady(true);
+        setFileImg(res.data);
+
         message.success("Image Uploaded Successfully", 2);
       }
     });
@@ -53,27 +55,10 @@ const UpdateSong = ({ songData }) => {
     await handleUploadFileMP3(file).then((res) => {
       if (res.status === 200) {
         setFileMP3(res.data);
-        setSongReady(true);
+
         message.success("Song File Uploaded Successfully", 2);
       }
     });
-  };
-
-  // Get Song from API
-  const getSongById = async (songId) => {
-    try {
-      const response = await axios.get(
-        `${Base_URL}/songs/getSongById?songId=${songId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.log("Error:", error);
-    }
   };
 
   // Post Song to API
@@ -110,7 +95,7 @@ const UpdateSong = ({ songData }) => {
       message.error("Please select at least one artist");
       return;
     }
-    if (fileIMG == null) {
+    if (fileImg == null) {
       message.error("Please upload a cover image");
       return;
     }
@@ -121,7 +106,7 @@ const UpdateSong = ({ songData }) => {
     const postData = {
       id: songData.songId,
       songName: songName,
-      poster: fileIMG,
+      poster: fileImg,
       songData: fileMP3,
       genres: genre,
       status: 1,
@@ -136,13 +121,14 @@ const UpdateSong = ({ songData }) => {
 
   useEffect(() => {
     getSongById(songData.songId).then((data) => {
-      console.log("songData", data);
       form.setFieldsValue({
         songName: data.songName,
         artists: data.artists.map((artist) => {
           return { value: artist.id, label: artist.userName };
         }),
-        genre: data.genre,
+        genres: data.genres.map((genre) => {
+          return { value: genre.id, label: genre.genreName };
+        }),
         poster: data.poster,
         songData: data.songData,
         lyric: data?.lyric,
@@ -164,10 +150,10 @@ const UpdateSong = ({ songData }) => {
         name="control-ref"
         form={form}
         onFinish={onFinish}
-        className="border rounded-md mx-auto p-5 bg-[#f9f9f9]"
+        className="p-5 mx-auto rounded-md bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
       >
         <div className="w-full mb-5 text-center">
-          <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
+          <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
             Update Song
           </h2>
         </div>
@@ -182,7 +168,7 @@ const UpdateSong = ({ songData }) => {
         >
           <Input />
         </Form.Item>
-        <ArtistInput></ArtistInput>
+        <ArtistInput artistList={songData?.artists}></ArtistInput>
         <Form.Item
           name="poster"
           label="Upload Cover Art"
@@ -200,19 +186,9 @@ const UpdateSong = ({ songData }) => {
               uploadedFile={uploadedFile}
               setUploadedFile={setUploadedFile}
               handleUploadFile={UploadIMGfile}
-              accept="image/jpeg, image/png"
+              accept="image/*"
             />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="20"
-              viewBox="0 -960 960 960"
-              width="20"
-              className={`${coverReady ? "" : "hidden"}`}
-              fill={`${coverReady ? "#42ae49" : ""}`}
-            >
-              <path d="M316.231-280.54q-83.295 0-141.762-57.879-58.468-57.879-58.468-141.004 0-84.269 60.896-141.768 60.895-57.5 146.334-57.5h378.615q59.23 0 100.691 41.077 41.462 41.076 41.462 100.307 0 60.23-43.962 100.806-43.961 40.577-105.191 40.577H339.462q-34.761 0-59.418-24.219-24.658-24.219-24.658-59.033 0-35.67 25.622-59.9 25.622-24.231 62.454-24.231h361.152v51.999H339.462q-13.477 0-22.778 9.108-9.3 9.108-9.3 22.585t9.3 22.585q9.301 9.108 22.778 9.108H702.23q37.308.384 63.539-25.777T792-537.505q0-37.459-27.423-63.323-27.423-25.865-64.731-25.865H316.231q-61.538.385-104.385 43.154Q169-540.769 168-479.284q-1 61.465 44.346 104.49 45.347 43.025 108.885 42.256h383.383v51.998H316.231Z" />
-            </svg>
-            <img src={fileIMG} alt="" className="w-16 h-16" />
+            {fileImg && <img src={fileImg ? fileImg : Base_AVA} alt="" className="w-16 h-16" />}
           </div>
         </Form.Item>
         {/* MP3 File */}
@@ -224,7 +200,7 @@ const UpdateSong = ({ songData }) => {
           valuePropName="fileList"
           rules={[
             {
-              required: false,
+              required: fileMP3 == null,  // Required when song is not ready
             },
           ]}
         >
@@ -234,17 +210,8 @@ const UpdateSong = ({ songData }) => {
               setUploadedFile={setUploadedFile}
               handleUploadFile={UploadMP3file}
               accept="audio/mp3"
-            />{" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="20"
-              viewBox="0 -960 960 960"
-              width="20"
-              className={`${songReady ? "" : "hidden"}`}
-              fill={`${songReady ? "#42ae49" : ""}`}
-            >
-              <path d="M316.231-280.54q-83.295 0-141.762-57.879-58.468-57.879-58.468-141.004 0-84.269 60.896-141.768 60.895-57.5 146.334-57.5h378.615q59.23 0 100.691 41.077 41.462 41.076 41.462 100.307 0 60.23-43.962 100.806-43.961 40.577-105.191 40.577H339.462q-34.761 0-59.418-24.219-24.658-24.219-24.658-59.033 0-35.67 25.622-59.9 25.622-24.231 62.454-24.231h361.152v51.999H339.462q-13.477 0-22.778 9.108-9.3 9.108-9.3 22.585t9.3 22.585q9.301 9.108 22.778 9.108H702.23q37.308.384 63.539-25.777T792-537.505q0-37.459-27.423-63.323-27.423-25.865-64.731-25.865H316.231q-61.538.385-104.385 43.154Q169-540.769 168-479.284q-1 61.465 44.346 104.49 45.347 43.025 108.885 42.256h383.383v51.998H316.231Z" />
-            </svg>
+            />
+            {fileMP3 && Check()}
           </div>
         </Form.Item>
         {/* Genre  */}
@@ -279,6 +246,17 @@ const UpdateSong = ({ songData }) => {
 UpdateSong.propTypes = {
   songData: PropTypes.shape({
     songId: PropTypes.string.isRequired,
+    poster: PropTypes.string,
+    genres: PropTypes.string,
+    songData: PropTypes.string,
+    lyric: PropTypes.string,
+    songName: PropTypes.string,
+    artists: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        userName: PropTypes.string,
+      })
+    ),
   }).isRequired,
 };
 export default UpdateSong;

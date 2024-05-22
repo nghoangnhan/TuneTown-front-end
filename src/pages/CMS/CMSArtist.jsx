@@ -6,13 +6,11 @@ import UpdateSong from "../../components/UploadSong/UpdateSong";
 import useUserUtils from "../../utils/useUserUtils";
 import useConfig from "../../utils/useConfig";
 import UploadSong from "../../components/UploadSong/UploadSong";
-import useIconUtils from "../../utils/useIconUtils";
 
 const CMSArtist = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL, Base_AVA } = useConfig();
-  const { PlusIcon } = useIconUtils();
   const userId = localStorage.getItem("userId");
   const [form] = Form.useForm();
   const [refresh, setRefresh] = useState(false);
@@ -20,14 +18,14 @@ const CMSArtist = () => {
   const [songListArtist, setSongListArtist] = useState([]);
   const [songData, setSongData] = useState({});
   const [searchValue, setSearchValue] = useState("");
-  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false); const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
   const { getArtistByArtistId } = useUserUtils();
 
   const handleGetArtistDetail = async (artistId) => {
     await getArtistByArtistId(artistId).then((result) => {
       setArtistDetail(result);
       setSongListArtist(result.songs);
-      console.log("SetArtistDetail", result);
     });
   };
   const handSearch = (e) => {
@@ -35,12 +33,16 @@ const CMSArtist = () => {
     setSearchValue(e.target.value);
   };
   // Update Song
-  const handUpdateSong = (songId, songName) => {
-    const songData = {
+  const handUpdateSong = (songId, songContent) => {
+    const songDetail = {
       songId: songId,
-      songName: songName,
+      songName: songContent.songName,
+      poster: songContent.poster.props.src,
+      artists: songContent.artists,
+      genres: songContent.genres,
+      listens: songContent.listens,
     };
-    setSongData(songData);
+    setSongData(songDetail);
     setIsModalOpenUpdate(true);
   };
   const handleOk = () => {
@@ -48,6 +50,7 @@ const CMSArtist = () => {
     setIsModalOpenUpload(false);
   };
   const handleCancel = () => {
+    setIsModalOpenUpload(false);
     setIsModalOpenUpdate(false);
   };
 
@@ -188,7 +191,10 @@ const CMSArtist = () => {
         <Space>
           <button
             className="px-2 py-1 text-white rounded-md w-14 bg-primary hover:opacity-70"
-            onClick={() => handUpdateSong(record.key, record.songName)}
+            onClick={() => handUpdateSong(
+              record.key,
+              record
+            )}
           >
             Edit
           </button>
@@ -211,7 +217,7 @@ const CMSArtist = () => {
     handleGetArtistDetail(userId);
   }, [userId, refresh]);
   return (
-    <div className="h-full min-h-screen px-2 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
+    <div className="h-full min-h-screen px-4 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       {" "}
       <div className="flex flex-row">
         <div className="mx-3 my-5 text-4xl font-bold text-primary dark:text-primaryDarkmode">
@@ -249,16 +255,16 @@ const CMSArtist = () => {
         </div>
         <div>
           <button
-            className="px-2 py-1 text-white rounded-lg bg-primary hover:bg-primaryDarkmode"
+            className="px-3 py-1 text-white rounded-md bg-primary hover:bg-primaryDarkmode"
             onClick={showModal}
           >
-            <PlusIcon></PlusIcon> Create New Song
+            Create New Song
           </button>
         </div>
       </div>
       <Table
         columns={columnsSong}
-        className="p-1"
+        className="p-1 bg-backgroundPrimary dark:bg-backgroundDarkPrimary "
         dataSource={
           searchValue
             ? dataSongTable.filter((song) =>
@@ -266,14 +272,15 @@ const CMSArtist = () => {
             )
             : dataSongTable
         }
-
       />
       <Modal
         open={isModalOpenUpload}
         onOk={handleOk}
         onCancel={handleCancel}
-        footer={[null, null]}
-        className="w-fit h-fit "
+        footer={null}
+        centered
+        destroyOnClose={true}
+        className="w-fit h-fit modalStyle"
       >
         <UploadSong></UploadSong>
       </Modal>
@@ -281,8 +288,10 @@ const CMSArtist = () => {
         open={isModalOpenUpdate}
         onCancel={handleCancel}
         onOk={handleOk}
-        footer={[null, null]}
-        className="w-fit h-fit "
+        footer={null}
+        centered
+        destroyOnClose={true}
+        className="w-fit h-fit modalStyle"
       >
         <UpdateSong songData={songData}></UpdateSong>
       </Modal>

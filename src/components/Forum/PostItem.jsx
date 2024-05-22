@@ -94,7 +94,7 @@ const PostItem = ({ postContent }) => {
   }, [postContent.playlist]);
 
   return (
-    <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-3 xl:mt-5 xl:py-5 xl:px-5">
+    <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md  bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-3 xl:mt-5 xl:py-5 xl:px-5">
       <div className="flex flex-col justify-center">
         <div className="flex flex-row items-start justify-between">
           <div className="flex flex-col">

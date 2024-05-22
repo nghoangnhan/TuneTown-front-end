@@ -120,7 +120,6 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     }
 
     useEffect(() => {
-        console.log("POSTCONTENT", postContent);
         if (postContent) {
             form.setFieldsValue({
                 content: postContent.content,
@@ -139,6 +138,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
+                className="mx-auto  bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
             >
                 <Form.Item
                     label="Content"
@@ -149,6 +149,8 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                         theme="snow"
                         value={Parser(editorValue)}
                         onChange={setEditorValue}
+                        placeholder="Your thoughts..."
+                        className="bg-white dark:bg-backgroundDarkPrimary dark:text-white"
                     />
                 </Form.Item>
 
@@ -202,7 +204,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                         <Button
                             onClick={handleAddPlaylist}
                             type="button"
-                            className=" text-primary transition-colors duration-150 border border-[#59c26d] rounded-md"
+                            className="transition-colors duration-150 bg-transparent border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
                         >
                             Add Playlist
                         </Button>
@@ -212,9 +214,9 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 <Form.Item>
                     <button
                         type="submit"
-                        className="w-full h-10 px-3 text-base transition-colors duration-150 rounded-lg text-primaryTextDark2 bg-primary dark:bg-primaryDarkmode focus:shadow-outline hover:opacity-70"
+                        className="w-full h-10 px-3 text-base bg-transparent border rounded-lg text-primary dark:text-primaryDarkmode hover:opacity-70 border-primary dark:border-primaryDarkmode "
                     >
-                        Submit
+                        Post
                     </button>
                 </Form.Item>
                 <LoadingLogo loading={loading}></LoadingLogo>

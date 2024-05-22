@@ -34,8 +34,8 @@ const ArtistInput = () => {
       console.log("Error:", error);
     }
   };
+
   useEffect(() => {
-    console.log("emailInput", emailInput);
     if (inputDebounce === "") {
       setEmailRS([]);
       setArtistRS([]);
@@ -83,11 +83,13 @@ const ArtistInput = () => {
         filterOption={filterOption}
         options={artistRS.map((artist) => {
           console.log("artist", artist);
-          return { id: artist.id, value: artist.id, label: artist.email };
+          return { id: artist.id, value: artist.id, label: artist.email ? artist.email : artist };
         })}
       />
     </Form.Item>
   );
 };
+
+ArtistInput.propTypes = {};
 
 export default ArtistInput;

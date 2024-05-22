@@ -121,7 +121,7 @@ const CreatePost = () => {
   }
 
   return (
-    <div className="bg-[#FFFFFFCC] mt-4">
+    <div className="">
       <Form
         form={form}
         layout="vertical"
@@ -133,6 +133,7 @@ const CreatePost = () => {
             form.resetFields();
           }
         }
+        className="formStyle"
       >
         <Form.Item
           label="Content"
@@ -143,6 +144,8 @@ const CreatePost = () => {
             theme="snow"
             value={Parser(editorValue)}
             onChange={setEditorValue}
+            placeholder="Your thoughts..."
+            className="bg-white dark:bg-backgroundDarkPrimary dark:text-white"
           />
         </Form.Item>
 
