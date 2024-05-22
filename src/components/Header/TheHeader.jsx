@@ -71,23 +71,22 @@ const TheHeader = () => {
         {
           <div>
             <div
-              className={`${
-                userRole === "ADMIN"
+              className={`${userRole === "ADMIN"
                   ? "text-[#f24e4e] dark:text-[#ff5050] border-[#f24e4e] dark:border-[#ff5050] font-bold"
                   : userRole === "USER"
-                  ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold"
-                  : userRole === "ARTIST"
-                  ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold"
-                  : ""
-              } flex justify-center items-center p-1 border border-solid rounded-md mr-3`}
+                    ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold"
+                    : userRole === "ARTIST"
+                      ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold"
+                      : ""
+                } flex justify-center items-center p-1 border border-solid rounded-md mr-3`}
             >
               {userRole === "ADMIN"
                 ? "Admin"
                 : userRole === "USER"
-                ? "User"
-                : userRole === "ARTIST"
-                ? "Artist"
-                : ""}
+                  ? "User"
+                  : userRole === "ARTIST"
+                    ? "Artist"
+                    : ""}
             </div>
           </div>
         }
@@ -159,6 +158,12 @@ const TheHeader = () => {
               </div>
             </div>
           )}
+          <div
+            onClick={() => handleOnclick("settings")}
+            className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
+          >
+            <button>{t("accountOptions.settings")}</button>
+          </div>
           <div
             onClick={LogOut}
             className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"

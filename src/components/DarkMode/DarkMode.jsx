@@ -13,12 +13,14 @@ const DarkMode = () => {
         }
     };
     useEffect(() => {
-        if (darkTheme == true) {
+        if (darkTheme === true) {
             document.documentElement.classList.add('dark');
+            setDarkTheme(true);
             localStorage.setItem('darkTheme', true);
         }
         else {
             document.documentElement.classList.remove('dark');
+            setDarkTheme(false);
             localStorage.setItem('darkTheme', false);
         }
         console.log("Dark Theme Storage", Boolean(localStorage.getItem("darkTheme")));

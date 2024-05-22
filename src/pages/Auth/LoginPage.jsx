@@ -84,7 +84,7 @@ const LoginPage = () => {
   // }, []);
 
   useEffect(() => {
-    if (auth.access_token) {
+    if (auth.access_token !== "" && auth.access_token !== null && auth.access_token !== undefined) {
       navigate("/home");
     }
   }, [auth.access_token]);
