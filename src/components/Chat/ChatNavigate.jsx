@@ -214,9 +214,9 @@ const ChatNavigate = () => {
               className="w-full text-lg rounded-md text-primaryText dark:text-primaryTextDark2 "
             />
           </Form.Item>
-          <Form.Item>
+          {/* <Form.Item>
             <DarkMode></DarkMode>
-          </Form.Item>
+          </Form.Item> */}
         </Form>
         {/* Render userResults absolutely positioned below the search input */}
         {chatRs && (

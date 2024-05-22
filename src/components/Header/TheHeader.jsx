@@ -59,9 +59,9 @@ const TheHeader = () => {
   return (
     <header className="sticky top-0 z-50 w-full h-[60px] xl:w-full py-1 gap-x-7 flex justify-center items-center font-bold bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="absolute flex flex-row items-center justify-center mt-2 xl:right-5 right-3">
-        <div>
+        {/* <div>
           <DarkMode></DarkMode>
-        </div>
+        </div> */}
         <div
           className="flex items-center justify-center w-10 h-10 mt-1 mr-2 text-xl font-bold rounded-lg cursor-pointer text-iconText dark:text-iconTextDark hover:text-iconTextHover dark:hover:text-iconTextHoverDark dark:hover:bg-iconBackgroundDark"
           onClick={() => navigate("/chat")}
@@ -72,12 +72,12 @@ const TheHeader = () => {
           <div>
             <div
               className={`${userRole === "ADMIN"
-                  ? "text-[#f24e4e] dark:text-[#ff5050] border-[#f24e4e] dark:border-[#ff5050] font-bold"
-                  : userRole === "USER"
-                    ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold"
-                    : userRole === "ARTIST"
-                      ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold"
-                      : ""
+                ? "text-[#f24e4e] dark:text-[#ff5050] border-[#f24e4e] dark:border-[#ff5050] font-bold"
+                : userRole === "USER"
+                  ? "text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode font-bold"
+                  : userRole === "ARTIST"
+                    ? "text-[#3f3ca0] dark:text-[#7061ff] border-[#3f3ca0] dark:border-[#7061ff] font-bold"
+                    : ""
                 } flex justify-center items-center p-1 border border-solid rounded-md mr-3`}
             >
               {userRole === "ADMIN"
