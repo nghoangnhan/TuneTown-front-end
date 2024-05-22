@@ -8,6 +8,7 @@ import { LoginSocialFacebook } from "reactjs-social-login";
 import { jwtDecode } from "jwt-decode";
 import { LoginSocialButton } from "./LoginSocialButton";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 function LoginFacebook() {
   const { saveToken } = UseCookie();
@@ -15,6 +16,7 @@ function LoginFacebook() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
+  const { t } = useTranslation();
 
   const handleUserData = async (userData) => {
     console.log("Data", userData);
@@ -129,10 +131,9 @@ function LoginFacebook() {
       onReject={onFailure}
     >
       {/* <FacebookLoginButton className="bg-white rounded-md" /> */}
-      <LoginSocialButton></LoginSocialButton>
+      <LoginSocialButton text={t("auth.loginWithFacebook")}></LoginSocialButton>
     </LoginSocialFacebook>
   );
 }
-
 
 export default LoginFacebook;
