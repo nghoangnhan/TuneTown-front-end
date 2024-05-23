@@ -22,7 +22,12 @@
     "evening": "buổi tối",
     "back": "Trở về",
     "selectFile": "Chọn file",
-    "loadMore": "Xem thêm"
+    "loadMore": "Xem thêm",
+    "light": "Sáng",
+    "dark": "Tối",
+    "low": "Thấp",
+    "medium": "Trung bình",
+    "high": "Cao"
   },
   "home": {
     "madeForYou": "Dành cho bạn"
@@ -69,5 +74,10 @@
     "editProfile": "Chỉnh sửa thông tin",
     "editFavouriteGenres": "Chỉnh sửa dòng nhạc yêu thích",
     "favouriteGenres": "Dòng nhạc yêu thích"
+  },
+  "settings": {
+    "theme": "Chủ đề",
+    "language": "Ngôn ngữ",
+    "volumeLevel": "Mức độ âm thanh"
   }
 }
