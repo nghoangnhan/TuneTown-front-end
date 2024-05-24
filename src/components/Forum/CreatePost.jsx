@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 
 const CreatePost = () => {
   const [form] = Form.useForm();
-  const userId = parseInt(localStorage.getItem("userId"));
+  const userId = localStorage.getItem("userId");
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const { access_token } = getToken();

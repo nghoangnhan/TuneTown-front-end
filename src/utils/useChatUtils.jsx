@@ -15,7 +15,7 @@ export const useChatUtils = () => {
   const { Base_URL } = useConfig();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const userId = localStorage.getItem("userId");
   const { getUserInfor } = useUserUtils();
 
   // Acronym the name of the song
@@ -104,9 +104,9 @@ export const useChatUtils = () => {
         `${Base_URL}/messages/loadMessage`,
         {
           sendUser: {
-            id: parseInt(sendUserId)
+            id: sendUserId
           },
-          receiveUserId: parseInt(receiveUserId),
+          receiveUserId: receiveUserId,
         },
         {
           headers: {
@@ -377,7 +377,7 @@ export const useForumUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL, Base_URL_FE } = useConfig();
-  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const userId = localStorage.getItem("userId");
 
   // Get All Post API
   const getAllPost = async () => {

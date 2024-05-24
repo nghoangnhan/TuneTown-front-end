@@ -20,7 +20,7 @@ import { setRefreshPost } from "../../redux/slice/social";
 
 const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     const [form] = Form.useForm();
-    const userId = parseInt(localStorage.getItem("userId"));
+    const userId = localStorage.getItem("userId");
     const dispatch = useDispatch();
     const { getToken } = UseCookie();
     const { access_token } = getToken();
