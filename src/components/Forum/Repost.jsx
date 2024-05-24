@@ -14,7 +14,7 @@ const Repost = ({ song, closeModal }) => {
   const [form] = Form.useForm();
   const [editorValue, setEditorValue] = useState("");
   const { Base_URL } = useConfig();
-  const userId = parseInt(localStorage.getItem("userId"));
+  const userId = localStorage.getItem("userId");
   const { getToken } = UseCookie();
   const { access_token } = getToken();
 

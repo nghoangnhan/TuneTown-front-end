@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
   const { show } = useContextMenu();
-  const userId = parseInt(localStorage.getItem("userId"));
+  const userId = localStorage.getItem("userId");
   const { Base_AVA } = useConfig();
   const { getPostById, likePost, handleCheckLiked, handleSharePost } =
     useForumUtils();

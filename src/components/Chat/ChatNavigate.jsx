@@ -16,7 +16,7 @@ import ListChatSection from "./ListChatSection";
 import useChatUtils from "../../utils/useChatUtils";
 
 const ChatNavigate = () => {
-  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const userId = localStorage.getItem("userId");
   const { searchCommunityByName } = useChatUtils();
   const { getToken } = UseCookie();
   const [form] = useForm();

@@ -22,7 +22,7 @@ const ChatArea = () => {
   const { BackIcon, UserGroupIcon, OptionsIcon, ExitCommunityIcon, SendIcon } = useIconUtils();
   const { access_token } = getToken();
   const { show } = useContextMenu();
-  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const userId = localStorage.getItem("userId");
   const { chatId } = useParams();
   const converChosen = useSelector((state) => state.social.currentChat);
   const [chatInfo, setChatInfo] = useState();

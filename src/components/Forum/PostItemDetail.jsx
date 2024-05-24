@@ -16,7 +16,7 @@ const PostItemDetail = () => {
   const { getPostById, createComment, createReply, scrollToBottom, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = parseInt(localStorage.getItem("userId"));
+  const userId = localStorage.getItem("userId");
   const commentRef = useRef(null);
   const { Base_AVA } = useConfig();
   const windownEndRef = useRef(null);
@@ -47,7 +47,7 @@ const PostItemDetail = () => {
     if (isReplying == false) {
       const comment = {
         postId: parseInt(postId),
-        author: parseInt(userId),
+        author: userId,
         content: commentRef.current.value,
       };
       console.log("Create Comment", comment);
@@ -59,7 +59,7 @@ const PostItemDetail = () => {
       });
     } else if (isReplying == true) {
       const reply = {
-        author: parseInt(userId),
+        author: userId,
         content: commentRef.current.value,
         postId: parseInt(postId),
         commentId: replyCommentId,
