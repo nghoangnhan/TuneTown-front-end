@@ -12,14 +12,14 @@ const AuthorizationModal = ({ isAdmin, isArtist }) => {
     const { getToken } = UseCookie();
     const { access_token } = getToken();
     const handleOK = () => {
-        navigate("/");
+        navigate("/login");
         setOpen(false);
     };
     // const handleCancel = () => {
     //     setOpen(false);
     // };
     useEffect(() => {
-        if (access_token == null) {
+        if (access_token === null || access_token === undefined || access_token === "") {
             // Message to navigate to login page
             setOpen(true);
             console.log("CheckCookie", access_token);

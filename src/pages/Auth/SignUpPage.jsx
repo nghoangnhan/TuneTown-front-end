@@ -19,20 +19,20 @@ const SignUpPage = () => {
         email: email,
         password: password,
         birthDate: bdate,
-        method: "REGISTER",
       });
       if (response.data) {
         message.success("Sign Up Successfully");
         setTimeout(() => {
-          navigate("/");
+          navigate("/login");
         }, 1000);
       }
       console.log("Respone Data Sign Up", response.data);
     } catch (error) {
       console.log("Error Post Data function:", error);
       const errorName = error.response.data.detail;
-      message.error(errorName, 1);
+      message.error(errorName, 2);
       throw error;
+
     }
   }
 
@@ -63,7 +63,7 @@ const SignUpPage = () => {
 
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-headingText dark:text-headingTextDark">Sign up</h1>
+          <h1 className="text-3xl font-bold text-primary">Sign up</h1>
         </div>
         <Form
           className="w-full"
@@ -196,9 +196,9 @@ const SignUpPage = () => {
           </Form.Item>
         </Form>
 
-        <div className="text-headingText dark:text-headingTextDark">
+        <div className="text-headingText ">
           Have an account?
-          <NavLink to="/" className="text-[#34a56d] ml-1 text-sm">
+          <NavLink to="/login" className="text-[#34a56d] ml-1 text-sm">
             Login
           </NavLink>
         </div>

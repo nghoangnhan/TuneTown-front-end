@@ -150,3 +150,14 @@
   background-color: #3a4a5f;
   color: #e9e5e5;
 }
+
+/* QUILL  */
+.ql-editor {
+  height: 200px;
+  max-height: 250px;
+  overflow: auto;
+}
+/* dark  */
+.dark .ql-editor {
+  color: #e9e5e5;
+}

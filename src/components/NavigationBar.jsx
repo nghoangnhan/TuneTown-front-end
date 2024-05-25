@@ -16,7 +16,7 @@ const NavigationBar = () => {
           <div className="max-xl:w-64 xl:fixed">
             <div
               className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
-              onClick={() => navigate("/home")}
+              onClick={() => navigate("/")}
             >
               <div>
                 <img
@@ -32,7 +32,7 @@ const NavigationBar = () => {
             <div className="mt-8">
               <div className="flex flex-col gap-2 mt-7">
                 <NavLink
-                  to="/home"
+                  to="/"
                   className={({ isActive }) =>
                     isActive
                       ? "h-10 w-48 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"
@@ -95,7 +95,7 @@ const NavigationBar = () => {
           <div className="pb-1">
             <div className="flex flex-row items-center justify-center gap-4">
               <NavLink
-                to="/home"
+                to="/"
                 className={({ isActive }) =>
                   isActive
                     ? "h-2 w-auto p-4 bg-gradient-to-r from-[#6aca72] to-[#32b95b] font-bold hover:opacity-80 text-textNavbarNormal flex justify-center items-center rounded-lg"

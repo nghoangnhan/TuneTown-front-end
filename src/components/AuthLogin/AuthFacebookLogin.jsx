@@ -108,7 +108,7 @@ function LoginFacebook() {
     message.success("Login Successfully");
     // Navigate to /home after successful login
     setTimeout(() => {
-      navigate("/home");
+      navigate("/");
     }, 1000);
   };
 

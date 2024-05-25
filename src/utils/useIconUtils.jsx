@@ -44,7 +44,7 @@ const useIconUtils = () => {
     return (
       <button
         className="px-4 py-2 font-bold text-white rounded-lg shadow-md bg-primary dark:bg-primaryDarkmode"
-        onClick={() => navigate(url ? url : "/home")}
+        onClick={() => navigate(url ? url : "/")}
       >
         <FontAwesomeIcon icon={faCaretLeft}></FontAwesomeIcon>{" "}
         {t("common.back")}
@@ -59,7 +59,7 @@ const useIconUtils = () => {
     return (
       <button
         className="px-3 py-1 text-2xl font-bold text-primary hover:opacity-60"
-        onClick={() => navigate(url ? url : "/home")}
+        onClick={() => navigate(url ? url : "/")}
       >
         <FontAwesomeIcon icon={faCaretLeft}></FontAwesomeIcon>
       </button>
@@ -92,11 +92,10 @@ const useIconUtils = () => {
         height="24"
         viewBox="0 -960 960 960"
         width="24"
-        className={`${
-          props.liked
-            ? "fill-primary dark:fill-primaryDarkmode"
-            : "fill-iconText dark:fill-iconTextDark"
-        } transition-colors duration-200`}
+        className={`${props.liked
+          ? "fill-primary dark:fill-primaryDarkmode"
+          : "fill-iconText dark:fill-iconTextDark"
+          } transition-colors duration-200`}
       >
         <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z" />
       </svg>

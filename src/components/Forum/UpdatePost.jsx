@@ -2,15 +2,12 @@ import { Form, message } from "antd";
 import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import UploadFileDropZone from "../../utils/useDropZone";
-import useDataUtils from "../../utils/useDataUtils";
 import axios from "axios";
 import useConfig from "../../utils/useConfig";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import UseCookie from "../../hooks/useCookie";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import useIconUtils from "../../utils/useIconUtils";
 import ModalPlaylistPost from "./ModalPlaylistPost";
 import Proptypes from "prop-types";
 import { Button } from "antd/es/radio";
@@ -24,45 +21,45 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     const dispatch = useDispatch();
     const { getToken } = UseCookie();
     const { access_token } = getToken();
-    const { LoadingLogo } = useIconUtils();
-    const { handleUploadFileMP3, handleUploadFileIMG } = useDataUtils();
+    // const { LoadingLogo } = useIconUtils();
+    // const { handleUploadFileMP3, handleUploadFileIMG } = useDataUtils();
     const { getPlaylistByUserId } = useMusicAPIUtils();
-    const { Check } = useIconUtils();
+    // const { Check } = useIconUtils();
     const { Base_URL } = useConfig();
     const [editorValue, setEditorValue] = useState(postContent.content);
-    const [fileMP3, setFileMP3] = useState(postContent.mp3Link);
-    const [fileIMG, setFileIMG] = useState(postContent.poster);
-    const [uploadedFile, setUploadedFile] = useState();
-    const [loading, setLoading] = useState(false);
+    // const [fileMP3, setFileMP3] = useState(postContent.mp3Link);
+    // const [fileIMG, setFileIMG] = useState(postContent.poster);
+    // const [uploadedFile, setUploadedFile] = useState();
+    // const [loading, setLoading] = useState(false);
     const [playlistRs, setPlaylistRs] = useState([]);
     const [openModalChosePlaylist, setOpenModalChosePlaylist] = useState(false);
     const [playlistChosen, setPlaylistChosen] = useState(postContent.playlist);
 
-    const UploadMP3file = async (file) => {
-        setLoading(true);
-        // message.loading("Uploading Song File", 2);
-        await handleUploadFileMP3(file).then((res) => {
-            console.log("UploadMP3file", res);
-            if (res.status === 200 || res.status === 201) {
-                setFileMP3(res.data);
-                message.success("Song File Uploaded Successfully", 2);
-                setLoading(false);
-            }
-        });
-    };
+    // const UploadMP3file = async (file) => {
+    //     setLoading(true);
+    //     // message.loading("Uploading Song File", 2);
+    //     await handleUploadFileMP3(file).then((res) => {
+    //         console.log("UploadMP3file", res);
+    //         if (res.status === 200 || res.status === 201) {
+    //             setFileMP3(res.data);
+    //             message.success("Song File Uploaded Successfully", 2);
+    //             setLoading(false);
+    //         }
+    //     });
+    // };
 
-    const UploadIMGfile = async (file) => {
-        setLoading(true);
-        message.loading("Uploading Image", 1);
-        await handleUploadFileIMG(file).
-            then((res) => {
-                if (res.status === 200) {
-                    setFileIMG(res.data);
-                    message.success("Image Uploaded Successfully", 2);
-                    setLoading(false);
-                }
-            });
-    };
+    // const UploadIMGfile = async (file) => {
+    //     setLoading(true);
+    //     message.loading("Uploading Image", 1);
+    //     await handleUploadFileIMG(file).
+    //         then((res) => {
+    //             if (res.status === 200) {
+    //                 setFileIMG(res.data);
+    //                 message.success("Image Uploaded Successfully", 2);
+    //                 setLoading(false);
+    //             }
+    //         });
+    // };
 
     const onFinish = (values) => {
         try {
@@ -78,7 +75,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 playlist: {
                     id: playlistChosen?.id
                 },
-                mp3Link: fileMP3
+                mp3Link: null
             }, {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
@@ -138,7 +135,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
-                className="mx-auto  bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
+                className="mx-auto bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
             >
                 <Form.Item
                     label="Content"
@@ -155,7 +152,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 </Form.Item>
 
                 {/* Upload Cover Art  */}
-                <Form.Item
+                {/* <Form.Item
                     name="songCoverArt"
                     label="Upload Cover Art"
                     extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
@@ -171,11 +168,11 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                         />
                         {fileIMG && <img src={fileIMG} alt="" className="w-16 h-16" />}
                     </div>
-                </Form.Item>
+                </Form.Item> */}
 
 
                 {/* Upload Song  */}
-                <Form.Item
+                {/* <Form.Item
                     name="songData"
                     label="Upload File"
                     extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
@@ -196,7 +193,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                         />
                         {fileMP3 && Check()}
                     </div>
-                </Form.Item>
+                </Form.Item> */}
 
                 {/* Playlist */}
                 <Form.Item>
@@ -216,10 +213,10 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                         type="submit"
                         className="w-full h-10 px-3 text-base bg-transparent border rounded-lg text-primary dark:text-primaryDarkmode hover:opacity-70 border-primary dark:border-primaryDarkmode "
                     >
-                        Post
+                        Update Post
                     </button>
                 </Form.Item>
-                <LoadingLogo loading={loading}></LoadingLogo>
+                {/* <LoadingLogo loading={loading}></LoadingLogo> */}
             </Form>
             <ModalPlaylistPost handlePlaylistItemClick={handlePlaylistItemClick} openModal={openModalChosePlaylist}
                 playlistRs={playlistRs} setOpenModalChosePlaylist={setOpenModalChosePlaylist}>

@@ -56,8 +56,8 @@ const LoginPage = () => {
             response.data.role === "USER" ||
             response.data.role === "ARTIST"
           ) {
-            // window.location.href = "/home";
-            navigate("/home");
+            // window.location.href = "/";
+            navigate("/");
           }
         }, 1000);
       }
@@ -85,7 +85,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (auth.access_token !== "" && auth.access_token !== null && auth.access_token !== undefined) {
-      navigate("/home");
+      navigate("/");
     }
   }, [auth.access_token]);
 
@@ -104,7 +104,7 @@ const LoginPage = () => {
     <div className="relative flex flex-row items-center justify-center">
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-20">
-          <h1 className="text-3xl font-bold text-headingText dark:text-headingTextDark">
+          <h1 className="text-3xl font-bold text-primary">
             {t("auth.signIn")}
           </h1>
         </div>
@@ -162,13 +162,13 @@ const LoginPage = () => {
         </Form>
 
         <div className="flex flex-col items-center justify-center gap-2 xl:gap-4">
-          <p className="text-headingText dark:text-headingTextDark">
+          <p className="text-headingText">
             {t("auth.dontHaveAccount")}?
             <NavLink to="/signup" className="ml-1 text-sm text-primary">
               {t("auth.signUp")}
             </NavLink>
           </p>
-          <p className="mb-3 text-headingText dark:text-headingTextDark">
+          <p className="mb-3 text-headingText">
             {t("auth.dontRememberPassword")}?
             <NavLink to="/forgotpass" className="ml-1 text-sm text-primary">
               {t("auth.forgetPassword")}

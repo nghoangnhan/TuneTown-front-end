@@ -9,6 +9,8 @@ import AudioWaveSurfer from "./AudioWaveSurfer.jsx";
 import useConfig from "../../utils/useConfig";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import { useSongUtils } from "../../utils/useSongUtils";
+import OptionPostItem from "./OptionPostItem.jsx";
+import { useContextMenu } from "react-contexify";
 
 
 const PostItemDetail = () => {
@@ -16,14 +18,15 @@ const PostItemDetail = () => {
   const { getPostById, createComment, createReply, scrollToBottom, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { show } = useContextMenu();
+  const { BackButton, ThumbsUpSolid, VerifyAccount, OptionsIcon, SendIcon } = useIconUtils();
+  const { Base_AVA } = useConfig();
   const userId = localStorage.getItem("userId");
   const commentRef = useRef(null);
-  const { Base_AVA } = useConfig();
   const windownEndRef = useRef(null);
   const [refresh, setRefresh] = useState(false);
   const [postContent, setPostContent] = useState();
   const [liked, setLiked] = useState();
-  const { BackButton, ThumbsUpSolid, VerifyAccount } = useIconUtils();
   const isReplying = useSelector((state) => state.social.isReplying);
   const replyCommentId = useSelector((state) => state.social.replyComment.replyCommentId);
   const replyComment = useSelector((state) => state.social.replyComment)
@@ -37,7 +40,6 @@ const PostItemDetail = () => {
 
   const handGetPostById = async () => {
     await getPostById(postId).then((res) => {
-      console.log("Get Post By ID", res);
       setPostContent(res);
     });
   };
@@ -89,7 +91,6 @@ const PostItemDetail = () => {
     } else {
       setLiked(false);
     }
-    console.log("Liked", liked);
   }, [postContent?.likes, likePost]);
 
   useEffect(() => {
@@ -106,7 +107,17 @@ const PostItemDetail = () => {
       return null;
     }
   }
-  console.log("AAAA ", postContent)
+
+  function displayMenu(e, postId) {
+    e.preventDefault();
+    show({
+      position: { x: e.clientX, y: e.clientY },
+      event: e,
+      id: `postOption_${postId}`,
+    });
+  }
+
+  console.log("PostItemDetail PostContent ", postContent)
   useEffect(() => {
     if (postContent && postContent.playlist) {
       getSongFromPlaylist(postContent.playlist.id)
@@ -123,20 +134,35 @@ const PostItemDetail = () => {
     <div className="h-auto min-h-screen px-1 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="px-5 py-2">
         <div className="mb-2">
-          <BackButton ></BackButton></div>
+          <BackButton ></BackButton>
+        </div>
         <div className="mb-2 text-4xl font-bold">Post Detail</div>
       </div>
-      <div className="pt-3 pb-3 pl-3 pr-3 m-auto mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary font-montserrat rounded-2xl max-xl:w-fit xl:h-fit xl:ml-5 xl:mr-5 xl:mt-8 xl:pt-5 xl:pl-5 xl:pr-5 xl:pb-5">
-        <div className="flex flex-row items-center gap-1 text-xl font-bold">
-          {postContent.author.userName}
-          {postContent.author.role == "ARTIST" && (
-            <VerifyAccount></VerifyAccount>
-          )}
+      <div className="px-3 py-3 m-auto mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary font-montserrat rounded-2xl max-xl:w-fit xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5 ">
+        <div className="flex flex-row items-start justify-between mb-4">
+          <div className="flex flex-col ">
+            <div className="flex flex-row items-center gap-1 text-xl font-bold">
+              {postContent.author.userName}
+              {postContent.author.role == "ARTIST" && (
+                <VerifyAccount></VerifyAccount>
+              )}
+            </div>
+            <div className="text-xs font-medium text-primaryText2 dark:text-primaryTextDark2">{countTime}</div>
+          </div>
+          {/* Post Option */}
+          <div>
+            <button
+              className="top-2 right-2 text-iconText dark:text-iconTextDark"
+              onClick={(e) => displayMenu(e, postContent.id)}
+            >
+              <OptionsIcon></OptionsIcon>
+            </button>
+          </div>
         </div>
-        <div className="text-xs font-medium text-primaryText2 dark:text-primaryTextDark2">{countTime}</div>
 
         {/* Post Content */}
-        <div className="text-md">{postContent?.content}</div>
+        <div className="mb-10 text-md">{postContent?.content}</div>
+
         {(postContent.song || postContent.mp3Link) && (
           <div className="flex flex-row items-center justify-center gap-2 mt-2">
             <div className="items-center rounded-md dark:bg-white ">
@@ -193,48 +219,54 @@ const PostItemDetail = () => {
             Share
           </button>
         </div>
-
-        <span className="block py-2 font-bold text-center border-b-2 border-primary opacity-10"></span>
-
-        {/* Comment section */}
-        <div className="mt-5">
-          {/* Post Comment */}
-          <PostItemComment postContent={postContent}></PostItemComment>
-
-          {/* Input Comment */}
-          <div className="flex flex-row items-center justify-center gap-2 mt-5">
-            <input
-              ref={commentRef}
-              onKeyDown={(e) => e.key === "Enter" && handleCreateComment()}
-              type="text"
-              placeholder={"Write a comment"}
-              defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
-              className="w-full p-2 border-2 input:border-[#52aa61] text-primaryText2  rounded-lg"
-            />
-            {isReplying && (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24"
-                viewBox="0 -960 960 960"
-                width="24"
-                className="cursor-pointer fill-primaryText2 dark:fill-primaryTextDark2"
-                onClick={() => {
-                  dispatch(setIsReply(false));
-                }}
-              >
-                <path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
-              </svg>
-            )}
-            <button
-              className="px-4 py-2 font-bold text-white rounded-lg bg-primary hover:bg-primaryHoverOn"
-              onClick={handleCreateComment}
-            >
-              Send
-            </button>
-          </div>
-          <div ref={windownEndRef}></div>
-        </div>
       </div>
+      <span className="block py-2 font-bold text-center border-b-2 border-primary opacity-10"></span>
+
+      {/* Comment section */}
+      <div className="mt-5">
+        {/* Post Comment */}
+        <PostItemComment postContent={postContent}></PostItemComment>
+
+        {/* Input Comment */}
+        <div className="flex flex-row items-center justify-center gap-2 px-4 mt-5">
+          <input
+            ref={commentRef}
+            onKeyDown={(e) => e.key === "Enter" && handleCreateComment()}
+            type="text"
+            placeholder={"Write a comment"}
+            defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
+            className="w-full p-2 border-2 input:border-[#52aa61] text-primaryText2  rounded-lg"
+          />
+          {isReplying && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              viewBox="0 -960 960 960"
+              width="24"
+              className="cursor-pointer fill-primaryText2 dark:fill-primaryTextDark2"
+              onClick={() => {
+                dispatch(setIsReply(false));
+              }}
+            >
+              <path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+            </svg>
+          )}
+          <button
+            className="px-4 py-2 font-bold text-white rounded-lg bg-primary hover:bg-primaryHoverOn"
+            onClick={handleCreateComment}
+          >
+            <SendIcon></SendIcon>
+          </button>
+        </div>
+        <div ref={windownEndRef}></div>
+      </div>
+      {/* Context Menu */}
+      <OptionPostItem
+        id={`songOption_${postContent.id}`}
+        postId={postContent.id}
+        postContent={postContent}
+        owned={postContent.author.id === userId}
+      ></OptionPostItem>
     </div>
   );
 };

@@ -17,7 +17,7 @@ export default function init(routes) {
     // Xem thêm ở https://reactrouter.com/en/main/components/outlet
     children: [
       {
-        // path: "login",
+        path: "login",
         index: true,
         element: (
           // <GuardRoute>

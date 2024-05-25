@@ -80,7 +80,7 @@ const ForumPage = () => {
         className="modalStyle"
         footer={null}
       >
-        <CreatePost />
+        <CreatePost setOpenModalCreate={setOpenModal} />
       </Modal>
     </div>
   );
