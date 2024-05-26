@@ -14,21 +14,24 @@ const ForumPage = () => {
   const { getAllPost } = useForumUtils();
   const [listPost, setListPost] = useState();
   const [openModal, setOpenModal] = useState(false);
+  // const [postDetail, setPostDetail] = useState();
+  const [postPage, setPostPage] = useState(1);
   const { isMobile } = useConfig();
   const dispatch = useDispatch();
   const refreshPost = useSelector((state) => state.social.refreshPost);
   const { t } = useTranslation();
 
   const handleGetAllPost = async () => {
-    await getAllPost().then((res) => {
-      console.log("GetAllPost", res);
-      setListPost(res);
+    await getAllPost(postPage).then((res) => {
+      setListPost((prev) => (prev ? { postList: [...prev.postList, ...res.postList] } : res));
+      console.log("List Post Merge", listPost);
       dispatch(setRefreshPost(false));
     });
   };
+
   useEffect(() => {
     handleGetAllPost();
-  }, [refreshPost]);
+  }, [refreshPost, postPage]);
 
   if (!listPost) return null;
   return (
@@ -36,7 +39,7 @@ const ForumPage = () => {
       {/* Desktop  */}
       {!isMobile && (
         <div className="flex flex-row">
-          <div className="flex-1 px-5 py-3">
+          <div className="flex-1 px-2 py-3">
             {/* <div className="mb-2 text-4xl font-bold">Forum</div>
             <div className="text-xl font-bold">Welcome to the Forum!</div> */}
             <button
@@ -46,6 +49,14 @@ const ForumPage = () => {
               {t("forum.createAPost")}
             </button>
             <PostSection postList={listPost?.postList}></PostSection>
+            {listPost.currentPage < listPost.totalPages && <div className="flex justify-center w-full">
+              <button onClick={
+                () => {
+                  setPostPage(postPage + 1);
+                }} className="px-2 py-2 my-5 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
+                Load More
+              </button>
+            </div>}
           </div>
           <SongChart inForum={true}></SongChart>
           {/* <PlaylistSection playlistTitle={"Maybe You Want!"}></PlaylistSection> */}
@@ -65,6 +76,15 @@ const ForumPage = () => {
               {t("forum.createAPost")}
             </button>
             <PostSection postList={listPost?.postList}></PostSection>
+            {listPost.currentPage < listPost.totalPages && <div className="flex justify-center w-full">
+              <button onClick={
+                () => {
+                  setPostPage(postPage + 1);
+                  handleGetAllPost();
+                }} className="px-2 py-2 my-5 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
+                Load More
+              </button>
+            </div>}
           </div>
           <SongChart></SongChart>
         </div>
@@ -74,6 +94,7 @@ const ForumPage = () => {
       <Modal
         title="Share your thoughts!"
         open={openModal}
+        centered
         onCancel={() => {
           setOpenModal(false);
         }}

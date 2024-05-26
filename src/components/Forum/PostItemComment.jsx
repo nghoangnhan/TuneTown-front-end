@@ -23,18 +23,26 @@ const PostItemComment = ({ postContent }) => {
 
   // Component code here
   return (
-    <div>
+    <div className="mx-4">
       {postContent?.comments != null &&
         postContent?.comments?.map((comment) => (
-          <div key={comment.id} className="pl-5 mt-4">
+          <div key={comment.id} className="mx-3">
             <div className="flex flex-col ">
-              <div className="flex flex-col items-start justify-start gap-1 p-2 rounded-lg bg-slate-200 w-fit">
-                <div className="text-base font-bold text-[#52aa61]">
-                  {comment.author.userName}
+
+              <div className="flex flex-row gap-2">
+                <img src={comment.author?.avatar} className="w-10 h-10 rounded-full" alt="" />
+                <div className="flex flex-col items-start justify-start w-full gap-1 p-2 rounded-lg bg-backgroundPlaylist text-primaryText2 dark:text-primaryTextDark2 dark:bg-backgroundPlaylistHoverDark">
+                  <div className="text-base font-bold text-primary dark:text-primaryDarkmode">
+                    {comment.author.userName}
+                  </div>
+                  <div className="w-full p-1 text-sm break-words whitespace-normal rounded-md">
+                    {comment.content}
+                  </div>
                 </div>
-                <div className="text-sm rounded-lg ">{comment.content}</div>
               </div>
-              <div className="flex flex-row justify-start items-center gap-1 text-[#52aa61]">
+
+
+              <div className="flex flex-row items-center justify-start gap-1 text-primary dark:text-primaryDarkmode">
                 <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
                   Like
                 </button>
@@ -48,6 +56,7 @@ const PostItemComment = ({ postContent }) => {
                   {comment.commentDate.toLocaleString()?.split("T")[0]}
                 </span>
               </div>
+
             </div>
             {/* Reply section */}
             <div className="pl-5 mt-4 space-y-2">
@@ -55,15 +64,20 @@ const PostItemComment = ({ postContent }) => {
                 comment?.reply?.map((reply) => (
                   <div key={reply.id}>
                     <div className="flex flex-col">
-                      <div className="flex flex-col items-start justify-start gap-1 p-2 rounded-lg bg-slate-200 w-fit">
-                        <div className="text-base font-bold text-[#52aa61]">
-                          {reply.author.userName}
-                        </div>
-                        <div className="text-sm rounded-lg ">
-                          {reply.content}
+
+                      <div className="flex flex-row gap-2">
+                        <img src={reply.author?.avatar} className="w-10 h-10 rounded-full" alt="" />
+                        <div className="flex flex-col items-start justify-start gap-1 p-2 rounded-lg bg-slate-200 w-fit">
+                          <div className="text-base font-bold text-primary dark:text-primaryDarkmode">
+                            {reply.author.userName}
+                          </div>
+                          <div className="text-sm rounded-lg ">
+                            {reply.content}
+                          </div>
                         </div>
                       </div>
-                      <div className="flex flex-row justify-start items-center gap-1 text-[#52aa61]">
+
+                      <div className="flex flex-row items-center justify-start gap-1 text-primary dark:text-primaryDarkmode">
                         <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
                           Like
                         </button>

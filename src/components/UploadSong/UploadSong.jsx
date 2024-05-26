@@ -8,34 +8,25 @@ import UseCookie from "../../hooks/useCookie";
 import useDataUtils from "../../utils/useDataUtils";
 import UploadFileDropZone from "../../utils/useDropZone";
 import useConfig from "../../utils/useConfig";
+import Parser from 'html-react-parser';
 import useIconUtils from "../../utils/useIconUtils";
+import ReactQuill from "react-quill";
+import DOMPurify from "dompurify";
+import PropTypes from "prop-types";
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
 
-const UploadSong = () => {
+const UploadSong = ({ setOpenModalUpload }) => {
   const formRef = React.useRef(null);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
-  const { Check } = useIconUtils();
+  const { Check, LoadingLogo } = useIconUtils();
   const [uploadedFile, setUploadedFile] = useState({});
   const [fileImg, setFileImg] = useState();
   const [fileMP3, setFileMP3] = useState();
   const { handleUploadFileIMG, handleUploadFileMP3 } = useDataUtils();
   const [loading, setLoading] = useState(false);
+  const [editorValue, setEditorValue] = useState("");
 
   const UploadIMGfile = async (file) => {
     setLoading(true);
@@ -75,6 +66,8 @@ const UploadSong = () => {
       message.error("Please upload a song file", 2);
       return;
     }
+    const sanitizedContent = DOMPurify.sanitize(values?.lyric);
+    const contentParser = Parser(sanitizedContent).props.children;
     const postData = {
       songName: values.songName,
       poster: fileImg,
@@ -88,10 +81,12 @@ const UploadSong = () => {
       }),
       likes: 0,
       listens: 0,
-      lyric: values?.lyric,
+      lyric: contentParser,
     };
     console.log("Posting Data", postData);
-    await postSong(postData); // Call the function to post the song data
+    await postSong(postData).then(() => {
+      setOpenModalUpload(false);
+    });
   };
 
   // Post Song to API
@@ -126,13 +121,12 @@ const UploadSong = () => {
 
   return (
     <Form
-      {...layout}
       ref={formRef}
       name="control-ref"
       onFinish={onFinish}
-      className="p-5 mx-auto rounded-md bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
+      className="flex flex-col justify-center p-2 mx-auto rounded-md bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
     >
-      <div className="w-full mb-5 text-center">
+      <div className="w-full mb-10 text-center">
         <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
           Upload Your Masterpiece
         </h2>
@@ -146,7 +140,7 @@ const UploadSong = () => {
           },
         ]}
       >
-        <Input />
+        <Input className="dark:text-primaryText2 bg-backgroundPrimary " />
       </Form.Item>
 
       <ArtistInput></ArtistInput>
@@ -155,7 +149,7 @@ const UploadSong = () => {
       <Form.Item
         name="songCoverArt"
         label="Upload Cover Art"
-        extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
+        extra="Upload your cover art image."
         getValueFromEvent={(e) => e && e.fileList}
         valuePropName="fileList">
         <div className="flex flex-row items-center gap-2">
@@ -163,7 +157,7 @@ const UploadSong = () => {
             uploadedFile={uploadedFile}
             setUploadedFile={setUploadedFile}
             handleUploadFile={UploadIMGfile}
-            accept="image/*"
+            accept="image/jpeg, image/png"
           />
           {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
         </div>
@@ -173,7 +167,7 @@ const UploadSong = () => {
       <Form.Item
         name="songData"
         label="Upload File"
-        extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
+        extra="Upload your audio file mp3, wav."
         getValueFromEvent={(e) => e && e.fileList}
         valuePropName="fileList"
         rules={[
@@ -205,24 +199,31 @@ const UploadSong = () => {
           },
         ]}
       >
-        <Input.TextArea />
+        <ReactQuill
+          theme="snow"
+          value={Parser(editorValue)}
+          onChange={setEditorValue}
+          placeholder="Your thoughts..."
+          className="overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
+        />
       </Form.Item>
 
-      <Form.Item {...tailLayout}>
+      <Form.Item  >
         <button
           type="submit"
-          className="bg-[green] hover:bg-[#42ae49] text-white px-2 py-2 font-semibold rounded-md absolute right-2"
+          className="absolute px-2 py-2 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode right-2 hover:opacity-70"
         >
-          Submit
+          Upload Song
         </button>
       </Form.Item>
-      {loading && (
-        <div className="overlay">
-          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out" />
-        </div>
-      )}
+
+      <LoadingLogo loading={loading} ></LoadingLogo>
     </Form>
   );
+};
+
+UploadSong.propTypes = {
+  setOpenModalUpload: PropTypes.func,
 };
 
 export default UploadSong;

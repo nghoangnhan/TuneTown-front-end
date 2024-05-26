@@ -59,6 +59,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
         open={openModalUpdate}
         onCancel={onCancel}
         footer={null}
+        centered
         title="Update Post"
         className="modalStyle"
       >

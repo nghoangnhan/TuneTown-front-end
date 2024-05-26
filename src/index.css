@@ -79,6 +79,11 @@
   color: #59c26d;
 }
 
+/* INPUT  */
+.dark .ant-select-selection-placeholder {
+  color: #f0f0f0;
+}
+
 /* FORM  */
 .formStyle .ant-form-item-label label,
 .formStyle .ant-form-item-control .ant-form-item-extra {
@@ -109,7 +114,7 @@
   color: #e9e5e5;
 }
 
-.dark .quill .ql-editor .ql-blank > p {
+.dark .quill .ql-editor.ql-blank::before {
   color: #e9e5e5;
 }
 
@@ -151,12 +156,25 @@
   color: #e9e5e5;
 }
 
+/* pagination  */
+/* dark  */
+.dark .ant-pagination.ant-table-pagination > .ant-pagination-item a,
+.dark .ant-pagination.ant-table-pagination > .ant-pagination-prev > button,
+.dark .ant-pagination.ant-table-pagination > .ant-pagination-next > button,
+.dark .ant-pagination.ant-table-pagination > .ant-pagination-item-active a {
+  color: #e9e5e5;
+}
+
+.dark .ant-pagination.ant-table-pagination > .ant-pagination-item-active a {
+  color: #59c26d;
+}
+
 /* QUILL  */
-.ql-editor {
+/* .ql-editor {
   height: 200px;
   max-height: 250px;
   overflow: auto;
-}
+} */
 /* dark  */
 .dark .ql-editor {
   color: #e9e5e5;

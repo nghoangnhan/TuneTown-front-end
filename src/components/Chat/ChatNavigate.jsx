@@ -140,7 +140,7 @@ const ChatNavigate = () => {
     // Remove self from list
     const filteredUserList = userList.filter(user => user.id !== userId);
     const communityList = await searchCommunity(keywords);
-    if (filteredUserList.length === 0 && communityList.length === 0) return;
+    if (filteredUserList?.length === 0 && communityList?.length === 0) return;
     else {
       setChatRs([...filteredUserList, ...communityList]);
     }

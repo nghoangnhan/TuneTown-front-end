@@ -131,9 +131,8 @@ const UserDetailPage = ({ owned }) => {
 
   return (
     <div
-      className={`${
-        userId ? " h-full" : "h-fit"
-      } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
+      className={`${userId ? " h-full" : "h-fit"
+        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
@@ -203,9 +202,8 @@ const UserDetailPage = ({ owned }) => {
         </div>
       </div>
       <div
-        className={`${
-          isMobile ? "flex-col" : "flex-row"
-        } flex items-start justify-evenly w-full`}
+        className={`${isMobile ? "flex-col" : "flex-row"
+          } flex items-start justify-evenly w-full`}
       >
         <div className="xl:min-w-[600px] min-w-[400px] bg-backgroundPlaylist dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 text-primaryText2 min-h-screen rounded-2xl p-2 shadow-lg mt-4">
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-1 gap-x-5 xl:px-5">
@@ -242,6 +240,7 @@ const UserDetailPage = ({ owned }) => {
         open={openModalEditUser}
         onCancel={() => setOpenModalEditUser(false)}
         footer={null}
+        centered
       >
         <EditUserForm
           setOpenModalEditUser={() => setOpenModalEditUser(false)}
@@ -253,6 +252,7 @@ const UserDetailPage = ({ owned }) => {
         open={openModalGenres}
         onCancel={() => setOpenModalGenres(false)}
         footer={null}
+        centered
       >
         <EditGenreForm
           setOpenModalEditGenre={() => setOpenModalGenres(false)}

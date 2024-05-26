@@ -278,6 +278,7 @@ const UserManagement = () => {
           open={isModalOpen}
           onCancel={handleCancel}
           footer={[]}
+          centered
         >
           <EditUserForm editUserId={userId} isAdmin={true}></EditUserForm>
         </Modal>

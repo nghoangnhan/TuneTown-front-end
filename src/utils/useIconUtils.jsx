@@ -109,17 +109,18 @@ const useIconUtils = () => {
     return <FontAwesomeIcon icon="fa-regular fa-thumbs-up" />;
   };
 
-  const PlayButton = ({ size }) => {
+  const PlayButton = ({ size, color }) => {
     size = size || 2;
     return (
       <FontAwesomeIcon
-        className={`text-${size}xl text-primary dark:text-primaryDarkmode`}
+        className={`text-${size}xl ${color == true ? "text-primary dark:text-primaryDarkmode" : ""}`}
         icon={faPlayCircle}
       />
     );
   };
   PlayButton.propTypes = {
     size: PropTypes.number,
+    color: PropTypes.bool,
   };
 
   const PauseButton = () => {

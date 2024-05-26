@@ -200,7 +200,7 @@ const MyDetailPlaylist = () => {
                 uploadedFile={uploadedFile}
                 setUploadedFile={setUploadedFile}
                 handleUploadFile={UploadIMGfile}
-                accept="image/*"
+                accept="image/jpeg, image/png"
               />
               {fileIMG && <img
                 className="w-16 h-16 rounded-full"
@@ -210,7 +210,7 @@ const MyDetailPlaylist = () => {
             </div>
           </Form.Item>
 
-          <Form.Item className="flex items-center justify-center w-full ">
+          <Form.Item className="flex items-center justify-end w-full ">
             <button
               onClick={() =>
                 handleOnclickEditForm(

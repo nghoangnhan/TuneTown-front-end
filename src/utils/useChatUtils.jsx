@@ -380,14 +380,14 @@ export const useForumUtils = () => {
   const userId = localStorage.getItem("userId");
 
   // Get All Post API
-  const getAllPost = async () => {
+  const getAllPost = async (page) => {
     try {
-      const response = await axios.get(`${Base_URL}/post`, {
+      const response = await axios.get(`${Base_URL}/post?page=${page ? page : ""}`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       });
-
+      console.log("POST", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);

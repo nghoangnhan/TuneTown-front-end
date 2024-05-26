@@ -8,11 +8,12 @@ import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import UseCookie from "../../hooks/useCookie";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import ModalPlaylistPost from "./ModalPlaylistPost";
+import ModalPlaylistPost from "./Modal/ModalPlaylistPost";
 import Proptypes from "prop-types";
 import { Button } from "antd/es/radio";
 import { useDispatch } from "react-redux";
 import { setRefreshPost } from "../../redux/slice/social";
+import ModalChoseSong from "./Modal/ModalChoseSong";
 
 
 const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
@@ -34,6 +35,9 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     const [playlistRs, setPlaylistRs] = useState([]);
     const [openModalChosePlaylist, setOpenModalChosePlaylist] = useState(false);
     const [playlistChosen, setPlaylistChosen] = useState(postContent.playlist);
+    const [openModalChoseSong, setOpenModalChoseSong] = useState(false);
+    const [songChosen, setSongChosen] = useState(postContent.song);
+
 
     // const UploadMP3file = async (file) => {
     //     setLoading(true);
@@ -106,6 +110,16 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
         }
     }
 
+    const handleSongItemClick = (song) => {
+        try {
+            console.log("Song Chosen", song);
+            setSongChosen(song);
+            setOpenModalChoseSong(false);
+        } catch (error) {
+            console.error("Error choosing song:", error);
+        }
+    }
+
     const handlePlaylistItemClick = (playlist) => {
         try {
             setPlaylistChosen(playlist);
@@ -164,7 +178,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                             uploadedFile={uploadedFile}
                             setUploadedFile={setUploadedFile}
                             handleUploadFile={UploadIMGfile}
-                            accept="image/*"
+                            accept="image/jpeg, image/png"
                         />
                         {fileIMG && <img src={fileIMG} alt="" className="w-16 h-16" />}
                     </div>
@@ -195,6 +209,20 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                     </div>
                 </Form.Item> */}
 
+                {/* Song */}
+                <Form.Item>
+                    <div className="flex flex-row items-center gap-2">
+                        <Button
+                            onClick={() => setOpenModalChoseSong(true)}
+                            type="button"
+                            className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+                        >
+                            Add Song
+                        </Button>
+                        {songChosen && <div className="text-primary">Song Chosen: {songChosen.songName}{" "}#{songChosen.id}</div>}
+                    </div>
+                </Form.Item>
+
                 {/* Playlist */}
                 <Form.Item>
                     <div className="flex flex-row items-center gap-2">
@@ -218,6 +246,10 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 </Form.Item>
                 {/* <LoadingLogo loading={loading}></LoadingLogo> */}
             </Form>
+
+            <ModalChoseSong openModal={openModalChoseSong} handleSongItemClick={handleSongItemClick}
+                setOpenModalChoseSong={setOpenModalChoseSong}  >
+            </ModalChoseSong>
             <ModalPlaylistPost handlePlaylistItemClick={handlePlaylistItemClick} openModal={openModalChosePlaylist}
                 playlistRs={playlistRs} setOpenModalChosePlaylist={setOpenModalChosePlaylist}>
             </ModalPlaylistPost>

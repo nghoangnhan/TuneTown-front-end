@@ -4,12 +4,13 @@ import { useContextMenu } from "react-contexify";
 import { useNavigate } from "react-router-dom";
 import { useForumUtils } from "../../utils/useChatUtils";
 import useIconUtils from "../../utils/useIconUtils";
-import AudioWaveSurfer from "./AudioWaveSurfer";
 import OptionPostItem from "./OptionPostItem";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useSongUtils from "../../utils/useSongUtils";
 import useConfig from "../../utils/useConfig";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { setCurrentSong } from "../../redux/slice/music";
 
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
@@ -18,7 +19,8 @@ const PostItem = ({ postContent }) => {
   const { Base_AVA } = useConfig();
   const { getPostById, likePost, handleCheckLiked, handleSharePost } =
     useForumUtils();
-  const { ThumbsUpSolid, VerifyAccount, OptionsIcon } = useIconUtils();
+  const dispatch = useDispatch();
+  const { ThumbsUpSolid, VerifyAccount, OptionsIcon, PlayButton } = useIconUtils();
   const { showArtistV2, NavigateSong } = useSongUtils();
   const [liked, setLiked] = useState();
   const [postDetail, setPostDetail] = useState();
@@ -95,7 +97,7 @@ const PostItem = ({ postContent }) => {
   }, [postContent.playlist]);
 
   return (
-    <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-3 xl:mt-5 xl:py-5 xl:px-5">
+    <div className="px-2 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mt-5 xl:py-5 xl:px-5">
       <div className="flex flex-col justify-center">
         <div className="flex flex-row items-start justify-between">
           <div className="flex flex-col">
@@ -129,7 +131,7 @@ const PostItem = ({ postContent }) => {
 
         {/* Audio Wave */}
         {(postContent.song || postContent.mp3Link) && (
-          <div className="flex flex-row items-center justify-center gap-2 mt-2">
+          <div className="flex flex-row items-center justify-center gap-4 mt-2">
             <div className="items-center rounded-md dark:bg-white ">
               <img
                 className="rounded-md max-w-20 max-h-20 w-fit h-fit"
@@ -139,79 +141,100 @@ const PostItem = ({ postContent }) => {
                 alt="Cover Art Song"
               />
             </div>
-            <div className="w-full">
+            {/* <div className="w-full">
               <AudioWaveSurfer
                 song={postContent.song}
                 mp3Link={postContent.mp3Link}
               />
+            </div> */}
+            {/* Show song Infor   */}
+            <div className="flex flex-col items-start gap-1">
+              <div className="text-lg font-bold text-primary dark:text-primaryDarkmode">
+                {postContent.song.songName}
+              </div>
+              <div className="text-base text-primaryText2 dark:text-primaryTextDark2">
+                {showArtistV2(postContent.song.artists)}
+              </div>
             </div>
           </div>
         )}
 
         {/* Playlist */}
         {postContent.playlist && (
-          <div className="flex flex-row items-center justify-start gap-2 mt-2">
-            {/* PlaylistInfo  */}
-            <div
-              className="flex flex-row items-center gap-1 cursor-pointer justify-evenly"
-              onClick={() =>
-                navigate(`/detail-playlist/${postContent.playlist.id}`)
-              }
-            >
-              <div className="rounded-md dark:bg-white">
-                <img
-                  className="rounded-md max-w-14 max-h-14 w-fit h-fit"
-                  src={
-                    postContent.playlist.coverArt
-                      ? postContent.playlist.coverArt
-                      : Base_AVA
-                  }
-                  alt="Cover Art Playlist"
-                />
+          <div>
+            <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10" />
+            <div className="flex flex-row items-start justify-start gap-4 mt-4">
+              {/* PlaylistInfo  */}
+              <div
+                className="flex flex-row items-center gap-4 cursor-pointer min-w-fit justify-evenly"
+              >
+                <div className="relative inline-block rounded-full dark:bg-white">
+                  <img
+                    className="transition duration-300 ease-in-out transform rounded-md max-w-14 max-h-14 w-fit h-fit "
+                    src={
+                      postContent.playlist.coverArt
+                        ? postContent.playlist.coverArt
+                        : Base_AVA
+                    }
+                    alt="Cover Art Playlist"
+                  />
+                  <div className="absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-100">
+                    <PlayButton color={true} className="text-3xl text-white" />
+                  </div>
+                </div>
+
+                <div className="w-fit" onClick={() =>
+                  navigate(`/detail-playlist/${postContent.playlist.id}`)}>
+                  <h2 className="text-lg font-bold text-primary dark:text-primaryDarkmode">
+                    {postContent.playlist.playlistName}
+                  </h2>
+                  <h2 className="text-base text-primaryText2 dark:text-primaryTextDark">
+                    {postContent.playlist.user.userName
+                      ? postContent.playlist.user.userName
+                      : "Unknown User"}
+                  </h2>
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg font-bold text-primary dark:text-primaryDarkmode">
-                  {postContent.playlist.playlistName}
-                </h2>
-                <h2 className="text-base text-primaryText2 dark:text-primaryTextDark">
-                  {postContent.playlist.user.userName
-                    ? postContent.playlist.user.userName
-                    : "Unknown User"}
-                </h2>
-              </div>
-            </div>
-            {/* Song Playlist */}
-            {songPlaylist && (
-              <div className="grid grid-cols-3 gap-x-10 gap-y-4">
-                {songPlaylist.slice(0, 6).map((song, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-row items-center justify-center gap-1 cursor-pointer"
-                    onClick={() => NavigateSong(song.id)}
-                  >
-                    <img
-                      className="w-8 h-8 rounded-md max-w-8 max-h-8"
-                      src={song.poster ? song.poster : Base_AVA}
-                      alt="Cover Art Song"
-                    />
-                    <div>
-                      <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">
-                        {song.songName}
+
+              {/* Song Playlist */}
+              {songPlaylist && (
+                <div className="flex flex-col w-full gap-1 overflow-auto max-h-32">
+                  {songPlaylist.slice(0, 6).map((song, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-row items-center justify-start w-full gap-2 p-1 px-2 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistHoverDark hover:opacity-70"
+                      onClick={() => NavigateSong(song.id)}
+                    >
+                      <img
+                        className="w-8 h-8 bg-white rounded-full max-w-8 max-h-8"
+                        src={song.poster ? song.poster : Base_AVA}
+                        alt="Cover Art Song"
+                      />
+                      <div className="flex flex-col w-full gap-1">
+                        <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">
+                          {song.songName}
+                        </div>
+                        <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">
+                          {showArtistV2(song.artists)}
+                        </div>
                       </div>
-                      <div className="text-xs text-primaryText2 dark:text-primaryTextDark2">
-                        {showArtistV2(song.artists)}
+                      {/* Hover Show Play Icon  */}
+                      <div className="flex flex-row items-center justify-end w-full mr-4 opacity-0 hover:opacity-100" onClick={dispatch(
+                        setCurrentSong
+                      )}>
+                        <PlayButton color={true} />
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
 
       {/* Line section */}
-      <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10"></span>
+      <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10" />
 
       {/* React Post  */}
       <div className="flex flex-row items-center justify-between gap-5 font-bold text-primary">

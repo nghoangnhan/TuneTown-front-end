@@ -8,9 +8,9 @@ export const useMusicAPIUtils = () => {
   const { Base_URL } = useConfig();
 
   // Get list song to show homepage
-  const getListSong = async (userId, songPage) => {
+  const getListSong = async (songPage) => {
     try {
-      const response = await axios.get(`${Base_URL}/songs?page=${songPage}`, {
+      const response = await axios.get(`${Base_URL}/songs?page=${songPage ? songPage : " "}`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },

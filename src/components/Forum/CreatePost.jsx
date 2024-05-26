@@ -10,10 +10,11 @@ import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import UseCookie from "../../hooks/useCookie";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import ModalPlaylistPost from "./ModalPlaylistPost";
+import ModalPlaylistPost from "./Modal/ModalPlaylistPost";
 import { setRefreshPost } from "../../redux/slice/social";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import ModalChoseSong from "./Modal/ModalChoseSong";
 
 
 const CreatePost = ({ setOpenModalCreate }) => {
@@ -34,7 +35,10 @@ const CreatePost = ({ setOpenModalCreate }) => {
   // const [loading, setLoading] = useState(false);
   const [playlistRs, setPlaylistRs] = useState([]);
   const [openModalChosePlaylist, setOpenModalChosePlaylist] = useState(false);
+  const [openModalChoseSong, setOpenModalChoseSong] = useState(false);
   const [playlistChosen, setPlaylistChosen] = useState();
+  const [songChosen, setSongChosen] = useState();
+
 
   // const UploadMP3file = async (file) => {
   //   setLoading(true);
@@ -72,7 +76,9 @@ const CreatePost = ({ setOpenModalCreate }) => {
           id: userId
         },
         content: contentParser,
-        song: null,
+        song: {
+          id: songChosen.id
+        },
         playlist: playlistChosen ? {
           id: playlistChosen.id
         } : null,
@@ -121,6 +127,16 @@ const CreatePost = ({ setOpenModalCreate }) => {
     }
   }
 
+  const handleSongItemClick = (song) => {
+    try {
+      console.log("Song Chosen", song);
+      setSongChosen(song);
+      setOpenModalChoseSong(false);
+    } catch (error) {
+      console.error("Error choosing song:", error);
+    }
+  }
+
   return (
     <div className="">
       <Form
@@ -146,7 +162,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
             value={Parser(editorValue)}
             onChange={setEditorValue}
             placeholder="Your thoughts..."
-            className="bg-white dark:bg-backgroundDarkPrimary dark:text-white"
+            className="overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
           />
         </Form.Item>
 
@@ -162,7 +178,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
               uploadedFile={uploadedFile}
               setUploadedFile={setUploadedFile}
               handleUploadFile={UploadIMGfile}
-              accept="image/*"
+              accept="image/jpeg, image/png"
             />
             {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
           </div>
@@ -192,13 +208,27 @@ const CreatePost = ({ setOpenModalCreate }) => {
           </div>
         </Form.Item> */}
 
-        {/* Playlist */}
+        {/* Song */}
+        <Form.Item>
+          <div className="flex flex-row items-center gap-2">
+            <Button
+              onClick={() => setOpenModalChoseSong(true)}
+              type="button"
+              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+            >
+              Add Song
+            </Button>
+            {songChosen && <div className="text-primary">Song Chosen: {songChosen.songName}{" "}#{songChosen.id}</div>}
+          </div>
+        </Form.Item>
+
+        {/* Playlist  */}
         <Form.Item className="flex flex-row ">
           <div className="flex flex-row items-center gap-2">
             <Button
               onClick={handleAddPlaylist}
               type="button"
-              className=" text-primary transition-colors duration-150 border border-[#59c26d] rounded-md"
+              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
             >
               Add Playlist
             </Button>
@@ -208,7 +238,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
         <Form.Item>
           <button
             type="submit"
-            className="w-full h-10 px-3 text-base text-white transition-colors duration-150 rounded-lg bg-primary dark:bg-primaryDarkmode focus:shadow-outline hover:opacity-70"
+            className="absolute px-2 py-2 transition-colors duration-150 border rounded-md right-2 text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
           >
             Submit
           </button>
@@ -216,8 +246,15 @@ const CreatePost = ({ setOpenModalCreate }) => {
 
         {/* <LoadingLogo loading={loading}></LoadingLogo> */}
       </Form>
-      <ModalPlaylistPost handlePlaylistItemClick={handlePlaylistItemClick} openModal={openModalChosePlaylist}
-        playlistRs={playlistRs} setOpenModalChosePlaylist={setOpenModalChosePlaylist}></ModalPlaylistPost>
+      <ModalChoseSong openModal={openModalChoseSong} handleSongItemClick={handleSongItemClick}
+        setOpenModalChoseSong={setOpenModalChoseSong}  >
+      </ModalChoseSong>
+
+      <ModalPlaylistPost handlePlaylistItemClick={handlePlaylistItemClick}
+        openModal={openModalChosePlaylist}
+        playlistRs={playlistRs} setOpenModalChosePlaylist={setOpenModalChosePlaylist}>
+      </ModalPlaylistPost>
+
     </div>
   );
 };

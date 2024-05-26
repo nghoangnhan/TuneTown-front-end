@@ -165,7 +165,7 @@ const CMSArtist = () => {
           return (
             <div className="flex items-center justify-center">
               <div
-                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md h-fit hover:opacity-70">
+                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md dark:text-red-500 dark:border-red-500 h-fit hover:opacity-70">
                 Deleted
               </div>
             </div>
@@ -190,7 +190,7 @@ const CMSArtist = () => {
       render: (_, record) => (
         <Space>
           <button
-            className="px-2 py-1 text-white rounded-md w-14 bg-primary hover:opacity-70"
+            className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70"
             onClick={() => handUpdateSong(
               record.key,
               record
@@ -199,7 +199,7 @@ const CMSArtist = () => {
             Edit
           </button>
           <button
-            className="py-1 px-2 w-14 bg-[#c42323e1] hover:opacity-70 text-white rounded-md"
+            className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-70"
             onClick={() => deleteSong(record.key)}
           >
             Delete
@@ -220,7 +220,7 @@ const CMSArtist = () => {
     <div className="h-full min-h-screen px-4 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       {" "}
       <div className="flex flex-row">
-        <div className="mx-3 my-5 text-4xl font-bold text-primary dark:text-primaryDarkmode">
+        <div className="mx-1 my-2 text-4xl font-bold text-primary dark:text-primaryDarkmode">
           Good{" "}
           {new Date().getHours() < 12
             ? "Morning"
@@ -249,13 +249,13 @@ const CMSArtist = () => {
             autoComplete="off"
           >
             <Form.Item label="" name="songName">
-              <Input placeholder="Search Song" onChange={handSearch} />
+              <Input placeholder="Search..." className="dark:bg-backgroundPrimary" onChange={handSearch} />
             </Form.Item>
           </Form>
         </div>
         <div>
           <button
-            className="px-3 py-1 text-white rounded-md bg-primary hover:bg-primaryDarkmode"
+            className="px-3 py-1 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
             onClick={showModal}
           >
             Create New Song
@@ -264,7 +264,7 @@ const CMSArtist = () => {
       </div>
       <Table
         columns={columnsSong}
-        className="p-1 bg-backgroundPrimary dark:bg-backgroundDarkPrimary "
+        className=" bg-backgroundPrimary dark:bg-backgroundDarkPrimary"
         dataSource={
           searchValue
             ? dataSongTable.filter((song) =>
@@ -282,7 +282,7 @@ const CMSArtist = () => {
         destroyOnClose={true}
         className="w-fit h-fit modalStyle"
       >
-        <UploadSong></UploadSong>
+        <UploadSong setOpenModalUpload={setIsModalOpenUpload}></UploadSong>
       </Modal>
       <Modal
         open={isModalOpenUpdate}
