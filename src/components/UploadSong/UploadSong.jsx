@@ -67,7 +67,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
       return;
     }
     const sanitizedContent = DOMPurify.sanitize(values?.lyric);
-    const contentParser = Parser(sanitizedContent).props.children;
+    const contentParser = Parser(sanitizedContent).props?.children;
     const postData = {
       songName: values.songName,
       poster: fileImg,
@@ -81,7 +81,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
       }),
       likes: 0,
       listens: 0,
-      lyric: contentParser,
+      lyric: contentParser ? contentParser : "",
     };
     console.log("Posting Data", postData);
     await postSong(postData).then(() => {

@@ -41,7 +41,6 @@ const PostItemComment = ({ postContent }) => {
                 </div>
               </div>
 
-
               <div className="flex flex-row items-center justify-start gap-1 text-primary dark:text-primaryDarkmode">
                 <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
                   Like
@@ -62,35 +61,33 @@ const PostItemComment = ({ postContent }) => {
             <div className="pl-5 mt-4 space-y-2">
               {comment?.reply &&
                 comment?.reply?.map((reply) => (
-                  <div key={reply.id}>
-                    <div className="flex flex-col">
+                  <div className="flex flex-col my-3" key={reply.id}>
 
-                      <div className="flex flex-row gap-2">
-                        <img src={reply.author?.avatar} className="w-10 h-10 rounded-full" alt="" />
-                        <div className="flex flex-col items-start justify-start gap-1 p-2 rounded-lg bg-slate-200 w-fit">
-                          <div className="text-base font-bold text-primary dark:text-primaryDarkmode">
-                            {reply.author.userName}
-                          </div>
-                          <div className="text-sm rounded-lg ">
-                            {reply.content}
-                          </div>
+                    <div className="flex flex-row gap-2">
+                      <img src={reply.author?.avatar} className="w-10 h-10 rounded-full" alt="" />
+                      <div className="flex flex-col items-start justify-start gap-1 p-2 rounded-lg bg-backgroundPlaylist text-primaryText2 dark:text-primaryTextDark2 dark:bg-backgroundPlaylistHoverDark w-fit">
+                        <div className="text-base font-bold text-primary dark:text-primaryDarkmode">
+                          {reply.author.userName}
+                        </div>
+                        <div className="text-sm rounded-lg ">
+                          {reply.content}
                         </div>
                       </div>
+                    </div>
 
-                      <div className="flex flex-row items-center justify-start gap-1 text-primary dark:text-primaryDarkmode">
-                        <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
-                          Like
-                        </button>
-                        <button
-                          className="mx-2 mt-1 text-xs font-semibold opacity-80"
-                          onClick={() => handleReply(reply)}
-                        >
-                          Reply
-                        </button>
-                        <span className="mx-2 mt-1 text-xs font-semibold opacity-80">
-                          {reply.commentDate.toLocaleString()?.split("T")[0]}
-                        </span>
-                      </div>
+                    <div className="flex flex-row items-center justify-start gap-1 text-primary dark:text-primaryDarkmode">
+                      <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
+                        Like
+                      </button>
+                      <button
+                        className="mx-2 mt-1 text-xs font-semibold opacity-80"
+                        onClick={() => handleReply(reply)}
+                      >
+                        Reply
+                      </button>
+                      <span className="mx-2 mt-1 text-xs font-semibold opacity-80">
+                        {reply.commentDate.toLocaleString()?.split("T")[0]}
+                      </span>
                     </div>
                   </div>
                 ))}

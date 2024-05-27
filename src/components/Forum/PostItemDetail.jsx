@@ -10,7 +10,6 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import { useSongUtils } from "../../utils/useSongUtils";
 import OptionPostItem from "./OptionPostItem.jsx";
 import { useContextMenu } from "react-contexify";
-import { setCurrentSong } from "../../redux/slice/music.js";
 
 
 const PostItemDetail = () => {
@@ -163,6 +162,7 @@ const PostItemDetail = () => {
         {/* Post Content */}
         <div className="mb-10 text-md">{postContent?.content}</div>
 
+        {/* Song Infor */}
         {(postContent.song || postContent.mp3Link) && (
           <div className="flex flex-row items-center justify-center gap-2 mt-2">
             <div className="items-center rounded-md dark:bg-white ">
@@ -172,7 +172,13 @@ const PostItemDetail = () => {
               <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link} />
             </div> */}
             <div className="flex flex-col items-start gap-1">
-              <div className="text-lg font-bold text-primary dark:text-primaryDarkmode">
+              <div className="text-lg font-bold cursor-pointer text-primary dark:text-primaryDarkmode" onClick={
+                () => {
+                  if (postContent.song) {
+                    NavigateSong(postContent.song.id);
+                  }
+                }
+              }>
                 {postContent.song.songName}
               </div>
               <div className="text-base text-primaryText2 dark:text-primaryTextDark2">
@@ -184,7 +190,7 @@ const PostItemDetail = () => {
         {/* Playlist */}
         {postContent.playlist && (
           <div>
-            <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10" />
+            <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary dark:border-primaryDarkmode opacity-10" />
             <div className="flex flex-row items-center gap-2 mt-2 justify-evenly">
 
               {/* PlaylistInfo  */}
@@ -199,7 +205,9 @@ const PostItemDetail = () => {
                     }
                     alt="Cover Art Playlist"
                   />
-                  <div className="absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-100">
+                  <div
+                    // onClick={ handleAddSongToQueue}
+                    className="absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-100">
                     <PlayButton color={true} size={2} className="text-3xl text-white" />
                   </div>
                 </div>
@@ -232,7 +240,7 @@ const PostItemDetail = () => {
                         alt="Cover Art Song"
                       />
                       <div className="flex flex-col w-full gap-1">
-                        <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">
+                        <div className="text-sm font-bold text-primary dark:text-primaryDarkmode" >
                           {song.songName}
                         </div>
                         <div className="text-xs text-primaryText2 dark:text-primaryTextDark2 ">
@@ -240,9 +248,9 @@ const PostItemDetail = () => {
                         </div>
                       </div>
                       {/* Hover Show Play Icon  */}
-                      <div className="flex flex-row items-center justify-end w-full mr-4 opacity-0 hover:opacity-100" onClick={dispatch(
-                        setCurrentSong
-                      )}>
+                      <div className="flex flex-row items-center justify-end w-full mr-4 opacity-0 hover:opacity-100"
+                      // onClick={dispatch(setCurrentSong)}
+                      >
                         <PlayButton color={true} />
                       </div>
                     </div>
@@ -270,7 +278,7 @@ const PostItemDetail = () => {
           </button>
         </div>
       </div>
-      <span className="block py-2 font-bold text-center border-b-4 border-primary opacity-10"></span>
+      <span className="block py-2 font-bold text-center border-b-4 border-primary dark:border-primaryDarkmode opacity-10"></span>
 
       {/* Comment section */}
       <div className="mt-5">

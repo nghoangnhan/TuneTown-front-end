@@ -31,6 +31,7 @@ const TheHeader = () => {
   };
   // Log Out
   const LogOut = () => {
+    // Keep language, keep theme
     removeToken();
     localStorage.clear();
     navigate("/login");

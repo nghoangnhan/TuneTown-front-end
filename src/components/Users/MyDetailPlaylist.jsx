@@ -107,7 +107,7 @@ const MyDetailPlaylist = () => {
         <BackButton url={`/playlist`}></BackButton>
         <button
           onClick={() => setModalOpen(true)}
-          className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-[#40cf62] hover:text-backgroundPrimary hover:bg-[#40cf62] dark:hover:bg-primary  border border-solid border-[#40cf62] rounded-md"
+          className="border border-solid rounded-md bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
         >
           <div className="px-2 py-1 font-bold">
             {t("playlist.editPlaylist")}

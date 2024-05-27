@@ -86,13 +86,27 @@ function UseCookie() {
     const language = Cookies.get("language");
     return language;
   };
+
+  const getCookiesTheme = () => {
+    const theme = Cookies.get("darkTheme");
+    return theme;
+  }
+
+  const setCookiesTheme = (theme) => {
+    Cookies.set("darkTheme", theme, {
+      expires: 3650,
+      secure: true,
+      path: "/",
+    });
+  }
+
   return {
     isLoggedIn,
     saveToken,
     getToken,
     removeToken,
-    setCookiesLanguage,
-    getCookiesLanguage,
+    setCookiesLanguage, getCookiesLanguage,
+    getCookiesTheme, setCookiesTheme
   };
 }
 export default UseCookie;

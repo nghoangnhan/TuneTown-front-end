@@ -70,15 +70,15 @@ const CreatePost = ({ setOpenModalCreate }) => {
     try {
       console.log("Received values:", values);
       const sanitizedContent = DOMPurify.sanitize(values.content);
-      const contentParser = Parser(sanitizedContent).props.children;
+      const contentParser = Parser(sanitizedContent).props?.children;
       const response = axios.post(`${Base_URL}/post/create`, {
         author: {
           id: userId
         },
-        content: contentParser,
-        song: {
+        content: contentParser ? contentParser : '',
+        song: songChosen ? {
           id: songChosen.id
-        },
+        } : null,
         playlist: playlistChosen ? {
           id: playlistChosen.id
         } : null,
@@ -158,11 +158,14 @@ const CreatePost = ({ setOpenModalCreate }) => {
           rules={[{ required: true, message: "Please input your content!" }]}
         >
           <ReactQuill
+            modules={{
+              toolbar: false
+            }}
             theme="snow"
             value={Parser(editorValue)}
             onChange={setEditorValue}
             placeholder="Your thoughts..."
-            className="overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
+            className="overflow-auto bg-white h-36 dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
           />
         </Form.Item>
 

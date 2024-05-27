@@ -7,28 +7,27 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routers/router";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UseCookie from "./hooks/useCookie";
 
 function App() {
-  const { getCookiesLanguage } = UseCookie();
+  const { getCookiesLanguage, getCookiesTheme } = UseCookie();
   const { i18n } = useTranslation();
   const lng = getCookiesLanguage();
+  const [darkTheme, setDarkTheme] = useState(getCookiesTheme() === "true" ? true : false);
+
   useEffect(() => {
     i18n.changeLanguage(lng);
   }, [lng]);
 
   useEffect(() => {
-    const darkTheme =
-      localStorage.getItem("darkTheme") === "true" ? true : false;
+    console.log("darkTheme", darkTheme)
     if (darkTheme === true) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("darkTheme", true);
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem("darkTheme", false);
     }
-  }, []);
+  }, [darkTheme]);
   return (
     // <Fragment>
     //   <BrowserRouter>

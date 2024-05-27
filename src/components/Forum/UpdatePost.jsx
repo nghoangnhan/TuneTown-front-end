@@ -157,11 +157,14 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                     rules={[{ required: true, message: "Please input your content!" }]}
                 >
                     <ReactQuill
+                        modules={{
+                            toolbar: false
+                        }}
                         theme="snow"
                         value={Parser(editorValue)}
                         onChange={setEditorValue}
                         placeholder="Your thoughts..."
-                        className="bg-white dark:bg-backgroundDarkPrimary dark:text-white"
+                        className="bg-white dark:bg-backgroundDarkPrimary h-36 dark:text-white"
                     />
                 </Form.Item>
 

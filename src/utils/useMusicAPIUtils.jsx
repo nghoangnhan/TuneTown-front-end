@@ -70,11 +70,7 @@ export const useMusicAPIUtils = () => {
           },
         }
       );
-      console.log("MyDetailPlaylist || SongList Response", response.data);
-      console.log(
-        "MyDetailPlaylist || PLaylistDetail Response",
-        response.data[0].playlist
-      );
+      // console.log("MyDetailPlaylist || SongList Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);

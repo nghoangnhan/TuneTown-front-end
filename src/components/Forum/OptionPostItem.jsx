@@ -14,7 +14,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
   const { t } = useTranslation();
   const userId = localStorage.getItem("userId");
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
-  console.log(postContent);
+  // console.log(postContent);
   const onCancel = () => {
     setOpenModalUpdate(false);
   };

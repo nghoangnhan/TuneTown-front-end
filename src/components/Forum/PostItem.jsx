@@ -10,7 +10,7 @@ import useSongUtils from "../../utils/useSongUtils";
 import useConfig from "../../utils/useConfig";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { setCurrentSong } from "../../redux/slice/music";
+import { addPlaylistSongToQueue, setCurrentSong, setCurrentTime, setIsPlaying } from "../../redux/slice/music";
 
 const PostItem = ({ postContent }) => {
   const navigate = useNavigate();
@@ -29,13 +29,11 @@ const PostItem = ({ postContent }) => {
   const [refresh, setRefresh] = useState(false);
   const { t } = useTranslation();
 
-  console.log("PostItem", postContent);
-
   // Get the time of the post
   const countTime = new Date(postContent?.postTime).toLocaleString();
   const handGetPostById = async () => {
     await getPostById(postContent.id).then((res) => {
-      console.log("Get Post By ID", res);
+      // console.log("Get Post By ID", res);
       setPostDetail(res);
     });
   };
@@ -68,6 +66,33 @@ const PostItem = ({ postContent }) => {
       setRefresh(true);
     });
   };
+
+  const handleAddSongToQueue = (songList) => {
+    dispatch(setCurrentTime(0));
+    dispatch(
+      setCurrentSong({
+        id: songList[0].song.id,
+        songName: songList[0].song.songName,
+        artists: songList[0].song.artists.map((artist) => artist),
+        songDuration: songList[0].song.songDuration || 200,
+        songCover: songList[0].song.poster,
+        songData: songList[0].song.songData,
+      })
+    );
+
+    dispatch(setIsPlaying(true));
+    const queueSongs = songList.slice(1, songList.length).map((song) => ({
+      id: song.song.id,
+      songName: song.song.songName,
+      artists: song.song.artists.map((artist) => artist),
+      songDuration: song.song.songDuration || 200,
+      songCover: song.song.poster,
+      songData: song.song.songData,
+    }));
+    console.log(queueSongs);
+    dispatch(addPlaylistSongToQueue(queueSongs));
+  };
+
 
   useEffect(() => {
     if (handleCheckLiked(postDetail?.likes)) {
@@ -103,8 +128,8 @@ const PostItem = ({ postContent }) => {
           <div className="flex flex-col">
             {/* Artist Name  */}
             <div className="flex flex-row items-center gap-1 text-xl font-bold text-primary dark:text-primaryDarkmode">
-              {postContent.author.userName}
-              {postContent.author.role == "ARTIST" && (
+              {postContent.author?.userName}
+              {postContent.author?.role == "ARTIST" && (
                 <VerifyAccount></VerifyAccount>
               )}
             </div>
@@ -149,7 +174,13 @@ const PostItem = ({ postContent }) => {
             </div> */}
             {/* Show song Infor   */}
             <div className="flex flex-col items-start gap-1">
-              <div className="text-lg font-bold text-primary dark:text-primaryDarkmode">
+              <div className="text-lg font-bold cursor-pointer text-primary dark:text-primaryDarkmode" onClick={
+                () => {
+                  if (postContent.song) {
+                    NavigateSong(postContent.song.id);
+                  }
+                }
+              }>
                 {postContent.song.songName}
               </div>
               <div className="text-base text-primaryText2 dark:text-primaryTextDark2">
@@ -178,7 +209,9 @@ const PostItem = ({ postContent }) => {
                     }
                     alt="Cover Art Playlist"
                   />
-                  <div className="absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-100">
+                  <div className="absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-100"
+                  // onClick={handleAddSongToQueue}
+                  >
                     <PlayButton color={true} className="text-3xl text-white" />
                   </div>
                 </div>
@@ -219,9 +252,9 @@ const PostItem = ({ postContent }) => {
                         </div>
                       </div>
                       {/* Hover Show Play Icon  */}
-                      <div className="flex flex-row items-center justify-end w-full mr-4 opacity-0 hover:opacity-100" onClick={dispatch(
-                        setCurrentSong
-                      )}>
+                      <div className="flex flex-row items-center justify-end w-full mr-4 opacity-0 hover:opacity-100"
+                      // onClick={dispatch(setCurrentSong)}
+                      >
                         <PlayButton color={true} />
                       </div>
                     </div>
@@ -234,10 +267,10 @@ const PostItem = ({ postContent }) => {
       </div>
 
       {/* Line section */}
-      <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary opacity-10" />
+      <span className="block py-2 my-1 font-bold text-center border-b-2 border-primary dark:border-primaryDarkmode opacity-10" />
 
       {/* React Post  */}
-      <div className="flex flex-row items-center justify-between gap-5 font-bold text-primary">
+      <div className="flex flex-row items-center justify-between gap-5 font-bold text-primary dark:text-primaryDarkmode">
         {/* Like  */}
         <button
           className="flex flex-row items-center gap-2 mx-2 mt-2 font-bold text-md opacity-80 "

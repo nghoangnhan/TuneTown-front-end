@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 
 const ForumPage = () => {
   const { getAllPost } = useForumUtils();
-  const [listPost, setListPost] = useState();
+  const [listPost, setListPost] = useState({ postList: [], currentPage: 1, totalPages: 1 });
   const [openModal, setOpenModal] = useState(false);
   // const [postDetail, setPostDetail] = useState();
   const [postPage, setPostPage] = useState(1);
@@ -23,7 +23,13 @@ const ForumPage = () => {
 
   const handleGetAllPost = async () => {
     await getAllPost(postPage).then((res) => {
-      setListPost((prev) => (prev ? { postList: [...prev.postList, ...res.postList] } : res));
+      console.log("List Post", res);
+      setListPost((prev) => (
+        {
+          postList: [...prev.postList, ...res.postList],
+          currentPage: res.currentPage, totalPages: res.totalPages
+        }));
+
       console.log("List Post Merge", listPost);
       dispatch(setRefreshPost(false));
     });
@@ -35,7 +41,7 @@ const ForumPage = () => {
 
   if (!listPost) return null;
   return (
-    <div className="h-auto min-h-screen text-[#59c26d] bg-backgroundPrimary dark:bg-backgroundDarkPrimary pt-5 pb-40 px-2">
+    <div className="h-auto min-h-screen px-2 pt-5 pb-40 text-primary dark:text-primaryDarkmode bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       {/* Desktop  */}
       {!isMobile && (
         <div className="flex flex-row">

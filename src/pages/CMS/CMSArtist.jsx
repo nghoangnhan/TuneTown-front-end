@@ -26,6 +26,7 @@ const CMSArtist = () => {
     await getArtistByArtistId(artistId).then((result) => {
       setArtistDetail(result);
       setSongListArtist(result.songs);
+      setRefresh(false);
     });
   };
   const handSearch = (e) => {
@@ -47,9 +48,11 @@ const CMSArtist = () => {
   };
   const handleOk = () => {
     form.submit();
+    setRefresh(true);
     setIsModalOpenUpload(false);
   };
   const handleCancel = () => {
+    setRefresh(true);
     setIsModalOpenUpload(false);
     setIsModalOpenUpdate(false);
   };

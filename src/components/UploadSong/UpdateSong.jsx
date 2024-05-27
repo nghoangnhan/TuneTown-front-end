@@ -222,10 +222,13 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
         >
           <ReactQuill
             theme="snow"
+            modules={{
+              toolbar: false
+            }}
             value={Parser(editorValue)}
             onChange={setEditorValue}
             placeholder="Your thoughts..."
-            className="overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
+            className="overflow-auto bg-white dark:bg-backgroundDarkPrimary h-36 dark:text-white max-h-40"
           />
         </Form.Item>
 

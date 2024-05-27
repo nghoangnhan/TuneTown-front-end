@@ -69,9 +69,13 @@ const Repost = ({ song, closeModal }) => {
           rules={[{ required: true, message: "Please input your content!" }]}
         >
           <ReactQuill
+            modules={{
+              toolbar: false
+            }}
             theme="snow"
             value={Parser(editorValue)}
             onChange={setEditorValue}
+            className="overflow-auto bg-white h-36 dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
           />
         </Form.Item>
         {/* Audio Wave */}

@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import NavigationBar from "../NavigationBar";
 import TheHeader from "../Header/TheHeader";
 import MusicControlBar from "../MusicControlBar";
-
 import FooterSection from "../FooterSection";
 import AuthorizationModal from "../AuthorizationModal";
 

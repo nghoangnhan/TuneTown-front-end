@@ -11,8 +11,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import PropTypes from "prop-types";
 import useIconUtils from "../../utils/useIconUtils";
 
-const SongItem = ({ song, songOrder, songListen }) => {
-  const { id, songName, artists, poster, songData, lyric } = song;
+const SongItem = ({ song, songOrder, songListen, songId }) => {
   const { show } = useContextMenu();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
@@ -32,13 +31,13 @@ const SongItem = ({ song, songOrder, songListen }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const songInforObj = {
-    id: id,
-    songName: songName,
-    artists: artists.map((artist) => artist),
+    id: song?.id ? song.id : songId,
+    songName: song?.songName,
+    artists: song?.artists.map((artist) => artist),
     songDuration: songInfor.songDuration,
-    songCover: poster,
-    songData: songData,
-    lyric: lyric,
+    songCover: song?.poster,
+    songData: song?.songData,
+    lyric: song?.lyric,
   };
 
   // When click to the song, save the current song to the context and play it
@@ -136,15 +135,15 @@ const SongItem = ({ song, songOrder, songListen }) => {
         <img
           className="object-cover w-12 h-12 mr-3 rounded-lg xl:w-14 xl:h-14"
           alt="Album cover"
-          src={poster ? poster : DefaultArt}
+          src={song?.poster ? song.poster : DefaultArt}
         />
         {/* // Audio element */}
         <audio ref={audioRef} src={songInforObj.songLink}></audio>
         <div className="font-semibold xl:text-base">
           <h2 className="text-primary dark:text-primaryDarkmode" onClick={() => NavigateSong(songInforObj.id)}>{songInforObj.songName}</h2>
           <h2 className="mt-1 text-sm text-primaryText2 dark:text-primaryTextDark2">
-            {artists && showArtistV2(artists)}
-            {!artists && <span>Null</span>}
+            {song?.artists && showArtistV2(song?.artists)}
+            {!song?.artists && <span>Null</span>}
           </h2>
         </div>
         {/* // Listen Icon */}
@@ -155,7 +154,6 @@ const SongItem = ({ song, songOrder, songListen }) => {
               <ListenIcon></ListenIcon>
             </div>
           )}
-
 
           {isHovered && (
             <>

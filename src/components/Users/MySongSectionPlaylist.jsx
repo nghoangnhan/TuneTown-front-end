@@ -57,7 +57,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
   return (
     <div className="w-full xl:w-full bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="flex flex-row items-center gap-5">
-        <div className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-[#40cf62] hover:text-backgroundPrimary hover:bg-[#40cf62] dark:hover:bg-primary  border border-solid border-[#40cf62] rounded-md p-2 flex flex-row gap-2">
+        <div className="flex flex-row gap-2 p-2 border border-solid rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -81,7 +81,7 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
         </div>
         <div>
           <button
-            className="rounded-full  hover:bg-[#2af358] bg-[#40cf62]  font-bold w-fit h-fit"
+            className="font-bold border rounded-full bg-primary dark:bg-primaryDarkmode w-fit h-fit"
             onClick={() => handleAddSongToQueue(songList)}
           >
             <svg

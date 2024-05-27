@@ -1,18 +1,18 @@
 import { useParams } from "react-router-dom";
-import AudioWaveSurfer from "../../components/Forum/AudioWaveSurfer";
 import useConfig from "../../utils/useConfig";
 import useIconUtils from "../../utils/useIconUtils";
-import ColorThief from "colorthief";
 import { useEffect, useState } from "react";
 import useSongUtils from "../../utils/useSongUtils";
 import LyricSection from "../../components/HomePage/LyricSection";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import TheHeader from "../../components/Header/TheHeader";
+import SongItem from "../../components/Song/SongItem";
 
 const SongDetailPage = () => {
   const { songId } = useParams();
   const { Base_AVA } = useConfig();
   const { BackButton, PlayButton } = useIconUtils();
+  const { showArtistV2 } = useSongUtils();
   const { getPosterColor } = useSongUtils();
   const { getSongById } = useMusicAPIUtils();
   const [colorBG, setColorBG] = useState("");
@@ -87,11 +87,23 @@ const SongDetailPage = () => {
                   </div>
                 );
               })}
+              {
+                songDetail?.artists.lenght === 0 &&
+                <div
+                  className="flex flex-row items-center gap-2">
+                  <img
+                    src={Base_AVA}
+                    alt="artist-avatar"
+                    className="w-10 h-10 rounded-md"
+                  />
+                  <div className="text-lg font-bold">Unknown Artist</div>
+                </div>
+              }
             </div>
           </div>
         </div>
         <div className="flex flex-row items-center gap-4 mt-4">
-          <PlayButton size={3}></PlayButton>
+          <PlayButton color={true} size={3}></PlayButton>
 
           <button className="px-2 py-2 font-bold text-white rounded-md bg-primary hover:opacity-70 dark:bg-primaryDarkmode">
             Add to Playlist
@@ -101,7 +113,8 @@ const SongDetailPage = () => {
 
       <div className="flex flex-row items-start mt-10">
         <div className="w-full">
-          <AudioWaveSurfer song={songDetail}></AudioWaveSurfer>
+          {/* <AudioWaveSurfer song={songDetail}></AudioWaveSurfer> */}
+          <SongItem songId={songDetail?.id} song={songDetail}></SongItem>
         </div>
         <div>
           <LyricSection lyric={songDetail?.lyric}></LyricSection>
