@@ -11,12 +11,11 @@ import useConfig from "../../utils/useConfig";
 import { useForm } from "antd/es/form/Form";
 import { Form, Input } from "antd";
 import useDebounce from "../../hooks/useDebounce";
-import DarkMode from "../DarkMode/DarkMode";
 import ListChatSection from "./ListChatSection";
 import useChatUtils from "../../utils/useChatUtils";
 
 const ChatNavigate = () => {
-  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const userId = localStorage.getItem("userId");
   const { searchCommunityByName } = useChatUtils();
   const { getToken } = UseCookie();
   const [form] = useForm();
@@ -141,7 +140,7 @@ const ChatNavigate = () => {
     // Remove self from list
     const filteredUserList = userList.filter(user => user.id !== userId);
     const communityList = await searchCommunity(keywords);
-    if (filteredUserList.length === 0 && communityList.length === 0) return;
+    if (filteredUserList?.length === 0 && communityList?.length === 0) return;
     else {
       setChatRs([...filteredUserList, ...communityList]);
     }
@@ -188,7 +187,7 @@ const ChatNavigate = () => {
     <div className={`${isMobile ? "w-full" : "w-80"} sticky top-0 min-h-screen px-1 bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary border-gray-200  h-fit`}>
       <div
         className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
-        onClick={() => navigate("/home")}
+        onClick={() => navigate("/")}
       >
         <div>
           <img src={defaultAva} className="h-12 bg-white rounded-full" alt="Logo TuneTown" />
@@ -235,7 +234,7 @@ const ChatNavigate = () => {
       </div>
 
       <div className="ml-2">
-        <BackButton url={"/home"}></BackButton>
+        <BackButton url={"/"}></BackButton>
       </div>
 
       {/* Chat List  */}

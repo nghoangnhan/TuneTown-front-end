@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Space, Table, message } from "antd";
+import { Form, Input, Modal, Space, Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UseCookie from "../../../hooks/useCookie";
@@ -126,7 +126,7 @@ const SongManagement = () => {
           return (
             <div className="flex items-center justify-center">
               <div
-                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md h-fit hover:opacity-70">
+                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md dark:text-red-500 dark:border-red-500 h-fit hover:opacity-70">
                 Deleted
               </div>
             </div>
@@ -249,6 +249,7 @@ const SongManagement = () => {
         onCancel={handleCancel}
         footer={[null, null]}
         className="w-fit h-fit "
+        centered
       >
         <UploadSong></UploadSong>
       </Modal>
@@ -259,6 +260,7 @@ const SongManagement = () => {
         onCancel={handleCancel}
         footer={[null, null]}
         className="w-fit h-fit "
+        centered
       >
         <UpdateSong songData={songData}></UpdateSong>
       </Modal>

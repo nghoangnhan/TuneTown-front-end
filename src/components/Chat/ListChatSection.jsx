@@ -14,7 +14,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
     const { show } = useContextMenu();
     const dispatch = useDispatch();
     const { AcronymName, deleteConversation } = useChatUtils();
-    const userId = parseInt(localStorage.getItem("userId"), 10);
+    const userId = localStorage.getItem("userId");
 
     // Handle chat chosen
     const handleChatChosen = async (conver) => {

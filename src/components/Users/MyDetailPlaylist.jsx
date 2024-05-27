@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Form, Input, Modal, Select } from "antd";
+import { Form, Input, Modal, Select, message } from "antd";
 import MySongSectionPlaylist from "./MySongSectionPlaylist";
 import { useDispatch, useSelector } from "react-redux";
 import { setRefreshPlaylist } from "../../redux/slice/playlist";
@@ -18,17 +18,16 @@ const MyDetailPlaylist = () => {
   const { editPlaylist, getListSongPlaylist, getPlaylistByPlaylistId } =
     useMusicAPIUtils();
   const { Base_AVA } = useConfig();
-  const { BackButton } = useIconUtils();
+  const { BackButton, LoadingLogo } = useIconUtils();
   const dispatch = useDispatch();
   const { handleUploadFileIMG } = useDataUtils();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState({});
-  const [coverArt, setCoverArt] = useState();
-  const refreshPlaylist = useSelector(
-    (state) => state.playlist.refreshPlaylist
-  );
+  const [fileIMG, setFileIMG] = useState(playlistDetail.coverArt);
+  const [loading, setLoading] = useState(false);
+  const refreshPlaylist = useSelector((state) => state.playlist.refreshPlaylist);
   const { t } = useTranslation();
 
   // Get data from API and set for Edit Modal
@@ -37,6 +36,7 @@ const MyDetailPlaylist = () => {
     const detailData = await getPlaylistByPlaylistId(playlistId);
     if (detailData) {
       setPlaylistDetail(detailData);
+      setFileIMG(detailData.coverArt);
       const { playlistName, playlistType, coverArt } = detailData;
       form.setFieldsValue({
         playlistName,
@@ -68,6 +68,19 @@ const MyDetailPlaylist = () => {
     setModalOpen(false);
   };
 
+  const UploadIMGfile = async (file) => {
+    setLoading(true);
+    message.loading("Uploading Image", 1);
+    await handleUploadFileIMG(file).
+      then((res) => {
+        if (res.status === 200) {
+          setFileIMG(res.data);
+          message.success("Image Uploaded Successfully", 2);
+          setLoading(false);
+        }
+      });
+  };
+
   // Reload data when refreshPlaylist is changed
   useEffect(() => {
     fetchDataPlaylistInfor(playlistId);
@@ -84,15 +97,14 @@ const MyDetailPlaylist = () => {
   }, [uploadedFile]);
   return (
     <div
-      className={`${
-        songPlaylistList != null && songPlaylistList.length > 0
-          ? "min-h-screen h-full"
-          : "min-h-screen"
-      } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-20`}
+      className={`${songPlaylistList != null && songPlaylistList.length > 0
+        ? "min-h-screen h-full"
+        : "min-h-screen"
+        } xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-20`}
     >
       {/* Button  */}
       <div className="flex flex-row items-center gap-4 mb-3">
-        <BackButton></BackButton>
+        <BackButton url={`/playlist`}></BackButton>
         <button
           onClick={() => setModalOpen(true)}
           className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-[#40cf62] hover:text-backgroundPrimary hover:bg-[#40cf62] dark:hover:bg-primary  border border-solid border-[#40cf62] rounded-md"
@@ -171,58 +183,52 @@ const MyDetailPlaylist = () => {
               ]}
             ></Select>
           </Form.Item>
-          <div className="flex flex-col gap-2">
-            <Form.Item name="baseAva">
-              <img
-                className="w-40 h-40 ml-10 rounded-md"
-                src={
-                  playlistDetail.coverArt ? playlistDetail.coverArt : Base_AVA
-                }
-                alt=""
-              />
-            </Form.Item>
-            <Form.Item
-              name="coverArt"
-              label={t("playlist.uploadCoverArt")}
-              extra={`${t("playlist.coverArtExtra")} .png, .jpg, .jpeg`}
-              getValueFromEvent={(e) => e && e.fileList}
-              valuePropName="fileList"
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-            >
+
+          <Form.Item
+            name="coverArt"
+            label={t("playlist.uploadCoverArt")}
+            extra={`${t("playlist.coverArtExtra")} .png, .jpg, .jpeg`}
+            getValueFromEvent={(e) => e && e.fileList}
+            valuePropName="fileList"
+            rules={[
+              {
+                required: false,
+              },
+            ]}>
+            <div className="flex flex-row items-center gap-4">
               <UploadFileDropZone
                 uploadedFile={uploadedFile}
                 setUploadedFile={setUploadedFile}
-                handleUploadFile={(uploadedFile) =>
-                  handleUploadFileIMG(uploadedFile).then((res) =>
-                    setCoverArt(res)
-                  )
-                }
+                handleUploadFile={UploadIMGfile}
                 accept="image/jpeg, image/png"
               />
-            </Form.Item>
-            <Form.Item>
-              <button
-                onClick={() =>
-                  handleOnclickEditForm(
-                    playlistId,
-                    form.getFieldValue("playlistName"),
-                    form.getFieldValue("playlistType"),
-                    coverArt
-                  )
-                }
-                type="submit"
-                className="w-full px-4 py-2 border rounded-md border-primary hover:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70 dark:hover:text-backgroundDarkPrimary"
-              >
-                {t("playlist.saveChanges")}
-              </button>
-            </Form.Item>
-          </div>
+              {fileIMG && <img
+                className="w-16 h-16 rounded-full"
+                src={fileIMG ? fileIMG : Base_AVA}
+                alt=""
+              />}
+            </div>
+          </Form.Item>
+
+          <Form.Item className="flex items-center justify-end w-full ">
+            <button
+              onClick={() =>
+                handleOnclickEditForm(
+                  playlistId,
+                  form.getFieldValue("playlistName"),
+                  form.getFieldValue("playlistType"),
+                  fileIMG
+                )
+              }
+              type="submit"
+              className="px-4 py-2 border rounded-md w-fit min-w-[120px] border-primary  dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70  "
+            >
+              {t("playlist.saveChanges")}
+            </button>
+          </Form.Item>
         </Form>
       </Modal>
+      <LoadingLogo loading={loading}></LoadingLogo>
     </div>
   );
 };

@@ -7,7 +7,6 @@ import { setUserId } from "../../redux/slice/account";
 import { useDispatch, useSelector } from "react-redux";
 import useIconUtils from "../../utils/useIconUtils";
 import useUserUtils from "../../utils/useUserUtils";
-import DarkMode from "../DarkMode/DarkMode";
 import useConfig from "../../utils/useConfig";
 import { useTranslation } from "react-i18next";
 
@@ -34,7 +33,7 @@ const TheHeader = () => {
   const LogOut = () => {
     removeToken();
     localStorage.clear();
-    navigate("/");
+    navigate("/login");
   };
 
   useEffect(() => {

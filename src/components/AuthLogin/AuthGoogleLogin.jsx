@@ -101,7 +101,7 @@ function LoginGoogle() {
     await editUser(account, getAccessToken.access_token);
     message.success("Login Successfully");
     setTimeout(() => {
-      navigate("/home");
+      navigate("/");
     }, 1000);
   };
   const onFailure = (res) => {

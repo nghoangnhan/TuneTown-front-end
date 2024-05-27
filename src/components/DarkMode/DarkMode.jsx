@@ -32,7 +32,6 @@ const DarkMode = () => {
                 checked={darkTheme}
                 sunColor="#f1c40f" moonColor="#4b74fa" size={26} speed={1} className="flex items-center justify-center mt-1 mr-1 cursor-pointer"
                 onClick={handleTheme}
-
             />
         </div>
     );

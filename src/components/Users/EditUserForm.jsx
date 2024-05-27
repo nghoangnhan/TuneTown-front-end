@@ -127,7 +127,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
               uploadedFile={uploadedFile}
               setUploadedFile={setUploadedFile}
               handleUploadFile={UploadIMGfile}
-              accept="image/*"
+              accept="image/jpeg, image/png"
             />
             {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
           </div>

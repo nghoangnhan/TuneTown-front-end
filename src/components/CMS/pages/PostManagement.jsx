@@ -221,6 +221,7 @@ const PostManagement = () => {
                 }}
                 open={openModalUpdate}
                 footer={null}
+                centered
             >
                 <UpdatePost
                     postContent={postUpdate}
@@ -236,6 +237,7 @@ const PostManagement = () => {
                 }}
                 open={openModalCreatePost}
                 footer={null}
+                centered
             >
                 <CreatePost></CreatePost>
             </Modal>

@@ -12,14 +12,14 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
   const { deletePost } = useForumUtils();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
+  const userId = localStorage.getItem("userId");
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   console.log(postContent);
   const onCancel = () => {
     setOpenModalUpdate(false);
   };
   const handleDeletePost = async (postId) => {
-    if (!owned) {
+    if (!owned && postContent.author.id != userId) {
       message.error("You are not authorized to delete this post");
       return;
     }
@@ -32,7 +32,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
   };
 
   const handleOpenModalUpdate = () => {
-    if (!owned) {
+    if (!owned && postContent.author.id != userId) {
       message.error("You are not authorized to update this post");
       return;
     }
@@ -44,12 +44,12 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
         <Item onClick={() => dispatch(setRefreshPost(true))}>
           {t("forum.refresh")}
         </Item>
-        {owned == true && (
+        {owned == true || postContent.author.id == userId && (
           <Item onClick={() => handleOpenModalUpdate()}>
             {t("forum.updatePost")}
           </Item>
         )}
-        {owned == true && (
+        {owned == true || postContent.author.id == userId && (
           <Item onClick={() => handleDeletePost(postId)}>
             {t("forum.deletePost")}
           </Item>
@@ -59,6 +59,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
         open={openModalUpdate}
         onCancel={onCancel}
         footer={null}
+        centered
         title="Update Post"
         className="modalStyle"
       >

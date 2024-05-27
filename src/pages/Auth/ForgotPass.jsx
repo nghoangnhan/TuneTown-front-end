@@ -11,7 +11,7 @@ const ForgotPass = () => {
   const { Base_URL, Base_AVA } = useConfig();
   const { HintIcon } = useIconUtils();
   const navigate = useNavigate();
-  const [openTour, setOpenTour] = useState(true);
+  const [openTour, setOpenTour] = useState(false);
   const hintRef1 = useRef();
   const hintRef2 = useRef();
   const hintRef3 = useRef();
@@ -121,7 +121,7 @@ const ForgotPass = () => {
               message.success("Change password successfully.");
             }, 1000);
             setTimeout(() => {
-              navigate("/");
+              navigate("/login");
             }, 2000);
           } else {
             message.error("Please input your new password.");
@@ -140,16 +140,16 @@ const ForgotPass = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full min-h-screen bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
+    <div className="flex flex-col items-center justify-center h-full min-h-screen bg-backgroundComponentPrimary ">
       <div
         className="flex flex-row items-center justify-center gap-5 text-lg font-bold text-center uppercase cursor-pointer">
         <div>
-          <img src={Base_AVA} className="bg-white rounded-full h-28" alt="Logo TuneTown" />
+          <img src={Base_AVA} className="h-24 bg-white rounded-full" alt="Logo TuneTown" />
         </div>
-        <div className="text-primary dark:text-primaryDarkmode">TuneTown</div>
+        <div className="text-primary ">TuneTown</div>
       </div>
-      <div className="flex flex-col items-center justify-center mt-10">
-        <div className="flex flex-row items-center gap-3 mb-10 text-headingText dark:text-headingTextDark">
+      <div className="flex flex-col items-center justify-center mt-6">
+        <div className="flex flex-row items-center gap-3 mb-10 text-primary ">
           <h1 className="text-3xl font-bold ">
             Forget Password
           </h1>
@@ -208,6 +208,7 @@ const ForgotPass = () => {
                 className="h-10 px-1 py-1 text-white bg-green-500 rounded-md w-28"
                 onClick={() => handleSendOTP()}
                 ref={hintRef2}
+                type="button"
               >
                 Get OTP
               </button>
@@ -253,9 +254,9 @@ const ForgotPass = () => {
         </Form>
 
         <div className="">
-          <p className="text-headingText dark:text-headingTextDark">
+          <p className="text-headingText ">
             Back to Login?
-            <NavLink to="/" className="ml-1 text-sm text-primary">
+            <NavLink to="/login" className="ml-1 text-sm text-primary">
               Sign in
             </NavLink>
           </p>

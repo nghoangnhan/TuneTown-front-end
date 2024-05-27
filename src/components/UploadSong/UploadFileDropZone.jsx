@@ -30,18 +30,18 @@ const UploadFileDropZone = (props) => {
     accept:
       props.accept === "image/jpeg, image/png" || props.accept === "image/*"
         ? {
-            "image/jpeg": [".jpg", ".jpeg"],
-            "image/png": [".png"],
-          }
+          "image/jpeg": [".jpg", ".jpeg"],
+          "image/png": [".png"],
+        }
         : props.accept === "audio/mp3" || props.accept === "audio/*"
-        ? {
+          ? {
             "audio/mpeg": [".mp3"],
             "audio/wav": [".wav"],
             "audio/webm": [".webm"],
             "audio/flac": [".flac"],
             "audio/x-m4a": [".m4a"],
           }
-        : undefined,
+          : undefined,
   });
 
   return (
@@ -51,7 +51,7 @@ const UploadFileDropZone = (props) => {
         type="button"
         onClick={open}
         variant="contained"
-        className="border border-solid border-[#42ae49] bg-white hover:bg-[#42ae49] hover:text-white text-[#42ae49]"
+        className="bg-transparent border border-solid border-primary dark:border-primaryDarkmode hover:opacity-70 dark:text-primaryDarkmode text-primary"
         sx={{ width: "100%", height: 24 }}
       >
         {t("common.selectFile")}

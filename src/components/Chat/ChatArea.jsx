@@ -22,7 +22,7 @@ const ChatArea = () => {
   const { BackIcon, UserGroupIcon, OptionsIcon, ExitCommunityIcon, SendIcon } = useIconUtils();
   const { access_token } = getToken();
   const { show } = useContextMenu();
-  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const userId = localStorage.getItem("userId");
   const { chatId } = useParams();
   const converChosen = useSelector((state) => state.social.currentChat);
   const [chatInfo, setChatInfo] = useState();
@@ -158,7 +158,7 @@ const ChatArea = () => {
     <div className="">
       <div className="fixed flex flex-row items-center justify-between w-full h-20 pl-3 bg-slate-50 dark:bg-backgroundChattingInputNavDark">
         <div className="flex flex-row items-center ">
-          <BackIcon url={"/chat"}></BackIcon>
+          <BackIcon url={"/"}></BackIcon>
           <div className="w-10">
             <img
               src={`${chatInfo?.avatar ? chatInfo.avatar : defaultAva}`}
@@ -200,7 +200,6 @@ const ChatArea = () => {
 
       {/* Chat input area */}
       <div className="fixed bottom-0 flex flex-row items-center w-full h-20 gap-3 pl-3 bg-slate-200 dark:bg-backgroundChattingInputNavDark">
-
         <input
           type="text"
           className="w-[1000px] p-3 rounded-md outline-none text-primaryText2 "

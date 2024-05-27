@@ -267,6 +267,7 @@ const PlaylistManagement = () => {
       <Modal
         open={isModalOpenUpload}
         onOk={handleOk}
+        centered
         onCancel={handleCancel}
         footer={[null, null]}
         className="w-fit h-fit "
@@ -277,6 +278,7 @@ const PlaylistManagement = () => {
       <Modal
         open={isModalOpenUpdate}
         onOk={handleOk}
+        centered
         onCancel={handleCancel}
         footer={[null, null]}
         className="w-fit h-fit "

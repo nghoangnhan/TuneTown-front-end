@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Input, Modal } from 'antd';
-import useConfig from '../../utils/useConfig';
+import useConfig from '../../../utils/useConfig';
 import { useEffect, useState } from 'react';
 
 const ModalPlaylistPost = ({ playlistRs, openModal, setOpenModalChosePlaylist, handlePlaylistItemClick }) => {
@@ -24,19 +24,21 @@ const ModalPlaylistPost = ({ playlistRs, openModal, setOpenModalChosePlaylist, h
                 setOpenModalChosePlaylist(false);
             }}
             footer={null}
+            centered
+            className='modalStyle'
         >
             {playlistRs && (
-                <div className="left-0 right-0 w-full bg-white">
+                <div className="left-0 right-0 w-full bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary">
                     <ul className="px-4 py-2">
                         <Input type='text'
-                            placeholder="Search playlist"
-                            className="w-full p-2 mb-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+                            placeholder="Search..."
+                            className="bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
                             onChange={(e) => { handleSearchPlaylist(e.target.value) }}
                         />
                         {playlistOutput != null && playlistOutput.map((playlist) => (
                             <li
                                 key={playlist.id}
-                                className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100"
+                                className="flex items-center p-2 space-x-2 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 hover:dark:bg-backgroundPlaylistHoverDark text-primaryText2 "
                                 onClick={() => {
                                     handlePlaylistItemClick(playlist)
                                 }}

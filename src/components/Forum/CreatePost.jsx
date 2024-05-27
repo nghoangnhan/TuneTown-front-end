@@ -2,70 +2,73 @@ import { Button, Form, message } from "antd";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import UploadFileDropZone from "../../utils/useDropZone";
-import useDataUtils from "../../utils/useDataUtils";
+// import UploadFileDropZone from "../../utils/useDropZone";
+// import useDataUtils from "../../utils/useDataUtils";
 import axios from "axios";
 import useConfig from "../../utils/useConfig";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
 import UseCookie from "../../hooks/useCookie";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import useIconUtils from "../../utils/useIconUtils";
-import ModalPlaylistPost from "./ModalPlaylistPost";
+import ModalPlaylistPost from "./Modal/ModalPlaylistPost";
 import { setRefreshPost } from "../../redux/slice/social";
 import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import ModalChoseSong from "./Modal/ModalChoseSong";
 
 
-const CreatePost = () => {
+const CreatePost = ({ setOpenModalCreate }) => {
   const [form] = Form.useForm();
-  const userId = parseInt(localStorage.getItem("userId"));
+  const userId = localStorage.getItem("userId");
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const { access_token } = getToken();
-  const { handleUploadFileMP3, handleUploadFileIMG } = useDataUtils();
+  // const { handleUploadFileMP3, handleUploadFileIMG } = useDataUtils();
   const { getPlaylistByUserId } = useMusicAPIUtils();
-  const { LoadingLogo } = useIconUtils();
-  const { Check } = useIconUtils();
+  // const { LoadingLogo } = useIconUtils();
+  // const { Check } = useIconUtils();
   const { Base_URL } = useConfig();
   const [editorValue, setEditorValue] = useState("");
-  const [fileMP3, setFileMP3] = useState();
-  const [fileImg, setFileIMG] = useState();
-  const [uploadedFile, setUploadedFile] = useState();
-  const [loading, setLoading] = useState(false);
+  // const [fileMP3, setFileMP3] = useState();
+  // const [fileImg, setFileIMG] = useState();
+  // const [uploadedFile, setUploadedFile] = useState();
+  // const [loading, setLoading] = useState(false);
   const [playlistRs, setPlaylistRs] = useState([]);
   const [openModalChosePlaylist, setOpenModalChosePlaylist] = useState(false);
+  const [openModalChoseSong, setOpenModalChoseSong] = useState(false);
   const [playlistChosen, setPlaylistChosen] = useState();
+  const [songChosen, setSongChosen] = useState();
 
-  const UploadMP3file = async (file) => {
-    setLoading(true);
-    // message.loading("Uploading Song File", 2);
-    await handleUploadFileMP3(file).then((res) => {
-      console.log("UploadMP3file", res);
-      if (res.status === 200 || res.status === 201) {
-        setFileMP3(res.data);
-        message.success("Song File Uploaded Successfully", 2);
-        setLoading(false);
-      }
-    });
-  };
 
-  const UploadIMGfile = async (file) => {
-    setLoading(true);
-    message.loading("Uploading Image", 1);
-    await handleUploadFileIMG(file).
-      then((res) => {
-        if (res.status === 200) {
-          setFileIMG(res.data);
-          message.success("Image Uploaded Successfully", 2);
-          setLoading(false);
-        }
-      });
-  };
+  // const UploadMP3file = async (file) => {
+  //   setLoading(true);
+  //   // message.loading("Uploading Song File", 2);
+  //   await handleUploadFileMP3(file).then((res) => {
+  //     console.log("UploadMP3file", res);
+  //     if (res.status === 200 || res.status === 201) {
+  //       setFileMP3(res.data);
+  //       message.success("Song File Uploaded Successfully", 2);
+  //       setLoading(false);
+  //     }
+  //   });
+  // };
+
+  // const UploadIMGfile = async (file) => {
+  //   setLoading(true);
+  //   message.loading("Uploading Image", 1);
+  //   await handleUploadFileIMG(file).
+  //     then((res) => {
+  //       if (res.status === 200) {
+  //         setFileIMG(res.data);
+  //         message.success("Image Uploaded Successfully", 2);
+  //         setLoading(false);
+  //       }
+  //     });
+  // };
 
   const onFinish = (values) => {
     try {
       console.log("Received values:", values);
-      console.log("Received values:", fileMP3);
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
       const response = axios.post(`${Base_URL}/post/create`, {
@@ -73,13 +76,16 @@ const CreatePost = () => {
           id: userId
         },
         content: contentParser,
-        song: null,
+        song: {
+          id: songChosen.id
+        },
         playlist: playlistChosen ? {
           id: playlistChosen.id
         } : null,
         likes: null,
         listComments: null,
-        mp3Link: fileMP3 ? fileMP3 : ''
+        // mp3Link: fileMP3 ? fileMP3 : ''
+        mp3Link: null,
       }, {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -89,7 +95,9 @@ const CreatePost = () => {
       form.resetFields();
       message.success("Post Created Successfully", 2);
       dispatch(setRefreshPost(true));
+      setOpenModalCreate(false);
       setOpenModalChosePlaylist(false);
+      return response;
     } catch (error) {
       console.log("Error:", error);
     }
@@ -113,10 +121,19 @@ const CreatePost = () => {
   const handlePlaylistItemClick = (playlist) => {
     try {
       setPlaylistChosen(playlist);
-      console.log("Playlist Chosen", playlistChosen);
       setOpenModalChosePlaylist(false);
     } catch (error) {
       console.error("Error choosing playlist:", error);
+    }
+  }
+
+  const handleSongItemClick = (song) => {
+    try {
+      console.log("Song Chosen", song);
+      setSongChosen(song);
+      setOpenModalChoseSong(false);
+    } catch (error) {
+      console.error("Error choosing song:", error);
     }
   }
 
@@ -145,7 +162,7 @@ const CreatePost = () => {
             value={Parser(editorValue)}
             onChange={setEditorValue}
             placeholder="Your thoughts..."
-            className="bg-white dark:bg-backgroundDarkPrimary dark:text-white"
+            className="overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
           />
         </Form.Item>
 
@@ -161,14 +178,14 @@ const CreatePost = () => {
               uploadedFile={uploadedFile}
               setUploadedFile={setUploadedFile}
               handleUploadFile={UploadIMGfile}
-              accept="image/*"
+              accept="image/jpeg, image/png"
             />
             {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
           </div>
         </Form.Item> */}
 
         {/* Upload Song  */}
-        <Form.Item
+        {/* <Form.Item
           name="songData"
           label="Upload MP3 File"
           extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
@@ -189,15 +206,29 @@ const CreatePost = () => {
             />
             {fileMP3 && Check()}
           </div>
+        </Form.Item> */}
+
+        {/* Song */}
+        <Form.Item>
+          <div className="flex flex-row items-center gap-2">
+            <Button
+              onClick={() => setOpenModalChoseSong(true)}
+              type="button"
+              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+            >
+              Add Song
+            </Button>
+            {songChosen && <div className="text-primary">Song Chosen: {songChosen.songName}{" "}#{songChosen.id}</div>}
+          </div>
         </Form.Item>
 
-        {/* Playlist */}
+        {/* Playlist  */}
         <Form.Item className="flex flex-row ">
           <div className="flex flex-row items-center gap-2">
             <Button
               onClick={handleAddPlaylist}
               type="button"
-              className=" text-primary transition-colors duration-150 border border-[#59c26d] rounded-md"
+              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
             >
               Add Playlist
             </Button>
@@ -207,18 +238,29 @@ const CreatePost = () => {
         <Form.Item>
           <button
             type="submit"
-            className="w-full h-10 px-3 text-base text-white transition-colors duration-150 rounded-lg bg-primary dark:bg-primaryDarkmode focus:shadow-outline hover:opacity-70"
+            className="absolute px-2 py-2 transition-colors duration-150 border rounded-md right-2 text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
           >
             Submit
           </button>
         </Form.Item>
 
-        <LoadingLogo loading={loading}></LoadingLogo>
+        {/* <LoadingLogo loading={loading}></LoadingLogo> */}
       </Form>
-      <ModalPlaylistPost handlePlaylistItemClick={handlePlaylistItemClick} openModal={openModalChosePlaylist}
-        playlistRs={playlistRs} setOpenModalChosePlaylist={setOpenModalChosePlaylist}></ModalPlaylistPost>
+      <ModalChoseSong openModal={openModalChoseSong} handleSongItemClick={handleSongItemClick}
+        setOpenModalChoseSong={setOpenModalChoseSong}  >
+      </ModalChoseSong>
+
+      <ModalPlaylistPost handlePlaylistItemClick={handlePlaylistItemClick}
+        openModal={openModalChosePlaylist}
+        playlistRs={playlistRs} setOpenModalChosePlaylist={setOpenModalChosePlaylist}>
+      </ModalPlaylistPost>
+
     </div>
   );
+};
+
+CreatePost.propTypes = {
+  setOpenModalCreate: PropTypes.func,
 };
 
 export default CreatePost;

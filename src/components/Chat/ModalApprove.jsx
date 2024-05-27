@@ -5,7 +5,7 @@ import useChatUtils from '../../utils/useChatUtils';
 
 const ModalApprove = ({ openApprovedList, setOpenApprovedList, converChosen }) => {
     const { Base_AVA } = useConfig();
-    const userId = parseInt(localStorage.getItem("userId"), 10);
+    const userId = localStorage.getItem("userId");
     const { ApproveRequest } = useChatUtils();
     return (
         <Modal open={openApprovedList} onCancel={() => setOpenApprovedList(false)}

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { Button, Form, Input, message } from "antd";
+import { Form, Input, message } from "antd";
 import ArtistInput from "./ArtistInput";
 import UseCookie from "../../hooks/useCookie";
 import GenreInput from "./GenreInput";
@@ -10,23 +10,11 @@ import PropTypes from "prop-types";
 import useConfig from "../../utils/useConfig";
 import useIconUtils from "../../utils/useIconUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
+import ReactQuill from "react-quill";
+import Parser from 'html-react-parser';
+import DOMPurify from "dompurify";
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
-
-const UpdateSong = ({ songData }) => {
+const UpdateSong = ({ songData, setModalUpdate }) => {
   const formRef = useRef(null);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
@@ -38,6 +26,7 @@ const UpdateSong = ({ songData }) => {
   const [uploadedFile, setUploadedFile] = useState({});
   const [fileImg, setFileImg] = useState(songData?.poster);
   const [fileMP3, setFileMP3] = useState(songData.songData);
+  const [editorValue, setEditorValue] = useState("");
 
   const UploadIMGfile = async (file) => {
     message.loading("Uploading Image", 1);
@@ -88,6 +77,7 @@ const UpdateSong = ({ songData }) => {
       console.log("Error:", error);
     }
   };
+
   const onFinish = async (values) => {
     console.log("Received values:", values);
     const { songName, artists, genre } = values;
@@ -103,6 +93,8 @@ const UpdateSong = ({ songData }) => {
       message.error("Please upload a song file");
       return;
     }
+    const sanitizedContent = DOMPurify.sanitize(values?.lyric);
+    const contentParser = Parser(sanitizedContent).props.children;
     const postData = {
       id: songData.songId,
       songName: songName,
@@ -113,10 +105,13 @@ const UpdateSong = ({ songData }) => {
       artists: artists.map((artist) => {
         return { id: artist };
       }),
+      lyric: contentParser,
     };
     console.log("Posting Data", postData);
     // const artists = {};
-    await updateSong(postData); // Call the function to post the song data
+    await updateSong(postData).then(() => {
+      setModalUpdate(false);
+    });
   };
 
   useEffect(() => {
@@ -145,7 +140,6 @@ const UpdateSong = ({ songData }) => {
   return (
     <section className="relative flex flex-col w-full h-full ">
       <Form
-        {...layout}
         ref={formRef}
         name="control-ref"
         form={form}
@@ -166,7 +160,7 @@ const UpdateSong = ({ songData }) => {
             },
           ]}
         >
-          <Input />
+          <Input className="dark:text-primaryText2 bg-backgroundPrimary " />
         </Form.Item>
         <ArtistInput artistList={songData?.artists}></ArtistInput>
         <Form.Item
@@ -186,7 +180,7 @@ const UpdateSong = ({ songData }) => {
               uploadedFile={uploadedFile}
               setUploadedFile={setUploadedFile}
               handleUploadFile={UploadIMGfile}
-              accept="image/*"
+              accept="image/jpeg, image/png"
             />
             {fileImg && <img src={fileImg ? fileImg : Base_AVA} alt="" className="w-16 h-16" />}
           </div>
@@ -226,17 +220,22 @@ const UpdateSong = ({ songData }) => {
             },
           ]}
         >
-          <Input.TextArea />
+          <ReactQuill
+            theme="snow"
+            value={Parser(editorValue)}
+            onChange={setEditorValue}
+            placeholder="Your thoughts..."
+            className="overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
+          />
         </Form.Item>
 
-        <Form.Item {...tailLayout}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="bg-[green] absolute right-2"
+        <Form.Item  >
+          <button
+            type="submit"
+            className="absolute px-2 py-2 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode right-2 hover:opacity-70"
           >
-            Submit
-          </Button>
+            Update Song
+          </button>
         </Form.Item>
       </Form>
     </section>
@@ -258,5 +257,6 @@ UpdateSong.propTypes = {
       })
     ),
   }).isRequired,
+  setModalUpdate: PropTypes.func,
 };
 export default UpdateSong;
