@@ -26,7 +26,7 @@ const UserDetailPage = ({ owned }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const refreshAccount = useSelector((state) => state.account.refreshAccount);
-  const { defaultAva, isMobile } = useConfig();
+  const { Base_AVA, isMobile } = useConfig();
   const { getUserPlaylist } = useMusicAPIUtils();
   const { getUserInfor, getUserPost } = useUserUtils();
   const { createCommunity, getCommunityByArtist } = useChatUtils();
@@ -146,7 +146,7 @@ const UserDetailPage = ({ owned }) => {
         <div className="flex flex-row items-center justify-start gap-4">
           <div className="relative flex flex-row items-start mt-5 mb-5">
             <img
-              src={userInfor.avatar ? userInfor.avatar : defaultAva}
+              src={userInfor.avatar ? userInfor.avatar : Base_AVA}
               alt="Avatar"
               className="w-20 h-20 rounded-full xl:w-56 xl:h-56"
             />
