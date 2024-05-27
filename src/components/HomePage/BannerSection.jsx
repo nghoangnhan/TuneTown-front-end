@@ -7,12 +7,18 @@ import PropTypes from "prop-types";
 
 const BannerSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const userId = localStorage.getItem("userId");
+  const [playlistList, setPlaylistList] = useState([]);
+  const { getUserPlaylist } = useMusicAPIUtils();
+  const { Base_AVA } = useConfig();
+  const navigate = useNavigate();
+  const checkPlaylistBelow5 = playlistList.length < 5 ? true : false;
   const settings = {
     className: "center",
     centerMode: true,
-    infinite: true,
+    infinite: checkPlaylistBelow5 ? false : true,
     centerPadding: "20px",
-    slidesToShow: 3,
+    slidesToShow: checkPlaylistBelow5 ? 1 : 3,
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
@@ -23,7 +29,7 @@ const BannerSection = () => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: checkPlaylistBelow5 ? 1 : 3,
         },
       },
       {
@@ -36,14 +42,8 @@ const BannerSection = () => {
     // Arrow 
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-
-
   };
-  const userId = localStorage.getItem("userId");
-  const [playlistList, setPlaylistList] = useState();
-  const { getUserPlaylist } = useMusicAPIUtils();
-  const { Base_AVA } = useConfig();
-  const navigate = useNavigate();
+
   const navigateToPlaylist = (playlistId) => {
     navigate(`/detail-playlist/${playlistId}`);
   };
