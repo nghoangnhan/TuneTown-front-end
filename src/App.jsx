@@ -6,8 +6,29 @@ import "slick-carousel/slick/slick-theme.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./routers/router";
 import { Helmet } from "react-helmet";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import UseCookie from "./hooks/useCookie";
 
 function App() {
+  const { getCookiesLanguage } = UseCookie();
+  const { i18n } = useTranslation();
+  const lng = getCookiesLanguage();
+  useEffect(() => {
+    i18n.changeLanguage(lng);
+  }, [lng]);
+
+  useEffect(() => {
+    const darkTheme =
+      localStorage.getItem("darkTheme") === "true" ? true : false;
+    if (darkTheme === true) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkTheme", true);
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("darkTheme", false);
+    }
+  }, []);
   return (
     // <Fragment>
     //   <BrowserRouter>

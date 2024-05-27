@@ -22,7 +22,12 @@
     "evening": "Evening",
     "back": "Back",
     "selectFile": "Select file",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "light": "Light",
+    "dark": "Dark",
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
   },
   "home": {
     "madeForYou": "Made For You"
@@ -69,5 +74,10 @@
     "editProfile": "Edit profile",
     "editFavouriteGenres": "Edit favourite genres",
     "favouriteGenres": "Favourite genres"
+  },
+  "settings": {
+    "theme": "Theme",
+    "language": "Language",
+    "volumeLevel": "Volume Level"
   }
 }

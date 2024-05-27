@@ -73,11 +73,26 @@ function UseCookie() {
     }
   };
   const isLoggedIn = () => !!getToken().access_token;
+
+  const setCookiesLanguage = (language) => {
+    Cookies.set("language", language, {
+      expires: 3650,
+      secure: true,
+      path: "/",
+    });
+  };
+
+  const getCookiesLanguage = () => {
+    const language = Cookies.get("language");
+    return language;
+  };
   return {
     isLoggedIn,
     saveToken,
     getToken,
     removeToken,
+    setCookiesLanguage,
+    getCookiesLanguage,
   };
 }
 export default UseCookie;
