@@ -12,7 +12,7 @@ const BannerSection = () => {
   const { getUserPlaylist } = useMusicAPIUtils();
   const { Base_AVA } = useConfig();
   const navigate = useNavigate();
-  const checkPlaylistBelow5 = playlistList.length < 5 ? true : false;
+  const checkPlaylistBelow5 = playlistList && playlistList.length < 5 ? true : false;
   const settings = {
     className: "center",
     centerMode: true,
