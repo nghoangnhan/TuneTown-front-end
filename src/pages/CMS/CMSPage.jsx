@@ -23,7 +23,7 @@ const CMSPage = () => {
           <div className="demo-logo-vertical" />
           <LeftSideBar></LeftSideBar>
         </Sider>
-        <Layout className="pb">
+        <Layout className="min-h-screen">
           <TheHeader></TheHeader>
           <ContentPage></ContentPage>
         </Layout>

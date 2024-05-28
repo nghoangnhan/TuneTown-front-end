@@ -218,7 +218,6 @@ const UserManagement = () => {
         </Space>
       ),
     },
-    {},
   ];
 
   useEffect(() => {
@@ -288,8 +287,9 @@ const UserManagement = () => {
           onCancel={handleCancel}
           centered
           footer={[]}
+          className="modalStyle"
         >
-          <Form form={formRole}>
+          <Form form={formRole} className="pt-4 formStyle">
             <Form.Item label="Role" name="role">
               <Select
                 placeholder="Role"
@@ -300,10 +300,10 @@ const UserManagement = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item className="right-0">
-              <Button type="default" htmlType="submit" onClick={handleOkRole}>
+            <Form.Item className="">
+              <button type="submit" className="absolute right-0 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode" onClick={handleOkRole}>
                 Update
-              </Button>
+              </button>
             </Form.Item>
           </Form>
         </Modal>

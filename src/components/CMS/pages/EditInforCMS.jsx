@@ -233,7 +233,7 @@ const EditInfor = () => {
           </Form.Item> */}
 
           <Form.Item className="relative flex justify-end">
-            <butotn type="submit" className="px-2 py-2 border rounded-md cursor-pointer min-w-fit border-primary dark:border-primary text-primary dark:text-primaryDarkmode hover:opacity-70">
+            <butotn type="submit" className="px-2 py-2 border rounded-md cursor-pointer w-fit min-w-[110px] text-center border-primary dark:border-primary text-primary dark:text-primaryDarkmode hover:opacity-70">
               Save Changes
             </butotn>
           </Form.Item>
