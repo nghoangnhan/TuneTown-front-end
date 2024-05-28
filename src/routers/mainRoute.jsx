@@ -29,6 +29,7 @@ import SettingPage from "../pages/Home/SettingPage";
 
 // Xem cấu trúc routes ở https://reactrouter.com/en/main/routers/create-browser-router#routes
 export default function init(routes) {
+  const userRole = localStorage.getItem("userRole");
   const route = {
     path: "/",
     element: <MainPageLayout />,
@@ -172,14 +173,23 @@ export default function init(routes) {
       {
         path: "post-management",
         element: <PostManagement />,
-      }
+      },
+      {
+        path: "setting",
+        element: <SettingPage />,
+      },
     ],
   };
 
   // Push route
-  routes.push(route);
-  routes.push(cmsRoute);
-  routes.push(singleRoute);
-  routes.push(chatRoute);
-  routes.push(errorRoute);
+
+  { userRole == "ADMIN" && routes.push(cmsRoute) }
+  {
+    userRole != "ADMIN" &&
+      [routes.push(route),
+      routes.push(singleRoute),
+      routes.push(chatRoute),
+      ]
+  }
+  routes.push(errorRoute)
 }

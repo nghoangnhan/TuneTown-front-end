@@ -10,12 +10,14 @@ import { setIsNewMessage, setRefreshChat } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
 import { Item, Menu, useContextMenu } from "react-contexify";
-import { message } from "antd";
+import { Input, message } from "antd";
 import ModalApprove from "./ModalApprove";
 
 const ChatArea = () => {
   const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest, outCommunity } = useChatUtils();
-  const { Base_URL, socket } = useConfig();
+  const { Base_URL, socket,
+    is24Inch, is27Inch, is30Inch, isLaptop, isTablet, isMobile
+  } = useConfig();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,6 +31,11 @@ const ChatArea = () => {
   const [newMessage, setNewMessage] = useState("");
   const [chatContent, setChatContent] = useState([]);
   const [openApprovedList, setOpenApprovedList] = useState(false);
+
+  const maxWidthClass = is24Inch ? "max-w-[1215px]" :
+    is27Inch ? "max-w-[1215px]" : is30Inch ? "max-w-[1215px]" :
+      isLaptop ? "max-w-[1215px]" : isTablet ? "max-w-[1215px]" :
+        isMobile ? "max-w-[1215px]" : ""
 
   const sendMessage = async (sendUserId, receiveUserId, content) => {
     // Check if the message is empty or the sender is the receiver
@@ -156,7 +163,7 @@ const ChatArea = () => {
 
   return (
     <div className="">
-      <div className="fixed flex flex-row items-center justify-between w-full h-20 pl-3 bg-slate-50 dark:bg-backgroundChattingInputNavDark">
+      <div className="fixed flex flex-row items-center justify-between w-screen h-20 pl-3 bg-slate-50 dark:bg-backgroundChattingInputNavDark">
         <div className="flex flex-row items-center ">
           <BackIcon url={"/"}></BackIcon>
           <div className="w-10">
@@ -199,10 +206,12 @@ const ChatArea = () => {
       {/* Load message content */}
 
       {/* Chat input area */}
-      <div className="fixed bottom-0 flex flex-row items-center w-full h-20 gap-3 pl-3 bg-slate-200 dark:bg-backgroundChattingInputNavDark">
-        <input
+      <div className={`fixed bottom-0 flex flex-row items-center justify-center w-full gap-3 p-3 sm:p-2 
+       ${maxWidthClass} bg-slate-50 dark:bg-backgroundChattingInputNavDark`}
+      >
+        <Input
           type="text"
-          className="w-[1000px] p-3 rounded-md outline-none text-primaryText2 "
+          className="w-full p-3 rounded-md outline-none text-primaryText2 dark:bg-backgroundPrimary"
           placeholder="Type a message..."
           value={newMessage}
           onChange={handleMessageChange}
@@ -214,7 +223,7 @@ const ChatArea = () => {
         />
 
         <button
-          className="p-3 text-white rounded-lg bg-primary hover:opacity-50 dark:bg-primaryDark"
+          className="flex-shrink-0 p-3 text-white rounded-lg bg-primary hover:opacity-50 dark:bg-primaryDarkmode"
           onClick={() => sendMessage(userId, chatId, newMessage)}
         >
           <SendIcon></SendIcon>

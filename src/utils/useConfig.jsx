@@ -6,6 +6,12 @@ import { useEffect, useState } from "react";
 
 const useConfig = () => {
     const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
+    const isTablet = useMediaQuery({ query: "(max-width: 768px)" });
+    const isLaptop = useMediaQuery({ query: "(max-width: 1024px)" });
+    const is24Inch = useMediaQuery({ query: "(max-width: 1920px)" });
+    const is27Inch = useMediaQuery({ query: "(max-width: 2560px)" });
+    const is30Inch = useMediaQuery({ query: "(max-width: 3840px)" });
+
     const { getToken } = UseCookie();
     // Link to the backend server 
     // export const Base_URL = "https://tunetown-production.up.railway.app";
@@ -43,7 +49,8 @@ const useConfig = () => {
         Base_AVA, default_Img,
         cliendId,
         socket,
-        auth, Base_URL_FE
+        auth, Base_URL_FE,
+        is24Inch, is27Inch, is30Inch, isLaptop, isTablet
     };
 };
 export default useConfig;

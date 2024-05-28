@@ -188,7 +188,7 @@ const PlaylistManagement = () => {
     },
   ];
 
-  const playlistData = playlistList.map((playlistItem) => ({
+  const playlistData = playlistList?.map((playlistItem) => ({
     key: playlistItem.id.toString(), // Assuming id is unique
     playlistName: playlistItem.playlistName,
     artists: playlistItem.user.userName,

@@ -125,23 +125,7 @@ const TheHeader = () => {
         footer={null}
         className="inset-0 flex font-bold modalStyle"
       >
-        <div className="w-full h-full text-[#359254]">
-          {userRole != "ADMIN" && (
-            <div>
-              <div
-                onClick={() => handleOnclick("my-profile")}
-                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
-              >
-                <button>{t("accountOptions.myProfile")}</button>
-              </div>
-              <div
-                onClick={() => handleOnclick("history")}
-                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
-              >
-                <button>{t("accountOptions.listenHistory")}</button>
-              </div>
-            </div>
-          )}
+        <div className="w-full h-full text-primary dark:text-primaryDarkmode">
           {userRole == "ARTIST" && (
             <div>
               {/* <div
@@ -158,12 +142,28 @@ const TheHeader = () => {
               </div>
             </div>
           )}
-          <div
-            onClick={() => handleOnclick("settings")}
-            className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
-          >
-            <button>{t("accountOptions.settings")}</button>
-          </div>
+          {userRole != "ADMIN" && (
+            <div>
+              <div
+                onClick={() => handleOnclick("my-profile")}
+                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
+              >
+                <button>{t("accountOptions.myProfile")}</button>
+              </div>
+              <div
+                onClick={() => handleOnclick("history")}
+                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
+              >
+                <button>{t("accountOptions.listenHistory")}</button>
+              </div>
+              <div
+                onClick={() => handleOnclick("settings")}
+                className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
+              >
+                <button>{t("accountOptions.settings")}</button>
+              </div>
+            </div>
+          )}
           <div
             onClick={LogOut}
             className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"

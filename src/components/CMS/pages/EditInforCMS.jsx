@@ -107,7 +107,7 @@ const EditInfor = () => {
     // console.log("userName", userName);
   }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
   return (
-    <section className="w-full h-screen relative flex flex-col pt-10 bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
+    <section className="relative flex flex-col w-full h-screen pt-10">
       <div className="flex items-center justify-center h-fit">
         <Form
           {...layout}
@@ -115,11 +115,11 @@ const EditInfor = () => {
           name="control-ref"
           form={form}
           onFinish={onFinish}
-          className="xl:w-[500px] relative w-fit border border-[#d2cece] rounded-md mx-auto p-5 bg-[#f6f4f4] "
+          className="xl:w-[500px] relative w-fit border rounded-md mx-auto p-5  bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary formStyle"
         // initialValues={{ userName: userInfor.userName }}
         >
           <div className="w-full mb-5 text-center">
-            <h2 className="text-3xl uppercase font-monserrat font-bold text-[#312f2f]">
+            <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
               Edit Information
             </h2>
           </div>
@@ -145,9 +145,8 @@ const EditInfor = () => {
                 required: true,
               },
             ]}
-          // initialValue={userInfor.userName}
           >
-            <Input />
+            <Input className="dark:bg-backgroundPrimary" />
           </Form.Item>
 
           <Form.Item
@@ -159,7 +158,7 @@ const EditInfor = () => {
               },
             ]}
           >
-            <Input />
+            <Input className="dark:bg-backgroundPrimary" />
           </Form.Item>
 
           <Form.Item
@@ -171,7 +170,7 @@ const EditInfor = () => {
               },
             ]}
           >
-            <Input disabled />
+            <Input disabled className="dark:bg-backgroundPrimary" />
           </Form.Item>
           <Form.Item
             label="Birthday"
@@ -180,7 +179,7 @@ const EditInfor = () => {
               { required: true, message: "Please input your date of birth!" },
             ]}
           >
-            <DatePicker />
+            <DatePicker className="dark:bg-backgroundPrimary" />
           </Form.Item>
 
           {/* Genre */}
@@ -239,10 +238,10 @@ const EditInfor = () => {
             <Input.Password />
           </Form.Item> */}
 
-          <Form.Item {...tailLayout} className="left-0">
-            <Button type="primary" htmlType="submit" className="bg-[green] ">
-              Submit
-            </Button>
+          <Form.Item className="relative flex justify-end">
+            <butotn type="submit" className="px-2 py-2 border rounded-md cursor-pointer min-w-fit border-primary dark:border-primary text-primary dark:text-primaryDarkmode hover:opacity-70">
+              Save Changes
+            </butotn>
           </Form.Item>
         </Form>
       </div>

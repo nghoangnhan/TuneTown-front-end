@@ -22,35 +22,39 @@ const MessageSection = ({ chatContent }) => {
             className={`${chat.own == true && chat.type !== 2 ? "items-end" : (chat.own == false && chat.type !== 2 ? "items-start" : (chat.type == 2 ? "items-center"
               : ""))} flex flex-col m-2 gap-2`}>
             <div className="flex flex-row items-end ">
-              {/* Avatar  */}
-              <div className="w-10">
-                {chat.own == false && chat.type !== 2 &&
-                  <img
-                    src={`${chat.sentUserAvatar ? chat.sentUserAvatar : defaultAva}`}
-                    alt="user"
-                    className="bg-white rounded-full"
-                  />}
-              </div>
 
               {/* Message */}
               {/* 2 is SYSTEM, !2 is USERS */}
-              {chat.type !== 2 && <div className="flex flex-col gap-2 mx-1">
-                <h3 className="font-bold text-primary dark:text-primaryDarkmode">
-                  {chat.name ? chat.name : "Unknown"}
-                </h3>
-                <div className="flex flex-row items-end gap-1">
-                  <span className="max-w-xs px-2 py-1 text-base break-words border rounded-md bg-slate-200">
-                    {chat.message}
-                  </span>
-                  {chat.own && chat.seen === 1 && <CheckSeen className="ml-1 text-primary dark:text-primaryDarkmode" />}
-                  {chat.own && chat.seen === 0 && <Check className="ml-1 text-primary dark:text-primaryDarkmode" />}
-                </div>
-                <div className="flex justify-end">
-                  <p className="text-xs text-slate-400">{chat.time}</p>
-                </div>
-              </div>}
-              {
-                chat.type === 2 && <div className="flex flex-col items-center justify-center">
+              {chat.type !== 2 &&
+                <div className="flex flex-row items-center">
+                  {/* Avatar  */}
+                  <div className="w-8">
+                    {chat.own == false && chat.type !== 2 &&
+                      <img
+                        src={`${chat.sentUserAvatar ? chat.sentUserAvatar : defaultAva}`}
+                        alt="user"
+                        className="mt-2 bg-white rounded-full"
+                      />}
+                  </div>
+                  <div className="flex flex-col gap-1 mx-1">
+                    <h3 className="font-bold text-primary dark:text-primaryDarkmode">
+                      {chat.name ? chat.name : "Unknown"}
+                    </h3>
+                    <div className="flex flex-row items-end gap-1">
+                      <span className="max-w-xs px-2 py-1 text-base break-words border rounded-md bg-slate-200">
+                        {chat.message}
+                      </span>
+                      {chat.own && chat.seen === 1 && <CheckSeen className="ml-1 text-primary dark:text-primaryDarkmode" />}
+                      {chat.own && chat.seen === 0 && <Check className="ml-1 text-primary dark:text-primaryDarkmode" />}
+                    </div>
+                    <div className={`flex ${chat.own == true ? "justify-end" : "justify-start"}`}>
+                      <p className="text-xs text-slate-400">{chat.time}</p>
+                    </div>
+                  </div>
+                </div>}
+
+              {chat.type === 2 &&
+                <div className="flex flex-col items-center justify-center">
                   <div className="flex flex-col items-center justify-center gap-2 mt-2">
                     <h3 className="font-bold text-primary dark:text-primaryDarkmode">
                       {chat.name ? chat.name : "SYSTEM MESSAGE"}
