@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Button, DatePicker, Form, Input } from "antd";
+import { DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
 import UseCookie from "../../../hooks/useCookie";
 import UploadAvatar from "../../Users/UploadAvatar";
@@ -11,12 +11,6 @@ const layout = {
     span: 8,
   },
   wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 20,
     span: 16,
   },
 };
@@ -40,7 +34,7 @@ const EditInfor = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log(response.data, response.status);
+      // console.log(response.data, response.status);
       setUserInfor(response.data.user);
       // setUserName(response.data.user.userName);
     } catch (error) {

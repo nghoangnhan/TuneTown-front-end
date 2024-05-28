@@ -10,7 +10,7 @@ import { setIsNewMessage, setRefreshChat } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
 import { Item, Menu, useContextMenu } from "react-contexify";
-import { Input, message } from "antd";
+import { message } from "antd";
 import ModalApprove from "./ModalApprove";
 
 const ChatArea = () => {
@@ -206,28 +206,30 @@ const ChatArea = () => {
       {/* Load message content */}
 
       {/* Chat input area */}
-      <div className={`fixed bottom-0 flex flex-row items-center justify-center w-full gap-3 p-3 sm:p-2 
-       ${maxWidthClass} bg-slate-50 dark:bg-backgroundChattingInputNavDark`}
+      <div className={`fixed w-screen bottom-0 gap-3 p-3 sm:p-2 bg-slate-50 dark:bg-backgroundChattingInputNavDark`}
       >
-        <Input
-          type="text"
-          className="w-full p-3 rounded-md outline-none text-primaryText2 dark:bg-backgroundPrimary"
-          placeholder="Type a message..."
-          value={newMessage}
-          onChange={handleMessageChange}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              sendMessage(userId, chatId, newMessage);
-            }
-          }}
-        />
+        <div className="flex flex-row items-center justify-center w-full gap-2 sm:pr-0 md:pr-0 xl:pr-80">
+          <div className="flex-grow">
+            <input
+              type="text"
+              className="w-full p-3 rounded-md outline-none text-primaryTextDark2 dark:bg-backgroundComponentDarkPrimary"
+              placeholder="Type a message..."
+              value={newMessage}
+              onChange={handleMessageChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  sendMessage(userId, chatId, newMessage);
+                }
+              }}
+            />
+          </div>
 
-        <button
-          className="flex-shrink-0 p-3 text-white rounded-lg bg-primary hover:opacity-50 dark:bg-primaryDarkmode"
-          onClick={() => sendMessage(userId, chatId, newMessage)}
-        >
-          <SendIcon></SendIcon>
-        </button>
+          <button
+            className="sticky p-3 text-white rounded-md right-2 bg-primary hover:opacity-50 dark:bg-primaryDarkmode"
+            onClick={() => sendMessage(userId, chatId, newMessage)}>
+            <SendIcon></SendIcon>
+          </button>
+        </div>
       </div>
 
       {/*  End of chat input area */}
