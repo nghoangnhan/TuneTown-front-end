@@ -14,7 +14,7 @@ const SongSectionPlaylist = (props) => {
     <div className="w-full xl:w-full bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
         <div className="flex flex-row gap-8 ml-8">
-          <div className="font-bold text-center ">ID</div>
+          <div className="font-bold text-center ">#</div>
           <div className="font-bold text-center ">Song Details</div>
         </div>
         {/* <div>

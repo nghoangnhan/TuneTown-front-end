@@ -68,26 +68,27 @@ const PostItem = ({ postContent }) => {
   };
 
   const handleAddSongToQueue = (songList) => {
+    console.log("handleAddSongToQueue", songList);
     dispatch(setCurrentTime(0));
     dispatch(
       setCurrentSong({
-        id: songList[0].song.id,
-        songName: songList[0].song.songName,
-        artists: songList[0].song.artists.map((artist) => artist),
-        songDuration: songList[0].song.songDuration || 200,
-        songCover: songList[0].song.poster,
-        songData: songList[0].song.songData,
+        id: songList[0]?.id,
+        songName: songList[0]?.songName,
+        artists: songList[0]?.artists.map((artist) => artist),
+        songDuration: songList[0]?.songDuration || 200,
+        songCover: songList[0]?.poster,
+        songData: songList[0]?.songData,
       })
     );
 
     dispatch(setIsPlaying(true));
     const queueSongs = songList.slice(1, songList.length).map((song) => ({
-      id: song.song.id,
-      songName: song.song.songName,
-      artists: song.song.artists.map((artist) => artist),
-      songDuration: song.song.songDuration || 200,
-      songCover: song.song.poster,
-      songData: song.song.songData,
+      id: song?.id,
+      songName: song?.songName,
+      artists: song?.artists.map((artist) => artist),
+      songDuration: song?.songDuration || 200,
+      songCover: song?.poster,
+      songData: song?.songData,
     }));
     console.log(queueSongs);
     dispatch(addPlaylistSongToQueue(queueSongs));
@@ -210,7 +211,7 @@ const PostItem = ({ postContent }) => {
                     alt="Cover Art Playlist"
                   />
                   <div className="absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-100"
-                  // onClick={handleAddSongToQueue}
+                    onClick={() => handleAddSongToQueue(songPlaylist)}
                   >
                     <PlayButton color={true} className="text-3xl text-white" />
                   </div>
@@ -236,14 +237,13 @@ const PostItem = ({ postContent }) => {
                     <div
                       key={index}
                       className="flex flex-row items-center justify-start w-full gap-2 p-1 px-2 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistHoverDark hover:opacity-70"
-                      onClick={() => NavigateSong(song.id)}
                     >
                       <img
                         className="w-8 h-8 bg-white rounded-full max-w-8 max-h-8"
                         src={song.poster ? song.poster : Base_AVA}
                         alt="Cover Art Song"
                       />
-                      <div className="flex flex-col w-full gap-1">
+                      <div className="flex flex-col w-full gap-1" onClick={() => NavigateSong(song.id)}>
                         <div className="text-sm font-bold text-primary dark:text-primaryDarkmode">
                           {song.songName}
                         </div>
@@ -253,7 +253,16 @@ const PostItem = ({ postContent }) => {
                       </div>
                       {/* Hover Show Play Icon  */}
                       <div className="flex flex-row items-center justify-end w-full mr-4 opacity-0 hover:opacity-100"
-                      // onClick={dispatch(setCurrentSong)}
+                        onClick={() => dispatch(setCurrentSong(
+                          {
+                            id: song.id,
+                            songName: song.songName,
+                            artists: song.artists.map((artist) => artist),
+                            songDuration: song.songDuration || 200,
+                            songCover: song.poster,
+                            songData: song.songData,
+                          }
+                        ))}
                       >
                         <PlayButton color={true} />
                       </div>

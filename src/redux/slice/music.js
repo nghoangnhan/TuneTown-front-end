@@ -8,61 +8,40 @@ const musicStore = createSlice({
   name: "music",
   initialState: {
     currentSong: {
-      id: null,
-      songName: "What Make You Beautiful",
+      id: 2,
+      songName: "One Of The Girls",
       artists: [
         {
-          id: 1,
-          userName: "One Direction",
-        },
-        {
-          id: 2,
-          userName: "Two Direction",
+          id: "c3a83bc2-a6c2-ba0e-c3a9-4bc2b6c290c2",
+          userName: "The Weeknd",
         },
       ],
       currentTime: 0,
       songDuration: 214,
       songCover:
-        "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2F1direction.jpg?alt=media&token=c62c84bd-3b36-45b2-844a-f7c4f236fe01",
+        "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Foneofthegirl.jpg?alt=media&token=b14195a6-74d2-4559-bd73-ff1c25f0c494",
       songData:
-        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/What_Makes_You_Beautiful/What_Makes_You_Beautiful_",
+        "https://storage.googleapis.com/tunetown-6b63a.appspot.com/audios/One-of-the-girls/One-of-the-girls_",
       // HappyNewYear,
       lyric: `
-      [Verse 1]:
-      You're insecure, don't know what for,
-      You're turning heads when you walk through the door,
-      Don't need makeup to cover up,
-      Being the way that you are is enough,
-
-      [Pre-Chorus]:
-      Everyone else in the room can see it,
-      Everyone else but you,
-
-      [Verse 1]:
-      You're insecure, don't know what for,
-      You're turning heads when you walk through the door,
-      Don't need makeup to cover up,
-      Being the way that you are is enough,
-
-      [Pre-Chorus]:
-      Everyone else in the room can see it,
-      Everyone else but you,
-
-      [Verse 1]:
-      You're insecure, don't know what for,
-      You're turning heads when you walk through the door,
-      Don't need makeup to cover up,
-      Being the way that you are is enough,
-
-      [Pre-Chorus]:
-      Everyone else in the room can see it,
-      Everyone else but you,
-
-      [Verse 1]:
-      You're insecure, don't know what for,
-      You're turning heads when you walk through the door,
-      Don't need makeup to cover up,
-      Being the way that you are is enough,
+     <p>You're insecure</p><p>Don't know what for</p>
+     <p>You're turning heads when you walk through the door-or-or</p>
+     <p>Don't need make-up</p><p>To cover up</p>
+     <p>Being the way that you are is enough-ugh-ugh</p>
+     <p><br></p><p>Everyone else in the room can see it</p>
+     <p>Everyone else but you-ou</p><p><br></p>
+     <p>Baby you light up my world like nobody else</p>
+     <p>The way that you flip your hair gets me overwhelmed</p>
+     <p>But when you smile at the ground it ain't hard to tell</p>
+     <p>You don't know-ow-ow</p><p>You don't know you're beautiful</p>
+     <p><br></p><p>If only you saw what I can see</p>
+     <p>You'll understand why I want you so desperately</p>
+     <p>Right now I'm looking at you and I can't believe</p>
+     <p>You don't know-ow-ow</p><p>You don't know you're beautiful</p>
+     <p>Oh-oh-oh</p><p><br></p><p>That's what makes you beautiful</p><p><br></p>
+     <p>So c-c-come on</p><p>You got it wrong</p>
+     <p>To prove I'm right I put it in a song-ong-ong</p><p>I don't know why</p>
+     <p>You're being shy</p><p>And turn away when I look into your eye-ye-yes</p>
       `,
     },
     listSong: [],

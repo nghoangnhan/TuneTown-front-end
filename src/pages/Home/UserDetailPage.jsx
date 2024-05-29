@@ -12,10 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import EditUserForm from "../../components/Users/EditUserForm";
 import EditGenreForm from "../../components/Users/EditGenreForm";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import MyPlaylistItem from "../../components/Users/MyPlaylistItem";
 import { setMyPLaylistList } from "../../redux/slice/playlist";
 import useSongUtils from "../../utils/useSongUtils";
 import { useTranslation } from "react-i18next";
+import HistoryPage from "./HistoryPage";
 
 // eslint-disable-next-line no-unused-vars
 const UserDetailPage = ({ owned }) => {
@@ -201,38 +201,17 @@ const UserDetailPage = ({ owned }) => {
           </div>
         </div>
       </div>
-      <div
-        className={`${isMobile ? "flex-col" : "flex-row"
-          } flex items-start justify-evenly w-full`}
-      >
-        <div className="xl:min-w-[600px] min-w-[400px] bg-backgroundPlaylist dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 text-primaryText2 min-h-screen rounded-2xl p-2 shadow-lg mt-4">
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-1 gap-x-5 xl:px-5">
-            {playlistList &&
-              playlistList.map((playlistItem) => (
-                <div
-                  className="flex justify-center mt-10 xl:w-full xl:h-full"
-                  key={playlistItem.id}
-                >
-                  <MyPlaylistItem
-                    key={playlistItem.id}
-                    id={playlistItem.id}
-                    playlistInfo={playlistItem}
-                    playlistName={playlistItem.playlistName}
-                    playlistType={playlistItem.playlistType}
-                    users={playlistItem.users}
-                    coverArt={playlistItem.coverArt}
-                  ></MyPlaylistItem>
-                </div>
-              ))}
-          </div>
-        </div>
-        <div>
+      <div className={`flex-col flex items-start justify-evenly w-full`}>
+        <div className="w-full">
           {postList && <PostSection postList={postList}></PostSection>}
           {postList?.length === 0 && (
             <div className="xl:min-w-[500px] max-xl:min-w-[700px] text-center text-primary dark:text-primaryDarkmode font-bold px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-3 xl:mt-5 xl:py-5 xl:px-5">
               No posts yet!
             </div>
           )}
+        </div>
+        <div className="xl:min-w-[600px] min-w-[400px] w-full bg-backgroundPlaylist dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 text-primaryText2 min-h-screen rounded-2xl p-2 shadow-lg mt-4">
+          <HistoryPage></HistoryPage>
         </div>
       </div>
       <Modal

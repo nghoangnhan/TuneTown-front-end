@@ -171,7 +171,7 @@ const SongItemPlaylist = ({
       </Menu>
 
       <div
-        className="relative flex flex-row items-center p-2 my-1 text-sm cursor-pointer text-primary bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDark rounded-xl xl:text-base"
+        className="relative flex flex-row items-center p-2 my-2 text-sm cursor-pointer text-primary bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDark rounded-xl xl:text-base"
         draggable={draggableSong}
         onDragStart={(e) => {
           e.dataTransfer.setData("text/plain", songOrder);

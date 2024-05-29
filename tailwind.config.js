@@ -56,7 +56,7 @@ export default {
         // Background Song Item
         backgroundSongItem: "#f5f5f5",
         backgroundSongItemHover: "#e8e8e8",
-        backgroundSongItemDark: "#313846",
+        backgroundSongItemDark: "#2b313f",
         backgroundSongItemHoverDark: "#4a5568",
 
         // Background Chatting page

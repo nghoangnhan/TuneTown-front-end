@@ -13,7 +13,7 @@ const ArtistInput = () => {
   const [emailRS, setEmailRS] = useState([]);
   const [artistRS, setArtistRS] = useState([]); // [{id:"",name: "", email: ""}]
   const [emailInput, setEmailInput] = useState("");
-  const inputDebounce = useDebounce(emailInput, 500);
+  const inputDebounce = useDebounce(emailInput, 300);
   const handleEmailChange = (value) => {
     // setEmailInput(e.target.value);
     setEmailInput(value);

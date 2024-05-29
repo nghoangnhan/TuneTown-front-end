@@ -22,8 +22,9 @@ const HistorySection = () => {
           },
         }
       );
-      console.log("Song History", response.data);
+      // console.log("Song History", response.data);
       setSongList(response.data);
+      console.log("Song History", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -44,6 +45,13 @@ const HistorySection = () => {
   }));
 
   const columnsSong = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      align: "center",
+      render: (text) => <a>{text}</a>,
+    },
     {
       title: "Poster", dataIndex: "poster", key: "poster",
       align: "center",
@@ -98,9 +106,8 @@ const HistorySection = () => {
 
   if (!songList) return null;
   return (
-    <div className="h-full min-h-screen mb-20 xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
-      <div className="text-4xl font-bold text-primary dark:text-primaryDarkmode">Song Management</div>
-      <div className="my-4 text-2xl font-bold text-primaryText2 dark:text-primaryTextDark2">History</div>
+    <div className="h-full min-h-screen xl:p-5 bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
+      <div className="my-4 text-4xl font-bold text-primary dark:text-primaryDarkmode">History</div>
       <Table columns={columnsSong} dataSource={dataSongTable} />
     </div>
   );

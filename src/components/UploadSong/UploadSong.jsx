@@ -77,7 +77,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
       }),
       status: 1,
       artists: values.artists.map((artist) => {
-        return { id: artist.value };
+        return { id: artist };
       }),
       likes: 0,
       listens: 0,

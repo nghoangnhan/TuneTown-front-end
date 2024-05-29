@@ -10,6 +10,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import { useSongUtils } from "../../utils/useSongUtils";
 import OptionPostItem from "./OptionPostItem.jsx";
 import { useContextMenu } from "react-contexify";
+import { addPlaylistSongToQueue, setCurrentSong, setCurrentTime, setIsPlaying } from "../../redux/slice/music.js";
 
 
 const PostItemDetail = () => {
@@ -73,6 +74,34 @@ const PostItemDetail = () => {
       });
     }
   };
+
+  const handleAddSongToQueue = (songList) => {
+    console.log("handleAddSongToQueue", songList);
+    dispatch(setCurrentTime(0));
+    dispatch(
+      setCurrentSong({
+        id: songList[0]?.id,
+        songName: songList[0]?.songName,
+        artists: songList[0]?.artists.map((artist) => artist),
+        songDuration: songList[0]?.songDuration || 200,
+        songCover: songList[0]?.poster,
+        songData: songList[0]?.songData,
+      })
+    );
+
+    dispatch(setIsPlaying(true));
+    const queueSongs = songList.slice(1, songList.length).map((song) => ({
+      id: song?.id,
+      songName: song?.songName,
+      artists: song?.artists.map((artist) => artist),
+      songDuration: song?.songDuration || 200,
+      songCover: song?.poster,
+      songData: song?.songData,
+    }));
+    console.log(queueSongs);
+    dispatch(addPlaylistSongToQueue(queueSongs));
+  };
+
 
   const handleLikePost = async () => {
     await likePost({ userId: userId, postId: postContent.id }).then(() => {
@@ -194,7 +223,7 @@ const PostItemDetail = () => {
             <div className="flex flex-row items-center gap-2 mt-2 justify-evenly">
 
               {/* PlaylistInfo  */}
-              <div className="flex flex-row items-center gap-4 cursor-pointer min-w-fit justify-evenly"            >
+              <div className="flex flex-row items-center gap-4 cursor-pointer min-w-fit justify-evenly">
                 <div className="relative inline-block rounded-full dark:bg-white">
                   <img
                     className="transition duration-300 ease-in-out transform rounded-md max-w-14 max-h-14 w-fit h-fit "
@@ -206,7 +235,7 @@ const PostItemDetail = () => {
                     alt="Cover Art Playlist"
                   />
                   <div
-                    // onClick={ handleAddSongToQueue}
+                    onClick={() => handleAddSongToQueue(songPlaylist)}
                     className="absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 opacity-0 hover:opacity-100">
                     <PlayButton color={true} size={2} className="text-3xl text-white" />
                   </div>
@@ -232,14 +261,13 @@ const PostItemDetail = () => {
                     <div
                       key={index}
                       className="flex flex-row items-center justify-start w-full gap-2 p-1 px-3 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistHoverDark hover:opacity-70"
-                      onClick={() => NavigateSong(song.id)}
                     >
                       <img
                         className="w-8 h-8 bg-white rounded-full max-w-8 max-h-8"
                         src={song.poster ? song.poster : Base_AVA}
                         alt="Cover Art Song"
                       />
-                      <div className="flex flex-col w-full gap-1">
+                      <div className="flex flex-col w-full gap-1" onClick={() => NavigateSong(song.id)}>
                         <div className="text-sm font-bold text-primary dark:text-primaryDarkmode" >
                           {song.songName}
                         </div>
@@ -249,7 +277,16 @@ const PostItemDetail = () => {
                       </div>
                       {/* Hover Show Play Icon  */}
                       <div className="flex flex-row items-center justify-end w-full mr-4 opacity-0 hover:opacity-100"
-                      // onClick={dispatch(setCurrentSong)}
+                        onClick={() => dispatch(setCurrentSong(
+                          {
+                            id: song.id,
+                            songName: song.songName,
+                            artists: song.artists.map((artist) => artist),
+                            songDuration: song.songDuration || 200,
+                            songCover: song.poster,
+                            songData: song.songData,
+                          }
+                        ))}
                       >
                         <PlayButton color={true} />
                       </div>

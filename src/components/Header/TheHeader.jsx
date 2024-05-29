@@ -151,12 +151,12 @@ const TheHeader = () => {
               >
                 <button>{t("accountOptions.myProfile")}</button>
               </div>
-              <div
+              {/* <div
                 onClick={() => handleOnclick("history")}
                 className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"
               >
                 <button>{t("accountOptions.listenHistory")}</button>
-              </div>
+              </div> */}
               <div
                 onClick={() => handleOnclick("settings")}
                 className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"

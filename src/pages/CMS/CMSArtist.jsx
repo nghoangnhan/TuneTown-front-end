@@ -220,10 +220,9 @@ const CMSArtist = () => {
     handleGetArtistDetail(userId).then((result) => {
       setRefresh(false)
     });
-  }, [userId, refresh]);
+  }, [userId, refresh, isModalOpenUpdate, isModalOpenUpload]);
   return (
     <div className="h-full min-h-screen px-4 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
-      {" "}
       <div className="flex flex-row">
         <div className="mx-1 my-2 text-4xl font-bold text-primary dark:text-primaryDarkmode">
           Good{" "}

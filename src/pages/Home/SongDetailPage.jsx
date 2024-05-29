@@ -5,14 +5,12 @@ import { useEffect, useState } from "react";
 import useSongUtils from "../../utils/useSongUtils";
 import LyricSection from "../../components/HomePage/LyricSection";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import TheHeader from "../../components/Header/TheHeader";
 import SongItem from "../../components/Song/SongItem";
 
 const SongDetailPage = () => {
   const { songId } = useParams();
   const { Base_AVA } = useConfig();
   const { BackButton, PlayButton } = useIconUtils();
-  const { showArtistV2 } = useSongUtils();
   const { getPosterColor } = useSongUtils();
   const { getSongById } = useMusicAPIUtils();
   const [colorBG, setColorBG] = useState("");
@@ -49,9 +47,7 @@ const SongDetailPage = () => {
       className={`${songId ? "h-full" : "h-fit"
         } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}
     >
-      <div className="mb-4">
-        <TheHeader></TheHeader>
-      </div>
+
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
         style={{

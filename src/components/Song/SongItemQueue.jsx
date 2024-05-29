@@ -124,7 +124,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
         </Submenu>
       </Menu>
 
-      <div className="relative flex flex-row items-center p-2 my-1 text-sm rounded-md cursor-pointer bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDark xl:text-base">
+      <div className="relative flex flex-row items-center p-2 my-2 text-sm rounded-md cursor-pointer bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDark xl:text-base">
         {/* Icon Music / */}
         <div className="flex items-center justify-center mx-2 font-bold xl:w-12 xl:h-12 xl:mx-3 text-primary dark:text-primaryDarkmode">
           <span>

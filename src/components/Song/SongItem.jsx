@@ -123,7 +123,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
         </Submenu>
       </Menu>
 
-      <div className="relative flex flex-row items-center p-2 my-1 text-sm rounded-md cursor-pointer bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDark xl:text-base"
+      <div className="relative flex flex-row items-center p-2 my-2 text-sm rounded-md cursor-pointer bg-backgroundSongItem hover:bg-backgroundSongItemHover dark:bg-backgroundSongItemDark hover:dark:bg-backgroundSongItemHoverDark xl:text-base"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

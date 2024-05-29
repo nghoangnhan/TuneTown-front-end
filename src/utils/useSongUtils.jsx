@@ -40,7 +40,7 @@ export const useSongUtils = () => {
     }
   };
   const showArtistV2 = (artistName, fontSize) => {
-    if (artistName.length > 1) {
+    if (artistName && artistName.length > 1) {
       return artistName.map((artist, index) => (
         <span key={artist.id} className={`${fontSize ? fontSize : "text-sm"} cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary`}>
           {index == artistName.length - 1 ? (
@@ -54,7 +54,7 @@ export const useSongUtils = () => {
           )}
         </span>
       ));
-    } else if (artistName.length == 1) {
+    } else if (artistName && artistName.length == 1) {
       let artist = artistName[0];
       return (
         <span

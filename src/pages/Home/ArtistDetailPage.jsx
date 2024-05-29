@@ -5,25 +5,28 @@ import { setChatChosen } from "../../redux/slice/social";
 import { useDispatch } from "react-redux";
 import useUserUtils from "../../utils/useUserUtils";
 import useIconUtils from "../../utils/useIconUtils";
-import TheHeader from "../../components/Header/TheHeader";
 import useChatUtils from "../../utils/useChatUtils";
 import useConfig from "../../utils/useConfig";
 import useSongUtils from "../../utils/useSongUtils";
+import { use } from "i18next";
 
 const ArtistDetailPage = () => {
   const { artistId } = useParams();
   const { Base_AVA } = useConfig();
   const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
-  const { followArtist, getArtistByArtistId } = useUserUtils();
-  const { UserCheck, BackButton } = useIconUtils();
+  const { followArtist, getArtistByArtistId, getAllSongArtist } = useUserUtils();
+  const { UserCheck, BackButton, LoadingLogo } = useIconUtils();
   const navigate = useNavigate();
-  const { getCommunityByHostId, joinRequest, outCommunity } = useChatUtils();
+  const { getCommunityByHostId, joinRequest } = useChatUtils();
   const { getPosterColor } = useSongUtils();
   const [colorBG, setColorBG] = useState();
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [artistDetail, setArtistDetail] = useState({});
+  const [topSongListArtist, setTopSongListArtist] = useState([]);
   const [songListArtist, setSongListArtist] = useState([]);
+  const [page, setPage] = useState(1);
   const [follow, setFollow] = useState(false);
   const [request, setRequest] = useState();
   const [join, setJoin] = useState();
@@ -39,21 +42,18 @@ const ArtistDetailPage = () => {
     navigate(`/chat/${path}`);
   };
 
-  const handleFollow = () => {
-    setFollow(!follow);
-  };
-
   const handleGetArtistDetail = async (artistId) => {
     await getArtistByArtistId(artistId).then((result) => {
       if (result == null) return;
       setArtistDetail(result);
-      setSongListArtist(result.songs);
+      setTopSongListArtist(result.songs);
+      setRefresh(false)
       console.log("SetArtistDetail", result);
     });
   };
   const handleFollowArtist = async () => {
-    await followArtist(artistId).then((result) => {
-      console.log("Follow Artist", result);
+    await followArtist(artistId).then(() => {
+      setRefresh(true);
       setFollow(!follow);
     });
   };
@@ -76,10 +76,10 @@ const ArtistDetailPage = () => {
     }
   };
 
-  const fetchData = async () => {
+  const fetchDataCommunity = async () => {
     try {
       const communityData = await handleGetCommunity(artistId);
-      console.log("Community Data:", communityData);
+      // console.log("Community Data:", communityData);
       for (const userRequest of communityData.approveRequests) {
         if (userRequest.id == userId) {
           setRequest(true);
@@ -101,7 +101,7 @@ const ArtistDetailPage = () => {
   useEffect(() => {
     if (!artistDetail || !artistDetail.avatar) {
       setFollow(artistDetail.isFollowed);
-      console.log(artistDetail.isFollowed);
+      // console.log(artistDetail.isFollowed);
       setLoading(false);
       return;
     }
@@ -109,23 +109,28 @@ const ArtistDetailPage = () => {
   }, [artistDetail]);
 
   useEffect(() => {
-    fetchData();
+    fetchDataCommunity();
   }, [request, join, artistId]);
 
   useEffect(() => {
     handleGetArtistDetail(artistId);
-  }, [artistId]);
-  if (songListArtist == null) return null;
+  }, [artistId, refresh]);
+
+  useEffect(() => {
+    getAllSongArtist(artistId, page).then((result) => {
+      setSongListArtist(result);
+    });
+  }, [artistId, page]);
+
+
+  if (topSongListArtist == null) return null;
 
   return (
     <div
-      className={`${
-        artistId ? " h-full" : "h-fit"
-      } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
+      className={`${artistId ? " h-full" : "h-fit"
+        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
-      <div className="mb-4">
-        <TheHeader></TheHeader>
-      </div>
+
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
         style={{
@@ -138,18 +143,18 @@ const ArtistDetailPage = () => {
         <div className="flex flex-row items-center justify-start gap-4">
           <div className="relative flex flex-row items-start mt-5 mb-5">
             <img
-              className="w-20 h-20 rounded-full xl:w-56 xl:h-56"
+              className="w-20 h-20 rounded-full xl:w-52 xl:h-52 dark:bg-white"
               src={artistDetail.avatar ? artistDetail.avatar : Base_AVA}
               alt="artist-avatar"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col justify-center">
             <div className="text-[50px] text-textNormal dark:text-textNormalDark font-bold text-center mb-5">
-              <div className="flex flex-row items-center justify-center gap-2">
+              <div className="flex flex-row items-center justify-center gap-3">
                 {artistDetail.name ? artistDetail.name : "Unknown Artist"}
-                <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">
+                {/* <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">
                   #{artistDetail.id}
-                </span>
+                </span> */}
                 <span className="text-4xl text-primary dark:text-primaryDarkmode">
                   <UserCheck></UserCheck>
                 </span>
@@ -160,6 +165,14 @@ const ArtistDetailPage = () => {
                 <span>Bio:</span> {artistDetail.artists?.userBio}
               </div>
             )}
+            <div className="flex flex-row gap-2 my-2">
+              <div className="text-primaryText dark:text-primaryTextDark2 opacity-80">
+                <span>Followers:</span> {artistDetail.followers}
+              </div>
+              <div className="text-primaryText dark:text-primaryTextDark2 opacity-80">
+                <span>Following:</span> {artistDetail.following}
+              </div>
+            </div>
             {
               <div className="flex flex-row gap-4">
                 <button
@@ -175,8 +188,8 @@ const ArtistDetailPage = () => {
                   {request
                     ? "Request sent"
                     : join
-                    ? "Community joined"
-                    : "Join the artist community"}
+                      ? "Community joined"
+                      : "Join the artist community"}
                 </button>
               </div>
             }
@@ -186,25 +199,64 @@ const ArtistDetailPage = () => {
 
       {/* <SongSectionPlaylist songData={artistDetail.songs}></SongSectionPlaylist> */}
       {artistDetail?.songs && (
-        <div className="pt-2 pb-5 pl-5 pr-5 m-auto mt-2 ml-2 mr-2 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
+        <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-2 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
+          <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
+            Top Songs of {artistDetail.name}
+          </div>
           <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
-            <div className="flex flex-row gap-8 ml-8">
-              <div className="font-bold text-center ">ID</div>
+            <div className="flex flex-row gap-8 ml-10">
+              <div className="font-bold text-center ">#</div>
               <div className="font-bold text-center ">Song Details</div>
             </div>
             <div>
               <div className="font-bold text-center ">Duration</div>
             </div>
           </div>
-          {artistDetail?.songs.map((songItem, index) => (
+          {artistDetail?.songs.slice(0, 5).map((songItem, index) => (
             <SongItem
-              key={songItem.id || index}
-              songOrder={index}
+              key={index}
+              songOrder={index + 1}
               song={songItem}
             />
           ))}
         </div>
       )}
+
+      {songListArtist && (
+        <div className="px-5 pt-2 pb-5 m-auto mx-2 my-10 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
+          <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
+            More from {songListArtist.name}
+          </div>
+          <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
+            <div className="flex flex-row gap-8 ml-10">
+              <div className="font-bold text-center ">#</div>
+              <div className="font-bold text-center ">Song Details</div>
+            </div>
+            <div>
+              <div className="font-bold text-center ">Duration</div>
+            </div>
+          </div>
+          {songListArtist?.map((songItem, index) => (
+            <SongItem
+              key={index}
+              songOrder={index + 1}
+              song={songItem}
+            />
+          ))}
+          {/* Load More  */}
+          {<div className="flex flex-row items-center justify-center gap-4 mt-5">
+            <button
+              onClick={() => {
+                setPage(page + 1);
+              }}
+              className="px-3 py-2 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70">
+              Load More
+            </button>
+          </div>}
+        </div>
+      )}
+
+      <LoadingLogo loading={loading}></LoadingLogo>
     </div>
   );
 };

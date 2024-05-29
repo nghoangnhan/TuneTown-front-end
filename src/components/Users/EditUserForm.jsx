@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, DatePicker, Form, Input, message } from "antd";
+import { DatePicker, Form, Input, message } from "antd";
 import UseCookie from "../../hooks/useCookie";
 import dayjs from "dayjs";
-import useConfig from "../../utils/useConfig";
 import useUserUtils from "../../utils/useUserUtils";
 import { useDispatch, useSelector } from "react-redux";
 import { setRefershAccount } from "../../redux/slice/account";
@@ -10,31 +9,17 @@ import UploadFileDropZone from "../../utils/useDropZone";
 import useDataUtils from "../../utils/useDataUtils";
 import { useForm } from "antd/es/form/Form";
 import PropTypes from "prop-types";
-
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
+import useIconUtils from "../../utils/useIconUtils";
 
 // eslint-disable-next-line no-unused-vars
 const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const userId = localStorage.getItem("userId");
-  const { default_Img } = useConfig();
   const dispatch = useDispatch();
   const { editUser, getUserInfor } = useUserUtils();
   const { handleUploadFileIMG, } = useDataUtils();
+  const { LoadingLogo } = useIconUtils();
   const refreshAccount = useSelector((state) => state.account.refreshAccount);
   const [form] = useForm();
   const [userInfor, setUserInfor] = useState();
@@ -102,12 +87,11 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
   return (
     <section className={`${isModal ? "" : "h-fit pt-6 pb-20"} `}>
       <Form
-        {...layout}
         name="control-ref"
         form={form}
         onFinish={onFinish}
         className={`
-        ${isModal ? "w-full" : "w-1/2"} m-auto p-5 formStyle`}
+        ${isModal ? "w-full" : "w-1/2"} flex flex-col  p-5 formStyle`}
       >
         <div className="w-full mb-5 text-center">
           <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
@@ -142,7 +126,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
           ]}
         // initialValue={userInfor.userName}
         >
-          <Input />
+          <Input className="dark:bg-backgroundPrimary" />
         </Form.Item>
 
         <Form.Item
@@ -154,7 +138,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
             },
           ]}
         >
-          <Input />
+          <Input className="dark:bg-backgroundPrimary" />
         </Form.Item>
 
         <Form.Item
@@ -166,7 +150,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
             },
           ]}
         >
-          <Input disabled />
+          <Input disabled className="dark:bg-backgroundPrimary dark:text-primaryText2" />
         </Form.Item>
         <Form.Item
           label="Birthday"
@@ -175,20 +159,16 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
             { required: true, message: "Please input your date of birth!" },
           ]}
         >
-          <DatePicker />
+          <DatePicker className="dark:bg-backgroundPrimary" />
         </Form.Item>
 
-        <Form.Item {...tailLayout} className="left-0">
-          <Button type="primary" htmlType="submit" className="bg-[green] ">
-            Submit
-          </Button>
+        <Form.Item  >
+          <button type="submit" className="absolute px-2 py-2 border rounded-md right-2 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
+            Save Changes
+          </button>
         </Form.Item>
-        {loading && (
-          <div className="overlay">
-            <img src={default_Img} alt="Loading..." width={100} height={100} className="zoom-in-out" />
-          </div>
-        )}
       </Form>
+      <LoadingLogo loading={loading}></LoadingLogo>
     </section>);
 };
 

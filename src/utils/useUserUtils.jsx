@@ -145,11 +145,29 @@ const useUserUtils = () => {
     }
   };
 
+  const getAllSongArtist = async (artistId, page) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/songs/getSongsByArtist?artistID=${artistId}&pageNo=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("getAllSongArtist Response", response.data);
+      return response.data;
+    }
+    catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
   return {
     CheckCookie,
     checkToken,
     getUserInfor,
-    getArtistByArtistId,
+    getArtistByArtistId, getAllSongArtist,
     getAllGenres,
     getUserPost,
     followArtist,
