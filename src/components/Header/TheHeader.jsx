@@ -134,16 +134,17 @@ const TheHeader = () => {
             >
               <button>Upload Song</button>
             </div> */}
+
+            </div>
+          )}
+          {userRole != "ADMIN" && (
+            <div>
               <div
                 onClick={() => handleOnclick("artistCMS")}
                 className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark "
               >
                 <button>{t("accountOptions.songManagement")}</button>
               </div>
-            </div>
-          )}
-          {userRole != "ADMIN" && (
-            <div>
               <div
                 onClick={() => handleOnclick("my-profile")}
                 className="flex items-center justify-center h-10 mt-3 font-semibold rounded-lg dark:text-primaryTextDark2 text-primaryText2 hover:opacity-70 bg-backgroundPlaylistHover dark:bg-backgroundSongItemHoverDark"

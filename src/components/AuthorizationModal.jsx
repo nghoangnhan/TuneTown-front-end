@@ -3,15 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import UseCookie from '../hooks/useCookie';
 import PropTypes from 'prop-types';
+import useUserUtils from '../utils/useUserUtils';
 
 // eslint-disable-next-line no-unused-vars
 const AuthorizationModal = ({ isAdmin, isArtist }) => {
     const [open, setOpen] = useState(false);
     const userRole = localStorage.getItem("userRole");
     const navigate = useNavigate();
-    const { getToken } = UseCookie();
+    const { getToken, removeToken } = UseCookie();
     const { access_token } = getToken();
+    const { checkToken } = useUserUtils();
     const handleOK = () => {
+        removeToken();
         navigate("/login");
         setOpen(false);
     };
@@ -19,13 +22,11 @@ const AuthorizationModal = ({ isAdmin, isArtist }) => {
     //     setOpen(false);
     // };
     useEffect(() => {
-        if (access_token === null || access_token === undefined || access_token === "") {
-            // Message to navigate to login page
-            setOpen(true);
-            console.log("CheckCookie", access_token);
-        } else {
-            console.log("CheckCookie", access_token);
-        }
+        checkToken().then((res) => {
+            if (res === false) {
+                setOpen(true);
+            }
+        });
     }, [access_token]);
 
     return (

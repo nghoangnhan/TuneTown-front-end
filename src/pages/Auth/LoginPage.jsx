@@ -11,6 +11,7 @@ import LoginFacebook from "../../components/AuthLogin/AuthFacebookLogin";
 import useConfig from "../../utils/useConfig";
 import UseCookie from "../../hooks/useCookie";
 import { useTranslation } from "react-i18next";
+import useUserUtils from "../../utils/useUserUtils";
 
 const clientId =
   "382112670726-viic3uvlj5420j60ajveandtb8j4p0sk.apps.googleusercontent.com";
@@ -20,6 +21,7 @@ const LoginPage = () => {
   const { removeToken } = UseCookie();
   const { Base_URL, auth } = useConfig();
   const [form] = useForm();
+  const { checkToken } = useUserUtils();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { saveToken } = UseCookie();
@@ -85,7 +87,7 @@ const LoginPage = () => {
   // }, []);
 
   useEffect(() => {
-    if (auth.access_token !== "" && auth.access_token !== null && auth.access_token !== undefined && userRole !== null && userRole !== undefined) {
+    if (checkToken() == true && auth.access_token !== "") {
       if (userRole === "ADMIN") {
         navigate("/cms/profile");
       } else if (userRole === "USER" || userRole === "ARTIST") {

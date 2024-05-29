@@ -18,31 +18,27 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
 
     // Handle chat chosen
     const handleChatChosen = async (conver) => {
-        try {
-            const converDetail = {
-                chatId: conver.chatId,
-                userName: conver.userName,
-                avatar: conver.avatar,
-                communityId: conver.communityId,
-                communityName: conver.communityName,
-                communityAvatar: conver.communityAvatar,
-                communityHost: conver.communityHost,
-                approveRequests: conver.approveRequests,
-                hosts: conver.hosts,
-                joinUSers: conver.joinUSers,
-            };
-            console.log("ChatNavigate handleChatChosen", converDetail);
+        const converDetail = {
+            chatId: conver.chatId,
+            userName: conver.userName,
+            avatar: conver.avatar,
+            communityId: conver.communityId,
+            communityName: conver.communityName,
+            communityAvatar: conver.communityAvatar,
+            communityHost: conver.communityHost,
+            approveRequests: conver.approveRequests,
+            hosts: conver.hosts,
+            joinUSers: conver.joinUSers,
+        };
+        console.log("ChatNavigate handleChatChosen", converDetail);
 
-            dispatch(setChatChosen(converDetail));
-            if (!conver.communityId) {
-                // Private message
-                navigate(`/chat/${conver.chatId}`);
-            } else {
-                // Artist community
-                navigate(`/chat/community/${conver.chatId}`);
-            }
-        } catch (error) {
-            console.error("Error while handling chat chosen:", error);
+        dispatch(setChatChosen(converDetail));
+        if (!conver.communityId) {
+            // Private message
+            navigate(`/chat/${conver.chatId}`);
+        } else {
+            // Artist community
+            navigate(`/chat/community/${conver.chatId}`);
         }
     };
 
@@ -78,9 +74,8 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
                     key={index}
                     className={`flex flex-row items-center gap-3 p-2 cursor-pointer w-full rounded-sm
                     ${converChosen.communityId !== null && converChosen.communityId === conver.communityId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : (converChosen.chatId !== null && conver.chatId === converChosen.chatId ? "bg-slate-200 dark:bg-backgroundChattingHoverDark" : "")} `}
-                    onClick={() => {
-                        handleChatChosen(conver);
-                    }}
+                    onClick={() => handleChatChosen(conver)
+                    }
                 >
 
                     <Menu id={`converOption_${index}`} className='contexify-menu'>
