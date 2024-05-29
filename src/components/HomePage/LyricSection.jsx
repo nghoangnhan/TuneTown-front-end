@@ -30,26 +30,27 @@ const LyricSection = ({ lyric }) => {
     );
   }
   return (
-    <div className="flex flex-col min-h-screen gap-4 px-4 pt-10 pb-4 rounded-lg h-fit xl:pb-10 bg-backgroundPrimary dark:bg-backgroundDarkPrimary xl:flex-row">
+    <div className="flex flex-col min-h-screen gap-4 px-4 pt-10 pb-4 h-fit xl:pb-10 bg-backgroundPrimary dark:bg-backgroundDarkPrimary xl:flex-row">
       <div className="px-2 xl:px-4">
         <img
           src={songInfor.songCover ? songInfor.songCover : default_Img}
           className="h-auto rounded-md max-w-64"
           alt="Song Cover"
         />
-        <h2 className="text-3xl font-bold text-primary dark:text-primaryDarkmode">
+        <h2 className="text-4xl font-bold text-primary dark:text-primaryDarkmode">
           {songInfor.songName}
         </h2>
         <div className="text-primaryText2 dark:text-primaryTextDark">
           {showArtistV2(songInfor?.artists)}
         </div>
       </div>
-      <div className="flex items-center gap-4 flex-col w-full xl:h-[550px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary shadow-xl rounded-md p-5 overflow-y-auto pb-3">
+      <div className="flex items-center gap-4 flex-col w-full xl:h-[700px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary shadow-xl rounded-md p-5 overflow-y-auto pb-3">
         <div className="mb-2 text-5xl font-bold text-primary dark:text-primaryDarkmode">
           {t("lyrics.lyrics")}
         </div>
-        <div className="text-xl font-bold whitespace-pre-line text-primaryText2 dark:text-primaryTextDark2">
-          {lyrical}
+        <div className="mt-2 text-xl font-bold text-center whitespace-pre-line text-primaryText2 dark:text-primaryTextDark2"
+          dangerouslySetInnerHTML={{ __html: lyrical }}
+        >
         </div>
       </div>
     </div>

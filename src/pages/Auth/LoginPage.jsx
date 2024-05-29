@@ -24,6 +24,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const { saveToken } = UseCookie();
   const { t } = useTranslation();
+  const userRole = localStorage.getItem("userRole");
 
   const handleUserData = async (usersData) => {
     console.log("Data", usersData);
@@ -84,8 +85,12 @@ const LoginPage = () => {
   // }, []);
 
   useEffect(() => {
-    if (auth.access_token !== "" && auth.access_token !== null && auth.access_token !== undefined) {
-      navigate("/");
+    if (auth.access_token !== "" && auth.access_token !== null && auth.access_token !== undefined && userRole !== null && userRole !== undefined) {
+      if (userRole === "ADMIN") {
+        navigate("/cms/profile");
+      } else if (userRole === "USER" || userRole === "ARTIST") {
+        navigate("/");
+      }
     }
   }, [auth.access_token]);
 

@@ -77,11 +77,11 @@ const UploadSong = ({ setOpenModalUpload }) => {
       }),
       status: 1,
       artists: values.artists.map((artist) => {
-        return { id: artist };
+        return { id: artist.value };
       }),
       likes: 0,
       listens: 0,
-      lyric: contentParser ? contentParser : "",
+      lyric: contentParser ? contentParser : editorValue,
     };
     console.log("Posting Data", postData);
     await postSong(postData).then(() => {
@@ -140,7 +140,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
           },
         ]}
       >
-        <Input className="dark:text-primaryText2 bg-backgroundPrimary " />
+        <Input className=" dark:bg-backgroundPrimary" />
       </Form.Item>
 
       <ArtistInput></ArtistInput>
@@ -202,9 +202,12 @@ const UploadSong = ({ setOpenModalUpload }) => {
         <ReactQuill
           theme="snow"
           value={Parser(editorValue)}
+          modules={{
+            toolbar: false
+          }}
           onChange={setEditorValue}
-          placeholder="Your thoughts..."
-          className="overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
+          placeholder="Lyrics..."
+          className="overflow-auto bg-white dark:bg-backgroundDarkPrimary h-36 dark:text-white max-h-40"
         />
       </Form.Item>
 

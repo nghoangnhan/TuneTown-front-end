@@ -217,7 +217,9 @@ const CMSArtist = () => {
     }
   }, []);
   useEffect(() => {
-    handleGetArtistDetail(userId);
+    handleGetArtistDetail(userId).then((result) => {
+      setRefresh(false)
+    });
   }, [userId, refresh]);
   return (
     <div className="h-full min-h-screen px-4 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
@@ -296,7 +298,7 @@ const CMSArtist = () => {
         destroyOnClose={true}
         className="w-fit h-fit modalStyle"
       >
-        <UpdateSong songData={songData}></UpdateSong>
+        <UpdateSong songData={songData} setModalUpdate={setIsModalOpenUpdate}></UpdateSong>
       </Modal>
     </div>
   );

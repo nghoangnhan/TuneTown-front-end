@@ -39,10 +39,10 @@ export const useSongUtils = () => {
       return artistName[0];
     }
   };
-  const showArtistV2 = (artistName) => {
+  const showArtistV2 = (artistName, fontSize) => {
     if (artistName.length > 1) {
       return artistName.map((artist, index) => (
-        <span key={artist.id} className="text-sm cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary">
+        <span key={artist.id} className={`${fontSize ? fontSize : "text-sm"} cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary`}>
           {index == artistName.length - 1 ? (
             <span onClick={() => navigate(`/artist/${artist.id}`)}>
               {artist.userName}
@@ -59,7 +59,7 @@ export const useSongUtils = () => {
       return (
         <span
           key={artist.id}
-          className="text-sm cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary"
+          className={`${fontSize ? fontSize : "text-sm"}  cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary`}
           onClick={() => navigate(`/artist/${artist.id}`)}
         >
           {artist.userName}

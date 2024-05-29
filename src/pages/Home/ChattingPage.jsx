@@ -32,7 +32,7 @@ const ChattingPage = () => {
         <Outlet></Outlet>
       }
       {/* End Mobile Layout  */}
-      <AuthorizationModal></AuthorizationModal>
+      <AuthorizationModal isAdmin={false}></AuthorizationModal>
     </div>
   );
 };

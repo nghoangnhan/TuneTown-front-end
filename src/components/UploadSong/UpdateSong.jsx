@@ -50,6 +50,41 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
     });
   };
 
+  const onFinish = async (values) => {
+    console.log("Received values:", values);
+    if (values.artists == null) {
+      message.error("Please select at least one artist");
+      return;
+    }
+    if (fileImg == null) {
+      message.error("Please upload a cover image");
+      return;
+    }
+    if (fileMP3 == null && values.songData == null) {
+      console.log("FileMP3", fileMP3);
+      message.error("Please upload a song file");
+      return;
+    }
+    const sanitizedContent = DOMPurify.sanitize(editorValue);
+    const contentParser = Parser(sanitizedContent).props?.children;
+    const postData = {
+      id: songData.songId,
+      songName: values.songName,
+      poster: fileImg,
+      songData: fileMP3 ? fileMP3 : values.songData,
+      genres: values.genres,
+      status: 1,
+      artists: values.artists.map((artist) => {
+        return { id: artist };
+      }),
+      lyric: contentParser ? contentParser : editorValue,
+    };
+    console.log("Posting Data", postData);
+    await updateSong(postData).then(() => {
+      setModalUpdate(false);
+    });
+  };
+
   // Post Song to API
   const updateSong = async (data) => {
     try {
@@ -60,11 +95,14 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
           songName: data.songName,
           poster: data.poster,
           songData: data.songData,
-          genres: data.genre,
+          genres: data.genres.map((genre) => {
+            return { id: genre.value };
+          }),
           status: 1,
           artists: data.artists.map((artist) => {
-            return { id: artist };
+            return { id: artist.value };
           }),
+          lyric: data.lyric,
         },
         {
           headers: {
@@ -72,46 +110,12 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
           },
         }
       );
+      message.success("Update Song Successfully", 2);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
+      message.error("Update Song Failed", 2);
     }
-  };
-
-  const onFinish = async (values) => {
-    console.log("Received values:", values);
-    const { songName, artists, genre } = values;
-    if (artists == null) {
-      message.error("Please select at least one artist");
-      return;
-    }
-    if (fileImg == null) {
-      message.error("Please upload a cover image");
-      return;
-    }
-    if (fileMP3 == null) {
-      message.error("Please upload a song file");
-      return;
-    }
-    const sanitizedContent = DOMPurify.sanitize(values?.lyric);
-    const contentParser = Parser(sanitizedContent).props.children;
-    const postData = {
-      id: songData.songId,
-      songName: songName,
-      poster: fileImg,
-      songData: fileMP3,
-      genres: genre,
-      status: 1,
-      artists: artists.map((artist) => {
-        return { id: artist };
-      }),
-      lyric: contentParser,
-    };
-    console.log("Posting Data", postData);
-    // const artists = {};
-    await updateSong(postData).then(() => {
-      setModalUpdate(false);
-    });
   };
 
   useEffect(() => {
@@ -227,7 +231,7 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
             }}
             value={Parser(editorValue)}
             onChange={setEditorValue}
-            placeholder="Your thoughts..."
+            placeholder="Lyrics..."
             className="overflow-auto bg-white dark:bg-backgroundDarkPrimary h-36 dark:text-white max-h-40"
           />
         </Form.Item>

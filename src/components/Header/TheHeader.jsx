@@ -62,12 +62,12 @@ const TheHeader = () => {
         {/* <div>
           <DarkMode></DarkMode>
         </div> */}
-        <div
+        {userRole != "ADMIN" && <div
           className="flex items-center justify-center w-10 h-10 mt-1 mr-2 text-xl font-bold rounded-lg cursor-pointer text-iconText dark:text-iconTextDark hover:text-iconTextHover dark:hover:text-iconTextHoverDark dark:hover:bg-iconBackgroundDark"
           onClick={() => navigate("/chat")}
         >
           <ChatButton></ChatButton>
-        </div>
+        </div>}
         {
           <div>
             <div
