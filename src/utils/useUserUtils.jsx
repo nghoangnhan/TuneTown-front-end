@@ -39,17 +39,20 @@ const useUserUtils = () => {
 
   const getUserPost = async (authorId) => {
     try {
-      const response = await axios.get(`${Base_URL}/post/getByAuthorId?authorId=${authorId}`, {
-        headers: {
-          Authorization: `Bearer ${access_token}`
+      const response = await axios.get(
+        `${Base_URL}/post/getByAuthorId?authorId=${authorId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
         }
-      })
+      );
       console.log("getUserPost Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
     }
-  }
+  };
 
   const getArtistByArtistId = async (artistId) => {
     try {
@@ -69,52 +72,22 @@ const useUserUtils = () => {
     }
   };
 
-  const followArtist = async (userId, artistId) => {
+  const followArtist = async (artistId) => {
     try {
-      const response = await axios.post(
-        `${Base_URL}/users/follow`,
-        {
-          "follower": {
-            "id": userId
-          }, "subject": {
-            "id": artistId
-          }
-        },
+      const response = await axios.get(
+        `${Base_URL}/users/follow?userId=${artistId}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
-        })
+        }
+      );
       console.log("Follow Artist Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
     }
   };
-
-  const unfollowArtist = async (userId, artistId) => {
-    try {
-      const response = await axios.post(
-        `${Base_URL}/users/unfollowArtist?artistId=${artistId}`,
-        {
-          "follower": {
-            "id": userId
-          }, "subject": {
-            "id": artistId
-          }
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        })
-      console.log("Unfollow Artist Response", response.data);
-      return response.data;
-    }
-    catch (error) {
-      console.log("Error:", error);
-    }
-  }
 
   const getAllGenres = async () => {
     try {
@@ -125,11 +98,10 @@ const useUserUtils = () => {
       });
       console.log("getAllGenres Response", response.data);
       return response.data;
-    }
-    catch (error) {
+    } catch (error) {
       console.log("Error:", error);
     }
-  }
+  };
 
   // Update user infor to API
   const editUser = async (values) => {
@@ -152,11 +124,14 @@ const useUserUtils = () => {
     }
   };
 
-
   return {
-    CheckCookie, getUserInfor,
-    getArtistByArtistId, getAllGenres, getUserPost,
-    followArtist, unfollowArtist, editUser
+    CheckCookie,
+    getUserInfor,
+    getArtistByArtistId,
+    getAllGenres,
+    getUserPost,
+    followArtist,
+    editUser,
   };
 };
 export default useUserUtils;
