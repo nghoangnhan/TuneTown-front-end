@@ -5,7 +5,7 @@ const EmptyLayout = () => {
     return (
         <>
             <Outlet></Outlet>
-            <AuthorizationModal></AuthorizationModal>
+            <AuthorizationModal isAdmin={false}></AuthorizationModal>
         </>
     );
 };

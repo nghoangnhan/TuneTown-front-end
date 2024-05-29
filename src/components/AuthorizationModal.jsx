@@ -27,6 +27,7 @@ const AuthorizationModal = ({ isAdmin, isArtist }) => {
             console.log("CheckCookie", access_token);
         }
     }, [access_token]);
+
     return (
         <Modal
             title="Authorization Error"

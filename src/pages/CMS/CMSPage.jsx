@@ -28,7 +28,7 @@ const CMSPage = () => {
           <ContentPage></ContentPage>
         </Layout>
       </Layout>
-      <AuthorizationModal></AuthorizationModal>
+      <AuthorizationModal isAdmin={true}></AuthorizationModal>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const MainPageLayout = () => {
           <MusicControlBar></MusicControlBar>
         </div>
       </div>
-      <AuthorizationModal></AuthorizationModal>
+      <AuthorizationModal isAdmin={false}></AuthorizationModal>
     </Fragment>
   );
 };
