@@ -20,6 +20,24 @@ const useUserUtils = () => {
     return false;
   };
 
+  const checkToken = async () => {
+    try {
+      const response = await axios.post(`${Base_URL}/auth/checkToken`, {}, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      if (response.status !== 200 && response.status !== 201) {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.log("Error:", error);
+      return false;
+    }
+  }
+
+
   // Get user information from API
   const getUserInfor = async (userId) => {
     try {
@@ -154,7 +172,7 @@ const useUserUtils = () => {
 
 
   return {
-    CheckCookie, getUserInfor,
+    CheckCookie, checkToken, getUserInfor,
     getArtistByArtistId, getAllGenres, getUserPost,
     followArtist, unfollowArtist, editUser
   };

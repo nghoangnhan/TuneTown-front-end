@@ -15,9 +15,7 @@ import ModalApprove from "./ModalApprove";
 
 const ChatArea = () => {
   const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest, outCommunity } = useChatUtils();
-  const { Base_URL, socket,
-    is24Inch, is27Inch, is30Inch, isLaptop, isTablet, isMobile
-  } = useConfig();
+  const { Base_URL, socket } = useConfig();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,12 +30,8 @@ const ChatArea = () => {
   const [chatContent, setChatContent] = useState([]);
   const [openApprovedList, setOpenApprovedList] = useState(false);
 
-  const maxWidthClass = is24Inch ? "max-w-[1215px]" :
-    is27Inch ? "max-w-[1215px]" : is30Inch ? "max-w-[1215px]" :
-      isLaptop ? "max-w-[1215px]" : isTablet ? "max-w-[1215px]" :
-        isMobile ? "max-w-[1215px]" : ""
-
   const sendMessage = async (sendUserId, receiveUserId, content) => {
+    console.log("Send messageeeeeeeeeeeeeeee:", sendUserId, receiveUserId, content);
     // Check if the message is empty or the sender is the receiver
     if (!content || content.trim() === "" || sendUserId === receiveUserId) {
       return;
@@ -73,10 +67,7 @@ const ChatArea = () => {
         content: content,
       });
       // Update the chat list
-      await loadMessage(userId, converChosen.chatId).then((data) => {
-        setChatContent(data);
-        console.log("Chat content:", data);
-      });
+      handleLoadmessage(sendUserId, receiveUserId);
       // Set isNewMessage to true
       dispatch(setIsNewMessage(true));
     } catch (error) {
@@ -127,6 +118,8 @@ const ChatArea = () => {
 
   const handleLoadmessage = async (userId, chatId) => {
     await loadMessage(userId, chatId).then((data) => {
+      console.log("handle Load Messages", data);
+      // dispatch(setIsNewMessage(true));
       setChatContent(data);
     });
   }
@@ -134,6 +127,7 @@ const ChatArea = () => {
   useEffect(() => {
     if (converChosen !== null && userId !== null) {
       setChatInfo(converChosen);
+      console.log("Chat info converChosen 1:", converChosen);
       handleLoadmessage(userId, converChosen.chatId);
     }
   }, [converChosen]);
@@ -146,19 +140,18 @@ const ChatArea = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.on("receive_message", (message) => {
-        console.log("Received message:", message);
-        loadMessage(userId, chatId).then((data) => {
-          setChatContent(data);
-        });
+      socket.on("receive_message", () => {
+        // Update the chat list
+        handleLoadmessage(userId, converChosen.chatId);
+        // Set isNewMessage to true
         dispatch(setIsNewMessage(true));
       })
     }
 
     // // Ngắt kết nối khi component unmounts
-    // return () => {
-    //   socket.disconnect();
-    // };
+    return () => {
+      socket?.disconnect();
+    };
   }, [socket]);
 
   return (
@@ -212,7 +205,7 @@ const ChatArea = () => {
           <div className="flex-grow">
             <input
               type="text"
-              className="w-full p-3 rounded-md outline-none text-primaryTextDark2 dark:bg-backgroundComponentDarkPrimary"
+              className="w-full p-3 rounded-md outline-none dark:text-primaryTextDark2 dark:bg-backgroundComponentDarkPrimary"
               placeholder="Type a message..."
               value={newMessage}
               onChange={handleMessageChange}

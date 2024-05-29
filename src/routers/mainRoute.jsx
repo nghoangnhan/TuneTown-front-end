@@ -84,6 +84,16 @@ export default function init(routes) {
         path: "artistCMS",
         element: <CMSArtist />,
       },
+
+      {
+        path: "artist/:artistId",
+        element: <ArtistDetailPage />,
+      },
+      {
+        path: "song/:songId",
+        element: <SongDetailPage />
+      },
+
       {
         path: "queue",
         element: <QueueSection />,
@@ -115,14 +125,7 @@ export default function init(routes) {
     path: "/",
     element: <EmptyLayout />,
     children: [
-      {
-        path: "artist/:artistId",
-        element: <ArtistDetailPage />,
-      },
-      {
-        path: "song/:songId",
-        element: <SongDetailPage />
-      },
+
     ],
   };
 

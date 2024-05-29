@@ -169,7 +169,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
             className="p-1 hover:opacity-60 rounded-2xl"
             onClick={HandlePlay}
           >
-            <PlayButton></PlayButton>
+            <PlayButton color={true}></PlayButton>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
           {/* <div>{TimeConvert(234)}</div> */}

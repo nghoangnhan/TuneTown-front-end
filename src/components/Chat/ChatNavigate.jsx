@@ -184,7 +184,7 @@ const ChatNavigate = () => {
   }, [isNewMessage]);
 
   return (
-    <div className={`${isMobile ? "w-full" : "w-80"} sticky top-0 min-h-screen px-1 bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary border-gray-200  h-fit`}>
+    <div className={`${isMobile ? "w-full" : "w-80"} sticky top-0 min-h-screen px-1 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary border-gray-200  h-fit`}>
       <div
         className="flex flex-row items-center justify-center gap-5 pt-6 text-lg font-bold text-center uppercase cursor-pointer"
         onClick={() => navigate("/")}
@@ -221,7 +221,7 @@ const ChatNavigate = () => {
         {chatRs && (
           <div className="absolute left-0 right-0 bg-white shadow-md top-full">
             <ul className="px-4 py-1">
-              {chatRs.map(chat => (
+              {chatRs.map((chat) => (
                 <li key={chat.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100"
                   onClick={() => handleChatItemClick(chat)}>
                   <img src={`${chat.avatar ? chat.avatar : defaultAva}`} alt="Chat Avatar" className="w-8 h-8 bg-white rounded-full" />
