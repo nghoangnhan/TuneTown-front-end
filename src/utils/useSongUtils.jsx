@@ -8,6 +8,7 @@ import ColorThief from "colorthief";
 
 export const useSongUtils = () => {
   const { Base_URL_FE } = useConfig();
+  const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const refreshPlaylist = useSelector(
@@ -39,16 +40,25 @@ export const useSongUtils = () => {
       return artistName[0];
     }
   };
+  const handleNavigation = (artistId) => {
+    console.log("AAAAAAAAAAAA: ", userId + " " + artistId);
+    if (userId === artistId) {
+      
+      navigate('/my-profile');
+    } else {
+      navigate(`/artist/${artistId}`);
+    }
+  };
   const showArtistV2 = (artistName, fontSize) => {
     if (artistName.length > 1) {
       return artistName.map((artist, index) => (
         <span key={artist.id} className={`${fontSize ? fontSize : "text-sm"} cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary`}>
           {index == artistName.length - 1 ? (
-            <span onClick={() => navigate(`/artist/${artist.id}`)}>
+            <span onClick={() => handleNavigation(artist.id)}>
               {artist.userName}
             </span>
           ) : (
-            <span onClick={() => navigate(`/artist/${artist.id}`)}>
+            <span onClick={() => handleNavigation(artist.id)}>
               {artist.userName}, &nbsp;
             </span>
           )}
@@ -60,7 +70,7 @@ export const useSongUtils = () => {
         <span
           key={artist.id}
           className={`${fontSize ? fontSize : "text-sm"}  cursor-pointer text-primaryText2 dark:text-primaryTextDark2 hover:underline hover:text-primary`}
-          onClick={() => navigate(`/artist/${artist.id}`)}
+          onClick={() => handleNavigation(artist.id)}
         >
           {artist.userName}
         </span>
