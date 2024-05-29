@@ -15,7 +15,7 @@ const ArtistDetailPage = () => {
   const { Base_AVA } = useConfig();
   const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
-  const { followArtist, unfollowArtist, getArtistByArtistId } = useUserUtils();
+  const { followArtist, getArtistByArtistId } = useUserUtils();
   const { UserCheck, BackButton } = useIconUtils();
   const navigate = useNavigate();
   const { getCommunityByHostId, joinRequest, outCommunity } = useChatUtils();
@@ -52,22 +52,16 @@ const ArtistDetailPage = () => {
     });
   };
   const handleFollowArtist = async () => {
-    await followArtist(userId, artistId).then((result) => {
+    await followArtist(artistId).then((result) => {
       console.log("Follow Artist", result);
-    }
-    );
-  }
-  const handleUnfollowArtist = async () => {
-    await unfollowArtist(userId, artistId).then((result) => {
-      console.log("Unfollow Artist", result);
-    }
-    );
-  }
+      setFollow(!follow);
+    });
+  };
 
   const handleGetCommunity = async (artistId) => {
     const response = await getCommunityByHostId(artistId);
     return response;
-  }
+  };
 
   const handleJoinCommunity = async () => {
     const response = await handleGetCommunity(artistId);
@@ -80,7 +74,7 @@ const ArtistDetailPage = () => {
       // Navigate to joined community
       handleNavigate("community/" + communityId);
     }
-  }
+  };
 
   const fetchData = async () => {
     try {
@@ -104,9 +98,10 @@ const ArtistDetailPage = () => {
     }
   };
 
-
   useEffect(() => {
     if (!artistDetail || !artistDetail.avatar) {
+      setFollow(artistDetail.isFollowed);
+      console.log(artistDetail.isFollowed);
       setLoading(false);
       return;
     }
@@ -124,16 +119,19 @@ const ArtistDetailPage = () => {
 
   return (
     <div
-      className={`${artistId ? " h-full" : "h-fit"
-        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
+      className={`${
+        artistId ? " h-full" : "h-fit"
+      } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
       <div className="mb-4">
         <TheHeader></TheHeader>
       </div>
-      <div className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
+      <div
+        className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
         style={{
           background: `linear-gradient(to top right , transparent, ${colorBG} 100%)`,
-        }}>
+        }}
+      >
         <div className="flex flex-row mb-2">
           <BackButton></BackButton>
         </div>
@@ -149,33 +147,42 @@ const ArtistDetailPage = () => {
             <div className="text-[50px] text-textNormal dark:text-textNormalDark font-bold text-center mb-5">
               <div className="flex flex-row items-center justify-center gap-2">
                 {artistDetail.name ? artistDetail.name : "Unknown Artist"}
-                <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">#{artistDetail.id}</span>
-                <span className="text-4xl text-primary dark:text-primaryDarkmode"><UserCheck></UserCheck></span>
+                <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">
+                  #{artistDetail.id}
+                </span>
+                <span className="text-4xl text-primary dark:text-primaryDarkmode">
+                  <UserCheck></UserCheck>
+                </span>
               </div>
             </div>
-            {artistDetail.artists?.userBio && <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
-              <span>Bio:</span>{" "}{artistDetail.artists?.userBio}
-            </div>}
+            {artistDetail.artists?.userBio && (
+              <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
+                <span>Bio:</span> {artistDetail.artists?.userBio}
+              </div>
+            )}
             {
               <div className="flex flex-row gap-4">
                 <button
-                  onClick={() => handleFollow()}
+                  onClick={() => handleFollowArtist(artistDetail.id)}
                   className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
                 >
-                  {follow == true ? "Unfollow" : "Follow"}
+                  {follow == true ? "Following" : "Follow"}
                 </button>
                 <button
                   className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
                   onClick={() => handleJoinCommunity()}
                 >
-                  {request ? 'Request sent' : (join ? 'Community joined' : 'Join the artist community')}
+                  {request
+                    ? "Request sent"
+                    : join
+                    ? "Community joined"
+                    : "Join the artist community"}
                 </button>
               </div>
             }
           </div>
         </div>
       </div>
-
 
       {/* <SongSectionPlaylist songData={artistDetail.songs}></SongSectionPlaylist> */}
       {artistDetail?.songs && (
