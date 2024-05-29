@@ -15,7 +15,7 @@ const ArtistDetailPage = () => {
   const { Base_AVA } = useConfig();
   const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
-  const { followArtist, getArtistByArtistId, getAllSongArtist } = useUserUtils();
+  const { followArtist, getArtistByArtistId, getAllSongArtist, CheckCommunityExist } = useUserUtils();
   const { UserCheck, BackButton, LoadingLogo } = useIconUtils();
   const navigate = useNavigate();
   const { getCommunityByHostId, joinRequest } = useChatUtils();
@@ -30,6 +30,7 @@ const ArtistDetailPage = () => {
   const [follow, setFollow] = useState(false);
   const [request, setRequest] = useState();
   const [join, setJoin] = useState();
+  const [communityExist, setCommunityExist] = useState(false);
 
   const handleNavigate = (path) => {
     dispatch(
@@ -98,6 +99,17 @@ const ArtistDetailPage = () => {
     }
   };
 
+  const CheckArtistCommunityExist = async (artistId) => {
+    try {
+      const check = await CheckCommunityExist(artistId);
+      if (check == 1) {
+        setCommunityExist(true);
+      }
+    } catch (error) {
+      console.error("Error checking artist community existence: ", error);
+    }
+  }
+
   useEffect(() => {
     if (!artistDetail || !artistDetail.avatar) {
       setFollow(artistDetail.isFollowed);
@@ -114,16 +126,12 @@ const ArtistDetailPage = () => {
 
   useEffect(() => {
     handleGetArtistDetail(artistId);
-  }, [artistId, refresh]);
+  }, [artistId]);
+  if (songListArtist == null) return null;
 
   useEffect(() => {
-    getAllSongArtist(artistId, page).then((result) => {
-      setSongListArtist(result);
-    });
-  }, [artistId, page]);
-
-
-  if (topSongListArtist == null) return null;
+    CheckArtistCommunityExist(artistId);
+  }, [artistId]);
 
   return (
     <div
@@ -181,16 +189,18 @@ const ArtistDetailPage = () => {
                 >
                   {follow == true ? "Following" : "Follow"}
                 </button>
-                <button
-                  className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
-                  onClick={() => handleJoinCommunity()}
-                >
-                  {request
-                    ? "Request sent"
-                    : join
-                      ? "Community joined"
-                      : "Join the artist community"}
-                </button>
+                {communityExist &&
+                  <button
+                    className="px-2 py-1 mb-5 font-bold text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
+                    onClick={() => handleJoinCommunity()}
+                  >
+                    {request
+                      ? "Request sent"
+                      : join
+                        ? "Community joined"
+                        : "Join the artist community"}
+                  </button>
+                }
               </div>
             }
           </div>

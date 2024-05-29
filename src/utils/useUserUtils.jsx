@@ -145,6 +145,23 @@ const useUserUtils = () => {
     }
   };
 
+  const CheckCommunityExist = async (artistId) => {
+    try {
+      const response = await axios.post(
+        `${Base_URL}/users/checkCommunityExist?artistId=${artistId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
   const getAllSongArtist = async (artistId, page) => {
     try {
       const response = await axios.get(
@@ -161,7 +178,7 @@ const useUserUtils = () => {
     catch (error) {
       console.log("Error:", error);
     }
-  }
+  };
 
   return {
     CheckCookie,
@@ -172,6 +189,7 @@ const useUserUtils = () => {
     getUserPost,
     followArtist,
     editUser,
-  };
+    CheckCommunityExist,
+  }
 };
 export default useUserUtils;
