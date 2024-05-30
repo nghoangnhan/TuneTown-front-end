@@ -49,7 +49,7 @@ const ArtistDetailPage = () => {
       setArtistDetail(result);
       setTopSongListArtist(result.songs);
       setRefresh(false)
-      console.log("SetArtistDetail", result);
+      // console.log("SetArtistDetail", result);
     });
   };
   const handleFollowArtist = async () => {
@@ -126,12 +126,20 @@ const ArtistDetailPage = () => {
 
   useEffect(() => {
     handleGetArtistDetail(artistId);
-  }, [artistId]);
-  if (songListArtist == null) return null;
+  }, [artistId, refresh]);
+
+  useEffect(() => {
+    if (page == 0) return;
+    getAllSongArtist(artistId, page).then((result) => {
+      setSongListArtist([...songListArtist, ...result]);
+    });
+  }, [page]);
 
   useEffect(() => {
     CheckArtistCommunityExist(artistId);
   }, [artistId]);
+
+  if (songListArtist == null) return null;
 
   return (
     <div
@@ -208,7 +216,7 @@ const ArtistDetailPage = () => {
       </div>
 
       {/* <SongSectionPlaylist songData={artistDetail.songs}></SongSectionPlaylist> */}
-      {artistDetail?.songs && (
+      {topSongListArtist && (
         <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-2 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
           <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
             Top Songs of {artistDetail.name}
@@ -222,7 +230,7 @@ const ArtistDetailPage = () => {
               <div className="font-bold text-center ">Duration</div>
             </div>
           </div>
-          {artistDetail?.songs.slice(0, 5).map((songItem, index) => (
+          {topSongListArtist?.slice(0, 5).map((songItem, index) => (
             <SongItem
               key={index}
               songOrder={index + 1}
