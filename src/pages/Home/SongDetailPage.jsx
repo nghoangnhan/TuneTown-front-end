@@ -6,21 +6,32 @@ import useSongUtils from "../../utils/useSongUtils";
 import LyricSection from "../../components/HomePage/LyricSection";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import SongItem from "../../components/Song/SongItem";
+import { useDispatch } from "react-redux";
+import { setCurrentSong } from "../../redux/slice/music";
+import { Modal } from "antd";
+import Repost from "../../components/Forum/Repost";
 
 const SongDetailPage = () => {
   const { songId } = useParams();
   const { Base_AVA } = useConfig();
-  const { BackButton, PlayButton } = useIconUtils();
-  const { getPosterColor } = useSongUtils();
-  const { getSongById } = useMusicAPIUtils();
+  const dispatch = useDispatch();
+  const { BackButton, PlayButton, RepostButton, DownloadButton, ShareButton } = useIconUtils();
+  const { getPosterColor, handleDownloadSong, handleShareSong } = useSongUtils();
+  const { getSongById, combineData } = useMusicAPIUtils();
   const [colorBG, setColorBG] = useState("");
   const [loading, setLoading] = useState(true);
   const [songDetail, setSongDetail] = useState();
+  const [modalRepost, setModalRepost] = useState(false);
 
   const getSongDetailById = async () => {
     const response = await getSongById(parseInt(songId));
     setSongDetail(response);
   };
+
+  const handleRepostSong = () => {
+    setModalRepost(true);
+  }
+
 
   useEffect(() => {
     getSongDetailById();
@@ -45,7 +56,7 @@ const SongDetailPage = () => {
   return (
     <div
       className={`${songId ? "h-full" : "h-fit"
-        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}
+        } min-h-screen w-full p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary`}
     >
 
       <div
@@ -99,23 +110,44 @@ const SongDetailPage = () => {
           </div>
         </div>
         <div className="flex flex-row items-center gap-4 mt-4">
-          <PlayButton color={true} size={3}></PlayButton>
+          <div onClick={() => dispatch(setCurrentSong(
+            {
+              id: songDetail?.id,
+              songName: songDetail?.songName,
+              artists: songDetail?.artists,
+              songCover: songDetail?.poster,
+              songData: songDetail?.audio,
+              lyric: songDetail?.lyric,
+            }
+          ))} className="cursor-pointer">
 
-          <button className="px-2 py-2 font-bold text-white rounded-md bg-primary hover:opacity-70 dark:bg-primaryDarkmode">
-            Add to Playlist
-          </button>
+            <PlayButton color={true} size={3}></PlayButton>
+          </div>
+
+          {/* Repost Song  */}
+          <RepostButton handleRepostSong={handleRepostSong}></RepostButton>
+          {/* Download Song */}
+          <DownloadButton handleDownloadSong={() => handleDownloadSong(songDetail, setLoading, combineData)}></DownloadButton>
+          {/* Share Song */}
+          <ShareButton handleShareSong={() => handleShareSong(songDetail)}></ShareButton>
+
         </div>
       </div>
 
-      <div className="flex flex-row items-start mt-10">
-        <div className="w-full">
-          {/* <AudioWaveSurfer song={songDetail}></AudioWaveSurfer> */}
-          <SongItem songId={songDetail?.id} song={songDetail}></SongItem>
-        </div>
-        <div>
-          <LyricSection lyric={songDetail?.lyric}></LyricSection>
-        </div>
-      </div>
+      <LyricSection lyric={songDetail?.lyric}></LyricSection>
+      {/* Modal Repost  */}
+      <Modal
+        title="Repost"
+        open={modalRepost}
+        onCancel={() => {
+          setModalRepost(false);
+        }}
+        footer={null}
+        centered
+        className="modalStyle"
+      >
+        <Repost song={songDetail} closeModal={() => setModalRepost(false)} />
+      </Modal>
     </div>
   );
 };

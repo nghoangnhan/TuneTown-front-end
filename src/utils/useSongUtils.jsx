@@ -43,7 +43,7 @@ export const useSongUtils = () => {
   const handleNavigation = (artistId) => {
     console.log("AAAAAAAAAAAA: ", userId + " " + artistId);
     if (userId === artistId) {
-      
+
       navigate('/my-profile');
     } else {
       navigate(`/artist/${artistId}`);

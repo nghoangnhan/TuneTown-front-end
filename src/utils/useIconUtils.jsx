@@ -188,8 +188,8 @@ const useIconUtils = () => {
   const UserCheck = () => {
     return (
       <FontAwesomeIcon
-        className="text-primary"
-        icon={faUserCheck}
+        className="text-primary dark:text-primaryDarkmode"
+        icon={faCheckCircle}
       ></FontAwesomeIcon>
     );
   };

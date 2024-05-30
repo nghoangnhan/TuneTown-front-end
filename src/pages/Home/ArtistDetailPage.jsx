@@ -178,7 +178,7 @@ const ArtistDetailPage = () => {
             </div>
             {artistDetail.artists?.userBio && (
               <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
-                <span>Bio:</span> {artistDetail.artists?.userBio}
+                {artistDetail.artists?.userBio}
               </div>
             )}
             <div className="flex flex-row gap-2 my-2">

@@ -20,15 +20,24 @@ const CMSArtist = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
-  const { getArtistByArtistId } = useUserUtils();
+  const { getArtistByArtistId, getUserInfor } = useUserUtils();
 
   const handleGetArtistDetail = async (artistId) => {
     await getArtistByArtistId(artistId).then((result) => {
       setArtistDetail(result);
-      setSongListArtist(result.songs);
+      setSongListArtist(result?.songs);
       setRefresh(false);
     });
   };
+
+  const handleGetUserInfor = async (userId) => {
+    await getUserInfor(userId).then((result) => {
+      setArtistDetail(result.user);
+      setSongListArtist(result?.songs);
+      setRefresh(false);
+    });
+  };
+
   const handSearch = (e) => {
     console.log("value", e.target.value);
     setSearchValue(e.target.value);
@@ -86,7 +95,7 @@ const CMSArtist = () => {
       console.log("Error:", error);
     }
   };
-  const dataSongTable = songListArtist.map((songItem) => ({
+  const dataSongTable = songListArtist?.map((songItem) => ({
     key: songItem.id.toString(), // Assuming id is unique
     poster: (
       <img
@@ -211,16 +220,20 @@ const CMSArtist = () => {
       ),
     },
   ];
+
   useEffect(() => {
-    if (localStorage.getItem("userRole") !== "ARTIST") {
-      window.location.href = "/";
+    if (localStorage.getItem("userRole") === "ARTIST") {
+      handleGetArtistDetail(userId).then((result) => {
+        setRefresh(false)
+      });
     }
-  }, []);
-  useEffect(() => {
-    handleGetArtistDetail(userId).then((result) => {
-      setRefresh(false)
-    });
+    else {
+      handleGetUserInfor(userId).then((result) => {
+        setRefresh(false)
+      });
+    }
   }, [userId, refresh, isModalOpenUpdate, isModalOpenUpload]);
+
   return (
     <div className="h-full min-h-screen px-4 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="flex flex-row">
@@ -232,7 +245,7 @@ const CMSArtist = () => {
               ? "Afternoon"
               : "Evening"}
           {", "}
-          {artistDetail.name ? artistDetail.name : "Unknown Artist"}
+          {artistDetail.name ? artistDetail.name : artistDetail.userName}
           {"! "}
         </div>
       </div>

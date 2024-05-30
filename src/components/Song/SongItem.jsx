@@ -185,6 +185,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
         }}
         footer={null}
         centered
+        className="modalStyle"
       >
         <Repost song={songInforObj} closeModal={() => setOpenModal(false)} />
       </Modal>

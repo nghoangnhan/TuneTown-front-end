@@ -162,9 +162,9 @@ const UserDetailPage = ({ owned }) => {
                 </span>
               )}
             </div>
-            <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
-              <span>Bio:</span> {userInfor.userBio}
-            </div>
+            {userInfor.userBio && <div className="text-base xl:text-lg text-primaryText dark:text-textNormalDark opacity-80">
+              {userInfor.userBio}
+            </div>}
             <div className="flex flex-row items-center justify-center gap-3">
               <button
                 className="h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70"

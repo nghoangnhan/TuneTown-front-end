@@ -19,7 +19,7 @@ const PostItemDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { show } = useContextMenu();
-  const { BackButton, ThumbsUpSolid, VerifyAccount, OptionsIcon, SendIcon, PlayButton } = useIconUtils();
+  const { BackButton, ThumbsUpSolid, UserCheck, OptionsIcon, SendIcon, PlayButton } = useIconUtils();
   const { Base_AVA } = useConfig();
   const userId = localStorage.getItem("userId");
   const commentRef = useRef(null);
@@ -169,13 +169,31 @@ const PostItemDetail = () => {
       <div className="px-3 py-3 m-auto mt-2 shadow-lg bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary font-montserrat rounded-2xl max-xl:w-fit xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5 ">
         <div className="flex flex-row items-start justify-between mb-4">
           <div className="flex flex-col ">
-            <div className="flex flex-row items-center gap-1 text-xl font-bold">
-              {postContent.author.userName}
-              {postContent.author.role == "ARTIST" && (
-                <VerifyAccount></VerifyAccount>
-              )}
+            <div className="flex flex-row items-center gap-2 cursor-pointer" onClick={() => navigate(
+              postContent.author.id === userId ? "/my-profile" : `/artist/${postContent.author.id}`
+            )}>
+              <div>
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={postContent.author?.avatar ? postContent.author.avatar : Base_AVA}
+                  alt="Avatar"
+                />
+              </div>
+              <div className="flex flex-col">
+                {/* Artist Name  */}
+                <div className="flex flex-row items-center gap-1 text-xl font-bold text-primary dark:text-primaryDarkmode">
+                  {postContent.author?.userName}
+                  {postContent.author?.role == "ARTIST" && (
+                    <div className="text-lg">
+                      <UserCheck ></UserCheck>
+                    </div>
+                  )}
+                </div>
+                <div className="text-xs font-medium text-primaryText2 dark:text-primaryTextDark2">
+                  {countTime}
+                </div>
+              </div>
             </div>
-            <div className="text-xs font-medium text-primaryText2 dark:text-primaryTextDark2">{countTime}</div>
           </div>
           {/* Post Option */}
           <div>
@@ -193,29 +211,49 @@ const PostItemDetail = () => {
 
         {/* Song Infor */}
         {(postContent.song || postContent.mp3Link) && (
-          <div className="flex flex-row items-center justify-center gap-2 mt-2">
-            <div className="items-center rounded-md dark:bg-white ">
-              <img className="rounded-md max-w-20 max-h-20 w-fit h-fit" src={postContent.song?.poster ? postContent.song.poster : Base_AVA} alt="Cover Art Song" />
-            </div>
-            {/* <div className="w-full">
-              <AudioWaveSurfer song={postContent.song} mp3Link={postContent.mp3Link} />
-            </div> */}
-            <div className="flex flex-col items-start gap-1">
-              <div className="text-lg font-bold cursor-pointer text-primary dark:text-primaryDarkmode" onClick={
-                () => {
-                  if (postContent.song) {
-                    NavigateSong(postContent.song.id);
+          <div className="flex flex-row items-center justify-between p-2 mt-2 rounded-md hover:dark:bg-backgroundSongItemDark">
+            <div className="flex flex-row gap-2">
+              <div className="items-center rounded-md ">
+                <img
+                  className="w-16 h-16 rounded-md"
+                  src={
+                    postContent.song?.poster ? postContent.song.poster : Base_AVA
                   }
-                }
-              }>
-                {postContent.song.songName}
+                  alt="Cover Art Song"
+                />
               </div>
-              <div className="text-base text-primaryText2 dark:text-primaryTextDark2">
-                {showArtistV2(postContent.song.artists)}
+
+              {/* Show song Infor   */}
+              <div className="flex flex-col items-start gap-1">
+                <div className="text-lg font-bold cursor-pointer text-primary dark:text-primaryDarkmode hover:underline" onClick={
+                  () => {
+                    if (postContent.song) {
+                      NavigateSong(postContent.song.id);
+                    }
+                  }
+                }>
+                  {postContent.song.songName}
+                </div>
+                <div className="text-base text-primaryText2 dark:text-primaryTextDark2">
+                  {showArtistV2(postContent.song.artists)}
+                </div>
               </div>
+            </div>
+            <div className="cursor-pointer hover:opacity-70" onClick={() => dispatch(setCurrentSong(
+              {
+                id: postContent.song.id,
+                songName: postContent.song.songName,
+                artists: postContent.song.artists.map((artist) => artist),
+                songDuration: postContent.song.songDuration || 200,
+                songCover: postContent.song.poster,
+                songData: postContent.song.songData,
+              }
+            ))}>
+              <PlayButton color={true} />
             </div>
           </div>
         )}
+
         {/* Playlist */}
         {postContent.playlist && (
           <div>
@@ -262,13 +300,15 @@ const PostItemDetail = () => {
                       key={index}
                       className="flex flex-row items-center justify-start w-full gap-2 p-1 px-3 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistHoverDark hover:opacity-70"
                     >
-                      <img
-                        className="w-8 h-8 bg-white rounded-full max-w-8 max-h-8"
-                        src={song.poster ? song.poster : Base_AVA}
-                        alt="Cover Art Song"
-                      />
+                      <div className="w-14 h-14 ">
+                        <img
+                          className="object-cover min-w-[48px] min-h-[48px] w-full h-full bg-white rounded-md"
+                          src={song.poster ? song.poster : Base_AVA}
+                          alt="Cover Art Song"
+                        />
+                      </div>
                       <div className="flex flex-col w-full gap-1" onClick={() => NavigateSong(song.id)}>
-                        <div className="text-sm font-bold text-primary dark:text-primaryDarkmode" >
+                        <div className="text-sm font-bold text-primary dark:text-primaryDarkmode hover:underline" >
                           {song.songName}
                         </div>
                         <div className="text-xs text-primaryText2 dark:text-primaryTextDark2 ">
@@ -330,7 +370,7 @@ const PostItemDetail = () => {
             type="text"
             placeholder={"Write a comment"}
             defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
-            className="w-full p-2 rounded-md outline-none text-primaryText2"
+            className="w-full p-2 rounded-md outline-none bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary text-primaryText2 dark:text-primaryTextDark2"
           />
           {isReplying && (
             <svg

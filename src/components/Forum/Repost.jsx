@@ -4,7 +4,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import useConfig from "../../utils/useConfig";
-import AudioWaveSurfer from "./AudioWaveSurfer";
 import UseCookie from "../../hooks/useCookie";
 import DOMPurify from 'dompurify';
 import Parser from 'html-react-parser';
@@ -61,6 +60,7 @@ const Repost = ({ song, closeModal }) => {
         name="basic"
         initialValues={{ remember: true }}
         onFinish={onFinish}
+        className="formStyle"
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
@@ -79,15 +79,15 @@ const Repost = ({ song, closeModal }) => {
           />
         </Form.Item>
         {/* Audio Wave */}
-        <div className="w-full">
+        {/* <div className="w-full">
           <AudioWaveSurfer song={song}></AudioWaveSurfer>
-        </div>
+        </div> */}
         <Form.Item>
           <button
             type="submit"
-            className="w-full h-10 px-3 text-base text-white transition-colors duration-150 bg-[#59c26d] rounded-lg focus:shadow-outline hover:bg-[#58ec73]"
+            className="w-full h-10 px-3 text-base transition-colors duration-150 border rounded-lg hover:opacity-60 focus:shadow-outline border-primary text-primary dark:border-primaryDarkmode dark:text-primaryDarkmode"
           >
-            Submit
+            Repost
           </button>
         </Form.Item>
       </Form>
