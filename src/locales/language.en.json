@@ -79,5 +79,12 @@
     "theme": "Theme",
     "language": "Language",
     "volumeLevel": "Volume Level"
+  },
+  "artistPage": {
+    "follow": "Follow",
+    "following": "Following",
+    "follower": "Follower",
+    "topTracks": "Top Tracks",
+    "allTracks": "All Tracks"
   }
 }
