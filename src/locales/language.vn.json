@@ -79,5 +79,12 @@
     "theme": "Chủ đề",
     "language": "Ngôn ngữ",
     "volumeLevel": "Mức độ âm thanh"
+  },
+  "artistPage": {
+    "follow": "Theo dõi",
+    "following": "Đang theo dõi",
+    "follower": "Người theo dõi",
+    "topTracks": "Sản phẩm nổi bật",
+    "allTracks": "Tất cả sản phẩm"
   }
 }
