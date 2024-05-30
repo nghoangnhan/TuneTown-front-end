@@ -13,17 +13,17 @@ const MusicControlBar = () => {
   const { showArtistV2, AcronymName, NavigateSong } = useSongUtils();
 
   return (
-    <div className="w-full fixed xl:bottom-0 bottom-9 bg-backgroundMusicControl dark:bg-backgroundDarkMusicControl h-[88px] xl:h-20 flex flex-col xl:flex-row justify-center items-center pt-2">
+    <div className="fixed bottom-0 flex flex-col items-center justify-center w-full py-2 bg-backgroundMusicControl dark:bg-backgroundDarkMusicControl h-fit xl:h-20 xl:flex-row">
       {/* Song Info  */}
-      <div className="relative inset-y-auto left-0 flex flex-row items-center justify-center ml-2 xl:absolute xl:bottom-3 xl:ml-10">
+      <div className="relative inset-y-auto left-0 flex flex-row items-center justify-start xl:absolute xl:bottom-3 xl:ml-10">
         <img
           src={songInfor.songCover ? songInfor.songCover : DefaultArt}
           alt=""
           className="w-10 h-10 rounded-full xl:w-14 xl:h-14"
         ></img>
         <div className="ml-1 xl:ml-4">
-          <div className="text-xs font-bold cursor-pointer xl:text-base text-primary dark:text-primaryDarkmode" onClick={() => NavigateSong(songInfor.id)}>
-            {isMobile && AcronymName(songInfor.songName, 12)}
+          <div className="text-sm font-bold cursor-pointer xl:text-base text-primary dark:text-primaryDarkmode" onClick={() => NavigateSong(songInfor.id)}>
+            {isMobile && AcronymName(songInfor.songName, 18)}
             {!isMobile && songInfor.songName}
           </div>
           <div className="text-xs cursor-pointer xl:text-base text-primaryText dark:text-primaryTextDark" >

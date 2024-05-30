@@ -96,8 +96,8 @@ const HistorySection = () => {
 
   if (!songList) return null;
   return (
-    <div className="h-fit xl:p-5 ">
-      <div className="my-4 text-4xl font-bold text-primary dark:text-primaryDarkmode">
+    <div className="h-fit">
+      <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-2xl xl:h-fit xl:py-2 xl:mb-3">
         Currently Listen
       </div>
       <Table columns={columnsSong} dataSource={dataSongTable} />

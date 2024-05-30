@@ -400,7 +400,6 @@ const PostItemDetail = () => {
         id={`songOption_${postContent.id}`}
         postId={postContent.id}
         postContent={postContent}
-        owned={postContent.author.id === userId}
       ></OptionPostItem>
     </div>
   );

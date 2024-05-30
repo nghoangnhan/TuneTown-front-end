@@ -70,12 +70,12 @@ const CreatePost = ({ setOpenModalCreate }) => {
     try {
       console.log("Received values:", values);
       const sanitizedContent = DOMPurify.sanitize(values.content);
-      const contentParser = Parser(sanitizedContent).props?.children;
+      const contentParser = Parser(sanitizedContent).props.children;
       const response = axios.post(`${Base_URL}/post/create`, {
         author: {
           id: userId
         },
-        content: contentParser ? contentParser : '',
+        content: contentParser ? contentParser : editorValue,
         song: songChosen ? {
           id: songChosen.id
         } : null,

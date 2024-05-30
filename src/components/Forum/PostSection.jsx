@@ -5,8 +5,8 @@ const PostSection = ({ postList }) => {
   return (
     <div className="flex flex-col xl:flex-row">
       <div className="flex-1">
-        {postList?.map((post) => (
-          <PostItem key={post.id} postContent={post}></PostItem>
+        {postList && postList?.map((post, index) => (
+          <PostItem key={index} postContent={post}></PostItem>
         ))}
       </div>
     </div>

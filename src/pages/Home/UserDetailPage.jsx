@@ -203,10 +203,25 @@ const UserDetailPage = ({ owned }) => {
         </div>
       </div>
       <div className={`flex-col flex items-start justify-evenly w-full`}>
-        <div className="w-full">
-          {postList && <PostSection postList={postList}></PostSection>}
+        <div className="w-full overflow-auto bg-backgroundComponentPrimary dark:bg-backgroundSongItemHoverDark px-1 xl:px-4 rounded-2xl max-h-96 xl:max-h-[600px]">
+          <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-2xl xl:h-fit xl:py-4 xl:mt-3">
+            Post List
+          </div>
+          {postList && <div>
+            <PostSection postList={postList}></PostSection>
+            {/* {postList.length > 3 && <div className="flex justify-center w-full">
+              <button
+                onClick={() => {
+
+                }}
+                className="px-2 py-2 my-5 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode"
+              >
+                {t("common.loadMore")}
+              </button>
+            </div>} */}
+          </div>}
           {postList?.length === 0 && (
-            <div className="xl:min-w-[600px] min-w-[400px] text-center text-primary dark:text-primaryDarkmode font-bold px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mt-5 xl:py-5 xl:px-5">
+            <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-2xl xl:h-fit xl:py-4 xl:mt-3">
               No posts yet!
             </div>
           )}

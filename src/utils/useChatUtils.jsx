@@ -473,7 +473,6 @@ export const useForumUtils = () => {
   const deletePost = async (postId) => {
     try {
       if (!postId) return;
-      if (confirm("Are you sure you want to delete this post?") === false) return;
       const response = await axios.delete(
         `${Base_URL}/post?postId=${postId}`,
         {

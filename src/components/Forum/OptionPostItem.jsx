@@ -8,7 +8,7 @@ import { useState } from "react";
 import UpdatePost from "./UpdatePost";
 import { useTranslation } from "react-i18next";
 
-const OptionPostItem = ({ id, postId, owned, postContent }) => {
+const OptionPostItem = ({ id, postId, postContent }) => {
   const { deletePost } = useForumUtils();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
     setOpenModalUpdate(false);
   };
   const handleDeletePost = async (postId) => {
-    if (!owned && postContent.author.id != userId) {
+    if (postContent.author.id != userId) {
       message.error("You are not authorized to delete this post");
       return;
     }
@@ -32,7 +32,7 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
   };
 
   const handleOpenModalUpdate = () => {
-    if (!owned && postContent.author.id != userId) {
+    if (postContent.author.id != userId) {
       message.error("You are not authorized to update this post");
       return;
     }
@@ -44,12 +44,12 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
         <Item onClick={() => dispatch(setRefreshPost(true))}>
           {t("forum.refresh")}
         </Item>
-        {owned == true || postContent.author.id == userId && (
+        {postContent.author.id == userId && (
           <Item onClick={() => handleOpenModalUpdate()}>
             {t("forum.updatePost")}
           </Item>
         )}
-        {owned == true || postContent.author.id == userId && (
+        {postContent.author.id == userId && (
           <Item onClick={() => handleDeletePost(postId)}>
             {t("forum.deletePost")}
           </Item>
@@ -75,7 +75,6 @@ const OptionPostItem = ({ id, postId, owned, postContent }) => {
 OptionPostItem.propTypes = {
   id: PropTypes.string.isRequired,
   postId: PropTypes.number.isRequired,
-  owned: PropTypes.bool.isRequired,
   postContent: PropTypes.object.isRequired,
 };
 

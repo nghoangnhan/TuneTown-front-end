@@ -12,7 +12,9 @@ import { useTranslation } from "react-i18next";
 
 const ForumPage = () => {
   const { getAllPost } = useForumUtils();
-  const [listPost, setListPost] = useState({ postList: [], currentPage: 1, totalPages: 1 });
+  const [postList, setPostList] = useState({ postList: [] });
+  const [totalPage, setTotalPage] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   // const [postDetail, setPostDetail] = useState();
   const [postPage, setPostPage] = useState(1);
@@ -23,15 +25,16 @@ const ForumPage = () => {
 
   const handleGetAllPost = async () => {
     await getAllPost(postPage).then((res) => {
-      console.log("List Post", res);
-      setListPost((prev) => (
-        {
-          postList: [...prev.postList, ...res.postList],
-          currentPage: res.currentPage, totalPages: res.totalPages
-        }));
-
-      console.log("List Post Merge", listPost);
+      setCurrentPage(res.currentPage);
+      setTotalPage(res.totalPages);
       dispatch(setRefreshPost(false));
+      if (res.currentPage > 1 && currentPage < totalPage) {
+        setPostList((prevPostList) => ({
+          postList: [...prevPostList.postList, ...res.postList],
+        }));
+      } else if (res.currentPage === 1) {
+        setPostList(res);
+      }
     });
   };
 
@@ -39,7 +42,7 @@ const ForumPage = () => {
     handleGetAllPost();
   }, [refreshPost, postPage]);
 
-  if (!listPost) return null;
+  if (!postList) return null;
   return (
     <div className="h-auto min-h-screen px-2 pt-5 pb-40 text-primary dark:text-primaryDarkmode bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       {/* Desktop  */}
@@ -54,8 +57,8 @@ const ForumPage = () => {
             >
               {t("forum.createAPost")}
             </button>
-            <PostSection postList={listPost?.postList}></PostSection>
-            {listPost.currentPage < listPost.totalPages && <div className="flex justify-center w-full">
+            <PostSection postList={postList?.postList}></PostSection>
+            {postList.currentPage < postList.totalPages && <div className="flex justify-center w-full">
               <button onClick={
                 () => {
                   setPostPage(postPage + 1);
@@ -81,8 +84,8 @@ const ForumPage = () => {
             >
               {t("forum.createAPost")}
             </button>
-            <PostSection postList={listPost?.postList}></PostSection>
-            {listPost.currentPage < listPost.totalPages && <div className="flex justify-center w-full">
+            <PostSection postList={postList?.postList}></PostSection>
+            {currentPage < totalPage && <div className="flex justify-center w-full">
               <button onClick={
                 () => {
                   setPostPage(postPage + 1);
