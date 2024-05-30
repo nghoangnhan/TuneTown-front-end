@@ -105,6 +105,7 @@ const UserDetailPage = ({ owned }) => {
       });
       getUserPost(userId).then((res) => {
         setPostList(res.postList);
+        console.log("PostList", postList);
       });
       getUserPlaylist(userId).then((data) => {
         setPlaylistList(data);
@@ -205,7 +206,7 @@ const UserDetailPage = ({ owned }) => {
         <div className="w-full">
           {postList && <PostSection postList={postList}></PostSection>}
           {postList?.length === 0 && (
-            <div className="xl:min-w-[500px] max-xl:min-w-[700px] text-center text-primary dark:text-primaryDarkmode font-bold px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-3 xl:mt-5 xl:py-5 xl:px-5">
+            <div className="xl:min-w-[600px] min-w-[400px] text-center text-primary dark:text-primaryDarkmode font-bold px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mt-5 xl:py-5 xl:px-5">
               No posts yet!
             </div>
           )}
