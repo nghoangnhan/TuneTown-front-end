@@ -180,6 +180,42 @@ const useUserUtils = () => {
     }
   };
 
+  const getArtistFollower = async (userId) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/users/followers?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      // console.log("getArtistFollower Response", response.data);
+      return response.data;
+    }
+    catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  const getArtistFollowing = async (userId) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/users/following?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      // console.log("getArtistFollowing Response", response.data);
+      return response.data;
+    }
+    catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
   return {
     CheckCookie,
     checkToken,
@@ -190,6 +226,8 @@ const useUserUtils = () => {
     followArtist,
     editUser,
     CheckCommunityExist,
+    getArtistFollower,
+    getArtistFollowing
   }
 };
 export default useUserUtils;

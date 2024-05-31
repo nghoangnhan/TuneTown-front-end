@@ -10,14 +10,14 @@ const ModalApprove = ({ openApprovedList, setOpenApprovedList, converChosen }) =
     return (
         <Modal open={openApprovedList} onCancel={() => setOpenApprovedList(false)}
             footer={null} className="bg-backgroundModalPrimary dark:bg-backgroundDarkPrimary modalStyle" centered>
-            <div className="flex flex-col items-center justify-center gap-3 p-5 bg-backgroundModalPrimary ">
+            <div className="flex flex-col items-center justify-center gap-3 p-5 bg-backgroundModalPrimary dark:bg-backgroundDarkPrimary">
                 <h2 className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Approved List</h2>
                 <div className="w-full overflow-auto h-96">
                     {converChosen.approveRequests && converChosen.approveRequests.map((item) => (
                         <div className="flex flex-row items-center justify-around gap-2 rounded-md text-primaryText2 dark:text-primaryTextDark2 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary" key={item.id}>
-                            <img src={item.avatar ? item.avatar : Base_AVA} className="max-h-9" alt="" />
-                            <h2 className="p-2">{item.userName}</h2>
-                            <h2 className="p-2">{item.role}</h2>
+                            <img src={item.avatar ? item.avatar : Base_AVA} className="max-h-9 dark:bg-white" alt="" />
+                            <h2 className="p-2 text-primaryText2 dark:text-primaryTextDark2">{item.userName}</h2>
+                            <h2 className="p-2 text-primaryText2 dark:text-primaryTextDark2">{item.role}</h2>
                             <h2 className="flex gap-2 p-2">
                                 <button className="w-20 px-2 py-1 border rounded-md border-primary dark:text-primaryDarkmode dark:border-primaryDarkmode text-primary hover:opacity-70"
                                     onClick={() => {

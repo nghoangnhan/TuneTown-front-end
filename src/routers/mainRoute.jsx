@@ -90,6 +90,10 @@ export default function init(routes) {
         element: <ArtistDetailPage />,
       },
       {
+        path: "user/:artistId",
+        element: <ArtistDetailPage />,
+      },
+      {
         path: "song/:songId",
         element: <SongDetailPage />
       },
