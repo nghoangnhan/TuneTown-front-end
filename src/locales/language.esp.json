@@ -1,0 +1,93 @@
+{
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "password": "Contraseña",
+    "dontHaveAccount": "No tienes cuenta",
+    "dontRememberPassword": "¿No recuerdas tu contraseña?",
+    "forgetPassword": "Olvidaste tu contraseña",
+    "orLoginWith": "O inicia sesión con",
+    "loginWithFacebook": "Iniciar sesión con Facebook",
+    "signUp": "Registrarse"
+  },
+  "nav": {
+    "home": "Inicio",
+    "search": "Buscar",
+    "forum": "Foro",
+    "myPlaylist": "Mi Lista"
+  },
+  "common": {
+    "good": "Bueno",
+    "morning": "Mañana",
+    "afternoon": "Tarde",
+    "evening": "Noche",
+    "back": "Atrás",
+    "selectFile": "Seleccionar archivo",
+    "loadMore": "Cargar más",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "low": "Bajo",
+    "medium": "Medio",
+    "high": "Alto"
+  },
+  "home": {
+    "madeForYou": "Hecho para ti"
+  },
+  "forum": {
+    "createAPost": "Crear una publicación",
+    "comment": "Comentar",
+    "share": "Compartir",
+    "report": "Reportar",
+    "refresh": "Actualizar",
+    "updatePost": "Actualizar publicación",
+    "deletePost": "Eliminar publicación"
+  },
+  "playlist": {
+    "myPlaylist": "Mi Lista de Reproducción",
+    "createNewPlaylist": "Crear nueva lista de reproducción",
+    "private": "Privada",
+    "public": "Pública",
+    "createYourNewPlaylist": "Crea tu nueva lista de reproducción",
+    "editPlaylist": "Editar lista de reproducción",
+    "madeBy": "Hecho por",
+    "playlistName": "Nombre de la lista de reproducción",
+    "playlistPrivacy": "Privacidad de la lista de reproducción",
+    "uploadCoverArt": "Subir portada",
+    "coverArtExtra": "Sube tu imagen de portada",
+    "saveChanges": "Guardar cambios",
+    "editOrderSong": "Editar el orden de las canciones"
+  },
+  "song": {
+    "title": "Título"
+  },
+  "accountOptions": {
+    "title": "Opciones de Cuenta",
+    "myProfile": "Mi Perfil",
+    "listenHistory": "Historial de Escucha",
+    "settings": "Configuraciones",
+    "signOut": "Cerrar sesión",
+    "songManagement": "Gestión de Canciones"
+  },
+  "lyrics": {
+    "lyrics": "Letras"
+  },
+  "profile": {
+    "editProfile": "Editar perfil",
+    "editFavouriteGenres": "Editar géneros favoritos",
+    "favouriteGenres": "Géneros favoritos"
+  },
+  "settings": {
+    "theme": "Tema",
+    "language": "Idioma",
+    "volumeLevel": "Nivel de Volumen"
+  },
+  "artistPage": {
+    "follow": "Seguir",
+    "following": "Siguiendo",
+    "follower": "Seguidor",
+    "topTracks": "Mejores Canciones",
+    "allTracks": "Todas las Canciones",
+    "requestSent": "Solicitud Enviada",
+    "communityJoined": "Comunidad unida",
+    "joinArtistCommunity": "Unirse a la Comunidad"
+  }
+}
