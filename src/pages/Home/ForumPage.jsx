@@ -67,7 +67,9 @@ const ForumPage = () => {
               </button>
             </div>}
           </div>
-          <SongChart inForum={true}></SongChart>
+          <div className="mt-[60px]">
+            <SongChart inForum={true}></SongChart>
+          </div>
           {/* <PlaylistSection playlistTitle={"Maybe You Want!"}></PlaylistSection> */}
         </div>
       )}

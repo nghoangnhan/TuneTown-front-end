@@ -50,6 +50,7 @@ export default {
         backgroundModalPrimary: "#ffffff",
         backgroundComponentPrimary: "#FFFFFFCC",
         backgroundComponentDarkPrimary: "#2d3748",
+        backgroundComponentDarkPrimary2: "#343f51",
         backgroundMusicControl: "#f5f5f5",
         backgroundDarkMusicControl: "#2d3748",
         backgroundChat: "#e8e8e8",

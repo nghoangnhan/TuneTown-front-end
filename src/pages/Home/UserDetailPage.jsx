@@ -203,33 +203,25 @@ const UserDetailPage = ({ owned }) => {
         </div>
       </div>
       <div className={`${isMobile ? "flex-col" : "flex-row"} gap-2 flex items-start justify-evenly w-full`}>
-        <div className="xl:min-w-[600px] min-w-[400px] w-full bg-backgroundPlaylist dark:bg-backgroundPlaylistDark  dark:text-primaryTextDark2 text-primaryText2 rounded-2xl p-2 shadow-lg">
+        <div className="xl:min-w-[600px] min-w-[400px] w-full bg-backgroundComponentPrimary dark:bg-backgroundSongItemHoverDark  dark:text-primaryTextDark2 text-primaryText2 rounded-2xl p-2 shadow-lg">
           <HistoryPage></HistoryPage>
         </div>
-        <div className="w-full overflow-auto bg-backgroundComponentPrimary dark:bg-backgroundSongItemHoverDark px-1 xl:px-4 rounded-2xl max-h-96 xl:max-h-[635px]">
-          {/* <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-2xl xl:h-fit xl:py-4 xl:mt-3">
-            Post List
-          </div> */}
-          {postList && <div>
-            <PostSection postList={postList}></PostSection>
-            {/* {postList.length > 3 && <div className="flex justify-center w-full">
-              <button
-                onClick={() => {
 
-                }}
-                className="px-2 py-2 my-5 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode"
-              >
-                {t("common.loadMore")}
-              </button>
-            </div>} */}
-          </div>}
-          {postList?.length === 0 && (
-            <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
-              No posts yet!
-            </div>
-          )}
+        <div className="w-full px-1 py-4 h-fit bg-backgroundComponentPrimary dark:bg-backgroundSongItemHoverDark xl:px-4 rounded-2xl">
+          <div className="w-full h-full overflow-auto max-h-80 rounded-lg xl:max-h-[602px]">
+            {postList && <div>
+              <PostSection postList={postList}></PostSection>
+            </div>}
+            {postList?.length === 0 && (
+              <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
+                No posts yet!
+              </div>
+            )}
+          </div>
         </div>
+
       </div>
+
       <Modal
         className="modalStyle"
         open={openModalEditUser}

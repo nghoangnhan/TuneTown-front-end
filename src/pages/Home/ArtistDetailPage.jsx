@@ -63,6 +63,7 @@ const ArtistDetailPage = () => {
     await getArtistByArtistId(artistId).then((result) => {
       if (result == null) return;
       setArtistDetail(result);
+      setFollow(result.isFollowed);
       setTopSongListArtist(result.songs);
       setRefresh(false);
       // console.log("SetArtistDetail", result);
@@ -179,9 +180,8 @@ const ArtistDetailPage = () => {
 
   return (
     <div
-      className={`${
-        artistId ? " h-full" : "h-fit"
-      } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
+      className={`${artistId ? " h-full" : "h-fit"
+        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
@@ -257,8 +257,8 @@ const ArtistDetailPage = () => {
                     {request
                       ? t("artistPage.requestSent")
                       : join
-                      ? t("artistPage.communityJoined")
-                      : t("artistPage.joinArtistCommunity")}
+                        ? t("artistPage.communityJoined")
+                        : t("artistPage.joinArtistCommunity")}
                   </button>
                 )}
               </div>
@@ -268,13 +268,12 @@ const ArtistDetailPage = () => {
       </div>
       <div>
         <div
-          className={`${
-            isMobile ? "flex-col" : "flex-row"
-          } flex gap-2 justify-center`}
+          className={`${isMobile ? "flex-col" : "flex-row"
+            } flex gap-2 justify-center`}
         >
           {/* <SongSectionPlaylist songData={artistDetail.songs}></SongSectionPlaylist> */}
           {topSongListArtist && (
-            <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-5 min-w-[600px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
+            <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-5 min-w-[600px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 rounded-xl xl:max-h-[635px]">
               <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
                 {t("artistPage.topTracks")}
               </div>
@@ -292,36 +291,28 @@ const ArtistDetailPage = () => {
             </div>
           )}
 
-          <div className="overflow-auto my-5 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary min-w-[600px] px-1 xl:px-4  mx-2 rounded-2xl max-h-96 xl:max-h-[635px]">
-            {/* <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-2xl xl:h-fit xl:py-4 xl:mt-3">
-            Post List
-          </div> */}
-            {postList && (
-              <div>
-                <PostSection postList={postList}></PostSection>
-                {/* {postList.length > 3 && <div className="flex justify-center w-full">
-              <button
-                onClick={() => {
+          <div className="overflow-auto my-5 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 min-w-[600px] px-1 xl:px-4  mx-2 rounded-2xl max-h-96 xl:max-h-[635px]">
+            <div className="w-full px-1 py-4 h-fit bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 xl:px-4 rounded-2xl">
+              <div className="w-full h-full overflow-auto max-h-80 rounded-lg xl:max-h-[602px]">
+                {postList && (
+                  <div>
+                    <PostSection postList={postList}></PostSection>
 
-                }}
-                className="px-2 py-2 my-5 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode"
-              >
-                {t("common.loadMore")}
-              </button>
-            </div>} */}
+                  </div>
+                )}
+                {postList?.length === 0 && (
+                  <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
+                    No posts yet!
+                  </div>
+                )}
               </div>
-            )}
-            {postList?.length === 0 && (
-              <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
-                No posts yet!
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
 
       {songListArtist && (
-        <div className="px-5 pt-2 pb-5 m-auto mx-2 my-4 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
+        <div className="px-5 pt-2 pb-5 m-auto mx-2 my-4 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 rounded-xl">
           <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
             {t("artistPage.allTracks")}
           </div>
@@ -360,45 +351,45 @@ const ArtistDetailPage = () => {
         <div className="flex flex-col gap-2">
           {follower
             ? listFollower?.map((follower) => (
-                <div
-                  key={follower.follower.id}
-                  className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56 "
-                  onClick={() => handleNavigateFollow(follower.follower)}
-                >
-                  <img
-                    src={
-                      follower.follower.avatar
-                        ? follower.follower.avatar
-                        : Base_AVA
-                    }
-                    alt="follower-avatar"
-                    className="w-12 h-12 rounded-full dark:bg-white"
-                  />
-                  <span className="text-xl font-bold text-primary dark:text-primaryDarkmode ">
-                    {follower.follower.userName}
-                  </span>
-                </div>
-              ))
+              <div
+                key={follower.follower.id}
+                className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56 "
+                onClick={() => handleNavigateFollow(follower.follower)}
+              >
+                <img
+                  src={
+                    follower.follower.avatar
+                      ? follower.follower.avatar
+                      : Base_AVA
+                  }
+                  alt="follower-avatar"
+                  className="w-12 h-12 rounded-full dark:bg-white"
+                />
+                <span className="text-xl font-bold text-primary dark:text-primaryDarkmode ">
+                  {follower.follower.userName}
+                </span>
+              </div>
+            ))
             : listFollowing?.map((following) => (
-                <div
-                  key={following.subject.id}
-                  className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56"
-                  onClick={() => handleNavigateFollow(following.subject)}
-                >
-                  <img
-                    src={
-                      following.subject.avatar
-                        ? following.subject.avatar
-                        : Base_AVA
-                    }
-                    alt="following-avatar"
-                    className="w-12 h-12 rounded-full dark:bg-white"
-                  />
-                  <span className="text-xl font-bold text-primary dark:text-primaryDarkmode">
-                    {following.subject.userName}
-                  </span>
-                </div>
-              ))}
+              <div
+                key={following.subject.id}
+                className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56"
+                onClick={() => handleNavigateFollow(following.subject)}
+              >
+                <img
+                  src={
+                    following.subject.avatar
+                      ? following.subject.avatar
+                      : Base_AVA
+                  }
+                  alt="following-avatar"
+                  className="w-12 h-12 rounded-full dark:bg-white"
+                />
+                <span className="text-xl font-bold text-primary dark:text-primaryDarkmode">
+                  {following.subject.userName}
+                </span>
+              </div>
+            ))}
         </div>
       </Modal>
       <LoadingLogo loading={loading}></LoadingLogo>
