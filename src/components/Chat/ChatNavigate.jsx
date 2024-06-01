@@ -95,7 +95,7 @@ const ChatNavigate = () => {
           communityHost: item.community ? item.community.host : "",
           approveRequests: item.community ? item.community.approveRequests : [],
           hosts: item.community ? item.community.hosts : {},
-          joinUSers: item.community ? item.community.joinUSers : {},
+          joinUsers: item.community ? item.community.joinUsers : [],
         };
       });
 

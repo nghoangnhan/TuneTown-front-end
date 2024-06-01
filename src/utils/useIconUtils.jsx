@@ -5,6 +5,7 @@ import {
 import {
   faArrowTrendUp,
   faBackwardStep,
+  faBan,
   faCaretLeft,
   faCheckCircle,
   faEarthAmerica,
@@ -27,6 +28,7 @@ import {
   faSun,
   faUserCheck,
   faUserGroup,
+  faUserXmark,
   faVolumeHigh,
   faVolumeLow,
 } from "@fortawesome/free-solid-svg-icons";
@@ -394,6 +396,14 @@ const useIconUtils = () => {
     return <FontAwesomeIcon icon={faUserGroup}></FontAwesomeIcon>;
   };
 
+  const UserXMark = () => {
+    return <FontAwesomeIcon icon={faUserXmark}></FontAwesomeIcon>;
+  }
+
+  const BanIcon = () => {
+    return <FontAwesomeIcon icon={faBan}></FontAwesomeIcon>;
+  }
+
   const UserGroupIconOutlined = () => {
     return <FontAwesomeIcon icon={faUserGroup} />;
   };
@@ -448,7 +458,7 @@ const useIconUtils = () => {
     LyricIcon,
     QueueIcon,
     CreatePlaylistButton,
-    UserGroupIcon,
+    UserGroupIcon, UserXMark, BanIcon,
     UserGroupIconOutlined,
     ExitCommunityIcon,
     SendIcon,

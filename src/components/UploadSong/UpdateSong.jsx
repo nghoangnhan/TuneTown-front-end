@@ -24,8 +24,8 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
   const { handleUploadFileIMG, handleUploadFileMP3 } = useDataUtils();
   const { getSongById } = useMusicAPIUtils();
   const [uploadedFile, setUploadedFile] = useState({});
-  const [fileImg, setFileImg] = useState(songData?.poster);
-  const [fileMP3, setFileMP3] = useState(songData.songData);
+  const [fileImg, setFileImg] = useState();
+  const [fileMP3, setFileMP3] = useState();
   const [editorValue, setEditorValue] = useState("");
 
   const UploadIMGfile = async (file) => {
@@ -120,6 +120,8 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
 
   useEffect(() => {
     getSongById(songData.songId).then((data) => {
+      setFileImg(data.poster);
+      setFileMP3(data.songData);
       form.setFieldsValue({
         songName: data.songName,
         artists: data.artists.map((artist) => {

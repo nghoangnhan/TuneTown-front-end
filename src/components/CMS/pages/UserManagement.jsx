@@ -12,7 +12,7 @@ const UserManagement = () => {
   const [formRole] = useForm();
   const { Base_URL, Base_AVA } = useConfig();
   const [userList, setUserList] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [userId, setUserId] = useState();
   const [searchValue, setSearchValue] = useState("");
@@ -22,12 +22,12 @@ const UserManagement = () => {
   };
   // Call this function when you want to refresh the playlist
   const showModalEdit = (id) => {
-    setIsModalOpen(true);
     setUserId(id);
+    setIsModalEditOpen(true);
   };
   const showModalEditRole = (id, role) => {
-    setIsModalOpenUpdate(true);
     setUserId(id);
+    setIsModalOpenUpdate(true);
     // set value for the field
     formRole.setFieldsValue({
       role: role,
@@ -35,10 +35,11 @@ const UserManagement = () => {
   };
   const handleOkRole = () => {
     changeUserRole(userId, formRole.getFieldValue("role"));
+    setRefresh(true);
     setIsModalOpenUpdate(false);
   };
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setIsModalEditOpen(false);
     setIsModalOpenUpdate(false);
   };
 
@@ -225,7 +226,7 @@ const UserManagement = () => {
   }, []);
 
   useEffect(() => {
-    if (isModalOpen || isModalOpenUpdate || refresh) {
+    if (refresh == true) {
       getListUser().then(() => {
         setRefresh(false);
       })
@@ -273,13 +274,14 @@ const UserManagement = () => {
           pagination={{ pageSize: 8 }}
         />
         <Modal
-          open={isModalOpen}
+          open={isModalEditOpen}
           onCancel={handleCancel}
           footer={[]}
           centered
+
           className="modalStyle w-fit h-fit"
         >
-          <EditUserForm editUserId={userId} isAdmin={true}></EditUserForm>
+          <EditUserForm editUserId={userId} setRefresh={setRefresh} setOpenModalEditUser={setIsModalEditOpen} isAdmin={true}></EditUserForm>
         </Modal>
         <Modal
           title="Edit User Role"

@@ -33,9 +33,9 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     // const [loading, setLoading] = useState(false);
     const [playlistRs, setPlaylistRs] = useState([]);
     const [openModalChosePlaylist, setOpenModalChosePlaylist] = useState(false);
-    const [playlistChosen, setPlaylistChosen] = useState(postContent.playlist);
+    const [playlistChosen, setPlaylistChosen] = useState();
     const [openModalChoseSong, setOpenModalChoseSong] = useState(false);
-    const [songChosen, setSongChosen] = useState(postContent.song);
+    const [songChosen, setSongChosen] = useState();
 
 
     // const UploadMP3file = async (file) => {
@@ -75,9 +75,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 },
                 content: contentParser,
                 song: postContent.song?.id ? { id: postContent.song.id } : null,
-                playlist: {
-                    id: playlistChosen?.id
-                },
+                playlist: playlistChosen?.id ? { id: playlistChosen.id } : null,
                 mp3Link: null
             }, {
                 headers: {
@@ -131,6 +129,8 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
 
     useEffect(() => {
         if (postContent) {
+            setPlaylistChosen(postContent.playlist);
+            setSongChosen(postContent.song);
             form.setFieldsValue({
                 content: postContent.content,
                 songCoverArt: postContent?.poster,

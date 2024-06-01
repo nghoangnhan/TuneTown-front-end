@@ -105,6 +105,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+    form.resetFields();
   };
 
   const handleAddPlaylist = async () => {

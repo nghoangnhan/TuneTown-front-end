@@ -356,6 +356,24 @@ export const useChatUtils = () => {
     }
   };
 
+  const DeleteMember = async (userId, communityId) => {
+    try {
+      if (!userId || !communityId) return;
+      if (confirm("Are you sure you want to delete this member?") === false) return;
+      const response = await axios.post(
+        `${Base_URL}/community/outCommunity?userId=${userId}&communityId=${communityId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      return response.status;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
 
   return {
     AcronymName,
@@ -368,7 +386,7 @@ export const useChatUtils = () => {
     createCommunity,
     searchCommunityByName,
     getCommunityByArtist,
-    deleteConversation, deleteCommunity, ApproveRequest,
+    deleteConversation, deleteCommunity, ApproveRequest, DeleteMember
   };
 };
 

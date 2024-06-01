@@ -21,7 +21,6 @@ const PostManagement = () => {
     };
 
     const columnPost = [
-        // ID, Avatar, Name, Content, Song.poster, song.avatar,playlist.coverart, playlist.playlistName, Action.detail
         {
             title: "ID",
             dataIndex: "key",
@@ -38,7 +37,7 @@ const PostManagement = () => {
                     <img
                         src={author.avatar ? author.avatar : Base_AVA}
                         alt="avatar"
-                        className="w-6 h-6 rounded-full"
+                        className="w-10 h-10 rounded-full"
                     />
                     <div className="ml-2">{author.userName}</div>
                 </div>
@@ -52,10 +51,22 @@ const PostManagement = () => {
         }
         ,
         {
-            title: "Song Name",
-            dataIndex: "songName",
-            key: "songName",
+            title: "Song  ",
+            dataIndex: "song",
+            key: "song",
             align: "center",
+            render: (song) => (
+                <div className="flex flex-col items-center justify-center gap-1">
+                    {song?.poster && <img
+                        src={song?.poster}
+                        alt="avatar"
+                        className="w-10 h-10 bg-white dark:rounded-full"
+                    />}
+                    {song?.songName ? song.songName : "No Song"
+                    }
+
+                </div>
+            ),
         },
         {
             title: "Artist",
@@ -70,12 +81,12 @@ const PostManagement = () => {
             align: "center",
             render: (playlist) => (
                 <div className="flex flex-col items-center justify-center gap-1">
-                    <img
-                        src={playlist?.coverArt ? playlist.coverArt : Base_AVA}
+                    {playlist?.coverArt && <img
+                        src={playlist?.coverArt}
                         alt="avatar"
                         className="w-10 h-10 bg-white dark:rounded-full"
-                    />
-                    <div className="ml-2">{playlist?.playlistName ? playlist.playlistName : "No name playlist"}</div>
+                    />}
+                    <div className="ml-2">{playlist?.playlistName ? playlist.playlistName : "No playlist"}</div>
                 </div>
             ),
         },
@@ -116,10 +127,10 @@ const PostManagement = () => {
                         Delete
                     </button>
                 </div>
-            ),
-
+            )
         },
     ];
+
     const handleDelete = (record) => {
         console.log("Delete", record);
         deletePost(record.key).then((res) => {
@@ -134,8 +145,9 @@ const PostManagement = () => {
         const postContent = {
             id: record.key,
             author: record.author,
-            content: record.postContent,
             playlist: record.playlist,
+            song: record.song,
+            content: record.postContent,
             mp3Link: record.mp3Link,
         }
         setPostUpdate(postContent);
@@ -149,6 +161,7 @@ const PostManagement = () => {
         songName: postItem.song?.songName,
         artist: postItem.song?.artists.map((artist) => artist.userName).join(" "),
         playlist: postItem.playlist,
+        song: postItem.song,
         listens: postItem.song?.listens,
         likes: postItem.likes.length,
         postTime: postItem?.postTime,
@@ -233,6 +246,7 @@ const PostManagement = () => {
                 // onOk={handleOk}
                 onCancel={() => {
                     setModalCreatePost(false);
+                    setPostUpdate({});
                 }}
                 open={openModalCreatePost}
                 footer={null}

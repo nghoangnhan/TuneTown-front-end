@@ -17,7 +17,7 @@ const socialStore = createSlice({
       communityHost: "",
       approveRequests: [],
       hosts: {},
-      joinUSers: {},
+      joinUsers: [],
     },
 
     isReplying: false,

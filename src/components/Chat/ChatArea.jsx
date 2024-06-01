@@ -12,14 +12,15 @@ import useConfig from "../../utils/useConfig";
 import { Item, Menu, useContextMenu } from "react-contexify";
 import { message } from "antd";
 import ModalApprove from "./ModalApprove";
+import ModalEditMember from "./ModalEditMember";
 
 const ChatArea = () => {
-  const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest, outCommunity } = useChatUtils();
+  const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest, DeleteMember, outCommunity, getCommunityByHostId } = useChatUtils();
   const { Base_URL, socket } = useConfig();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { BackIcon, UserGroupIcon, OptionsIcon, ExitCommunityIcon, SendIcon } = useIconUtils();
+  const { BackIcon, UserGroupIcon, OptionsIcon, ExitCommunityIcon, SendIcon, UserXMark } = useIconUtils();
   const { access_token } = getToken();
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
@@ -29,6 +30,7 @@ const ChatArea = () => {
   const [newMessage, setNewMessage] = useState("");
   const [chatContent, setChatContent] = useState([]);
   const [openApprovedList, setOpenApprovedList] = useState(false);
+  const [openEditMember, setOpenEditMember] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
   const sendMessage = async (sendUserId, receiveUserId, content) => {
@@ -103,6 +105,22 @@ const ChatArea = () => {
     }
     );
   }
+
+  const handleDeleteMember = async (userId, communityId) => {
+    await DeleteMember(userId, communityId).then((res) => {
+      if (res === 200) {
+        message.success("Delete member successfully");
+        setRefresh(true);
+        dispatch(setRefreshChat(true));
+      }
+      else {
+        message.error("Failed to delete member");
+        console.log("Error delete member:", res);
+      }
+    }
+    );
+  }
+
   const handleOutCommunity = async (userId, communityId, communityName) => {
     await outCommunity(userId, communityId).then((res) => {
       if (res === 200) {
@@ -132,6 +150,14 @@ const ChatArea = () => {
       handleLoadmessage(userId, converChosen.chatId);
     }
   }, [converChosen, setOpenApprovedList]);
+
+  //  useEffect(() => {
+  //   if (converChosen.communityId !== null) {
+  //     getCommunityByHostId(converChosen.communityId).then((res) => {
+  //       setChatInfo(res);
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (socket) {
@@ -181,7 +207,10 @@ const ChatArea = () => {
         </div>
 
         {chatInfo?.communityId === userId &&
-          <div className="sticky right-0 flex flex-row items-center gap-2 px-4 text-primary dark:text-primaryDarkmode">
+          <div className="sticky right-0 flex flex-row items-center gap-4 px-4 text-primary dark:text-primaryDarkmode">
+            <div className="cursor-pointer" onClick={setOpenEditMember}>
+              <UserXMark></UserXMark>
+            </div>
             <div className="cursor-pointer" onClick={setOpenApprovedList}>
               <UserGroupIcon></UserGroupIcon>
             </div>
@@ -254,6 +283,12 @@ const ChatArea = () => {
         converChosen={converChosen}
         handleApproveRequest={handleApproveRequest}
       ></ModalApprove>
+      <ModalEditMember
+        openApprovedList={openEditMember}
+        setOpenEditMember={setOpenEditMember}
+        converChosen={converChosen}
+        handleDeleteMember={handleDeleteMember}
+      ></ModalEditMember>
     </div>
   );
 };

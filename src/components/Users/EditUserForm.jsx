@@ -12,10 +12,10 @@ import PropTypes from "prop-types";
 import useIconUtils from "../../utils/useIconUtils";
 
 // eslint-disable-next-line no-unused-vars
-const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
+const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEditUser }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
-  const userId = localStorage.getItem("userId");
+  const userId = editUserId ? editUserId : localStorage.getItem("userId");
   const dispatch = useDispatch();
   const { editUser, getUserInfor } = useUserUtils();
   const { handleUploadFileIMG, } = useDataUtils();
@@ -45,7 +45,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
       return;
     }
     const postData = {
-      id: userId,
+      id: editUserId,
       avatar: fileImg,
       userName: values.userName,
       userBio: values.userBio,
@@ -53,17 +53,19 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
       birthDate: values.birthDate.format("YYYY-MM-DD"),
     };
     editUser(postData).then(dispatch(setRefershAccount(true))); // Call the function to post the song data
+    setRefresh(true);
     setOpenModalEditUser(false);
+
   };
 
   useEffect(() => {
-    getUserInfor(userId).then((res) => {
+    getUserInfor(editUserId).then((res) => {
       setUserInfor(res.user);
       console.log("UserInfor", res.user);
     });
-    if (userInfor?.avatar) {
-      setFileImg(userInfor.avatar);
-    }
+
+    setFileImg(userInfor?.avatar);
+
     form.setFieldsValue({
       userId: userInfor?.id,
       userName: userInfor?.userName,
@@ -71,7 +73,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
       email: userInfor?.email,
       birthDate: dayjs(userInfor?.birthDate),
     });
-  }, [userId, userInfor?.id]);
+  }, [userId, editUserId, userInfor?.id]);
 
 
   useEffect(() => {
@@ -82,7 +84,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
 
 
   useEffect(() => {
-    if (refreshAccount == true) { getUserInfor(userId); }
+    if (refreshAccount == true) { getUserInfor(editUserId); }
   }, [refreshAccount]);
 
   return (
@@ -175,5 +177,7 @@ EditUserForm.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   isModal: PropTypes.bool.isRequired,
   setOpenModalEditUser: PropTypes.func.isRequired,
+  editUserId: PropTypes.string,
+  setRefresh: PropTypes.func,
 };
 export default EditUserForm;

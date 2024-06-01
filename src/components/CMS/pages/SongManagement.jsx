@@ -40,12 +40,18 @@ const SongManagement = () => {
     }
   };
   // Update Song
-  const handUpdateSong = (songId, songName) => {
-    const songData = {
+  const handUpdateSong = (songId, songName, poster, songData, artists, genres, listens, status) => {
+    const songDetail = {
       songId: songId,
       songName: songName,
+      poster: poster,
+      songData: songData,
+      artists: artists,
+      genres: genres,
+      listens: listens,
+      status: status,
     };
-    setSongData(songData);
+    setSongData(songDetail);
     setIsModalOpenUpdate(true);
   };
   // Call this function when you want to refresh the playlist
@@ -61,7 +67,10 @@ const SongManagement = () => {
   const handleOk = () => {
     form.submit();
     setIsModalOpenUpload(false);
+    setIsModalOpenUpdate(false);
+    setRefresh(true);
   };
+
   const handleCancel = () => {
     setIsModalOpenUpload(false);
     setIsModalOpenUpdate(false);
@@ -83,7 +92,7 @@ const SongManagement = () => {
         return (
           <div className="flex items-center justify-center">
             <img
-              src={poster.src ? poster.src : Base_AVA}
+              src={poster ? poster : Base_AVA}
               alt="poster"
               className="w-12 h-12 rounded-full dark:bg-white"
             />
@@ -152,7 +161,7 @@ const SongManagement = () => {
         <Space className="flex items-center justify-center">
           <button
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
-            onClick={() => handUpdateSong(record.key, record.songName)}
+            onClick={() => handUpdateSong(record.key, record.songName, record.poster, record.artists, record.genres, record.listens, record.status)}
           >
             Edit
           </button>
@@ -171,6 +180,7 @@ const SongManagement = () => {
     key: songItem.id.toString(), // Assuming id is unique
     poster: songItem.poster,
     songName: songItem.songName,
+    songData: songItem.songData,
     artists: songItem.artists.map((artist) => artist.userName + " "), // Assuming artists is an array
     genres: songItem.genres.map((genre) => genre.genreName + " "), // Assuming genres is an array
     listens: songItem.listens,

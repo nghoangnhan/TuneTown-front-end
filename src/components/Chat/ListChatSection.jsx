@@ -28,7 +28,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
             communityHost: conver.communityHost,
             approveRequests: conver.approveRequests,
             hosts: conver.hosts,
-            joinUSers: conver.joinUSers,
+            joinUsers: conver.joinUsers,
         };
         console.log("ChatNavigate handleChatChosen", converDetail);
 
