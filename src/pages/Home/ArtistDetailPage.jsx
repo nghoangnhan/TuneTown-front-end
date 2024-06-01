@@ -16,9 +16,15 @@ const ArtistDetailPage = () => {
   const { Base_AVA, isMobile } = useConfig();
   const userId = localStorage.getItem("userId");
   const dispatch = useDispatch();
-  const { followArtist, getArtistByArtistId,
-    getAllSongArtist, CheckCommunityExist, getUserPost,
-    getArtistFollower, getArtistFollowing } = useUserUtils();
+  const {
+    followArtist,
+    getArtistByArtistId,
+    getAllSongArtist,
+    CheckCommunityExist,
+    getUserPost,
+    getArtistFollower,
+    getArtistFollowing,
+  } = useUserUtils();
   const { UserCheck, BackButton, LoadingLogo } = useIconUtils();
   const navigate = useNavigate();
   const { getCommunityByHostId, joinRequest } = useChatUtils();
@@ -56,7 +62,7 @@ const ArtistDetailPage = () => {
       if (result == null) return;
       setArtistDetail(result);
       setTopSongListArtist(result.songs);
-      setRefresh(false)
+      setRefresh(false);
       // console.log("SetArtistDetail", result);
     });
   };
@@ -117,12 +123,14 @@ const ArtistDetailPage = () => {
     } catch (error) {
       console.error("Error checking artist community existence: ", error);
     }
-  }
+  };
 
   const handleNavigateFollow = (userId) => {
     setShowModalFollow(false);
-    userId.role == "ARTIST" ? navigate(`/artist/${userId.id}`) : navigate(`/user/${userId.id}`);
-  }
+    userId.role == "ARTIST"
+      ? navigate(`/artist/${userId.id}`)
+      : navigate(`/user/${userId.id}`);
+  };
 
   useEffect(() => {
     if (!artistDetail || !artistDetail.avatar) {
@@ -140,7 +148,7 @@ const ArtistDetailPage = () => {
 
   useEffect(() => {
     handleGetArtistDetail(artistId);
-    getUserPost(userId).then((res) => {
+    getUserPost(artistId).then((res) => {
       setPostList(res.postList);
     });
   }, [artistId, refresh]);
@@ -169,10 +177,10 @@ const ArtistDetailPage = () => {
 
   return (
     <div
-      className={`${artistId ? " h-full" : "h-fit"
-        } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
+      className={`${
+        artistId ? " h-full" : "h-fit"
+      } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
-
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
         style={{
@@ -208,10 +216,22 @@ const ArtistDetailPage = () => {
               </div>
             )}
             <div className="flex flex-row gap-2 my-2">
-              <div className="cursor-pointer text-primaryText dark:text-primaryTextDark2 opacity-80 hover:underline" onClick={() => { setShowModalFollow(true); setFollower(true) }}>
+              <div
+                className="cursor-pointer text-primaryText dark:text-primaryTextDark2 opacity-80 hover:underline"
+                onClick={() => {
+                  setShowModalFollow(true);
+                  setFollower(true);
+                }}
+              >
                 <span>Followers:</span> {artistDetail.followers}
               </div>
-              <div className="cursor-pointer text-primaryText dark:text-primaryTextDark2 opacity-80 hover:underline" onClick={() => { setShowModalFollow(true); setFollower(false) }}>
+              <div
+                className="cursor-pointer text-primaryText dark:text-primaryTextDark2 opacity-80 hover:underline"
+                onClick={() => {
+                  setShowModalFollow(true);
+                  setFollower(false);
+                }}
+              >
                 <span>Following:</span> {artistDetail.following}
               </div>
             </div>
@@ -223,7 +243,7 @@ const ArtistDetailPage = () => {
                 >
                   {follow == true ? "Following" : "Follow"}
                 </button>
-                {communityExist &&
+                {communityExist && (
                   <button
                     className="px-2 py-1 mb-5 font-bold border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
                     onClick={() => handleJoinCommunity()}
@@ -231,20 +251,21 @@ const ArtistDetailPage = () => {
                     {request
                       ? "Request sent"
                       : join
-                        ? "Community joined"
-                        : "Join the artist community"}
+                      ? "Community joined"
+                      : "Join the artist community"}
                   </button>
-                }
+                )}
               </div>
             }
           </div>
-
         </div>
       </div>
       <div>
-
-
-        <div className={`${isMobile ? "flex-col" : "flex-row"} flex gap-2 justify-center`}>
+        <div
+          className={`${
+            isMobile ? "flex-col" : "flex-row"
+          } flex gap-2 justify-center`}
+        >
           {/* <SongSectionPlaylist songData={artistDetail.songs}></SongSectionPlaylist> */}
           {topSongListArtist && (
             <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-5 min-w-[600px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
@@ -261,11 +282,7 @@ const ArtistDetailPage = () => {
                 </div>
               </div>
               {topSongListArtist?.slice(0, 5).map((songItem, index) => (
-                <SongItem
-                  key={index}
-                  songOrder={index + 1}
-                  song={songItem}
-                />
+                <SongItem key={index} songOrder={index + 1} song={songItem} />
               ))}
             </div>
           )}
@@ -274,9 +291,10 @@ const ArtistDetailPage = () => {
             {/* <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-2xl xl:h-fit xl:py-4 xl:mt-3">
             Post List
           </div> */}
-            {postList && <div>
-              <PostSection postList={postList}></PostSection>
-              {/* {postList.length > 3 && <div className="flex justify-center w-full">
+            {postList && (
+              <div>
+                <PostSection postList={postList}></PostSection>
+                {/* {postList.length > 3 && <div className="flex justify-center w-full">
               <button
                 onClick={() => {
 
@@ -286,7 +304,8 @@ const ArtistDetailPage = () => {
                 {t("common.loadMore")}
               </button>
             </div>} */}
-            </div>}
+              </div>
+            )}
             {postList?.length === 0 && (
               <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
                 No posts yet!
@@ -296,71 +315,88 @@ const ArtistDetailPage = () => {
         </div>
       </div>
 
-      {
-        songListArtist && (
-          <div className="px-5 pt-2 pb-5 m-auto mx-2 my-4 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
-            <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
-              More from {artistDetail.name}
+      {songListArtist && (
+        <div className="px-5 pt-2 pb-5 m-auto mx-2 my-4 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
+          <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
+            More from {artistDetail.name}
+          </div>
+          <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
+            <div className="flex flex-row gap-8 ml-10">
+              <div className="font-bold text-center ">#</div>
+              <div className="font-bold text-center ">Song Details</div>
             </div>
-            <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
-              <div className="flex flex-row gap-8 ml-10">
-                <div className="font-bold text-center ">#</div>
-                <div className="font-bold text-center ">Song Details</div>
-              </div>
-              <div>
-                <div className="font-bold text-center ">Duration</div>
-              </div>
+            <div>
+              <div className="font-bold text-center ">Duration</div>
             </div>
-            {songListArtist?.map((songItem, index) => (
-              <SongItem
-                key={index}
-                songOrder={index + 1}
-                song={songItem}
-              />
-            ))}
-            {/* Load More  */}
-            {<div className="flex flex-row items-center justify-center gap-4 mt-5">
+          </div>
+          {songListArtist?.map((songItem, index) => (
+            <SongItem key={index} songOrder={index + 1} song={songItem} />
+          ))}
+          {/* Load More  */}
+          {
+            <div className="flex flex-row items-center justify-center gap-4 mt-5">
               <button
                 onClick={() => {
                   setPage(page + 1);
                 }}
-                className="px-3 py-2 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70">
+                className="px-3 py-2 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
+              >
                 Load More
               </button>
-            </div>}
-          </div>
-        )
-      }
+            </div>
+          }
+        </div>
+      )}
       <Modal
         footer={null}
         open={showModalFollow}
         centered
         title={follower ? "Followers" : "Following"}
-        className='modalStyle'
+        className="modalStyle"
         onCancel={() => setShowModalFollow(false)}
       >
         <div className="flex flex-col gap-2">
-          {follower ? listFollower?.map((follower) => (
-            <div key={follower.follower.id} className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56 "
-              onClick={() => handleNavigateFollow(follower.follower)}>
-              <img
-                src={follower.follower.avatar ? follower.follower.avatar : Base_AVA}
-                alt="follower-avatar"
-                className="w-12 h-12 rounded-full dark:bg-white"
-              />
-              <span className="text-xl font-bold text-primary dark:text-primaryDarkmode ">{follower.follower.userName}</span>
-            </div>
-          )) : listFollowing?.map((following) => (
-            <div key={following.subject.id} className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56"
-              onClick={() => handleNavigateFollow(following.subject)}>
-              <img
-                src={following.subject.avatar ? following.subject.avatar : Base_AVA}
-                alt="following-avatar"
-                className="w-12 h-12 rounded-full dark:bg-white"
-              />
-              <span className="text-xl font-bold text-primary dark:text-primaryDarkmode">{following.subject.userName}</span>
-            </div>
-          ))}
+          {follower
+            ? listFollower?.map((follower) => (
+                <div
+                  key={follower.follower.id}
+                  className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56 "
+                  onClick={() => handleNavigateFollow(follower.follower)}
+                >
+                  <img
+                    src={
+                      follower.follower.avatar
+                        ? follower.follower.avatar
+                        : Base_AVA
+                    }
+                    alt="follower-avatar"
+                    className="w-12 h-12 rounded-full dark:bg-white"
+                  />
+                  <span className="text-xl font-bold text-primary dark:text-primaryDarkmode ">
+                    {follower.follower.userName}
+                  </span>
+                </div>
+              ))
+            : listFollowing?.map((following) => (
+                <div
+                  key={following.subject.id}
+                  className="flex flex-row items-center gap-2 overflow-auto cursor-pointer max-h-56"
+                  onClick={() => handleNavigateFollow(following.subject)}
+                >
+                  <img
+                    src={
+                      following.subject.avatar
+                        ? following.subject.avatar
+                        : Base_AVA
+                    }
+                    alt="following-avatar"
+                    className="w-12 h-12 rounded-full dark:bg-white"
+                  />
+                  <span className="text-xl font-bold text-primary dark:text-primaryDarkmode">
+                    {following.subject.userName}
+                  </span>
+                </div>
+              ))}
         </div>
       </Modal>
       <LoadingLogo loading={loading}></LoadingLogo>
