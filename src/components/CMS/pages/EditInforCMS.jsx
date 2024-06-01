@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { DatePicker, Form, Input } from "antd";
+import { DatePicker, Form, Input, message } from "antd";
 import dayjs from "dayjs";
 import UseCookie from "../../../hooks/useCookie";
 import UploadAvatar from "../../Users/UploadAvatar";
 import useConfig from "../../../utils/useConfig";
+import { useDispatch } from "react-redux";
+import { setRefershAccount } from "../../../redux/slice/account";
 
 const layout = {
   labelCol: {
@@ -25,6 +27,9 @@ const EditInfor = () => {
   const formRef = useRef(null);
   const [userInfor, setUserInfor] = useState({});
   const [fileIMG, setFileIMG] = useState();
+  const [refresh, setRefresh] = useState(false);
+  const dispatch = useDispatch();
+
   // const { getUserInfor } = useUserUtils();
   // Get user information from API
   const getUserInfor = async () => {
@@ -34,9 +39,8 @@ const EditInfor = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      // console.log(response.data, response.status);
-      setUserInfor(response.data.user);
-      // setUserName(response.data.user.userName);
+      console.log("Admin", userInfor);
+      return response.data;
     } catch (error) {
       // Handle network errors or other exceptions
       console.error("Error edited user:", error.message);
@@ -52,23 +56,22 @@ const EditInfor = () => {
         },
       });
       if (response.status === 200) {
-        // Handle success
-        console.log("User edited successfully:", response.data);
-      } else {
-        // Handle other status codes
-        console.error("Error edited user:", response.statusText);
+        message.success("User information updated successfully");
+        setRefresh(true)
+        dispatch(setRefershAccount(true))
+
       }
     } catch (error) {
       // Handle network errors or other exceptions
       console.error("Error edited user:", error.message);
+      message.error("Error edited user");
     }
   };
 
-  const onFinish = (values) => {
-    console.log("Received values:", values);
-    console.log("FileIMG", fileIMG);
+  const onFinish = async (values) => {
     // Value in Inpurt
     const { userName, userBio, email, birthDate } = values;
+    console.log("Values", values);
     const postData = {
       id: userId,
       avatar: fileIMG,
@@ -77,8 +80,8 @@ const EditInfor = () => {
       email: email,
       birthDate: birthDate.format("YYYY-MM-DD"),
     };
-    console.log("Token", access_token);
-    console.log("Posting Data", postData);
+    // console.log("Token", access_token);
+    // console.log("Posting Data", postData);
     editUser(postData); // Call the function to post the song data
   };
 
@@ -88,29 +91,31 @@ const EditInfor = () => {
     if (access_token == null) {
       window.location.href = "/";
     }
-    getUserInfor();
-    form.setFieldsValue({
-      userName: userInfor.userName,
-      email: userInfor.email,
-      birthDate: dayjs(userInfor.birthDate),
-      userBio: userInfor.userBio,
+    getUserInfor().then((res) => {
+      setUserInfor(res.user);
+      setRefresh(false);
+      if (formRef.current) {
+        formRef.current.setFieldsValue({
+          userName: res.user.userName,
+          email: res.user.email,
+          birthDate: dayjs(res.user.birthDate),
+          userBio: res.user.userBio,
+        });
+      }
     });
-
-    console.log("userName", userInfor);
-    console.log("userNameeee", userInfor.userName);
+    // console.log("userName", userInfor);
+    // console.log("userNameeee", userInfor.userName);
     // console.log("userName", userName);
-  }, [access_token, userInfor.userName, userInfor.email, userInfor.userBio]);
+  }, [userId, refresh]);
   return (
-    <section className="relative flex flex-col w-full h-screen pt-10">
-      <div className="flex items-center justify-center h-fit">
+    <section className="relative flex flex-col w-full min-h-screen pt-10">
+      <div className="flex items-center justify-center ">
         <Form
           {...layout}
           ref={formRef}
-          name="control-ref"
           form={form}
           onFinish={onFinish}
-          className="xl:w-[500px] relative w-fit border rounded-md mx-auto p-5  bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary formStyle"
-        // initialValues={{ userName: userInfor.userName }}
+          className="xl:w-[500px] relative w-fit shadow-lg rounded-md mx-auto p-5  bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary formStyle"
         >
           <div className="w-full mb-5 text-center">
             <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
@@ -233,9 +238,9 @@ const EditInfor = () => {
           </Form.Item> */}
 
           <Form.Item className="relative flex justify-end">
-            <butotn type="submit" className="px-2 py-2 border rounded-md cursor-pointer w-fit min-w-[110px] text-center border-primary dark:border-primary text-primary dark:text-primaryDarkmode hover:opacity-70">
+            <button type="submit" className="px-2 py-2 border rounded-md cursor-pointer w-fit min-w-[110px] text-center border-primary dark:border-primary text-primary dark:text-primaryDarkmode hover:opacity-70">
               Save Changes
-            </butotn>
+            </button>
           </Form.Item>
         </Form>
       </div>

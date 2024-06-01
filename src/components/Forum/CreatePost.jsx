@@ -138,7 +138,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
   }
 
   return (
-    <div className="">
+    <div className="bg-backgroundPlaylist dark:bg-backgroundPlaylistDark">
       <Form
         form={form}
         layout="vertical"

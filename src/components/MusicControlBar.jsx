@@ -5,6 +5,7 @@ import VolumeBar from "./VolumeBar";
 import useSongUtils from "../utils/useSongUtils";
 import DefaultArt from "../assets/img/logo/logo.png";
 import useConfig from "../utils/useConfig";
+import NavigationBar from "./NavigationBar";
 
 const MusicControlBar = () => {
   const songInfor = useSelector((state) => state.music.currentSong);
@@ -45,8 +46,9 @@ const MusicControlBar = () => {
       }
 
       {isMobile &&
-        <div className="relative flex flex-row items-center justify-center">
+        <div className="relative flex flex-col items-center justify-center">
           <DurationBar></DurationBar>
+          <NavigationBar></NavigationBar>
         </div>
       }
     </div>

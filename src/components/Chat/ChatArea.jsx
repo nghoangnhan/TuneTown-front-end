@@ -29,6 +29,7 @@ const ChatArea = () => {
   const [newMessage, setNewMessage] = useState("");
   const [chatContent, setChatContent] = useState([]);
   const [openApprovedList, setOpenApprovedList] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const sendMessage = async (sendUserId, receiveUserId, content) => {
     console.log("Send messageeeeeeeeeeeeeeee:", sendUserId, receiveUserId, content);
@@ -90,13 +91,13 @@ const ChatArea = () => {
 
   const handleApproveRequest = async (userId, requestId, isApprove) => {
     await ApproveRequest(userId, requestId, isApprove).then((res) => {
-      if (res.status === 200) {
-        message.success(`Approved successfully user ${requestId}`);
+      if (res === 200) {
+        message.success("Approve request successfully");
+        setRefresh(true);
         dispatch(setRefreshChat(true));
-        setOpenApprovedList(false);
       }
       else {
-        message.error(`Failed to approve user ${requestId}`);
+        message.error("Failed to approve request");
         console.log("Error approve request:", res);
       }
     }
@@ -104,7 +105,7 @@ const ChatArea = () => {
   }
   const handleOutCommunity = async (userId, communityId, communityName) => {
     await outCommunity(userId, communityId).then((res) => {
-      if (res.status === 200) {
+      if (res === 200) {
         message.success(`Left community ${communityName} successfully`);
         dispatch(setRefreshChat(true));
         navigate("/chat");
@@ -130,13 +131,21 @@ const ChatArea = () => {
       console.log("Chat info converChosen 1:", converChosen);
       handleLoadmessage(userId, converChosen.chatId);
     }
-  }, [converChosen]);
+  }, [converChosen, setOpenApprovedList]);
 
   useEffect(() => {
     if (socket) {
       handleSocketReconnect(socket);
     }
   }, [socket]);
+
+  useEffect(() => {
+    if (refresh === true) {
+      handleLoadmessage(userId, converChosen.chatId).then(() => {
+        setRefresh(false);
+      });
+    }
+  }, [refresh]);
 
   useEffect(() => {
     if (socket) {

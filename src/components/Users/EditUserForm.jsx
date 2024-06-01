@@ -59,6 +59,7 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
   useEffect(() => {
     getUserInfor(userId).then((res) => {
       setUserInfor(res.user);
+      console.log("UserInfor", res.user);
     });
     if (userInfor?.avatar) {
       setFileImg(userInfor.avatar);
@@ -85,91 +86,89 @@ const EditUserForm = ({ isAdmin, isModal, setOpenModalEditUser }) => {
   }, [refreshAccount]);
 
   return (
-    <section className={`${isModal ? "" : "h-fit pt-6 pb-20"} `}>
-      <Form
-        name="control-ref"
-        form={form}
-        onFinish={onFinish}
-        className={`
-        ${isModal ? "w-full" : "w-1/2"} flex flex-col  p-5 formStyle`}
-      >
-        <div className="w-full mb-5 text-center">
-          <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-            Edit User Information
-          </h2>
+    <Form
+      name="control-ref"
+      form={form}
+      onFinish={onFinish}
+      className={`flex flex-col bg p-5 formStyle bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary`}
+    >
+      <div className="w-full mb-5 text-center">
+        <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
+          Edit User Information
+        </h2>
+      </div>
+
+      {/* Avatar Image */}
+      <Form.Item
+        name="songCoverArt"
+        label="Upload Cover Art"
+        extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
+        getValueFromEvent={(e) => e && e.fileList}
+        valuePropName="fileList">
+        <div className="flex flex-row items-center gap-2">
+          <UploadFileDropZone
+            uploadedFile={uploadedFile}
+            setUploadedFile={setUploadedFile}
+            handleUploadFile={UploadIMGfile}
+            accept="image/jpeg, image/png"
+          />
+          {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
         </div>
+      </Form.Item>
+      <Form.Item
+        name="userName"
+        label="Name"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      // initialValue={userInfor.userName}
+      >
+        <Input className="dark:bg-backgroundPrimary" />
+      </Form.Item>
 
-        {/* Avatar Image */}
-        <Form.Item
-          name="songCoverArt"
-          label="Upload Cover Art"
-          extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
-          getValueFromEvent={(e) => e && e.fileList}
-          valuePropName="fileList">
-          <div className="flex flex-row items-center gap-2">
-            <UploadFileDropZone
-              uploadedFile={uploadedFile}
-              setUploadedFile={setUploadedFile}
-              handleUploadFile={UploadIMGfile}
-              accept="image/jpeg, image/png"
-            />
-            {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
-          </div>
-        </Form.Item>
-        <Form.Item
-          name="userName"
-          label="Name"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        // initialValue={userInfor.userName}
-        >
-          <Input className="dark:bg-backgroundPrimary" />
-        </Form.Item>
+      <Form.Item
+        name="userBio"
+        label="Bio"
+        rules={[
+          {
+            required: false,
+          },
+        ]}
+      >
+        <Input className="dark:bg-backgroundPrimary" />
+      </Form.Item>
 
-        <Form.Item
-          name="userBio"
-          label="Bio"
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
-          <Input className="dark:bg-backgroundPrimary" />
-        </Form.Item>
+      <Form.Item
+        name="email"
+        label="Email"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Input disabled className="dark:bg-backgroundPrimary dark:text-primaryText2" />
+      </Form.Item>
+      <Form.Item
+        label="Birthday"
+        name="birthDate"
+        rules={[
+          { required: true, message: "Please input your date of birth!" },
+        ]}
+      >
+        <DatePicker className="dark:bg-backgroundPrimary" />
+      </Form.Item>
 
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input disabled className="dark:bg-backgroundPrimary dark:text-primaryText2" />
-        </Form.Item>
-        <Form.Item
-          label="Birthday"
-          name="birthDate"
-          rules={[
-            { required: true, message: "Please input your date of birth!" },
-          ]}
-        >
-          <DatePicker className="dark:bg-backgroundPrimary" />
-        </Form.Item>
-
-        <Form.Item  >
-          <button type="submit" className="absolute px-2 py-2 border rounded-md right-2 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
-            Save Changes
-          </button>
-        </Form.Item>
-      </Form>
+      <Form.Item  >
+        <button type="submit" className="absolute px-2 py-2 border rounded-md right-2 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
+          Save Changes
+        </button>
+      </Form.Item>
       <LoadingLogo loading={loading}></LoadingLogo>
-    </section>);
+    </Form>
+  );
 };
 
 EditUserForm.propTypes = {

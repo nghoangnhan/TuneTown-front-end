@@ -24,7 +24,7 @@ const LoginPage = () => {
   const { checkToken } = useUserUtils();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { saveToken } = UseCookie();
+  const { saveToken, getToken } = UseCookie();
   const { t } = useTranslation();
   const userRole = localStorage.getItem("userRole");
 
@@ -54,13 +54,17 @@ const LoginPage = () => {
         message.success("Login Successfully");
         setTimeout(() => {
           if (response.data.role === "ADMIN") {
-            navigate("/cms/profile");
+            if (getToken().access_token !== "") {
+              navigate("/cms/profile");
+            }
           } else if (
             response.data.role === "USER" ||
             response.data.role === "ARTIST"
           ) {
-            // window.location.href = "/";
-            navigate("/");
+            if (getToken().access_token !== "") {
+              // window.location.href = "/";
+              navigate("/");
+            }
           }
         }, 1000);
       }
@@ -89,9 +93,13 @@ const LoginPage = () => {
   useEffect(() => {
     if (checkToken() == true && auth.access_token !== "") {
       if (userRole === "ADMIN") {
-        navigate("/cms/profile");
+        if (getToken().access_token !== "") {
+          navigate("/cms/profile");
+        }
       } else if (userRole === "USER" || userRole === "ARTIST") {
-        navigate("/");
+        if (getToken().access_token !== "") {
+          navigate("/");
+        }
       }
     }
   }, [auth.access_token]);

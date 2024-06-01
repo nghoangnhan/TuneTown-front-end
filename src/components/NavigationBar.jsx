@@ -91,7 +91,7 @@ const NavigationBar = () => {
 
       {/* Navigation Mobile  */}
       {isMobile && (
-        <div className="fixed bottom-0 z-50 flex flex-row justify-center w-screen xl:hidden bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
+        <div className="z-50 flex flex-row justify-center w-screen  xl:hidden bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
           <div className="pb-1">
             <div className="flex flex-row items-center justify-center gap-4">
               <NavLink

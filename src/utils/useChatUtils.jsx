@@ -230,7 +230,7 @@ export const useChatUtils = () => {
           },
         }
       );
-      return response;
+      return response.status;
     } catch (error) {
       console.log("Error:", error);
     }
@@ -368,7 +368,7 @@ export const useChatUtils = () => {
     createCommunity,
     searchCommunityByName,
     getCommunityByArtist,
-    deleteConversation, deleteCommunity, ApproveRequest
+    deleteConversation, deleteCommunity, ApproveRequest,
   };
 };
 
@@ -383,6 +383,21 @@ export const useForumUtils = () => {
   const getAllPost = async (page) => {
     try {
       const response = await axios.get(`${Base_URL}/post?page=${page ? page : ""}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      console.log("POST", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  // Get All Post Admin
+  const getAllPostAdmin = async () => {
+    try {
+      const response = await axios.get(`${Base_URL}/post/getPostsByAdmin`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
@@ -619,7 +634,7 @@ export const useForumUtils = () => {
     AcronymPost,
     scrollToBottom,
     handleCheckLiked,
-    getCommentById, handleSharePost,
+    getCommentById, handleSharePost, getAllPostAdmin
   };
 };
 

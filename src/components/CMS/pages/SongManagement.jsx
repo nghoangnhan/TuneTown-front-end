@@ -83,9 +83,9 @@ const SongManagement = () => {
         return (
           <div className="flex items-center justify-center">
             <img
-              src={poster.props.src ? poster.props.src : Base_AVA}
+              src={poster.src ? poster.src : Base_AVA}
               alt="poster"
-              className="w-12 h-12 rounded-lg"
+              className="w-12 h-12 rounded-full dark:bg-white"
             />
           </div>
         );
@@ -169,13 +169,7 @@ const SongManagement = () => {
 
   const dataSongs = songList.length > 0 && songList.map((songItem) => ({
     key: songItem.id.toString(), // Assuming id is unique
-    poster: (
-      <img
-        src={songItem.poster}
-        alt={songItem.songName}
-        className="rounded-md w-11 h-11"
-      />
-    ),
+    poster: songItem.poster,
     songName: songItem.songName,
     artists: songItem.artists.map((artist) => artist.userName + " "), // Assuming artists is an array
     genres: songItem.genres.map((genre) => genre.genreName + " "), // Assuming genres is an array
@@ -248,7 +242,7 @@ const SongManagement = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[null, null]}
-        className="w-fit h-fit "
+        className="w-fit h-fit modalStyle"
         centered
       >
         <UploadSong></UploadSong>
@@ -259,7 +253,7 @@ const SongManagement = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[null, null]}
-        className="w-fit h-fit "
+        className="w-fit h-fit modalStyle"
         centered
       >
         <UpdateSong songData={songData}></UpdateSong>

@@ -201,13 +201,13 @@ const ArtistDetailPage = () => {
             />
           </div>
           <div className="flex flex-col justify-center">
-            <div className="text-[50px] text-textNormal dark:text-textNormalDark font-bold text-center mb-5">
+            <div className="xl:text-[50px] text-3xl text-textNormal dark:text-textNormalDark font-bold text-center mb-5">
               <div className="flex flex-row items-center justify-center gap-3">
                 {artistDetail.name ? artistDetail.name : "Unknown Artist"}
                 {/* <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">
                   #{artistDetail.id}
                 </span> */}
-                <span className="text-4xl text-primary dark:text-primaryDarkmode">
+                <span className="text-3xl xl:text-[50px] text-primary dark:text-primaryDarkmode">
                   <UserCheck></UserCheck>
                 </span>
               </div>
@@ -269,11 +269,11 @@ const ArtistDetailPage = () => {
       <div>
         <div
           className={`${isMobile ? "flex-col" : "flex-row"
-            } flex gap-2 justify-center`}
+            } flex gap-2 justify-evenly`}
         >
           {/* <SongSectionPlaylist songData={artistDetail.songs}></SongSectionPlaylist> */}
           {topSongListArtist && (
-            <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-5 min-w-[600px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 rounded-xl xl:max-h-[635px]">
+            <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-5 xl:min-w-[600px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 rounded-xl xl:max-h-[635px]">
               <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
                 {t("artistPage.topTracks")}
               </div>
@@ -291,7 +291,7 @@ const ArtistDetailPage = () => {
             </div>
           )}
 
-          <div className="overflow-auto my-5 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 min-w-[600px] px-1 xl:px-4  mx-2 rounded-2xl max-h-96 xl:max-h-[635px]">
+          <div className="overflow-auto my-5 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 xl:min-w-[600px] px-1 xl:px-4  mx-2 rounded-2xl max-h-96 xl:max-h-[635px]">
             <div className="w-full px-1 py-4 h-fit bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 xl:px-4 rounded-2xl">
               <div className="w-full h-full overflow-auto max-h-80 rounded-lg xl:max-h-[602px]">
                 {postList && (

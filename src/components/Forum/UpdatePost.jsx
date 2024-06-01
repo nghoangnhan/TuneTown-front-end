@@ -10,7 +10,6 @@ import UseCookie from "../../hooks/useCookie";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import ModalPlaylistPost from "./Modal/ModalPlaylistPost";
 import Proptypes from "prop-types";
-import { Button } from "antd/es/radio";
 import { useDispatch } from "react-redux";
 import { setRefreshPost } from "../../redux/slice/social";
 import ModalChoseSong from "./Modal/ModalChoseSong";
@@ -141,7 +140,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     }, [postContent]);
 
     return (
-        <div className="mt-4 bg-backgroundComponentPrimary">
+        <div className=" bg-backgroundPlaylist dark:bg-backgroundPlaylistDark">
             <Form
                 form={form}
                 layout="vertical"
@@ -215,13 +214,13 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 {/* Song */}
                 <Form.Item>
                     <div className="flex flex-row items-center gap-2">
-                        <Button
+                        <button
                             onClick={() => setOpenModalChoseSong(true)}
                             type="button"
-                            className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+                            className="px-2 py-2 transition-colors duration-150 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
                         >
                             Add Song
-                        </Button>
+                        </button>
                         {songChosen && <div className="text-primary">Song Chosen: {songChosen.songName}{" "}#{songChosen.id}</div>}
                     </div>
                 </Form.Item>
@@ -229,20 +228,20 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 {/* Playlist */}
                 <Form.Item>
                     <div className="flex flex-row items-center gap-2">
-                        <Button
+                        <button
                             onClick={handleAddPlaylist}
                             type="button"
-                            className="transition-colors duration-150 bg-transparent border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+                            className="px-2 py-2 text-center bg-transparent border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
                         >
                             Add Playlist
-                        </Button>
-                        {playlistChosen && <div className="text-primary">Playlist Chosen: {playlistChosen.playlistName}{" "}#{playlistChosen.id}</div>}
+                        </button>
+                        {playlistChosen && <div className="text-primary dark:text-primaryDarkmode">Playlist Chosen: {playlistChosen.playlistName}{" "}#{playlistChosen.id}</div>}
                     </div>
                 </Form.Item>
                 <Form.Item>
                     <button
                         type="submit"
-                        className="w-full h-10 px-3 text-base bg-transparent border rounded-lg text-primary dark:text-primaryDarkmode hover:opacity-70 border-primary dark:border-primaryDarkmode "
+                        className="w-full h-10 px-2 py-2 text-base text-center bg-transparent border rounded-lg text-primary dark:text-primaryDarkmode hover:opacity-70 border-primary dark:border-primaryDarkmode "
                     >
                         Update Post
                     </button>

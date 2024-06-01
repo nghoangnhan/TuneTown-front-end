@@ -13,7 +13,7 @@ const PostManagement = () => {
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
     const [openModalCreatePost, setModalCreatePost] = useState(false)
     const [postUpdate, setPostUpdate] = useState({});
-    const { getAllPost, deletePost } = useForumUtils();
+    const { getAllPostAdmin, deletePost } = useForumUtils();
 
     const handSearch = (e) => {
         console.log("value", e.target.value);
@@ -73,7 +73,7 @@ const PostManagement = () => {
                     <img
                         src={playlist?.coverArt ? playlist.coverArt : Base_AVA}
                         alt="avatar"
-                        className="w-10 h-10 rounded-md"
+                        className="w-10 h-10 bg-white dark:rounded-full"
                     />
                     <div className="ml-2">{playlist?.playlistName ? playlist.playlistName : "No name playlist"}</div>
                 </div>
@@ -156,7 +156,7 @@ const PostManagement = () => {
     console.log("dataPosts", dataPosts);
 
     useEffect(() => {
-        getAllPost().then((res) => {
+        getAllPostAdmin().then((res) => {
             console.log("res", res);
             setPostlist(res.postList);
         });
@@ -164,7 +164,7 @@ const PostManagement = () => {
 
     useEffect(() => {
         if (refresh === true)
-            getAllPost().then((res) => {
+            getAllPostAdmin().then((res) => {
                 setRefresh(false);
                 setPostlist(res.postList);
             });
@@ -214,7 +214,6 @@ const PostManagement = () => {
             />
             <Modal
                 title="Update Post"
-                visible={false}
                 // onOk={handleOk}
                 onCancel={() => {
                     setOpenModalUpdate(false);
@@ -222,6 +221,7 @@ const PostManagement = () => {
                 open={openModalUpdate}
                 footer={null}
                 centered
+                className="modalStyle"
             >
                 <UpdatePost
                     postContent={postUpdate}
@@ -230,7 +230,6 @@ const PostManagement = () => {
             </Modal>
             <Modal
                 title="Update Post"
-                visible={false}
                 // onOk={handleOk}
                 onCancel={() => {
                     setModalCreatePost(false);
@@ -238,6 +237,7 @@ const PostManagement = () => {
                 open={openModalCreatePost}
                 footer={null}
                 centered
+                className="modalStyle"
             >
                 <CreatePost></CreatePost>
             </Modal>

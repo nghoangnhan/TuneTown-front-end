@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Select, Space, Table, Tag, message, } from "antd";
+import { Form, Input, Modal, Select, Space, Table, Tag, message, } from "antd";
 import axios from "axios";
 import UseCookie from "../../../hooks/useCookie";
 import { useEffect, useState } from "react";
@@ -194,8 +194,8 @@ const UserManagement = () => {
       align: "center",
       render: (_, record) => (
         <Space
-          size="middle"
-          className="flex flex-row items-center justify-between gap-2"
+          size="small"
+          className="flex items-center justify-between gap-2"
         >
           <button
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
@@ -273,11 +273,11 @@ const UserManagement = () => {
           pagination={{ pageSize: 8 }}
         />
         <Modal
-          title="Edit User"
           open={isModalOpen}
           onCancel={handleCancel}
           footer={[]}
           centered
+          className="modalStyle w-fit h-fit"
         >
           <EditUserForm editUserId={userId} isAdmin={true}></EditUserForm>
         </Modal>
@@ -287,9 +287,9 @@ const UserManagement = () => {
           onCancel={handleCancel}
           centered
           footer={[]}
-          className="modalStyle"
+          className="modalStyle w-fit h-fit"
         >
-          <Form form={formRole} className="pt-4 formStyle">
+          <Form form={formRole} className="pt-4 w-fit h-fit formStyle">
             <Form.Item label="Role" name="role">
               <Select
                 placeholder="Role"
@@ -302,7 +302,7 @@ const UserManagement = () => {
             </Form.Item>
             <Form.Item className="">
               <button type="submit" className="absolute right-0 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode" onClick={handleOkRole}>
-                Update
+                Update Role
               </button>
             </Form.Item>
           </Form>
