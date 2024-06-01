@@ -85,6 +85,9 @@
     "following": "Đang theo dõi",
     "follower": "Người theo dõi",
     "topTracks": "Sản phẩm nổi bật",
-    "allTracks": "Tất cả sản phẩm"
+    "allTracks": "Tất cả sản phẩm",
+    "requestSent": "Đã gửi yêu cầu",
+    "communityJoined": "Đã tham gia cộng đồng",
+    "joinArtistCommunity": "Tham gia cộng đồng"
   }
 }

@@ -10,6 +10,7 @@ import useConfig from "../../utils/useConfig";
 import useSongUtils from "../../utils/useSongUtils";
 import PostSection from "../../components/Forum/PostSection";
 import { Modal } from "antd";
+import { useTranslation } from "react-i18next";
 
 const ArtistDetailPage = () => {
   const { artistId } = useParams();
@@ -45,6 +46,7 @@ const ArtistDetailPage = () => {
   const [follower, setFollower] = useState();
   const [listFollower, setListFollower] = useState([]);
   const [listFollowing, setListFollowing] = useState([]);
+  const { t } = useTranslation();
 
   const handleNavigate = (path) => {
     dispatch(
@@ -223,7 +225,8 @@ const ArtistDetailPage = () => {
                   setFollower(true);
                 }}
               >
-                <span>Followers:</span> {artistDetail.followers}
+                <span>{t("artistPage.follower")}:</span>{" "}
+                {artistDetail.followers}
               </div>
               <div
                 className="cursor-pointer text-primaryText dark:text-primaryTextDark2 opacity-80 hover:underline"
@@ -232,7 +235,8 @@ const ArtistDetailPage = () => {
                   setFollower(false);
                 }}
               >
-                <span>Following:</span> {artistDetail.following}
+                <span>{t("artistPage.following")}:</span>{" "}
+                {artistDetail.following}
               </div>
             </div>
             {
@@ -241,7 +245,9 @@ const ArtistDetailPage = () => {
                   onClick={() => handleFollowArtist(artistDetail.id)}
                   className="px-2 py-1 mb-5 font-bold border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
                 >
-                  {follow == true ? "Following" : "Follow"}
+                  {follow == true
+                    ? t("artistPage.following")
+                    : t("artistPage.follow")}
                 </button>
                 {communityExist && (
                   <button
@@ -249,10 +255,10 @@ const ArtistDetailPage = () => {
                     onClick={() => handleJoinCommunity()}
                   >
                     {request
-                      ? "Request sent"
+                      ? t("artistPage.requestSent")
                       : join
-                      ? "Community joined"
-                      : "Join the artist community"}
+                      ? t("artistPage.communityJoined")
+                      : t("artistPage.joinArtistCommunity")}
                   </button>
                 )}
               </div>
@@ -270,15 +276,14 @@ const ArtistDetailPage = () => {
           {topSongListArtist && (
             <div className="px-5 pt-2 pb-5 m-auto mx-2 mt-5 min-w-[600px] bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
               <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
-                Top Songs of {artistDetail.name}
+                {t("artistPage.topTracks")}
               </div>
               <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
                 <div className="flex flex-row gap-8 ml-10">
                   <div className="font-bold text-center ">#</div>
-                  <div className="font-bold text-center ">Song Details</div>
-                </div>
-                <div>
-                  <div className="font-bold text-center ">Duration</div>
+                  <div className="font-bold text-center ">
+                    {t("song.title")}
+                  </div>
                 </div>
               </div>
               {topSongListArtist?.slice(0, 5).map((songItem, index) => (
@@ -318,15 +323,12 @@ const ArtistDetailPage = () => {
       {songListArtist && (
         <div className="px-5 pt-2 pb-5 m-auto mx-2 my-4 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-xl">
           <div className="mt-2 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
-            More from {artistDetail.name}
+            {t("artistPage.allTracks")}
           </div>
           <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
             <div className="flex flex-row gap-8 ml-10">
               <div className="font-bold text-center ">#</div>
-              <div className="font-bold text-center ">Song Details</div>
-            </div>
-            <div>
-              <div className="font-bold text-center ">Duration</div>
+              <div className="font-bold text-center ">{t("song.title")}</div>
             </div>
           </div>
           {songListArtist?.map((songItem, index) => (

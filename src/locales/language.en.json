@@ -85,6 +85,9 @@
     "following": "Following",
     "follower": "Follower",
     "topTracks": "Top Tracks",
-    "allTracks": "All Tracks"
+    "allTracks": "All Tracks",
+    "requestSent": "Request Sent",
+    "communityJoined": "Community joined",
+    "joinArtistCommunity": "Join Community"
   }
 }
