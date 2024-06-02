@@ -284,13 +284,11 @@ export const useMusicAPIUtils = () => {
       console.log("Error:", error);
     }
   };
-  const combineData = async (songId, mp3Link) => {
+  const combineData = async (songId) => {
     try {
       const response = await axios.post(
         `${Base_URL}/songs/combineData?songId=${songId}`,
-        {
-          mp3Link: mp3Link
-        },
+        {},
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

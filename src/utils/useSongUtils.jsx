@@ -41,7 +41,6 @@ export const useSongUtils = () => {
     }
   };
   const handleNavigation = (artistId) => {
-    console.log("AAAAAAAAAAAA: ", userId + " " + artistId);
     if (userId === artistId) {
 
       navigate('/my-profile');
@@ -180,7 +179,7 @@ export const useSongUtils = () => {
   const handleDownloadSong = async (songInforObj, setLoading, combineData) => {
     setLoading(true);
     try {
-      const data = await combineData(songInforObj.songName);
+      const data = await combineData(songInforObj.id);
       const blob = new Blob([data], { type: 'audio/mpeg' });
 
       // Create a link element

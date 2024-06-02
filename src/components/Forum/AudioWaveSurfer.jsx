@@ -22,10 +22,10 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
             let data = '';
             if (!song) {
                 console.log("!song");
-                data = await combineData(-1, mp3Link);
+                data = await combineData(-1);
             }
             else {
-                data = await combineData(song.id, '');
+                data = await combineData(song.id);
             }
             console.log(data);
             const audioBlob = new Blob([data], { type: 'audio/mp3' });
