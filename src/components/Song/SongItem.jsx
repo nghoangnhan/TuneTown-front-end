@@ -86,7 +86,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
   }, []);
 
   return (
-    <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
+    <div onContextMenu={(e) => displayMenu(e, songInforObj.id)} style={{ pointerEvents: songInforObj.status === 0 ? 'none' : 'auto', opacity: songInforObj.status === 0 ? 0.5 : 1 }}>
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`} className="contexify-menu">
         <Item onClick={refreshPlaylist}>Refresh</Item>

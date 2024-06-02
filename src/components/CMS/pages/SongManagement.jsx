@@ -266,7 +266,7 @@ const SongManagement = () => {
         className="w-fit h-fit modalStyle"
         centered
       >
-        <UpdateSong setModalUpdate={setIsModalOpenUpdate} songData={songData}></UpdateSong>
+        <UpdateSong setModalUpdate={setIsModalOpenUpdate} setRefresh={setRefresh} songData={songData}></UpdateSong>
       </Modal>
     </div>
   );

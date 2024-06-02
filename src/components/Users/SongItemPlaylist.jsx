@@ -23,7 +23,7 @@ const SongItemPlaylist = ({
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
-  const { id, songName, artists, poster, songData, lyric } = song;
+  const { id, songName, artists, poster, songData, lyric, status } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
   const { PlayButton } = useIconUtils();
@@ -53,6 +53,7 @@ const SongItemPlaylist = ({
     songCover: poster,
     songData: songData,
     lyric: lyric,
+    status: status,
   };
 
   // When click to the song, save the current song to the context and play it
@@ -126,7 +127,7 @@ const SongItemPlaylist = ({
     }
   }, [refreshPlaylist]);
   return (
-    <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
+    <div onContextMenu={(e) => displayMenu(e, songInforObj.id)} style={{ pointerEvents: songInforObj.status === 0 ? 'none' : 'auto', opacity: songInforObj.status === 0 ? 0.5 : 1 }}>
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`} className="contexify-menu">
         <Item onClick={refreshPlaylist}>Refresh</Item>

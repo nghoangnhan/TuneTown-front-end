@@ -77,6 +77,7 @@ const GenreInput = () => {
       {/* <Input onChange={handleEmailChange} /> */}
       <Select
         showSearch
+        allowClear
         mode="multiple"
         placeholder="Select Genre Name"
         optionFilterProp="children"

@@ -14,7 +14,7 @@ import ReactQuill from "react-quill";
 import Parser from 'html-react-parser';
 import DOMPurify from "dompurify";
 
-const UpdateSong = ({ songData, setModalUpdate }) => {
+const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
   const formRef = useRef(null);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
@@ -77,19 +77,21 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
       }),
       status: parseInt(values.status),
       artists: values.artists.map((artist) => {
-        return { id: artist.value };
+        return { id: artist.value ? artist.value : artist };
       }),
       lyric: contentParser ? contentParser : editorValue,
     };
     console.log("Posting Data", postData);
     await updateSong(postData).then(() => {
       setModalUpdate(false);
+      setRefresh(true);
     });
   };
 
   // Post Song to API
   const updateSong = async (data) => {
     try {
+      // console.log("Data", data);
       const response = await axios.put(
         `${Base_URL}/songs?accessToken=${access_token}`,
         {
@@ -284,5 +286,6 @@ UpdateSong.propTypes = {
     ),
   }).isRequired,
   setModalUpdate: PropTypes.func,
+  setRefresh: PropTypes.func,
 };
 export default UpdateSong;
