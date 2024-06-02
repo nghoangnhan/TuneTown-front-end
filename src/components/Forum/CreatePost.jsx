@@ -24,7 +24,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
   const dispatch = useDispatch();
   const { access_token } = getToken();
   // const { handleUploadFileMP3, handleUploadFileIMG } = useDataUtils();
-  const { getPlaylistByUserId } = useMusicAPIUtils();
+  const { getPublicPlaylist } = useMusicAPIUtils();
   // const { LoadingLogo } = useIconUtils();
   // const { Check } = useIconUtils();
   const { Base_URL } = useConfig();
@@ -38,33 +38,6 @@ const CreatePost = ({ setOpenModalCreate }) => {
   const [openModalChoseSong, setOpenModalChoseSong] = useState(false);
   const [playlistChosen, setPlaylistChosen] = useState();
   const [songChosen, setSongChosen] = useState();
-
-
-  // const UploadMP3file = async (file) => {
-  //   setLoading(true);
-  //   // message.loading("Uploading Song File", 2);
-  //   await handleUploadFileMP3(file).then((res) => {
-  //     console.log("UploadMP3file", res);
-  //     if (res.status === 200 || res.status === 201) {
-  //       setFileMP3(res.data);
-  //       message.success("Song File Uploaded Successfully", 2);
-  //       setLoading(false);
-  //     }
-  //   });
-  // };
-
-  // const UploadIMGfile = async (file) => {
-  //   setLoading(true);
-  //   message.loading("Uploading Image", 1);
-  //   await handleUploadFileIMG(file).
-  //     then((res) => {
-  //       if (res.status === 200) {
-  //         setFileIMG(res.data);
-  //         message.success("Image Uploaded Successfully", 2);
-  //         setLoading(false);
-  //       }
-  //     });
-  // };
 
   const onFinish = (values) => {
     try {
@@ -110,7 +83,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
 
   const handleAddPlaylist = async () => {
     try {
-      const listPlaylist = await getPlaylistByUserId(userId);
+      const listPlaylist = await getPublicPlaylist(userId);
       setPlaylistRs(listPlaylist);
       setOpenModalChosePlaylist(true);
       console.log("PLAYLISTRS", playlistRs);
@@ -169,48 +142,6 @@ const CreatePost = ({ setOpenModalCreate }) => {
             className="overflow-auto bg-white h-36 dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
           />
         </Form.Item>
-
-        {/* Upload Cover Art  */}
-        {/* <Form.Item
-          name="songCoverArt"
-          label="Upload Cover Art"
-          extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
-          getValueFromEvent={(e) => e && e.fileList}
-          valuePropName="fileList"
-        ><div className="flex flex-row items-center gap-2">
-            <UploadFileDropZone
-              uploadedFile={uploadedFile}
-              setUploadedFile={setUploadedFile}
-              handleUploadFile={UploadIMGfile}
-              accept="image/jpeg, image/png"
-            />
-            {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
-          </div>
-        </Form.Item> */}
-
-        {/* Upload Song  */}
-        {/* <Form.Item
-          name="songData"
-          label="Upload MP3 File"
-          extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
-          getValueFromEvent={(e) => e && e.fileList}
-          valuePropName="fileList"
-        // rules={[
-        //   {
-        //     required: !songReady, // Required when song is not ready
-        //   },
-        // ]}
-        >
-          <div className="flex flex-row items-center gap-2">
-            <UploadFileDropZone
-              uploadedFile={uploadedFile}
-              setUploadedFile={setUploadedFile}
-              handleUploadFile={UploadMP3file}
-              accept="audio/mp3"
-            />
-            {fileMP3 && Check()}
-          </div>
-        </Form.Item> */}
 
         {/* Song */}
         <Form.Item>

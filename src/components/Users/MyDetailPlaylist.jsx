@@ -61,6 +61,7 @@ const MyDetailPlaylist = () => {
   ) => {
     await editPlaylist(playlistId, playlistName, playlistType, coverArt).then(
       () => {
+        message.success("Edit Playlist Successfully", 2);
         fetchDataPlaylistInfor(playlistId);
         dispatch(setRefreshPlaylist(true));
       }
@@ -128,9 +129,9 @@ const MyDetailPlaylist = () => {
             <span className="text-5xl">#{playlistId}</span>
           </div>
           <div className="flex flex-col items-start justify-center gap-2">
-            <div className="text-2xl text-primary dark:text-primaryDarkmode">
+            {/* <div className="text-2xl text-primary dark:text-primaryDarkmode">
               {t("playlist.madeBy")} {playlistDetail?.user?.userName}
-            </div>
+            </div> */}
             <div className="text-base text-primaryText2 dark:text-primaryTextDark">
               {t(
                 `playlist.${String(playlistDetail.playlistType).toLowerCase()}`

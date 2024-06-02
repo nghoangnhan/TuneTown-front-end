@@ -7,6 +7,11 @@ import UpdateSong from "../../UploadSong/UpdateSong";
 import useConfig from "../../../utils/useConfig";
 import { useMusicAPIUtils } from "../../../utils/useMusicAPIUtils";
 
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+
 const SongManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
@@ -27,7 +32,7 @@ const SongManagement = () => {
   const getListSong = async (songPage) => {
     try {
       if (songPage === null || songPage === undefined) songPage = 1;
-      const response = await axios.get(`${Base_URL}/songs?page=${songPage}`, {
+      const response = await axios.get(`${Base_URL}/songs/getAllSongsByAdmin?page=${songPage}`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
@@ -117,12 +122,6 @@ const SongManagement = () => {
       title: "Genres",
       dataIndex: "genres",
       key: "genres",
-      align: "center",
-    },
-    {
-      title: "Listens",
-      dataIndex: "listens",
-      key: "listens",
       align: "center",
     },
     {
@@ -220,6 +219,7 @@ const SongManagement = () => {
               remember: true,
             }}
             autoComplete="off"
+            {...layout}
           >
             <Form.Item label="" name="songName">
               <Input placeholder="Search..." onChange={handSearch} className="text-primaryText2 dark:text-primaryTextDark2" />
@@ -255,7 +255,7 @@ const SongManagement = () => {
         className="w-fit h-fit modalStyle"
         centered
       >
-        <UploadSong></UploadSong>
+        <UploadSong setOpenModalUpload={setIsModalOpenUpload}></UploadSong>
       </Modal>
       {/* Update Song  */}
       <Modal
@@ -266,7 +266,7 @@ const SongManagement = () => {
         className="w-fit h-fit modalStyle"
         centered
       >
-        <UpdateSong songData={songData}></UpdateSong>
+        <UpdateSong setModalUpdate={setIsModalOpenUpdate} songData={songData}></UpdateSong>
       </Modal>
     </div>
   );

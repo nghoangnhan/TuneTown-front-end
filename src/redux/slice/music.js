@@ -18,6 +18,7 @@ const musicStore = createSlice({
       ],
       currentTime: 0,
       songDuration: 214,
+      status: null,
       songCover:
         "https://firebasestorage.googleapis.com/v0/b/tunetown-6b63a.appspot.com/o/images%2Foneofthegirl.jpg?alt=media&token=b14195a6-74d2-4559-bd73-ff1c25f0c494",
       songData:

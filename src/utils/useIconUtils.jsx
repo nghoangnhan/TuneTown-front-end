@@ -1,4 +1,5 @@
 import {
+  faBookmark,
   faCircleQuestion,
   faComments,
 } from "@fortawesome/free-regular-svg-icons";
@@ -420,6 +421,10 @@ const useIconUtils = () => {
     return <FontAwesomeIcon icon={faCircleQuestion}> </FontAwesomeIcon>;
   };
 
+  const SavePlaylistIcon = () => {
+    return <FontAwesomeIcon icon={faBookmark}></FontAwesomeIcon>
+  }
+
   return {
     BackButton,
     ThumbsUpSolid,
@@ -462,7 +467,7 @@ const useIconUtils = () => {
     UserGroupIconOutlined,
     ExitCommunityIcon,
     SendIcon,
-    HintIcon,
+    HintIcon, SavePlaylistIcon
   };
 };
 

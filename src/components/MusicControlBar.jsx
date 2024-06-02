@@ -11,6 +11,7 @@ const MusicControlBar = () => {
   const songInfor = useSelector((state) => state.music.currentSong);
   // Check Screen Size Mobile
   const { isMobile } = useConfig();
+  const currentSong = useSelector((state) => state.music.currentSong);
   const { showArtistV2, AcronymName, NavigateSong } = useSongUtils();
 
   return (

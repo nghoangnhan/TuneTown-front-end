@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { Form, Input, message } from "antd";
+import { Form, Input, Select, message } from "antd";
 import ArtistInput from "./ArtistInput";
 import UseCookie from "../../hooks/useCookie";
 import GenreInput from "./GenreInput";
@@ -72,10 +72,12 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
       songName: values.songName,
       poster: fileImg,
       songData: fileMP3 ? fileMP3 : values.songData,
-      genres: values.genres,
-      status: 1,
+      genres: values.genres.map((genre) => {
+        return { id: genre.value };
+      }),
+      status: parseInt(values.status),
       artists: values.artists.map((artist) => {
-        return { id: artist };
+        return { id: artist.value };
       }),
       lyric: contentParser ? contentParser : editorValue,
     };
@@ -95,13 +97,9 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
           songName: data.songName,
           poster: data.poster,
           songData: data.songData,
-          genres: data.genres.map((genre) => {
-            return { id: genre.value };
-          }),
-          status: 1,
-          artists: data.artists.map((artist) => {
-            return { id: artist.value };
-          }),
+          genres: data.genres,
+          status: data.status,
+          artists: data.artists,
           lyric: data.lyric,
         },
         {
@@ -133,6 +131,7 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
         poster: data.poster,
         songData: data.songData,
         lyric: data?.lyric,
+        status: data.status,
       });
     });
   }, [songData.songId]);
@@ -150,7 +149,7 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
         name="control-ref"
         form={form}
         onFinish={onFinish}
-        className="p-5 mx-auto rounded-md bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
+        className="p-2 mx-auto rounded-md bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
       >
         <div className="w-full mb-5 text-center">
           <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
@@ -234,11 +233,29 @@ const UpdateSong = ({ songData, setModalUpdate }) => {
             value={Parser(editorValue)}
             onChange={setEditorValue}
             placeholder="Lyrics..."
-            className="overflow-auto bg-white dark:bg-backgroundDarkPrimary h-36 dark:text-white max-h-40"
+            className="h-24 overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-24"
           />
         </Form.Item>
 
-        <Form.Item  >
+        <Form.Item
+          name="status"
+          label="Status"
+          rules={[
+            {
+              required: false,
+            },
+          ]}
+        >
+          <Select
+            className="rounded-md dark:text-primaryText2 bg-backgroundPrimary"
+            placeholder="Select a status"
+          >
+            <Select.Option value={1}>Active</Select.Option>
+            <Select.Option value={0}>Inactive</Select.Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item>
           <button
             type="submit"
             className="absolute px-2 py-2 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode right-2 hover:opacity-70"

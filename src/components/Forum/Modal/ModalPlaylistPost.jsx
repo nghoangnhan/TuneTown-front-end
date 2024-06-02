@@ -35,7 +35,7 @@ const ModalPlaylistPost = ({ playlistRs, openModal, setOpenModalChosePlaylist, h
                             className="bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
                             onChange={(e) => { handleSearchPlaylist(e.target.value) }}
                         />
-                        {playlistOutput != null && playlistOutput.map((playlist) => (
+                        {playlistOutput != null && playlistOutput?.map((playlist) => (
                             <li
                                 key={playlist.id}
                                 className="flex items-center p-2 space-x-2 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 hover:dark:bg-backgroundPlaylistHoverDark text-primaryText2 "

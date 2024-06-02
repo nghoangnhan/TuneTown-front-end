@@ -1,4 +1,4 @@
-import { EditOutlined, UserOutlined, GlobalOutlined, PlayCircleOutlined, GroupOutlined, SettingOutlined } from "@ant-design/icons";
+import { EditOutlined, UserOutlined, GlobalOutlined, PlayCircleOutlined, SettingOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
@@ -17,7 +17,7 @@ const LeftSideBar = () => {
     getItem("User Management", "user-management", <UserOutlined />),
     getItem("Post Management", "post-management", <GlobalOutlined />),
     getItem("Song Management", "song-management", <PlayCircleOutlined />),
-    getItem("Playlist Management", "playlist-management", <GroupOutlined />),
+    // getItem("Playlist Management", "playlist-management", <GroupOutlined />),
     getItem("Setting", "setting", <SettingOutlined />),
   ];
   const handleContents = (data) => {
@@ -31,9 +31,9 @@ const LeftSideBar = () => {
       case "song-management":
         navigate(`/cms/${data.key}`);
         break;
-      case "playlist-management":
-        navigate(`/cms/${data.key}`);
-        break;
+      // case "playlist-management":
+      //   navigate(`/cms/${data.key}`);
+      //   break;
       case "post-management":
         navigate(`/cms/${data.key}`);
         break;

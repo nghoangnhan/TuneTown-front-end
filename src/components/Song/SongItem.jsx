@@ -38,6 +38,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
     songCover: song?.poster,
     songData: song?.songData,
     lyric: song?.lyric,
+    status: song?.status,
   };
 
   // When click to the song, save the current song to the context and play it

@@ -1,6 +1,7 @@
 import axios from "axios";
 import UseCookie from "../hooks/useCookie";
 import useConfig from "./useConfig";
+import { message } from "antd";
 
 export const useMusicAPIUtils = () => {
   const { getToken } = UseCookie();
@@ -36,6 +37,34 @@ export const useMusicAPIUtils = () => {
       );
       // console.log("My PlaylistList Response", response.data);
       return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const getPublicPlaylist = async (userId) => {
+    try {
+      const response = await axios.get(`${Base_URL}/playlists/getPublicPlaylist?userId=${userId}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      console.log("Public PlaylistList Response", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const savePlaylist = async (playlsitId) => {
+    try {
+      const response = await axios.post(`${Base_URL}/playlists/savePlaylist?playlistId=${playlsitId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      console.log("Save Playlist Response", response);
+      return response;
     } catch (error) {
       console.log("Error:", error);
     }
@@ -312,7 +341,7 @@ export const useMusicAPIUtils = () => {
     addSongToPlaylist,
     getListSong,
     getSongById,
-    getUserPlaylist,
+    getUserPlaylist, getPublicPlaylist, savePlaylist,
     getListSongPlaylist,
     getPlaylistByPlaylistId,
     editPlaylist,

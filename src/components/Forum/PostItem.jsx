@@ -332,9 +332,6 @@ const PostItem = ({ postContent }) => {
         >
           {t("forum.share")}
         </button>
-        <button className="mx-2 mt-2 font-bold text-md opacity-80">
-          {t("forum.report")}
-        </button>
       </div>
       {/* Context Menu */}
       <OptionPostItem
