@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const volumeStore = createSlice({
   name: "volume",
   initialState: {
-    volumeValue: 0.5,
+    volumeValue: 0,
   },
   reducers: {
     setVolume: (state, action) => {
