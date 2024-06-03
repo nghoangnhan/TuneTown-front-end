@@ -242,6 +242,7 @@ const UserDetailPage = ({ owned }) => {
         centered
       >
         <EditGenreForm
+          genreFavourite={userInfor.genres}
           setOpenModalEditGenre={() => setOpenModalGenres(false)}
         ></EditGenreForm>
       </Modal>

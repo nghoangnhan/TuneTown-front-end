@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setRefershAccount } from '../../redux/slice/account';
 import PropTypes from 'prop-types';
 
-const EditGenreForm = ({ setOpenModalEditGenre }) => {
+const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
     const { getAllGenres } = useUserUtils();
     const { Base_URL, auth } = useConfig();
     const dispatch = useDispatch();
@@ -71,11 +71,17 @@ const EditGenreForm = ({ setOpenModalEditGenre }) => {
         }
     }, [refreshAccount]);
 
+    useEffect(() => {
+        const genreFavouriteList = genreFavourite.map((genre) => genre.id);
+        form.setFieldsValue({
+            genre: genreFavouriteList
+        });
+    }, [genreFavourite]);
+
     return (
         <div className="flex items-center justify-center">
             <Form
                 form={form}
-
                 name="basic"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
@@ -96,8 +102,8 @@ const EditGenreForm = ({ setOpenModalEditGenre }) => {
                     className='flex justify-center mt-4 '
                 >
                     <Checkbox.Group className='grid items-center grid-cols-3 gap-8'>
-                        {genres.map((genre, index) => (
-                            <Checkbox key={index} className='text-primaryText2 dark:text-primaryTextDark2' value={genre.id}>{genre.genreName}</Checkbox>
+                        {genres.map((genre) => (
+                            <Checkbox key={genre.id} value={genre.id} className='text-primary dark:text-primaryDarkmode'>{genre.genreName}</Checkbox>
                         ))}
                     </Checkbox.Group>
                 </Form.Item>
@@ -113,6 +119,7 @@ const EditGenreForm = ({ setOpenModalEditGenre }) => {
 
 EditGenreForm.propTypes = {
     setOpenModalEditGenre: PropTypes.func,
+    genreFavourite: PropTypes.array,
 };
 
 export default EditGenreForm;
