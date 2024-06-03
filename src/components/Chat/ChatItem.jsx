@@ -7,6 +7,9 @@ const ChatItem = ({ chat, index }) => {
     const { Check, CheckSeen } = useIconUtils();
     const { Base_AVA } = useConfig();
     const [isHover, setIsHover] = useState(false);
+
+    // Check if chat is null
+    if (!chat) return null;
     return (
         <div
             key={index}
