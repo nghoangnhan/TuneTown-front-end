@@ -30,7 +30,13 @@ const PostItem = ({ postContent }) => {
   const { t } = useTranslation();
 
   // Get the time of the post
-  const countTime = new Date(postContent?.postTime).toLocaleString();
+  const postTime = new Date(postContent?.postTime);
+  const day = String(postTime.getDate()).padStart(2, '0');
+  const month = String(postTime.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = postTime.getFullYear();
+  const time = postTime.toLocaleTimeString();
+  const countTime = `${day}/${month}/${year} ${time}`;
+
   const handGetPostById = async () => {
     await getPostById(postContent.id).then((res) => {
       // console.log("Get Post By ID", res);

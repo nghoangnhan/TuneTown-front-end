@@ -34,9 +34,12 @@ const PostItemDetail = () => {
   const { getListSongPlaylist } = useMusicAPIUtils();
   const { showArtistV2, NavigateSong } = useSongUtils();
 
-  const countTime = new Date(
-    postContent?.postTime || Date.now()
-  ).toLocaleString();
+  const postTime = new Date(postContent?.postTime);
+  const day = String(postTime.getDate()).padStart(2, '0');
+  const month = String(postTime.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = postTime.getFullYear();
+  const time = postTime.toLocaleTimeString();
+  const countTime = `${day}/${month}/${year} ${time}`;
 
   const handGetPostById = async () => {
     await getPostById(postId).then((res) => {
