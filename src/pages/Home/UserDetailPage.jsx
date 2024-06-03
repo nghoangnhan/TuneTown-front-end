@@ -230,7 +230,7 @@ const UserDetailPage = ({ owned }) => {
         centered
       >
         <EditUserForm
-          setOpenModalEditUser={() => setOpenModalEditUser(false)}
+          setOpenModalEditUser={setOpenModalEditUser}
           isModal={true}
         ></EditUserForm>
       </Modal>
@@ -243,7 +243,7 @@ const UserDetailPage = ({ owned }) => {
       >
         <EditGenreForm
           genreFavourite={userInfor.genres}
-          setOpenModalEditGenre={() => setOpenModalGenres(false)}
+          setOpenModalEditGenre={setOpenModalGenres}
         ></EditGenreForm>
       </Modal>
     </div>

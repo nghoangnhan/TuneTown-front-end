@@ -45,17 +45,17 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
       return;
     }
     const postData = {
-      id: editUserId,
+      id: userId,
       avatar: fileImg,
       userName: values.userName,
       userBio: values.userBio,
       email: values.email,
       birthDate: values.birthDate.format("YYYY-MM-DD"),
     };
-    editUser(postData).then(dispatch(setRefershAccount(true))); // Call the function to post the song data
-    setRefresh(true);
-    setOpenModalEditUser(false);
-
+    editUser(postData).then(() => {
+      setOpenModalEditUser(false);
+      dispatch(setRefershAccount(true))
+    }); // Call the function to post the song data
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 
 
   useEffect(() => {
-    if (refreshAccount == true) { getUserInfor(editUserId); }
+    if (refreshAccount == true) { getUserInfor(userId); }
   }, [refreshAccount]);
 
   return (
@@ -176,7 +176,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 EditUserForm.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   isModal: PropTypes.bool.isRequired,
-  setOpenModalEditUser: PropTypes.func.isRequired,
+  setOpenModalEditUser: PropTypes.func,
   editUserId: PropTypes.string,
   setRefresh: PropTypes.func,
 };
