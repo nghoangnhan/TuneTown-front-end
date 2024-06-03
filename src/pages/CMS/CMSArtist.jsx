@@ -20,13 +20,16 @@ const CMSArtist = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
-  const { getArtistByArtistId, getUserInfor } = useUserUtils();
+  const { getArtistByArtistId, getUserInfor, getAllSongArtistNoPaging } =
+    useUserUtils();
 
   const handleGetArtistDetail = async (artistId) => {
     await getArtistByArtistId(artistId).then((result) => {
       setArtistDetail(result);
-      setSongListArtist(result?.songs);
       setRefresh(false);
+    });
+    await getAllSongArtistNoPaging(artistId).then((result) => {
+      setSongListArtist(result?.songs);
     });
   };
 
@@ -162,12 +165,6 @@ const CMSArtist = () => {
       align: "center",
     },
     {
-      title: "Listens",
-      dataIndex: "listens",
-      key: "listens",
-      align: "center",
-    },
-    {
       title: "Status",
       dataIndex: "status",
       key: "status",
@@ -176,8 +173,7 @@ const CMSArtist = () => {
         if (status === 0) {
           return (
             <div className="flex items-center justify-center">
-              <div
-                className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md dark:text-red-500 dark:border-red-500 h-fit hover:opacity-70">
+              <div className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md dark:text-red-500 dark:border-red-500 h-fit hover:opacity-70">
                 Deleted
               </div>
             </div>
@@ -185,9 +181,7 @@ const CMSArtist = () => {
         } else if (status === 1) {
           return (
             <div className="flex items-center justify-center">
-              <div
-                className="w-16 px-1 py-1 border rounded-md h-fit text-primary dark:text-primaryDarkmode border-primary hover:opacity-70"
-              >
+              <div className="w-16 px-1 py-1 border rounded-md h-fit text-primary dark:text-primaryDarkmode border-primary hover:opacity-70">
                 Public
               </div>
             </div>
@@ -203,10 +197,7 @@ const CMSArtist = () => {
         <Space>
           <button
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70"
-            onClick={() => handUpdateSong(
-              record.key,
-              record
-            )}
+            onClick={() => handUpdateSong(record.key, record)}
           >
             Edit
           </button>
@@ -224,12 +215,11 @@ const CMSArtist = () => {
   useEffect(() => {
     if (localStorage.getItem("userRole") === "ARTIST") {
       handleGetArtistDetail(userId).then((result) => {
-        setRefresh(false)
+        setRefresh(false);
       });
-    }
-    else {
+    } else {
       handleGetUserInfor(userId).then((result) => {
-        setRefresh(false)
+        setRefresh(false);
       });
     }
   }, [userId, refresh, isModalOpenUpdate, isModalOpenUpload]);
@@ -242,8 +232,8 @@ const CMSArtist = () => {
           {new Date().getHours() < 12
             ? "Morning"
             : new Date().getHours() < 18
-              ? "Afternoon"
-              : "Evening"}
+            ? "Afternoon"
+            : "Evening"}
           {", "}
           {artistDetail.name ? artistDetail.name : artistDetail.userName}
           {"! "}
@@ -266,7 +256,11 @@ const CMSArtist = () => {
             autoComplete="off"
           >
             <Form.Item label="" name="songName">
-              <Input placeholder="Search..." className="dark:bg-backgroundPrimary" onChange={handSearch} />
+              <Input
+                placeholder="Search..."
+                className="dark:bg-backgroundPrimary"
+                onChange={handSearch}
+              />
             </Form.Item>
           </Form>
         </div>
@@ -285,8 +279,8 @@ const CMSArtist = () => {
         dataSource={
           searchValue
             ? dataSongTable.filter((song) =>
-              song.songName.toLowerCase().includes(searchValue.toLowerCase())
-            )
+                song.songName.toLowerCase().includes(searchValue.toLowerCase())
+              )
             : dataSongTable
         }
       />
@@ -310,7 +304,10 @@ const CMSArtist = () => {
         destroyOnClose={true}
         className="w-fit h-fit modalStyle"
       >
-        <UpdateSong songData={songData} setModalUpdate={setIsModalOpenUpdate}></UpdateSong>
+        <UpdateSong
+          songData={songData}
+          setModalUpdate={setIsModalOpenUpdate}
+        ></UpdateSong>
       </Modal>
     </div>
   );

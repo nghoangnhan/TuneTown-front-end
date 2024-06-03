@@ -174,8 +174,24 @@ const useUserUtils = () => {
       );
       console.log("getAllSongArtist Response", response.data);
       return response.data;
+    } catch (error) {
+      console.log("Error:", error);
     }
-    catch (error) {
+  };
+
+  const getAllSongArtistNoPaging = async (artistId) => {
+    try {
+      const response = await axios.get(
+        `${Base_URL}/songs/getSongsByArtistNoPaging?artistID=${artistId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      console.log("getAllSongArtist Response", response.data);
+      return response.data;
+    } catch (error) {
       console.log("Error:", error);
     }
   };
@@ -192,11 +208,10 @@ const useUserUtils = () => {
       );
       // console.log("getArtistFollower Response", response.data);
       return response.data;
-    }
-    catch (error) {
+    } catch (error) {
       console.log("Error:", error);
     }
-  }
+  };
 
   const getArtistFollowing = async (userId) => {
     try {
@@ -210,24 +225,25 @@ const useUserUtils = () => {
       );
       // console.log("getArtistFollowing Response", response.data);
       return response.data;
-    }
-    catch (error) {
+    } catch (error) {
       console.log("Error:", error);
     }
-  }
+  };
 
   return {
     CheckCookie,
     checkToken,
     getUserInfor,
-    getArtistByArtistId, getAllSongArtist,
+    getArtistByArtistId,
+    getAllSongArtist,
     getAllGenres,
     getUserPost,
     followArtist,
     editUser,
     CheckCommunityExist,
     getArtistFollower,
-    getArtistFollowing
-  }
+    getArtistFollowing,
+    getAllSongArtistNoPaging,
+  };
 };
 export default useUserUtils;
