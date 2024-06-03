@@ -18,15 +18,14 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
   const [songPage, setSongPage] = useState(1);
   const titleSongChart = titleSong
     ? titleSong
-    : `Top 10 Songs in ${
-        new Date().getMonth() < 3
-          ? "Spring"
-          : new Date().getMonth() < 6
-          ? "Summer"
-          : new Date().getMonth() < 9
+    : `Top 10 Songs in ${new Date().getMonth() < 3
+      ? "Spring"
+      : new Date().getMonth() < 6
+        ? "Summer"
+        : new Date().getMonth() < 9
           ? "Autumn"
           : "Winter"
-      }`;
+    }`;
   const { t } = useTranslation();
 
   const currentYear = new Date().getFullYear();
@@ -34,13 +33,11 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
 
   const startTime =
     StartTime ||
-    `${currentYear}-${
-      currentMonth - 1 < 10 ? `0${currentMonth - 1}` : currentMonth - 1
+    `${currentYear}-${currentMonth - 1 < 10 ? `0${currentMonth - 1}` : currentMonth - 1
     }-01`;
   const endTime =
     EndTime ||
-    `${currentYear}-${
-      currentMonth < 10 ? `0${currentMonth}` : currentMonth
+    `${currentYear}-${currentMonth < 10 ? `0${currentMonth}` : currentMonth
     }-30`;
 
   const getListSongPeriod = async () => {
@@ -80,12 +77,11 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
 
   return (
     <div
-      className={`bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl shadow-md mt-4 py-3 xl:py-5 px-2 xl:h-fit xl:mx-2 xl:mt-8  ${
-        inForum ? "min-w-[500px]" : "min-w-[250px]"
-      }`}
+      className={`bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl shadow-md mt-4 py-3 xl:py-5 px-2 xl:h-fit xl:mx-2 xl:mt-8  ${inForum ? "min-w-[500px]" : "min-w-[250px]"
+        }`}
     >
       <div className="flex flex-row items-center justify-center gap-3">
-        <h1 className="text-xl font-bold text-primary">{titleSongChart}</h1>
+        <h1 className="text-3xl font-bold text-center text-primary dark:text-primaryDarkmode">{titleSongChart}</h1>
         <TrendingIcon></TrendingIcon>
       </div>
       <div className="xl:w-full">

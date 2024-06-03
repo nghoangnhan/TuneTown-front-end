@@ -335,6 +335,32 @@ export const useMusicAPIUtils = () => {
     }
   }
 
+  const getListSongListenAgain = async () => {
+    try {
+      const response = await axios.get(`${Base_URL}/songs/listenAgain`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  const getListSongTryNew = async () => {
+    try {
+      const response = await axios.get(`${Base_URL}/songs/getShouldTry`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
   return {
     addSongToPlaylist,
     getListSong,
@@ -348,6 +374,7 @@ export const useMusicAPIUtils = () => {
     deleteSongInPlaylist,
     deleteSong,
     combineData,
-    getPlaylistByUserId, getRecommendPlaylist
+    getPlaylistByUserId, getRecommendPlaylist,
+    getListSongListenAgain, getListSongTryNew
   };
 };

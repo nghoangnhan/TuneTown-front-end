@@ -117,6 +117,7 @@ const PostItem = ({ postContent }) => {
       getSongFromPlaylist(postContent.playlist.id)
         .then((song) => {
           setSongPlaylist(song);
+          console.log("Song Playlist", song);
         })
         .catch((error) => console.error("Error:", error));
     }
@@ -260,7 +261,8 @@ const PostItem = ({ postContent }) => {
                   {songPlaylist.slice(0, 6).map((song, index) => (
                     <div
                       key={index}
-                      className="flex flex-row items-center justify-start w-full gap-2 p-1 px-2 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistHoverDark hover:opacity-70"
+                      className={`flex flex-row items-center justify-start w-full gap-2 p-1 px-2 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistHoverDark hover:opacity-70`}
+                      style={{ pointerEvents: song.status == 0 ? 'none' : 'auto', opacity: song.status == 0 ? 0.5 : 1 }}
                     >
                       <div className="w-14 h-14 ">
                         <img

@@ -83,7 +83,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
       listens: 0,
       lyric: contentParser ? contentParser : editorValue,
     };
-    console.log("Posting Data", postData);
+    // console.log("Posting Data", postData);
     await postSong(postData).then(() => {
       setOpenModalUpload(false);
     });
@@ -100,7 +100,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
       });
       if (response.status === 200) {
         // Handle success
-        console.log("Song posted successfully:", response.data);
+        // console.log("Song posted successfully:", response.data);
         message.success("Song posted successfully", 2);
         formRef.current.resetFields();
         setFileImg(null);

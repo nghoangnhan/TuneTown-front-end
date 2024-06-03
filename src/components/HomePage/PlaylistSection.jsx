@@ -18,7 +18,7 @@ const PlaylistSection = ({ playlistTitle, inForum }) => {
   return (
     <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5">
       <div className="py-2 playlist-section xl:w-full">
-        <h1 className="text-xl font-bold text-center text-primary xl:text-2xl">
+        <h1 className="text-xl font-bold text-center text-primary dark:text-primaryDarkmode xl:text-2xl">
           {playlistTitle}
         </h1>
         <Swiper

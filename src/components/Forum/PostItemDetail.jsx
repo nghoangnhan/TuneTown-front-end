@@ -150,6 +150,7 @@ const PostItemDetail = () => {
     if (postContent && postContent.playlist) {
       getSongFromPlaylist(postContent.playlist.id)
         .then(song => {
+          console.log("Song Playlist", song);
           setSongPlaylist(song)
         })
         .catch(error => console.error("Error:", error));
@@ -299,6 +300,7 @@ const PostItemDetail = () => {
                     <div
                       key={index}
                       className="flex flex-row items-center justify-start w-full gap-2 p-1 px-3 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistHoverDark hover:opacity-70"
+                      style={{ pointerEvents: song.status == 0 ? 'none' : 'auto', opacity: song.status == 0 ? 0.5 : 1 }}
                     >
                       <div className="w-14 h-14 ">
                         <img

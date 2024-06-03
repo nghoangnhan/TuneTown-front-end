@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
 import axios from "axios";
-import "../../assets/CSS/ReactContexify.css";
+import "../../../assets/CSS/ReactContexify.css";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { setListSong } from "../../redux/slice/music";
-import UseCookie from "../../hooks/useCookie";
-import SongItem from "../Song/SongItem";
-import useConfig from "../../utils/useConfig";
+import { setListSong } from "../../../redux/slice/music";
+import UseCookie from "../../../hooks/useCookie";
+import SongItem from "../../Song/SongItem";
+import useConfig from "../../../utils/useConfig";
 import { useTranslation } from "react-i18next";
 
 // eslint-disable-next-line react/prop-types
@@ -18,7 +17,7 @@ const SongSection = ({ titleSong }) => {
   const [songList, setSongList] = useState([]);
   const [hasMoreSongs, setHasMoreSongs] = useState(false);
   const [songPage, setSongPage] = useState(1);
-  const [totalPages, setTotalPages] = useState();
+  // const [totalPagesss, setTotalPages] = useState();
   const { t } = useTranslation();
 
   const getListSong = async (songPage) => {
@@ -30,7 +29,7 @@ const SongSection = ({ titleSong }) => {
       });
       const { songList, currentPage, totalPages } = response.data;
       console.log("songList Response", songList, currentPage, totalPages);
-      setTotalPages(totalPages);
+      // setTotalPages(totalPages);
       if (currentPage < totalPages) {
         setHasMoreSongs(true);
       } else if (currentPage >= totalPages) {
@@ -61,8 +60,8 @@ const SongSection = ({ titleSong }) => {
   if (!songList) return null;
 
   return (
-    <div className="bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary shadow-md rounded-2xl m-auto xl:h-fit xl:mx-5 mx-1 xl:mt-8 mt-4 py-3 px-3 xl:py-5 xl:px-5">
-      <h1 className="text-xl font-bold text-primary">{titleSong}</h1>
+    <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5">
+      <h1 className="text-3xl font-bold text-center text-primary dark:text-primaryDarkmode">{titleSong}</h1>
       <div className="flex flex-col gap-2 mt-2 xl:w-full">
         {songList &&
           songList.map((songItem, index) => (

@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import BannerSection from "../../components/HomePage/BannerSection";
-import PlaylistSection from "../../components/HomePage/PlaylistSection";
 import SongChart from "../../components/HomePage/SongChart";
-import SongSection from "../../components/HomePage/SongSection";
+import SongSection from "../../components/HomePage/SongSection/SongSection";
+import SongSectionCustom from "../../components/HomePage/SongSection/SongSectionCustom";
 
 const HomePage = () => {
   const userName = localStorage.getItem("userName");
@@ -16,8 +16,8 @@ const HomePage = () => {
           {new Date().getHours() < 12
             ? t("common.morning")
             : new Date().getHours() < 18
-            ? t("common.afternoon")
-            : t("common.evening")}
+              ? t("common.afternoon")
+              : t("common.evening")}
           , {userName}!
         </div>
       </div>
@@ -31,8 +31,8 @@ const HomePage = () => {
         </div>
       </div>
       <div>
-        <PlaylistSection playlistTitle="Happy New Year"></PlaylistSection>
-        <PlaylistSection playlistTitle=""></PlaylistSection>
+        <SongSectionCustom tryNew={true} titleSong={"Maybe You Should Try"} ></SongSectionCustom>
+        <SongSectionCustom listenAgain={true} titleSong={"Want To Listen Again"}></SongSectionCustom>
       </div>
     </div>
   );

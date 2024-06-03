@@ -82,7 +82,7 @@ const SettingPage = () => {
       </div>
 
       {/* Volume Control */}
-      <div className="flex flex-row items-center gap-6 mt-4">
+      {/* <div className="flex flex-row items-center gap-6 mt-4">
         <h2 className="my-3 text-2xl font-bold text-primaryText2 dark:text-primaryTextDark2 ">
           {t("settings.volumeLevel")}
         </h2>
@@ -97,7 +97,7 @@ const SettingPage = () => {
             <option value="3">{t("common.high")}</option>
           </select>
         </div>
-      </div>
+      </div> */}
 
       {/* Language Setting */}
       <div className="flex flex-row items-center gap-6 mt-4">

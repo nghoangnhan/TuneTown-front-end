@@ -54,6 +54,7 @@ const CMSArtist = () => {
       artists: songContent.artists,
       genres: songContent.genres,
       listens: songContent.listens,
+      status: songContent.status,
     };
     setSongData(songDetail);
     setIsModalOpenUpdate(true);
@@ -91,7 +92,7 @@ const CMSArtist = () => {
           message.success("Delete song successfully!");
         }
         // Refresh the component
-        setRefresh(false);
+        setRefresh(true);
         return response.status;
       }
     } catch (error) {
@@ -214,11 +215,11 @@ const CMSArtist = () => {
 
   useEffect(() => {
     if (localStorage.getItem("userRole") === "ARTIST") {
-      handleGetArtistDetail(userId).then((result) => {
-        setRefresh(false);
+      handleGetArtistDetail(userId).then(() => {
+        setRefresh(false)
       });
     } else {
-      handleGetUserInfor(userId).then((result) => {
+      handleGetUserInfor(userId).then(() => {
         setRefresh(false);
       });
     }
@@ -232,8 +233,8 @@ const CMSArtist = () => {
           {new Date().getHours() < 12
             ? "Morning"
             : new Date().getHours() < 18
-            ? "Afternoon"
-            : "Evening"}
+              ? "Afternoon"
+              : "Evening"}
           {", "}
           {artistDetail.name ? artistDetail.name : artistDetail.userName}
           {"! "}
@@ -279,8 +280,8 @@ const CMSArtist = () => {
         dataSource={
           searchValue
             ? dataSongTable.filter((song) =>
-                song.songName.toLowerCase().includes(searchValue.toLowerCase())
-              )
+              song.songName.toLowerCase().includes(searchValue.toLowerCase())
+            )
             : dataSongTable
         }
       />
