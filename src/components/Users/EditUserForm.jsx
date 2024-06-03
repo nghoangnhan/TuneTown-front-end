@@ -59,9 +59,9 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
   };
 
   useEffect(() => {
-    getUserInfor(editUserId).then((res) => {
+    getUserInfor(userId).then((res) => {
       setUserInfor(res.user);
-      console.log("UserInfor", res.user);
+      console.log("UserInfor", userInfor);
     });
 
     setFileImg(userInfor?.avatar);
