@@ -71,7 +71,6 @@ export const useChatUtils = () => {
   // };
 
   const handleSocketReconnect = (socket) => {
-    // Help me fix this function
     const handleConnect = () => {
       console.log("Connected to server");
     };
