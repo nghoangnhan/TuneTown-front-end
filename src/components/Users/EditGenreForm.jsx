@@ -98,7 +98,6 @@ const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
                 <Form.Item
                     label=" Genres"
                     name="genre"
-                    rules={[{ required: true, message: "Please input your genre!" }]}
                     className='flex justify-center mt-4 '
                 >
                     <Checkbox.Group className='grid items-center grid-cols-3 gap-8'>
