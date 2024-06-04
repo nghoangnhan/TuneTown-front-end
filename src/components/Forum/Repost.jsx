@@ -38,12 +38,12 @@ const Repost = ({ song, closeModal }) => {
           Authorization: `Bearer ${access_token}`,
         }
       });
-      if (response.status === 200) {
-        message.success("Repost Successfully", 2);
-      }
+      message.success("Repost Successfully", 2);
       form.resetFields();
       closeModal();
+      return response;
     } catch (error) {
+      message.error("Repost Failed", 2);
       console.log("Error:", error);
     }
   };
