@@ -7,9 +7,9 @@ import PropTypes from "prop-types";
 
 const BannerSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const userId = localStorage.getItem("userId");
+  // const userId = localStorage.getItem("userId");
   const [playlistList, setPlaylistList] = useState([]);
-  const { getUserPlaylist } = useMusicAPIUtils();
+  const { getRecommendPlaylist } = useMusicAPIUtils();
   const { Base_AVA } = useConfig();
   const navigate = useNavigate();
   const checkPlaylistBelow5 = playlistList && playlistList.length < 5 ? true : false;
@@ -48,8 +48,9 @@ const BannerSection = () => {
     navigate(`/detail-playlist/${playlistId}`);
   };
   useEffect(() => {
-    getUserPlaylist(userId).then((data) => {
+    getRecommendPlaylist().then((data) => {
       setPlaylistList(data);
+      console.log(playlistList);
     });
   }, []);
   return (

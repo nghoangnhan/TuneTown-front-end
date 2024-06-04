@@ -28,7 +28,7 @@ const SongSectionCustom = ({ titleSong, tryNew, listenAgain }) => {
     return (
         <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5">
             <h1 className="mb-2 text-3xl font-bold text-center text-primary dark:text-primaryDarkmode">{titleSong}</h1>
-            <div className="flex flex-col gap-2 mt-2 xl:w-full">
+            <div className="flex flex-col gap-2 mt-2 overflow-auto xl:w-full max-h-96">
                 {songList &&
                     songList.map((songItem, index) => (
                         <div key={index}>

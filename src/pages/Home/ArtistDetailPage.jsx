@@ -66,7 +66,7 @@ const ArtistDetailPage = () => {
       setFollow(result.isFollowed);
       setTopSongListArtist(result.songs);
       setRefresh(false);
-      // console.log("SetArtistDetail", result);
+      console.log("SetArtistDetail", artistDetail);
     });
   };
   const handleFollowArtist = async (artistId) => {
@@ -138,7 +138,7 @@ const ArtistDetailPage = () => {
   useEffect(() => {
     if (!artistDetail || !artistDetail.avatar) {
       setFollow(artistDetail.isFollowed);
-      // console.log(artistDetail.isFollowed);
+      console.log(artistDetail.isFollowed);
       setLoading(false);
       return;
     }
@@ -207,9 +207,9 @@ const ArtistDetailPage = () => {
                 {/* <span className="text-lg text-primaryText dark:text-textNormalDark opacity-80">
                   #{artistDetail.id}
                 </span> */}
-                <span className="text-3xl xl:text-[50px] text-primary dark:text-primaryDarkmode">
+                {artistDetail.role == "ARTIST" && <span className="text-3xl xl:text-[50px] text-primary dark:text-primaryDarkmode">
                   <UserCheck></UserCheck>
-                </span>
+                </span>}
               </div>
             </div>
             {artistDetail.artists?.userBio && (

@@ -72,7 +72,7 @@ const DetailPlaylist = () => {
           <div className="flex flex-col items-start gap-2">
             <div className="flex flex-row items-center justify-center gap-4">
               <div>
-                {playlistDetail.playlistName} <span className="text-5xl">#{playlistId}</span>
+                {playlistDetail.playlistName}
               </div>
               <button onClick={() => handleSavePlaylist(playlistDetail.id)} className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-base border border-solid rounded-md w-fit border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
                 <SavePlaylistIcon /> Save

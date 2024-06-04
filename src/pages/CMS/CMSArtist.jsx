@@ -39,6 +39,9 @@ const CMSArtist = () => {
       setSongListArtist(result?.songs);
       setRefresh(false);
     });
+    await getAllSongArtistNoPaging(userId).then((result) => {
+      setSongListArtist(result?.songs);
+    });
   };
 
   const handSearch = (e) => {
