@@ -176,6 +176,23 @@ const EditInfor = () => {
             name="birthDate"
             rules={[
               { required: true, message: "Please input your date of birth!" },
+              {
+                type: "object",
+                message: "The input is not valid date!",
+              },
+              {
+                validator: async (_, value) => {
+                  if (value) {
+                    const date = new Date(value);
+                    const currentDate = new Date();
+                    if (date > currentDate) {
+                      return Promise.reject(
+                        new Error("Date of birth can not be in the future!")
+                      );
+                    }
+                  }
+                },
+              },
             ]}
           >
             <DatePicker className="dark:bg-backgroundPrimary" />
