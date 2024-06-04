@@ -8,19 +8,18 @@ const QueueSection = () => {
   const { BackButton } = useIconUtils();
   const songQueueStore = useSelector((state) => state.music.songQueue);
   const playingSong = useSelector((state) => state.music.currentSong);
-  console.log("QueueSection || playingSong", playingSong);
+  // console.log("QueueSection || playingSong", playingSong);
 
   useEffect(() => {
     if (songQueueStore != null) {
       setSongQueue(songQueueStore);
     }
-    console.log("QueueSection || songQueueStore", songQueueStore);
+    // console.log("QueueSection || songQueueStore", songQueueStore);
   }, [songQueueStore]);
 
   return (
     <div
-      className={`${songQueue != null && songQueue.length > 0 ? "min-h-screen" : "h-screen"
-        } xl:p-6 bg-backgroundPrimary dark:bg-backgroundDarkPrimary mb-20`}
+      className={`min-h-screen h-fit xl:p-6 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-10`}
     >
       <BackButton></BackButton>
       <div className="my-4 text-4xl font-bold text-primary dark:text-primaryDarkmode text-start">
