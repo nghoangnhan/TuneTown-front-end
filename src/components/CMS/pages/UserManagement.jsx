@@ -10,7 +10,7 @@ const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [formRole] = useForm();
-  const { Base_URL, Base_AVA } = useConfig();
+  const { Base_URL } = useConfig();
   const [userList, setUserList] = useState([]);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
@@ -125,11 +125,17 @@ const UserManagement = () => {
       align: "center",
       render: (avatar) => {
         return (
-          <img
-            src={avatar ? avatar : Base_AVA}
-            alt="avatar"
-            className="object-cover rounded-full w-11 h-11"
-          />
+          <div>
+            {avatar && <img
+              src={avatar}
+              alt="avatar"
+              className="object-cover rounded-full w-11 h-11"
+            />}
+            {
+              !avatar && <div>None</div>
+            }
+          </div>
+
         );
       },
     },

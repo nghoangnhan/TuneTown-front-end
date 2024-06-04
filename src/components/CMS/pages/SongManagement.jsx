@@ -15,7 +15,7 @@ const layout = {
 const SongManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
-  const { Base_URL, Base_AVA } = useConfig();
+  const { Base_URL } = useConfig();
   const { access_token } = getToken();
   const { deleteSong } = useMusicAPIUtils();
   const [songList, setSongList] = useState([]);
@@ -96,11 +96,14 @@ const SongManagement = () => {
       render: (poster) => {
         return (
           <div className="flex items-center justify-center">
-            <img
-              src={poster ? poster : Base_AVA}
+            {poster && <img
+              src={poster}
               alt="poster"
               className="w-12 h-12 rounded-full dark:bg-white"
-            />
+            />}
+            {
+              !poster && <div>None</div>
+            }
           </div>
         );
       },
