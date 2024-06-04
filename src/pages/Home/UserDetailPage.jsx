@@ -22,7 +22,7 @@ const UserDetailPage = ({ owned }) => {
   // const { userId } = useParams();
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
-  const { BackButton, UserCheck } = useIconUtils();
+  const { BackButton, UserCheck, LoadingLogo } = useIconUtils();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const refreshAccount = useSelector((state) => state.account.refreshAccount);
@@ -188,7 +188,7 @@ const UserDetailPage = ({ owned }) => {
                 </button>
               )}
             </div>
-            <div className="flex items-center justify-center gap-2">
+            {userInfor.genres?.length > 0 && <div className="flex items-center justify-center gap-2">
               {t("profile.favouriteGenres")}:{" "}
               {userInfor.genres?.map((genre, index) => (
                 <span
@@ -198,7 +198,7 @@ const UserDetailPage = ({ owned }) => {
                   {genre.genreName}{" "}
                 </span>
               ))}
-            </div>
+            </div>}
           </div>
         </div>
       </div>
@@ -246,6 +246,8 @@ const UserDetailPage = ({ owned }) => {
           setOpenModalEditGenre={setOpenModalGenres}
         ></EditGenreForm>
       </Modal>
+
+      <LoadingLogo loading={loading}></LoadingLogo>
     </div>
   );
 };
