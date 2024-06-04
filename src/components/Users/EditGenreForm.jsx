@@ -110,7 +110,7 @@ const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
 
                 <Form.Item
                     wrapperCol={{ offset: 8, span: 16 }}>
-                    <button type="submit" className="w-1/4 h-10 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70">Save Changes</button>
+                    <button type="submit" className="absolute h-10 px-2 border rounded-md w-fit right-2 text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70">Save Changes</button>
                 </Form.Item>
             </Form>
         </div>
