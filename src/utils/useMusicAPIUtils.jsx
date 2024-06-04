@@ -1,7 +1,6 @@
 import axios from "axios";
 import UseCookie from "../hooks/useCookie";
 import useConfig from "./useConfig";
-import { message } from "antd";
 
 export const useMusicAPIUtils = () => {
   const { getToken } = UseCookie();

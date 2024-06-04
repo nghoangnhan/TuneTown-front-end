@@ -87,6 +87,7 @@ const SongItemSearch = ({ song, songOrder }) => {
         <Item
           onClick={() => {
             dispatch(addSongToQueue(songInforObj));
+            message.success(`Added ${songInforObj.songName} to queue`);
           }}
         >
           Add to Queue

@@ -93,6 +93,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
         <Item
           onClick={() => {
             dispatch(addSongToQueue(songInforObj));
+            message.success(`Added ${songInforObj.songName} to queue`);
           }}
         >
           Add to Queue
