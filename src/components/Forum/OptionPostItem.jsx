@@ -8,7 +8,7 @@ import { useState } from "react";
 import UpdatePost from "./UpdatePost";
 import { useTranslation } from "react-i18next";
 
-const OptionPostItem = ({ id, postId, postContent }) => {
+const OptionPostItem = ({ id, postId, postContent, setRefresh }) => {
   const { deletePost } = useForumUtils();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -64,6 +64,7 @@ const OptionPostItem = ({ id, postId, postContent }) => {
         className="modalStyle"
       >
         <UpdatePost
+          setRefresh={setRefresh}
           postContent={postContent}
           setOpenModalUpdate={setOpenModalUpdate}
         ></UpdatePost>
@@ -76,6 +77,7 @@ OptionPostItem.propTypes = {
   id: PropTypes.string.isRequired,
   postId: PropTypes.number.isRequired,
   postContent: PropTypes.object.isRequired,
+  setRefresh: PropTypes.func,
 };
 
 export default OptionPostItem;

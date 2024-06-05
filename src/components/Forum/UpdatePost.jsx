@@ -15,7 +15,7 @@ import { setRefreshPost } from "../../redux/slice/social";
 import ModalChoseSong from "./Modal/ModalChoseSong";
 
 
-const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
+const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
     const [form] = Form.useForm();
     const userId = localStorage.getItem("userId");
     const dispatch = useDispatch();
@@ -55,6 +55,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                     Authorization: `Bearer ${access_token}`,
                 }
             });
+            setRefresh(true);
             dispatch(setRefreshPost(true));
             message.success("Post Updated Successfully", 2);
             setOpenModalUpdate(false);
@@ -191,5 +192,6 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
 UpdatePost.propTypes = {
     postContent: Proptypes.object.isRequired,
     setOpenModalUpdate: Proptypes.func.isRequired,
+    setRefresh: Proptypes.func,
 }
 export default UpdatePost;

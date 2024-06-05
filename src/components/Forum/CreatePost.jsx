@@ -77,6 +77,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
   };
 
   const onFinishFailed = (errorInfo) => {
+    message.error("Failed to create post", 2);
     console.log("Failed:", errorInfo);
     form.resetFields();
   };

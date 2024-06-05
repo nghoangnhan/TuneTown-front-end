@@ -1,47 +1,62 @@
 import PropTypes from "prop-types";
-import { setIsReply } from "../../redux/slice/social.js";
-import { useDispatch } from "react-redux";
-import { setReplyCommentId } from "../../redux/slice/social.js";
-import { setReplyComment } from "../../redux/slice/social.js";
-import { useForumUtils } from "../../utils/useChatUtils";
+// import { setIsReply } from "../../redux/slice/social.js";
+// import { useDispatch } from "react-redux";
+// import { setReplyCommentId } from "../../redux/slice/social.js";
+// import { setReplyComment } from "../../redux/slice/social.js";
+// import { useForumUtils } from "../../utils/useChatUtils";
 
 const PostItemComment = ({ postContent }) => {
-  const dispatch = useDispatch();
-  const { getCommentById } = useForumUtils();
-  const handleGetCommentById = async (commentId) => {
-    await getCommentById(commentId).then((res) => {
-      console.log("Get comment by id: ", res);
-      dispatch(setReplyComment(res));
-    });
+  // const dispatch = useDispatch();
+  // const { getCommentById } = useForumUtils();
+  // const handleGetCommentById = async (commentId) => {
+  //   await getCommentById(commentId).then((res) => {
+  //   console.log("Get comment by id: ", res);
+  //   dispatch(setReplyComment(res));
+  //   });
+  // };
+
+  const formatTime = (time) => {
+    const date = new Date(time);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = date.getFullYear();
+    const timeee = date.toLocaleTimeString();
+    const countTime = `${day}/${month}/${year} ${timeee}`;
+    return countTime;
   };
 
-  const handleReply = (comment) => {
-    dispatch(setIsReply(true));
-    dispatch(setReplyCommentId(comment.id));
-    handleGetCommentById(comment.id);
-  };
+
+  // const handleReply = (comment) => {
+  //   dispatch(setIsReply(true));
+  //   dispatch(setReplyCommentId(comment.id));
+  //   // handleGetCommentById(comment.id);
+  // };
 
   // Component code here
   return (
     <div className="mx-4">
       {postContent?.comments != null &&
         postContent?.comments?.map((comment) => (
-          <div key={comment.id} className="mx-3">
+          <div key={comment.id} className="mx-3 my-3">
             <div className="flex flex-col ">
-
               <div className="flex flex-row gap-2">
                 <img src={comment.author?.avatar} className="w-10 h-10 rounded-full" alt="" />
-                <div className="flex flex-col items-start justify-start w-full gap-1 p-2 rounded-lg bg-backgroundPlaylist text-primaryText2 dark:text-primaryTextDark2 dark:bg-backgroundPlaylistHoverDark">
-                  <div className="text-base font-bold text-primary dark:text-primaryDarkmode">
-                    {comment.author.userName}
+                <div className="flex flex-col items-start justify-start w-full">
+                  <div className="gap-1 p-2 rounded-lg bg-backgroundPlaylist text-primaryText2 dark:text-primaryTextDark2 dark:bg-backgroundPlaylistHoverDark">
+                    <div className="text-base font-bold text-primary dark:text-primaryDarkmode">
+                      {comment.author.userName}
+                    </div>
+                    <div className="w-full p-1 text-sm break-words whitespace-normal rounded-md">
+                      {comment.content}
+                    </div>
                   </div>
-                  <div className="w-full p-1 text-sm break-words whitespace-normal rounded-md">
-                    {comment.content}
+                  <div className="mt-1 text-xs font-semibold opacity-80">
+                    {formatTime(comment.commentDate)}
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-row items-center justify-start gap-1 text-primary dark:text-primaryDarkmode">
+              {/* <div className="flex flex-row items-center justify-start gap-1 text-primary dark:text-primaryDarkmode">
                 <button className="mx-2 mt-1 text-xs font-semibold opacity-80">
                   Like
                 </button>
@@ -52,13 +67,13 @@ const PostItemComment = ({ postContent }) => {
                   Reply
                 </button>
                 <span className="mx-2 mt-1 text-xs font-semibold opacity-80">
-                  {comment.commentDate.toLocaleString()?.split("T")[0]}
+                  {formatTime(comment.commentDate)}
                 </span>
-              </div>
-
+              </div> */}
             </div>
+
             {/* Reply section */}
-            <div className="pl-5 mt-4 space-y-2">
+            {/* <div className="pl-5 mt-4 space-y-2">
               {comment?.reply &&
                 comment?.reply?.map((reply) => (
                   <div className="flex flex-col my-3" key={reply.id}>
@@ -91,7 +106,7 @@ const PostItemComment = ({ postContent }) => {
                     </div>
                   </div>
                 ))}
-            </div>
+            </div> */}
           </div>
         ))}
     </div>
