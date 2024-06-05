@@ -34,11 +34,11 @@ const PostManagement = () => {
             align: "center",
             render: (author) => (
                 <div className="flex flex-row items-center">
-                    <img
-                        src={author.avatar ? author.avatar : Base_AVA}
+                    {author.avatar && <img
+                        src={author.avatar}
                         alt="avatar"
                         className="w-10 h-10 rounded-full"
-                    />
+                    />}
                     <div className="ml-2">{author.userName}</div>
                 </div>
             ),
