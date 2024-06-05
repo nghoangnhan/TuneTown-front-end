@@ -175,7 +175,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
             type="submit"
             className="absolute px-2 py-2 transition-colors duration-150 border rounded-md right-2 text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
           >
-            Submit
+            Create Post
           </button>
         </Form.Item>
 
