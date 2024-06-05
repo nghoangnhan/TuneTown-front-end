@@ -166,6 +166,10 @@ const ChatNavigate = () => {
   }, [keywordsInputDebounce]);
 
   useEffect(() => {
+    fetchChatList();
+  }, [userId])
+
+  useEffect(() => {
     if (refreshChatList === true) {
       fetchChatList().then(() => {
         dispatch(setRefreshChat(false));

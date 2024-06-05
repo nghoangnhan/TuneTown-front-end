@@ -193,7 +193,7 @@ const ChatArea = () => {
     <div className="">
       <div className="fixed flex flex-row items-center justify-between w-screen h-20 pl-3 bg-slate-50 dark:bg-backgroundChattingInputNavDark">
         <div className="flex flex-row items-center ">
-          <BackIcon url={"/"}></BackIcon>
+          <BackIcon url={"/chat"}></BackIcon>
           <div className="w-10">
             <img
               src={`${chatInfo?.avatar ? chatInfo.avatar : defaultAva}`}
