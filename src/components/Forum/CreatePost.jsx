@@ -44,6 +44,10 @@ const CreatePost = ({ setOpenModalCreate }) => {
       console.log("Received values:", values);
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
+      if (contentParser == "" || contentParser == null || editorValue == "") {
+        message.error("Content is empty", 2);
+        return;
+      }
       const response = axios.post(`${Base_URL}/post/create`, {
         author: {
           id: userId
@@ -76,11 +80,6 @@ const CreatePost = ({ setOpenModalCreate }) => {
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    message.error("Failed to create post", 2);
-    console.log("Failed:", errorInfo);
-    form.resetFields();
-  };
 
   const handleAddPlaylist = async () => {
     try {
@@ -119,7 +118,6 @@ const CreatePost = ({ setOpenModalCreate }) => {
         layout="vertical"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         onAbort={
           () => {
             form.resetFields();

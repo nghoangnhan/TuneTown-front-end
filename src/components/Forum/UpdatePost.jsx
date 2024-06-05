@@ -41,6 +41,10 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
         try {
             const sanitizedContent = DOMPurify.sanitize(values.content); // XSS (Cross-site scripting) 
             const contentParser = Parser(sanitizedContent).props.children;
+            if (contentParser == "" || contentParser == null || editorValue == "") {
+                message.error("Content is empty", 2);
+                return;
+            }
             const response = axios.put(`${Base_URL}/post`, {
                 id: postContent.id,
                 author: {
@@ -66,9 +70,6 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
         }
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
-    };
 
     const handleAddPlaylist = async () => {
         try {
@@ -121,7 +122,6 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                 name="basic"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 className="mx-auto bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
             >
                 <Form.Item
