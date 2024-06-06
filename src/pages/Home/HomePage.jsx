@@ -31,8 +31,8 @@ const HomePage = () => {
         </div>
       </div>
       <div>
-        <SongSectionCustom tryNew={true} titleSong={"Maybe You Should Try"} ></SongSectionCustom>
-        <SongSectionCustom listenAgain={true} titleSong={"Want To Listen Again"}></SongSectionCustom>
+        <SongSectionCustom tryNew={true} titleSong={t("home.maybeYouShouldTry")} ></SongSectionCustom>
+        <SongSectionCustom listenAgain={true} titleSong={t("home.maybeWantListenAgain")}></SongSectionCustom>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { setUserInfor } from "../../redux/slice/account";
 import GoogleLoginButton from "../../components/AuthLogin/AuthGoogleLogin";
 import { gapi } from "gapi-script";
-import LoginFacebook from "../../components/AuthLogin/AuthFacebookLogin";
+// import LoginFacebook from "../../components/AuthLogin/AuthFacebookLogin";
 import useConfig from "../../utils/useConfig";
 import UseCookie from "../../hooks/useCookie";
 import { useTranslation } from "react-i18next";
@@ -29,13 +29,13 @@ const LoginPage = () => {
   const userRole = localStorage.getItem("userRole");
 
   const handleUserData = async (usersData) => {
-    console.log("Data", usersData);
+    // console.log("Data", usersData);
     dispatch(setUserInfor(usersData));
     localStorage.setItem("userId", usersData.id);
     localStorage.setItem("userName", usersData.userName);
     localStorage.setItem("userRole", usersData.role);
     localStorage.setItem("darkTheme", false);
-    console.log("User infor", usersData);
+    // console.log("User infor", usersData);
   };
   // Get access to the API
   async function GetAccessToken(emailInput, passwordInput) {
@@ -49,9 +49,9 @@ const LoginPage = () => {
         // Save cookies and token
         saveToken(response.data.access_token);
         handleUserData(response.data);
-        console.log("Token", response.data.access_token);
+        // console.log("Token", response.data.access_token);
         // Notifactaion when login successfully
-        message.success("Login Successfully");
+        message.success(t("auth.signInSuccess"));
         setTimeout(() => {
           if (response.data.role === "ADMIN") {
             if (getToken().access_token !== "") {
@@ -72,7 +72,7 @@ const LoginPage = () => {
     } catch (error) {
       console.log("Error:", error);
       // Notifactaion when login failed
-      message.error("Login Failed");
+      message.error(t("auth.signInFailed"));
       throw error;
     }
   }
@@ -149,7 +149,7 @@ const LoginPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your email!",
+                message: t("auth.requireEmail"),
               },
             ]}
           >
@@ -162,7 +162,7 @@ const LoginPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: t("auth.requirePassword"),
               },
             ]}
           >
@@ -191,10 +191,10 @@ const LoginPage = () => {
           </p>
 
           <div>
-            <p className="text-[#a8a8ac]">{t("auth.orLoginWith")}</p>
+            <p className="text-[#a8a8ac]">{t("auth.orSigninWith")}</p>
           </div>
           <GoogleLoginButton />
-          <LoginFacebook />
+          {/* <LoginFacebook /> */}
         </div>
         <footer className="absolute bottom-5 ">
           <p className="text-[#8d8d8d]">TuneTown ©2024</p>

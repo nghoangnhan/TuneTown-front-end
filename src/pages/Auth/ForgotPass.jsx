@@ -5,10 +5,12 @@ import axios from "axios";
 import useConfig from "../../utils/useConfig";
 import useIconUtils from "../../utils/useIconUtils";
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ForgotPass = () => {
   const [form] = useForm();
   const { Base_URL, Base_AVA } = useConfig();
+  const { t } = useTranslation()
   const { HintIcon } = useIconUtils();
   const navigate = useNavigate();
   const [openTour, setOpenTour] = useState(false);
@@ -19,23 +21,23 @@ const ForgotPass = () => {
 
   const forgetTour = [
     {
-      title: "Input Your Email",
-      description: "Please enter your email here.",
+      title: t("auth.tourEmail"),
+      description: t("auth.tourEmailDetail"),
       target: () => hintRef1.current,
     },
     {
-      title: "Get OTP",
-      description: "Click here to get OTP.",
+      title: t("auth.tourGetOTP"),
+      description: t("auth.tourGetOTPDetail"),
       target: () => hintRef2.current,
     },
     {
-      title: "Input OTP",
-      description: "Please enter the OTP you received here.",
+      title: t("auth.tourOTP"),
+      description: t("auth.tourOTPDetail"),
       target: () => hintRef3.current,
     },
     {
-      title: "Input New Password",
-      description: "Please enter your new password here.",
+      title: t("auth.tourNewPass"),
+      description: t("auth.tourNewPassDetail"),
       target: () => hintRef4.current,
     },
   ];
@@ -63,7 +65,7 @@ const ForgotPass = () => {
         type: "changePassword",
         newPassword: newPasswordInput,
       });
-      console.log("Respone changePassword data", response.data);
+      // console.log("Respone changePassword data", response.data);
     } catch (error) {
       console.error(error);
     }
@@ -77,7 +79,7 @@ const ForgotPass = () => {
         type: "verifyOTP",
         newPassword: "",
       });
-      console.log("Respone CheckOTP data", response.data);
+      // console.log("Respone CheckOTP data", response.data);
       if (response.status === 400) {
         return false;
       }
@@ -91,7 +93,7 @@ const ForgotPass = () => {
   const handleSendOTP = () => {
     const emailValue = form.getFieldValue("email");
     if (emailValue) {
-      message.loading("Sending OTP, please wait...", 1);
+      message.loading(t("auth.sendingOTP"), 1);
 
       GetOTP(emailValue).then((response) => {
         if (response) {
@@ -101,7 +103,7 @@ const ForgotPass = () => {
         }
       });
     } else {
-      message.error("Please input your email."); // Notify the user that the email is required
+      message.error(t("auth.requireEmail")); // Notify the user that the email is required
     }
   };
 
@@ -111,28 +113,28 @@ const ForgotPass = () => {
     const OTPValue = form.getFieldValue("OTP");
     try {
       if (emailValue && OTPValue) {
-        message.loading("Checking OTP, please wait...", 1);
+        message.loading(t("auth.checkingOTP"), 1);
         const checkOTP = await CheckOTP(emailValue, OTPValue);
         if (checkOTP == true) {
           const newPasswordValue = form.getFieldValue("newPassword");
           if (newPasswordValue && newPasswordValue.length >= 0) {
             ChangePassword(emailValue, OTPValue, newPasswordValue);
             setTimeout(() => {
-              message.success("Change password successfully.");
+              message.success(t("auth.changePasswordSuccess"), 2);
             }, 1000);
             setTimeout(() => {
               navigate("/login");
             }, 2000);
           } else {
-            message.error("Please input your new password.");
+            message.error(t("auth.requireNewPass"));
           }
         } else {
           setTimeout(() => {
-            message.error("OTP is not correct.", 2);
+            message.error(t("auth.wrongOTP"), 2);
           }, 1000);
         }
       } else {
-        message.error("Please input your email and OTP.");
+        message.error(t("auth.requireEmailandOTP"));
       }
     } catch (error) {
       console.error(error);
@@ -151,7 +153,7 @@ const ForgotPass = () => {
       <div className="flex flex-col items-center justify-center mt-6">
         <div className="flex flex-row items-center gap-3 mb-10 text-primary ">
           <h1 className="text-3xl font-bold ">
-            Forget Password
+            {t("auth.forgetPassword")}
           </h1>
           <div onClick={() => setOpenTour(true)}>
             <HintIcon></HintIcon>
@@ -180,7 +182,7 @@ const ForgotPass = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your email!",
+                message: t("auth.requireEmail")
               },
             ]}
           >
@@ -196,35 +198,35 @@ const ForgotPass = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your OTP!",
+                message: t("auth.requireOTP"),
               },
             ]}
           >
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row items-center gap-2">
               <div ref={hintRef3}>
                 <Input />
               </div>
               <button
-                className="h-10 px-1 py-1 text-white bg-green-500 rounded-md w-28"
+                className="h-10 px-1 py-1 border rounded-md border-primary text-primary w-28"
                 onClick={() => handleSendOTP()}
                 ref={hintRef2}
                 type="button"
               >
-                Get OTP
+                {t("auth.getOTP")}
               </button>
             </div>
           </Form.Item>
           <Form.Item
-            label="New Password"
+            label={t("auth.newPassword")}
             name="newPassword"
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: t("auth.requireNewPass"),
               },
               {
                 min: 8,
-                message: "Password must be at least 8 characters",
+                message: t("auth.require8CharPassword"),
               },
               {
                 // Require uppercase, lowercase, number, and special character
@@ -232,7 +234,7 @@ const ForgotPass = () => {
                   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])"
                 ),
                 message:
-                  "Password must contain at least one uppercase, one lowercase, one number and one special character",
+                  t("auth.requireSpecialCharPass"),
               }
             ]}
           >
@@ -241,23 +243,21 @@ const ForgotPass = () => {
             </div>
           </Form.Item>
           <Form.Item
-            className="flex flex-row items-center justify-center"
-
-          >
+            className="flex flex-row items-center justify-center">
             <button
               onClick={handleChangePassword}
-              className="px-3 py-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 "
+              className="w-full px-3 py-2 font-semibold text-primary rounded-md shadow-lg min-w-[150px] border border-primary hover:opacity-70 "
             >
-              Submit
+              {t("auth.changePassword")}
             </button>
           </Form.Item>
         </Form>
 
         <div className="">
           <p className="text-headingText ">
-            Back to Login?
+            {t("auth.backToSignIn")}?
             <NavLink to="/login" className="ml-1 text-sm text-primary">
-              Sign in
+              {t("auth.signIn")}
             </NavLink>
           </p>
         </div>

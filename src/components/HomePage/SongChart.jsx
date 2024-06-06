@@ -13,20 +13,22 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
+  const { t } = useTranslation();
   const { ListenIcon, TrendingIcon } = useIconUtils();
   const [songList, setSongList] = useState([]);
   const [songPage, setSongPage] = useState(1);
+
   const titleSongChart = titleSong
     ? titleSong
-    : `Top 10 Songs in ${new Date().getMonth() < 3
-      ? "Spring"
+    : `${t("home.top10songs")} ${new Date().getMonth() < 3
+      ? t("home.spring")
       : new Date().getMonth() < 6
-        ? "Summer"
+        ? t("home.summer")
         : new Date().getMonth() < 9
-          ? "Autumn"
-          : "Winter"
+          ? t("home.autumn")
+          : t("home.winter")
     }`;
-  const { t } = useTranslation();
+
 
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1; // Adding 1 to get the correct month
@@ -51,7 +53,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
           },
         }
       );
-      console.log("Song Period", response.data);
+      // console.log("Song Period", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -59,7 +61,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
   };
 
   useEffect(() => {
-    console.log("Time Detail", startTime, endTime);
+    // console.log("Time Detail", startTime, endTime);
     getListSongPeriod().then((response) => {
       setSongList(response);
     });
@@ -69,7 +71,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
     return (
       <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5">
         <h1 className="text-xl font-bold text-primary">
-          Song Chart is updating...
+          {t("home.songChartUpdating")}
         </h1>
       </div>
     );

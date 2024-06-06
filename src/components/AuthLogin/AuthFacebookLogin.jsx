@@ -131,7 +131,7 @@ function LoginFacebook() {
       onReject={onFailure}
     >
       {/* <FacebookLoginButton className="bg-white rounded-md" /> */}
-      <LoginSocialButton text={t("auth.loginWithFacebook")}></LoginSocialButton>
+      <LoginSocialButton text={t("auth.signInWithFacebook")}></LoginSocialButton>
     </LoginSocialFacebook>
   );
 }
