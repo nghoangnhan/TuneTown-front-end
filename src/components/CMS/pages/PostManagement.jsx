@@ -68,12 +68,12 @@ const PostManagement = () => {
                 </div>
             ),
         },
-        {
-            title: "Artist",
-            dataIndex: "artist",
-            key: "artist",
-            align: "center",
-        },
+        // {
+        //     title: "Artist",
+        //     dataIndex: "artist",
+        //     key: "artist",
+        //     align: "center",
+        // },
         {
             title: "Playlist",
             dataIndex: "playlist",
@@ -208,14 +208,14 @@ const PostManagement = () => {
                         </Form.Item>
                     </Form>
                 </div>
-                <div>
+                {/* <div>
                     <button
                         className="px-4 py-2 text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
                         onClick={() => setModalCreatePost(true)}
                     >
                         Create New Post
                     </button>
-                </div>
+                </div> */}
             </div>
             <Table
                 columns={columnPost}

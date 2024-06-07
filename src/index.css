@@ -84,6 +84,10 @@
   color: #f0f0f0;
 }
 
+.dark .ant-form-item-control-input-content input::placeholder {
+  color: #c4c4c4;
+}
+
 /* FORM  */
 .formStyle .ant-form-item-label label,
 .formStyle .ant-form-item-control .ant-form-item-extra {

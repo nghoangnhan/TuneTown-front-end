@@ -10,9 +10,11 @@ import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import PropTypes from "prop-types";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 const SongItem = ({ song, songOrder, songListen, songId }) => {
   const { show } = useContextMenu();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
   const { addSongToPlaylist, getUserPlaylist,
@@ -55,7 +57,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
   // const songDuration = GetSongDuration(songData);
 
   function displayMenu(e, songId) {
-    console.log("PlaylistList", playlistList);
+    // console.log("PlaylistList", playlistList);
     e.preventDefault();
     show({
       position: { x: e.clientX, y: e.clientY },
@@ -89,17 +91,17 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)} style={{ pointerEvents: songInforObj.status === 0 ? 'none' : 'auto', opacity: songInforObj.status === 0 ? 0.5 : 1 }}>
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`} className="contexify-menu">
-        <Item onClick={refreshPlaylist}>Refresh</Item>
+        <Item onClick={refreshPlaylist}>{t("song.refresh")}</Item>
         <Item
           onClick={() => {
             dispatch(addSongToQueue(songInforObj));
-            message.success(`Added ${songInforObj.songName} to queue`);
+            message.success(`${t("song.added")} ${songInforObj.songName} ${t("song.toQueue")}`);
           }}
         >
-          Add to Queue
+          {t("song.addToQueue")}
         </Item>
         <Separator />
-        <Submenu label="Add to playlist">
+        <Submenu label={t("song.addToPlaylist")}>
           {playlistList &&
             playlistList?.map((playlist) => (
               <Item
@@ -109,10 +111,10 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
                     (result) => {
                       if (result.success) {
                         message.success(
-                          `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`
+                          `${t("song.added")} ${songInforObj.songName} #${songInforObj.id} ${t("song.to")} ${playlist.playlistName} #${playlist.id}`
                         );
                       } else {
-                        message.error(`Failed to add song: ${result.error}`);
+                        message.error(`${t("song.failedToAddSong")}: ${result.error}`);
                       }
                     }
                   );
@@ -180,7 +182,7 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
 
       {/* Modal Repost  */}
       <Modal
-        title="Repost"
+        title={t("forum.repost")}
         open={openModal}
         onCancel={() => {
           setOpenModal(false);

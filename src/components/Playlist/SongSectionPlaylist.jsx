@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import SongItem from "../Song/SongItem";
+import { useTranslation } from "react-i18next";
 // import { useDispatch } from "react-redux";
 
 const SongSectionPlaylist = (props) => {
   const [songList, setSongList] = useState();
+  const { t } = useTranslation();
   useEffect(() => {
     setSongList(props.songData);
-    console.log("songPlaylsit || SongList", songList);
+    // console.log("songPlaylsit || SongList", songList);
   }, [props.songData]);
   if (!songList) return null;
   return (
@@ -15,7 +17,7 @@ const SongSectionPlaylist = (props) => {
       <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
         <div className="flex flex-row gap-8 ml-8">
           <div className="font-bold text-center ">#</div>
-          <div className="font-bold text-center ">Song Details</div>
+          <div className="font-bold text-center ">{t("playlist.songDetail")}</div>
         </div>
         {/* <div>
           <div className="font-bold text-center ">Duration</div>

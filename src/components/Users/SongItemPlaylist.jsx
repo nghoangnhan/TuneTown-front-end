@@ -12,6 +12,7 @@ import useSongUtils from "../../utils/useSongUtils";
 import PropTypes from "prop-types";
 import useConfig from "../../utils/useConfig";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 const SongItemPlaylist = ({
   song,
@@ -23,6 +24,7 @@ const SongItemPlaylist = ({
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
+  const { t } = useTranslation();
   const { id, songName, artists, poster, songData, lyric, status } = song;
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
@@ -85,11 +87,11 @@ const SongItemPlaylist = ({
       (response) => {
         console.log("Delete song response", response);
         if (response === 200) {
-          message.success(`Deleted ${songInforObj.songName} in playlist`);
+          message.success(`${t("song.deleted")} ${songInforObj.songName} ${t("song.inPlaylist")}`);
           // Trigger a re-render by updating the refresh state
           dispatch(setRefreshPlaylist(true));
         } else {
-          message.error(`Failed to delete song: ${response.error}`);
+          message.error(`${t("song.failedToDeleteSong")}: ${response.error}`);
         }
       }
     );
@@ -108,11 +110,11 @@ const SongItemPlaylist = ({
       }
     );
     if (response.status === 200) {
-      message.success(`Order ${item} to ${over}`);
+      message.success(`${t("song.order")} ${item} ${t("song.to")} ${over}`);
       dispatch(setRefreshPlaylist(true));
       getUserPlaylist(userId).then((data) => setPlaylistList(data));
     } else {
-      message.error(`Failed to order song: ${response.error}`);
+      message.error(`${t("song.failedToOrderSong")}: ${response.error}`);
     }
   }
 
@@ -130,24 +132,24 @@ const SongItemPlaylist = ({
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)} style={{ pointerEvents: songInforObj.status === 0 ? 'none' : 'auto', opacity: songInforObj.status === 0 ? 0.5 : 1 }}>
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`} className="contexify-menu">
-        <Item onClick={refreshPlaylist}>Refresh</Item>
+        <Item onClick={refreshPlaylist}>{t("song.refresh")}</Item>
         <Item
           onClick={() => {
             dispatch(addSongToQueue(songInforObj));
-            message.success(`Added ${songInforObj.songName} to queue`);
+            message.success(`${t("song.added")} ${songInforObj.songName} ${t("song.toQueue")}`);
           }}
         >
-          Add to Queue
+          {t("song.addToQueue")}
         </Item>
         <Item
           onClick={() => {
             handleDeleteSong();
           }}
         >
-          Delete Song
+          {t("song.deleteSongInPlaylist")}
         </Item>
         <Separator />
-        <Submenu label="Add to playlist">
+        <Submenu label={t("song.addToPlaylist")}>
           {playlistList.map((playlist) => (
             <Item
               key={playlist.id}
@@ -156,10 +158,10 @@ const SongItemPlaylist = ({
                   (result) => {
                     if (result.success) {
                       message.success(
-                        `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`
+                        `${t("song.added")} ${songInforObj.songName} #${songInforObj.id} ${t("song.to")} ${playlist.playlistName} #${playlist.id}`
                       );
                     } else {
-                      message.error(`Failed to add song: ${result.error}`);
+                      message.error(`${t("song.failedToAddSong")}: ${result.error}`);
                     }
                   }
                 );

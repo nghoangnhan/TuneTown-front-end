@@ -99,7 +99,7 @@ const SearchPage = () => {
             name="keywords"
             placeholder="Search by song, artist, lyrics..."
             onChange={(e) => setKeywordsInput(e.target.value)}
-            className="w-full text-lg rounded-md bg-backgroundComponentPrimary text-primaryText2 dark:text-primaryTextDark2 dark:bg-backgroundComponentDarkPrimary h-14"
+            className="w-full text-lg rounded-md outline-none dark:bg-backgroundPlaylistHoverDark dark:text-primaryTextDark2 h-14"
           />
         </Form.Item>
       </Form>

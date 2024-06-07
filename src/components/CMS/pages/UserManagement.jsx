@@ -216,12 +216,12 @@ const UserManagement = () => {
           >
             Role
           </button>
-          <button
+          {/* <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark::border-red-500 dark:text-red-500 hover:opacity-60"
             onClick={() => deleteUser(record.id)}
           >
             Delete
-          </button>
+          </button> */}
         </Space>
       ),
     },
@@ -297,7 +297,7 @@ const UserManagement = () => {
           footer={[]}
           className="modalStyle w-fit h-fit"
         >
-          <Form form={formRole} className="pt-4 w-fit h-fit formStyle">
+          <Form form={formRole} className="w-full pt-4 formStyle">
             <Form.Item label="Role" name="role">
               <Select
                 placeholder="Role"
@@ -308,8 +308,8 @@ const UserManagement = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item className="">
-              <button type="submit" className="absolute right-0 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode" onClick={handleOkRole}>
+            <Form.Item className="w-full">
+              <button type="submit" className="absolute right-0 px-2 py-1 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode" onClick={handleOkRole}>
                 Update Role
               </button>
             </Form.Item>

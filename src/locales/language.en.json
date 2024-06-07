@@ -90,7 +90,8 @@
     "report": "Report",
     "refresh": "Refresh",
     "updatePost": "Update post",
-    "deletePost": "Delete post"
+    "deletePost": "Delete post",
+    "repost": "Repost"
   },
   "playlist": {
     "myPlaylist": "My Playlist",
@@ -105,10 +106,41 @@
     "uploadCoverArt": "Upload cover art",
     "coverArtExtra": "Upload your cover image",
     "saveChanges": "Save changes",
-    "editOrderSong": "Edit songs' order"
+    "editOrderSong": "Edit songs' order",
+    "save": "Save",
+    "savePlaylistSuccess": "Save playlist successfully",
+    "savePlaylistFailed": "Save playlist failed",
+    "deletePlaylistSuccess": "Delete playlist successfully",
+    "deletePlaylistFailed": "Delete playlist failed",
+    "songDetail": "Song Details"
+  },
+  "queue": {
+    "yourQueue": "Your Queue",
+    "nowPlaying": "Now Playing",
+    "nextUp": "Next Up",
+    "noSongInQueue": "No song in queue"
+  },
+  "lyrics": {
+    "noLyric": "This song has no lyric!",
+    "lyrics": "Lyrics"
   },
   "song": {
-    "title": "Title"
+    "title": "Title",
+    "refresh": "Refresh",
+    "addToQueue": "Add to queue",
+    "removeFromQueue": "Remove from queue",
+    "addToPlaylist": "Add to playlist",
+    "failedToAddSong": "Failed to add song to queue",
+    "added": "Added",
+    "deleted": "Deleted",
+    "order": "Order",
+    "to": "to",
+    "inPlaylist": "in playlist",
+    "toQueue": "to queue",
+    "deleteSongInPlaylist": "Delete song in this playlist",
+    "removeFromQueueSuccess": "Remove from queue successfully",
+    "failedToOrderSong": "Failed to order song",
+    "failedToDeleteSong": "Failed to delete song"
   },
   "accountOptions": {
     "title": "Account Options",
@@ -117,9 +149,6 @@
     "settings": "Settings",
     "signOut": "Sign out",
     "songManagement": "Song Management"
-  },
-  "lyrics": {
-    "lyrics": "Lyrics"
   },
   "profile": {
     "editProfile": "Edit profile",

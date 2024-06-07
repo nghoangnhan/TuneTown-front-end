@@ -346,6 +346,7 @@ const PostItem = ({ postContent }) => {
         id={`postOption_${postContent.id}`}
         postId={postContent.id}
         postContent={postContent}
+        setRefresh={setRefresh}
       ></OptionPostItem>
     </div>
   );

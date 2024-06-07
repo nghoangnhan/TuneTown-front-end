@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import SongItemQueue from "../Song/SongItemQueue";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 const QueueSection = () => {
   const [songQueue, setSongQueue] = useState([]);
   const { BackButton } = useIconUtils();
   const songQueueStore = useSelector((state) => state.music.songQueue);
   const playingSong = useSelector((state) => state.music.currentSong);
+  const { t } = useTranslation()
   // console.log("QueueSection || playingSong", playingSong);
 
   useEffect(() => {
@@ -23,18 +25,18 @@ const QueueSection = () => {
     >
       <BackButton></BackButton>
       <div className="my-4 text-4xl font-bold text-primary dark:text-primaryDarkmode text-start">
-        Your Queue
+        {t("queue.yourQueue")}
       </div>
 
       <div className="p-2 mt-6 rounded-md shadow-lg">
         <div className="mb-5 text-2xl font-bold text-primary dark:text-primaryDarkmode text-start">
-          Now Playing
+          {t("queue.nowPlaying")}
         </div>
         <SongItemQueue song={playingSong} isPlaying={true}></SongItemQueue>
       </div>
       <div className="p-2 mt-5 rounded-md shadow-lg">
         <div className="mt-5 mb-5 text-2xl font-bold text-primary dark:text-primaryDarkmode text-start">
-          Next Up
+          {t("queue.nextUp")}
         </div>
         <div className="flex flex-col gap-1">
           {songQueue != null &&
@@ -48,7 +50,7 @@ const QueueSection = () => {
             ))}
           {songQueue != null && songQueue.length === 0 && (
             <div className="mt-5 mb-5 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode">
-              No song in queue!
+              {t("queue.noSongInQueue")}
             </div>
           )}
         </div>

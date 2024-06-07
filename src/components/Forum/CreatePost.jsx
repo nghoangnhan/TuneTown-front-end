@@ -39,16 +39,17 @@ const CreatePost = ({ setOpenModalCreate }) => {
   const [playlistChosen, setPlaylistChosen] = useState();
   const [songChosen, setSongChosen] = useState();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     try {
       console.log("Received values:", values);
+
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
-      if (contentParser == "" || contentParser == null || editorValue == "") {
+      if (contentParser == " " || contentParser == null || editorValue == " " || editorValue == null) {
         message.error("Content is empty", 2);
         return;
       }
-      const response = axios.post(`${Base_URL}/post/create`, {
+      const response = await axios.post(`${Base_URL}/post/create`, {
         author: {
           id: userId
         },

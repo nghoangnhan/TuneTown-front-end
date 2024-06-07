@@ -107,8 +107,33 @@
     "saveChanges": "Lưu thay đổi",
     "editOrderSong": "Chỉnh sửa trình tự phát"
   },
+  "queue": {
+    "yourQueue": "Hàng đợi của bạn",
+    "nowPlaying": "Đang phát",
+    "nextUp": "Tiếp theo",
+    "noSongInQueue": "Không có bài hát trong hàng đợi"
+  },
+  "lyrics": {
+    "noLyric": "Bài hát này không có lời!",
+    "lyrics": "Lời bài hát"
+  },
   "song": {
-    "title": "Tên bài hát"
+    "title": "Tiêu đề",
+    "refresh": "Làm mới",
+    "addToQueue": "Thêm vào hàng đợi",
+    "removeFromQueue": "Xóa khỏi hàng đợi",
+    "addToPlaylist": "Thêm vào danh sách phát",
+    "failedToAddSong": "Không thể thêm bài hát vào hàng đợi",
+    "added": "Đã thêm",
+    "deleted": "Đã xóa",
+    "order": "Sắp xếp",
+    "to": "đến",
+    "inPlaylist": "trong danh sách phát",
+    "toQueue": "vào hàng đợi",
+    "deleteSongInPlaylist": "Xóa bài hát trong danh sách phát này",
+    "removeFromQueueSuccess": "Xóa khỏi hàng đợi thành công",
+    "failedToOrderSong": "Không thể sắp xếp bài hát",
+    "failedToDeleteSong": "Không thể xóa bài hát"
   },
   "accountOptions": {
     "title": "Tùy chọn",
@@ -117,9 +142,6 @@
     "settings": "Cài đặt",
     "signOut": "Đăng xuất",
     "songManagement": "Quản lí bài hát"
-  },
-  "lyrics": {
-    "lyrics": "Lời bài hát"
   },
   "profile": {
     "editProfile": "Chỉnh sửa thông tin",
