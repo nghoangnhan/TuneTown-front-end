@@ -242,9 +242,9 @@ export const useChatUtils = () => {
         {
           communityId: artistId,
           communityName: `${userName}'s community`,
-          hosts: [{
+          host: {
             id: artistId
-          }],
+          },
           joinUsers: [{
             id: artistId
           }],
@@ -340,8 +340,12 @@ export const useChatUtils = () => {
         `${Base_URL}/community/approve`,
         {
           "isApprove": isApprove === true ? 1 : !1, // 1: Approve, !1: Refuse
-          "hostId": userId,
-          "approveUserId": userRequest
+          "host": {
+            "id": userId
+          },
+          "approveUser": {
+            "id": userRequest
+          },
         },
         {
           headers: {
