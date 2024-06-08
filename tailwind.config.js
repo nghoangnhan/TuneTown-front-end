@@ -62,7 +62,7 @@ export default {
 
         // Background Chatting page
         backgroundChatting: "#f5f5f5",
-        backgroundChattingDark: "#3a3b3c",
+        backgroundChattingDark: "#1b2536",
         backgroundChattingHover: "#e8e8e8",
         backgroundChattingHoverDark: "#4a5568",
         backgroundConverChosen: "#3a3b3c",

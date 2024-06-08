@@ -50,7 +50,7 @@ const BannerSection = () => {
   useEffect(() => {
     getRecommendPlaylist().then((data) => {
       setPlaylistList(data);
-      // console.log(playlistList);
+      console.log(playlistList);
     });
   }, []);
   return (

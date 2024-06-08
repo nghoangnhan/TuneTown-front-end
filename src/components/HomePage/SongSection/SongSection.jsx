@@ -62,7 +62,7 @@ const SongSection = ({ titleSong }) => {
   return (
     <div className="px-3 py-3 m-auto mx-1 mt-4 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary rounded-2xl xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5">
       <h1 className="text-3xl font-bold text-center text-primary dark:text-primaryDarkmode">{titleSong}</h1>
-      <div className="flex flex-col gap-2 mt-2 xl:w-full">
+      <div className="flex flex-col gap-2 mt-2 xl:w-full overflow-auto max-h-[1170px]">
         {songList &&
           songList.map((songItem, index) => (
             <div key={index}>
@@ -73,7 +73,7 @@ const SongSection = ({ titleSong }) => {
           <div className="flex items-center justify-center ">
             <button
               onClick={() => handleLoadMore()}
-              className="px-2 py-2 transition duration-300 ease-in-out border border-solid rounded-md w-fit text-primary border-primary hover:text-white hover:bg-primary"
+              className="px-2 py-2 transition duration-300 ease-in-out border border-solid rounded-md w-fit text-primary border-primary dark:text-primaryDarkmode dark:border-primaryDarkmode hover:opacity-70"
             >
               {t("common.loadMore")}
             </button>

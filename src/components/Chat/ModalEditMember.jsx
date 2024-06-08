@@ -3,13 +3,12 @@ import useConfig from '../../utils/useConfig';
 import PropTypes from 'prop-types';
 import useIconUtils from '../../utils/useIconUtils';
 
-const ModalEditMember = ({ openApprovedList, setOpenEditMember, converChosen, handleDeleteMember }) => {
+const ModalEditMember = ({ openEditMember, setOpenEditMember, converChosen, handleDeleteMember }) => {
     const { Base_AVA } = useConfig();
-    // console.table(converChosen);
-    console.log(converChosen);
+    // console.log(converChosen);
     const { BanIcon } = useIconUtils();
     return (
-        <Modal open={openApprovedList} onCancel={() => setOpenEditMember(false)}
+        <Modal open={openEditMember} onCancel={() => setOpenEditMember(false)}
             footer={null} className="rounded-md bg-backgroundPlaylist dark:bg-backgroundPlaylistDark modalStyle" centered>
             <div className="flex flex-col items-center justify-center gap-3 p-5 bg-backgroundPlaylist dark:bg-backgroundPlaylistDark">
                 <h2 className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Members</h2>
@@ -37,8 +36,8 @@ const ModalEditMember = ({ openApprovedList, setOpenEditMember, converChosen, ha
 };
 
 ModalEditMember.propTypes = {
-    openApprovedList: PropTypes.bool,
-    setOpenEditMember: PropTypes.bool,
+    openEditMember: PropTypes.bool,
+    setOpenEditMember: PropTypes.func,
     converChosen: PropTypes.object,
     handleDeleteMember: PropTypes.func
 };

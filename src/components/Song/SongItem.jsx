@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import useIconUtils from "../../utils/useIconUtils";
 import { useTranslation } from "react-i18next";
 
-const SongItem = ({ song, songOrder, songListen, songId }) => {
+const SongItem = ({ song, chart, songOrder, songListen, songId }) => {
   const { show } = useContextMenu();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -152,12 +152,12 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
         </div>
         {/* // Listen Icon */}
         <div className="absolute flex flex-row items-center right-2 xl:gap-2">
-          {/* {songListen && isHovered === false && (
+          {songListen && chart == true && isHovered === false && (
             <div className="flex flex-row items-center justify-center gap-1 font-semibold text-textNormal dark:text-textNormalDark">
               {songListen}
               <ListenIcon></ListenIcon>
             </div>
-          )} */}
+          )}
 
           {isHovered && (
             <>
@@ -211,4 +211,5 @@ SongItem.propTypes = {
   songIndex: PropTypes.number,
   playlistId: PropTypes.string,
   songListen: PropTypes.number,
+  chart: PropTypes.bool,
 };

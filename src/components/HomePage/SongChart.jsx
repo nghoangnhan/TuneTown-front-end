@@ -94,7 +94,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
           </div>
 
           <div className="flex flex-row items-center justify-center ">
-            <div className="mr-11">
+            <div className="mr-16">
               <ListenIcon></ListenIcon>
             </div>
             {/* <div className="font-bold text-center ">Duration</div> */}
@@ -108,6 +108,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
                   song={songItem.song}
                   songListen={songItem.count}
                   songOrder={index + 1}
+                  chart={true}
                 />
               </div>
             ))}

@@ -94,7 +94,7 @@ const ArtistChart = ({ titleArtist, StartTime, EndTime, inForum }) => {
                     </div>
 
                     <div className="flex flex-row items-center justify-center ">
-                        <div className="mr-11">
+                        <div className="mr-16">
                             <ListenIcon></ListenIcon>
                         </div>
                         {/* <div className="font-bold text-center ">Duration</div> */}
@@ -122,7 +122,8 @@ const ArtistChart = ({ titleArtist, StartTime, EndTime, inForum }) => {
                                     </div>
                                 </div>
 
-                                <div className="mr-8">
+                                <div className="flex flex-row items-center gap-1 mr-4 text-primaryText2 dark:text-primaryTextDark2">
+                                    <ListenIcon></ListenIcon>
                                     {artistItem.totalListens}
                                 </div>
                             </div>

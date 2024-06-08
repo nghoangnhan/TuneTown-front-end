@@ -151,7 +151,19 @@ const ChatNavigate = () => {
     if (!chat.userName) {
       chat.userName = chat.communityName;
     }
-    dispatch(setChatChosen(chat));
+    const chatDetail = {
+      chatId: chat.chatId,
+      userName: chat.userName,
+      avatar: chat.avatar,
+      communityId: chat.communityId,
+      communityName: chat.communityName,
+      communityAvatar: chat.communityAvatar,
+      communityHost: chat.communityHost,
+      approveRequests: chat.approveRequests,
+      hosts: chat.hosts,
+      joinUsers: chat.joinUsers,
+    };
+    dispatch(setChatChosen(chatDetail));
     navigate(`/chat/${chat.id}`);
     setKeywordsInput('');
   }

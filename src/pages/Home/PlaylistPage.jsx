@@ -9,9 +9,9 @@ const PlaylistPage = () => {
   const { BackButton } = useIconUtils();
   const { t } = useTranslation();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   return (
-    <div className="h-full px-1 py-5 pt-16 pb-20 bg-backgroundPrimary dark:bg-backgroundDarkPrimary xl:px-5">
+    <div className="h-full min-h-screen px-1 py-5 pt-16 pb-20 bg-backgroundPrimary dark:bg-backgroundDarkPrimary xl:px-5">
       {/* <h1 className="mb-5 text-2xl font-bold text-headingText dark:text-headingTextDark">Playlist Page</h1> */}
       {/* Button back to history */}
       <BackButton></BackButton>

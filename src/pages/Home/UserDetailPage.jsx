@@ -43,16 +43,8 @@ const UserDetailPage = ({ owned }) => {
   const { t } = useTranslation();
 
   const handleNavigate = (path) => {
-    dispatch(
-      setChatChosen({
-        chatId: path,
-        name: community.communityName,
-        avatar: community.communityAvatar,
-        communityId: community.communityId,
-      })
-    );
     console.log("COMMUNITY ", community);
-    navigate(`/chat/${path}`);
+    navigate(`/chat/community/${path}`);
   };
 
   const handleCreateCommunity = async () => {
@@ -65,13 +57,18 @@ const UserDetailPage = ({ owned }) => {
       } else {
         dispatch(
           setChatChosen({
-            chatId: "community/" + community.id,
+            // chatId: "community/" + community.id,
+            chatId: community.id,
             userName: community.communityName,
             avatar: community.communityAvatar,
             communityId: community.communityId,
+            communityName: community.communityName,
+            hosts: community.hosts,
+            joinUsers: community.joinUsers,
+            approveRequests: community.approveRequests
           })
         );
-        handleNavigate("community/" + community.id);
+        handleNavigate(community.id);
       }
     } catch (error) {
       console.log("Error:", error);
