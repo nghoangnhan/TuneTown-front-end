@@ -101,6 +101,7 @@ const ChatArea = () => {
   };
 
   const handleDeleteMember = async (userId, communityId) => {
+    console.log("Delete Member", userId, communityId);
     try {
       const res = await DeleteMember(userId, communityId);
       if (res === 200) {
@@ -151,7 +152,7 @@ const ChatArea = () => {
       setChatInfo(converChosen);
       handleLoadmessage(userId, chatId);
     }
-  }, [chatId, converChosen, userId]);
+  }, [chatId, converChosen, userId, refresh]);
 
   // Load chat content when refresh is true
   // useEffect(() => {
@@ -166,6 +167,7 @@ const ChatArea = () => {
   useEffect(() => {
     if (converChosen?.communityId) {
       getCommunityByHostId(converChosen.communityId).then((res) => {
+        console.log("Community Info", res);
         setCommunityInfo(res);
       });
     }

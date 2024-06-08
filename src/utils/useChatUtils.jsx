@@ -233,7 +233,7 @@ export const useChatUtils = () => {
     } catch (error) {
       console.log("Error:", error);
     }
-  };
+  }
 
   const createCommunity = async (artistId, userName) => {
     try {
