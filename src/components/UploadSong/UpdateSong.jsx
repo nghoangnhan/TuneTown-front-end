@@ -13,6 +13,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import ReactQuill from "react-quill";
 import Parser from 'html-react-parser';
 import DOMPurify from "dompurify";
+import { useTranslation } from "react-i18next";
 
 const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
   const formRef = useRef(null);
@@ -21,6 +22,7 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
   const [form] = Form.useForm();
   const { Check } = useIconUtils();
   const { Base_URL, Base_AVA } = useConfig();
+  const { t } = useTranslation();
   const { handleUploadFileIMG, handleUploadFileMP3 } = useDataUtils();
   const { getSongById } = useMusicAPIUtils();
   const [uploadedFile, setUploadedFile] = useState({});
@@ -29,40 +31,44 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
   const [editorValue, setEditorValue] = useState("");
 
   const UploadIMGfile = async (file) => {
-    message.loading("Uploading Image", 1);
+    message.loading(t("modal.uploadingImg"), 1);
     await handleUploadFileIMG(file).then((res) => {
       if (res.status === 200) {
         setFileImg(res.data);
-
-        message.success("Image Uploaded Successfully", 2);
+        message.success(t("modal.uploadImgSuccess"), 2);
       }
-    });
+    }).catch(() => {
+      message.error(t("modal.uploadImgFailed"), 2);
+    }
+    );
   };
 
   const UploadMP3file = async (file) => {
-    message.loading("Uploading Song File", 1);
+    message.loading(t("modal.uploadingMP3"), 1);
     await handleUploadFileMP3(file).then((res) => {
       if (res.status === 200) {
         setFileMP3(res.data);
-
-        message.success("Song File Uploaded Successfully", 2);
+        message.success(t("modal.uploadMP3Success"), 2);
       }
-    });
+    }).catch(() => {
+      message.error(t("modal.uploadMP3Failed"), 2);
+    }
+    );
   };
 
   const onFinish = async (values) => {
     console.log("Received values:", values);
     if (values.artists == null) {
-      message.error("Please select at least one artist");
+      message.error(t("modal.pleaseSelect1Artist"), 2);
       return;
     }
     if (fileImg == null) {
-      message.error("Please upload a cover image");
+      message.error(t("modal.pleaseUploadCover"), 2);
       return;
     }
     if (fileMP3 == null && values.songData == null) {
       console.log("FileMP3", fileMP3);
-      message.error("Please upload a song file");
+      message.error(t("modal.pleaseUploadMP3"), 2);
       return;
     }
     const sanitizedContent = DOMPurify.sanitize(editorValue);
@@ -110,11 +116,11 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
           },
         }
       );
-      message.success("Update Song Successfully", 2);
+      message.success(t("modal.uploadSongSuccess"), 2);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
-      message.error("Update Song Failed", 2);
+      message.error(t("modal.uploadSongFailed"), 2);
     }
   };
 
@@ -140,7 +146,7 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
 
   useEffect(() => {
     if (access_token == null) {
-      console.log("CheckCookie", getToken());
+      // console.log("CheckCookie", getToken());
       window.location.href = "/";
     }
   }, [access_token]);
@@ -155,12 +161,12 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
       >
         <div className="w-full mb-5 text-center">
           <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-            Update Song
+            {t("modal.updateSong")}
           </h2>
         </div>
         <Form.Item
           name="songName"
-          label="Song Name"
+          label={t("modal.songName")}
           rules={[
             {
               required: true,
@@ -172,8 +178,8 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
         <ArtistInput artistList={songData?.artists}></ArtistInput>
         <Form.Item
           name="poster"
-          label="Upload Cover Art"
-          extra="Upload your cover image png, jpg, jpeg"
+          label={t("modal.uploadCoverArt")}
+          extra={t("modal.coverArtExtra")}
           getValueFromEvent={(e) => e && e.fileList}
           valuePropName="fileList"
           rules={[
@@ -189,14 +195,14 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
               handleUploadFile={UploadIMGfile}
               accept="image/jpeg, image/png"
             />
-            {fileImg && <img src={fileImg ? fileImg : Base_AVA} alt="" className="w-16 h-16" />}
+            {fileImg && <img src={fileImg ? fileImg : Base_AVA} alt="" className="object-cover w-16 h-16" />}
           </div>
         </Form.Item>
         {/* MP3 File */}
         <Form.Item
           name="songData"
-          label="Upload File"
-          extra="Upload your audio file mp3, wav. Please wait for the file to be uploaded before submitting."
+          label={t("modal.uploadSongFile")}
+          extra={t("modal.mp3fileExtra")}
           getValueFromEvent={(e) => e && e.fileList}
           valuePropName="fileList"
           rules={[
@@ -220,7 +226,7 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
         {/* Lyric */}
         <Form.Item
           name="lyric"
-          label="Lyric"
+          label={t("modal.lyric")}
           rules={[
             {
               required: false,
@@ -234,14 +240,14 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
             }}
             value={Parser(editorValue)}
             onChange={setEditorValue}
-            placeholder="Lyrics..."
+            placeholder={t("modal.lyricPlaceholder")}
             className="h-24 overflow-auto bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-24"
           />
         </Form.Item>
 
         <Form.Item
           name="status"
-          label="Status"
+          label={t("modal.status")}
           rules={[
             {
               required: false,
@@ -250,10 +256,10 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
         >
           <Select
             className="rounded-md dark:text-primaryText2 bg-backgroundPrimary"
-            placeholder="Select a status"
+            placeholder={t("modal.statusPlaceholder")}
           >
-            <Select.Option value={1}>Active</Select.Option>
-            <Select.Option value={0}>Inactive</Select.Option>
+            <Select.Option value={1}>{t("modal.active")}</Select.Option>
+            <Select.Option value={0}>{t("modal.inactive")}</Select.Option>
           </Select>
         </Form.Item>
 
@@ -262,7 +268,7 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
             type="submit"
             className="absolute px-2 py-2 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode right-2 hover:opacity-70"
           >
-            Update Song
+            {t("modal.updateSong")}
           </button>
         </Form.Item>
       </Form>

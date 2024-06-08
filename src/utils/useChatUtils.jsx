@@ -164,7 +164,7 @@ export const useChatUtils = () => {
           });
         }
       }
-      // console.log("UPDATE ", updatedChatContent);
+      console.log("UPDATE ", updatedChatContent);
       return updatedChatContent;
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -335,6 +335,7 @@ export const useChatUtils = () => {
   }
 
   const ApproveRequest = async (userId, userRequest, isApprove) => {
+    console.log("Approve Request", userId, userRequest, isApprove);
     try {
       const response = await axios.post(
         `${Base_URL}/community/approve`,

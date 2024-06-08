@@ -17,11 +17,11 @@ const Repost = ({ song, closeModal }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     try {
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
-      const response = axios.post(`${Base_URL}/post/create`, {
+      const response = await axios.post(`${Base_URL}/post/create`, {
         author: {
           id: userId
         },

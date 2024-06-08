@@ -175,7 +175,7 @@ const PlaylistManagement = () => {
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
           // onClick={() => handleUpdatePlaylist(record.key, record.playlistName)}
           >
-            Edit
+            Update
           </button>
           <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-60"

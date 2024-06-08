@@ -91,7 +91,7 @@ const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
             >
                 <div className="w-full mb-5 text-center">
                     <h1 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-                        Edit Genre
+                        Update Genre
                     </h1>
                 </div>
 

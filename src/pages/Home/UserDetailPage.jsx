@@ -136,9 +136,9 @@ const UserDetailPage = ({ owned }) => {
         } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
       <div
-        className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
+        className={`flex flex-col items-start p-5 shadow-md rounded-xl my-3`}
         style={{
-          background: `linear-gradient(to top right , transparent, ${colorBG} 100%)`,
+          background: `linear-gradient(to top right , transparent, ${colorBG} 300%)`,
         }}
       >
         <div className="flex flex-row mb-2">
@@ -149,7 +149,7 @@ const UserDetailPage = ({ owned }) => {
             <img
               src={userInfor.avatar ? userInfor.avatar : Base_AVA}
               alt="Avatar"
-              className="w-20 h-20 rounded-full xl:w-56 xl:h-56"
+              className="object-cover w-20 h-20 rounded-full xl:w-56 xl:h-56"
             />
           </div>
           <div className="flex flex-col items-start gap-4 mb-5 font-bold text-center text-textNormal dark:text-textNormalDark">
@@ -213,8 +213,8 @@ const UserDetailPage = ({ owned }) => {
               <PostSection postList={postList}></PostSection>
             </div>}
             {postList?.length === 0 && (
-              <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
-                No posts yet!
+              <div className="px-1 py-1 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
+                No post
               </div>
             )}
           </div>

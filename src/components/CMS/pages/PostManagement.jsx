@@ -118,7 +118,7 @@ const PostManagement = () => {
                         className="w-16 px-2 py-1 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-60"
                         onClick={() => handleEdit(record)}
                     >
-                        Edit
+                        Update
                     </button>
                     <button
                         className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:text-red-600 dark:border-red-600 hover:opacity-60"
@@ -140,7 +140,7 @@ const PostManagement = () => {
     };
 
     const handleEdit = (record) => {
-        console.log("Edit", record);
+        // console.log("Edit", record);
         setOpenModalUpdate(true);
         const postContent = {
             id: record.key,

@@ -152,12 +152,12 @@ const SongItem = ({ song, songOrder, songListen, songId }) => {
         </div>
         {/* // Listen Icon */}
         <div className="absolute flex flex-row items-center right-2 xl:gap-2">
-          {songListen && isHovered === false && (
+          {/* {songListen && isHovered === false && (
             <div className="flex flex-row items-center justify-center gap-1 font-semibold text-textNormal dark:text-textNormalDark">
               {songListen}
               <ListenIcon></ListenIcon>
             </div>
-          )}
+          )} */}
 
           {isHovered && (
             <>

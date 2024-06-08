@@ -219,7 +219,7 @@ const SongItemPlaylist = ({
             <PlayButton></PlayButton>
           </button>
           {/* <div>{TimeConvert(songInforObj.songDuration)}</div> */}
-          <div>{TimeConvert(234)}</div>
+          {/* <div>{TimeConvert(234)}</div> */}
           {draggableSong == true && <button>=</button>}
         </div>
       </div>

@@ -165,7 +165,7 @@ const SongManagement = () => {
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
             onClick={() => handUpdateSong(record.key, record.songName, record.poster, record.artists, record.genres, record.listens, record.status)}
           >
-            Edit
+            Update
           </button>
           <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-60"

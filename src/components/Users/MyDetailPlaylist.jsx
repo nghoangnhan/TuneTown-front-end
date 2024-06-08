@@ -68,7 +68,7 @@ const MyDetailPlaylist = () => {
     }
     await editPlaylist(playlistId, playlistName, playlistType, coverArt).then(
       () => {
-        message.success("Edit Playlist Successfully", 2);
+        message.success("Update Playlist Successfully", 2);
         fetchDataPlaylistInfor(playlistId);
         dispatch(setRefreshPlaylist(true));
       }

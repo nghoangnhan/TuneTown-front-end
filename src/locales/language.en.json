@@ -50,7 +50,11 @@
     "tourNewPass": "Input New Password",
     "tourNewPassDetail": "Please enter your new password here.",
     "sendingOTP": "Sending OTP...",
-    "checkingOTP": "Checking OTP..., please wait"
+    "checkingOTP": "Checking OTP..., please wait",
+    "authorModal": "Authorization Error",
+    "authorModalAdmin": "You are not authorized to access ADMIN PAGE",
+    "authorModalUser": "You are not authorized to access this page",
+    "authorModalArtist": "You are not authorized to access ARTIST PAGE"
   },
   "nav": {
     "home": "Home",
@@ -74,9 +78,11 @@
   },
   "home": {
     "madeForYou": "Made For You",
-    "top10songs": "Top 10 songs in",
+    "top10songs": "Top tracks in",
+    "top10artists": "Being listened in",
     "maybeYouShouldTry": "Maybe you should try",
     "maybeWantListenAgain": "Maybe you want to listen again",
+    "artistChartUpdating": "Artist chart is updating",
     "songChartUpdating": "Song chart is updating",
     "spring": "Spring",
     "summer": "Summer",
@@ -98,15 +104,16 @@
     "createNewPlaylist": "Create new playlist",
     "private": "Private",
     "public": "Public",
+    "recommended": "Recommended",
     "createYourNewPlaylist": "Create your new playlist",
-    "editPlaylist": "Edit playlist",
+    "editPlaylist": "Update playlist",
     "madeBy": "Made by",
     "playlistName": "Playlist Name",
     "playlistPrivacy": "Playlist privacy",
     "uploadCoverArt": "Upload cover art",
     "coverArtExtra": "Upload your cover image",
     "saveChanges": "Save changes",
-    "editOrderSong": "Edit songs' order",
+    "editOrderSong": "Update songs' order",
     "save": "Save",
     "savePlaylistSuccess": "Save playlist successfully",
     "savePlaylistFailed": "Save playlist failed",
@@ -124,8 +131,11 @@
     "noLyric": "This song has no lyric!",
     "lyrics": "Lyrics"
   },
+  "artist": {
+    "title": "Artist Details"
+  },
   "song": {
-    "title": "Title",
+    "title": "Song Details",
     "refresh": "Refresh",
     "addToQueue": "Add to queue",
     "removeFromQueue": "Remove from queue",
@@ -151,8 +161,8 @@
     "songManagement": "Song Management"
   },
   "profile": {
-    "editProfile": "Edit profile",
-    "editFavouriteGenres": "Edit favourite genres",
+    "editProfile": "Update profile",
+    "editFavouriteGenres": "Update favourite genres",
     "favouriteGenres": "Favourite genres"
   },
   "settings": {
@@ -169,5 +179,44 @@
     "requestSent": "Request Sent",
     "communityJoined": "Community joined",
     "joinArtistCommunity": "Join Community"
+  },
+  "modal": {
+    "uploadSong": "Upload Song",
+    "updateSong": "Update Song",
+    "deleteSong": "Delete Song",
+    "songName": "Song Name",
+    "songArtist": "Artists",
+    "selectArtist": "Select Artist Name",
+    "pleaseSelect1Artist": "Please select at least 1 artist",
+    "songGenre": "Genres",
+    "selectGenre": "Select Genre",
+    "uploadCoverArt": "Upload Cover Art",
+    "coverArtExtra": "Upload your image with png, jpg, jpeg format",
+    "uploadingImg": "Uploading image...",
+    "uploadImgFailed": "Upload image failed",
+    "uploadImgSuccess": "Upload image successfully",
+    "pleaseUploadCover": "Please upload cover image",
+    "uploadSongFile": "Upload Song File",
+    "uploadingMP3": "Uploading song file...",
+    "uploadMP3Failed": "Upload song file failed",
+    "uploadMP3Success": "Upload song file successfully",
+    "pleaseUploadMP3": "Please upload song file",
+    "mp3fileExtra": "Upload your song with mp3 format",
+    "uploadingSong": "Uploading song...",
+    "uploadSongFailed": "Upload song failed",
+    "uploadSongSuccess": "Upload song successfully",
+    "pleaseUploadSong": "Please upload song",
+    "lyric": "Lyric",
+    "lyricPlaceholder": "Lyrics...",
+    "status": "Status",
+    "statusPlaceholder": "Select status",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "message": {
+    "approveUserSuccess": "Approve user successfully",
+    "approveUserFailed": "Approve user failed",
+    "removeUserSuccess": "Remove user successfully",
+    "removeUserFailed": "Remove user failed"
   }
 }

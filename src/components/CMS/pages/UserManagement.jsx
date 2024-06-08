@@ -208,7 +208,7 @@ const UserManagement = () => {
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
             onClick={() => showModalEdit(record.id)}
           >
-            Edit
+            Update
           </button>
           <button
             className="w-16 px-2 py-1 text-purple-600 border border-purple-600 rounded-md dark:border-purple-500 dark::border-red-500 dark:text-purple-500 hover:opacity-60"
@@ -290,7 +290,7 @@ const UserManagement = () => {
           <EditUserForm editUserId={userId} setRefresh={setRefresh} setOpenModalEditUser={setIsModalEditOpen} isAdmin={true}></EditUserForm>
         </Modal>
         <Modal
-          title="Edit User Role"
+          title="Update User Role"
           open={isModalOpenUpdate}
           onCancel={handleCancel}
           centered

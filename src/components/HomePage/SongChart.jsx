@@ -87,7 +87,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
         <TrendingIcon></TrendingIcon>
       </div>
       <div className="xl:w-full">
-        <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary">
+        <div className="flex flex-row items-center justify-between mt-5 mb-5 text-primary dark:text-primaryDarkmode">
           <div className="flex flex-row gap-8 ml-8">
             <div className="font-bold text-center ">#</div>
             <div className="font-bold text-center ">{t("song.title")}</div>
@@ -100,7 +100,7 @@ const SongChart = ({ titleSong, StartTime, EndTime, inForum }) => {
             {/* <div className="font-bold text-center ">Duration</div> */}
           </div>
         </div>
-        <div className="flex flex-col gap-2 mt-2">
+        <div className="flex flex-col gap-2 mt-2 overflow-auto max-h-[470px]">
           {Array.isArray(songList) &&
             songList.slice(0, 10).map((songItem, index) => (
               <div key={index}>

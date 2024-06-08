@@ -119,7 +119,7 @@ const EditInfor = () => {
         >
           <div className="w-full mb-5 text-center">
             <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-              Edit Information
+              Update Information
             </h2>
           </div>
           {/* Avatar Image */}
@@ -135,6 +135,7 @@ const EditInfor = () => {
             ]}
           >
             <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
+            {fileIMG && <img src={fileIMG} alt="" className="object-cover w-16 h-16" />}
           </Form.Item>
           <Form.Item
             name="userName"

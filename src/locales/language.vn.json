@@ -50,7 +50,11 @@
     "tourNewPass": "Nhập mật khẩu mới",
     "tourNewPassDetail": "Vui lòng nhập mật khẩu mới của bạn ở đây.",
     "sendingOTP": "Đang gửi mã OTP...",
-    "checkingOTP": "Đang kiểm tra mã OTP..., vui lòng chờ"
+    "checkingOTP": "Đang kiểm tra mã OTP..., vui lòng chờ",
+    "authorModal": "Lỗi ủy quyền",
+    "authorModalAdmin": "Bạn không có quyền truy cập trang ADMIN",
+    "authorModalUser": "Bạn không có quyền truy cập trang này",
+    "authorModalArtist": "Bạn không có quyền truy cập trang NGHỆ SĨ"
   },
   "nav": {
     "home": "Trang chủ",
@@ -74,14 +78,16 @@
   },
   "home": {
     "madeForYou": "Dành cho bạn",
-    "top10songs": "Top 10 bài hát trong",
+    "top10songs": "Những bài hát nổi bật",
+    "top10artists": "Những nghệ sĩ được nghe nhiều nhất",
     "maybeYouShouldTry": "Có thể bạn nên thử",
     "maybeWantListenAgain": "Có thể bạn muốn nghe lại",
+    "artistChartUpdating": "Bảng xếp hạng nghệ sĩ đang cập nhật...",
     "songChartUpdating": "Bảng xếp hạng đang cập nhật...",
-    "spring": "Mùa xuân",
-    "summer": "Mùa hè",
-    "autumn": "Mùa thu",
-    "winter": "Mùa đông"
+    "spring": "mùa xuân",
+    "summer": "mùa hè",
+    "autumn": "mùa thu",
+    "winter": "mùa đông"
   },
   "forum": {
     "createAPost": "Đăng bài",
@@ -90,13 +96,15 @@
     "report": "Báo cáo",
     "refresh": "Làm mới",
     "updatePost": "Chỉnh sửa",
-    "deletePost": "Xóa bài viết"
+    "deletePost": "Xóa bài viết",
+    "repost": "Đăng lại"
   },
   "playlist": {
     "myPlaylist": "Danh sách phát của tôi",
     "createNewPlaylist": "Tạo danh sách phát mới",
     "private": "Riêng tư",
     "public": "Công khai",
+    "recommended": "Đề xuất",
     "createYourNewPlaylist": "Tạo danh sách phát cho riêng bạn",
     "editPlaylist": "Chỉnh sửa",
     "madeBy": "Tạo bởi",
@@ -105,7 +113,13 @@
     "uploadCoverArt": "Đăng ảnh bìa",
     "coverArtExtra": "Đăng ảnh bìa dưới dạng",
     "saveChanges": "Lưu thay đổi",
-    "editOrderSong": "Chỉnh sửa trình tự phát"
+    "editOrderSong": "Chỉnh sửa trình tự phát",
+    "save": "Lưu",
+    "savePlaylistSuccess": "Lưu danh sách phát thành công",
+    "savePlaylistFailed": "Lưu danh sách phát thất bại",
+    "deletePlaylistSuccess": "Xóa danh sách phát thành công",
+    "deletePlaylistFailed": "Xóa danh sách phát thất bại",
+    "songDetail": "Chi tiết bài hát"
   },
   "queue": {
     "yourQueue": "Hàng đợi của bạn",
@@ -116,6 +130,9 @@
   "lyrics": {
     "noLyric": "Bài hát này không có lời!",
     "lyrics": "Lời bài hát"
+  },
+  "artist": {
+    "title": "Chi tiết nghệ sĩ"
   },
   "song": {
     "title": "Tiêu đề",
@@ -162,5 +179,44 @@
     "requestSent": "Đã gửi yêu cầu",
     "communityJoined": "Đã tham gia cộng đồng",
     "joinArtistCommunity": "Tham gia cộng đồng"
+  },
+  "modal": {
+    "uploadSong": "Tải lên bài hát",
+    "updateSong": "Cập nhật bài hát",
+    "deleteSong": "Xóa bài hát",
+    "songName": "Tên bài hát",
+    "songArtist": "Nghệ sĩ",
+    "selectArtist": "Chọn tên nghệ sĩ",
+    "pleaseSelect1Artist": "Vui lòng chọn ít nhất 1 nghệ sĩ",
+    "songGenre": "Thể loại",
+    "selectGenre": "Chọn thể loại",
+    "uploadCoverArt": "Tải lên ảnh bìa",
+    "coverArtExtra": "Tải lên hình ảnh của bạn với định dạng png, jpg, jpeg",
+    "uploadingImg": "Đang tải lên hình ảnh...",
+    "uploadImgFailed": "Tải lên hình ảnh thất bại",
+    "uploadImgSuccess": "Tải lên hình ảnh thành công",
+    "pleaseUploadCover": "Vui lòng tải lên ảnh bìa",
+    "uploadSongFile": "Tải lên tệp bài hát",
+    "uploadingMP3": "Đang tải lên tệp bài hát...",
+    "uploadMP3Failed": "Tải lên tệp bài hát thất bại",
+    "uploadMP3Success": "Tải lên tệp bài hát thành công",
+    "pleaseUploadMP3": "Vui lòng tải lên tệp bài hát",
+    "mp3fileExtra": "Tải lên bài hát của bạn với định dạng mp3",
+    "uploadingSong": "Đang tải lên bài hát...",
+    "uploadSongFailed": "Tải lên bài hát thất bại",
+    "uploadSongSuccess": "Tải lên bài hát thành công",
+    "pleaseUploadSong": "Vui lòng tải lên bài hát",
+    "lyric": "Lời bài hát",
+    "lyricPlaceholder": "Lời bài hát...",
+    "status": "Trạng thái",
+    "statusPlaceholder": "Chọn trạng thái",
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động"
+  },
+  "message": {
+    "approveUserSuccess": "Chấp nhận người dùng thành công",
+    "approveUserFailed": "Chấp nhận người dùng thất bại",
+    "removeUserSuccess": "Xóa người dùng thành công",
+    "removeUserFailed": "Xóa người dùng thất bại"
   }
 }

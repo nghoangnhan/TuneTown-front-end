@@ -13,7 +13,7 @@ const LeftSideBar = () => {
     return { label, key, icon, children };
   }
   const siderItems = [
-    getItem("Profile Edit", "profile", <EditOutlined />),
+    getItem("Profile Update", "profile", <EditOutlined />),
     getItem("User Management", "user-management", <UserOutlined />),
     getItem("Post Management", "post-management", <GlobalOutlined />),
     getItem("Song Management", "song-management", <PlayCircleOutlined />),

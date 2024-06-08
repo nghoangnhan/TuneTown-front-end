@@ -96,7 +96,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
     >
       <div className="w-full mb-5 text-center">
         <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-          Edit User Information
+          Update User Information
         </h2>
       </div>
 
@@ -114,7 +114,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
             handleUploadFile={UploadIMGfile}
             accept="image/jpeg, image/png"
           />
-          {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
+          {fileImg && <img src={fileImg} alt="" className="object-cover w-16 h-16" />}
         </div>
       </Form.Item>
       <Form.Item

@@ -13,10 +13,12 @@ import useIconUtils from "../../utils/useIconUtils";
 import ReactQuill from "react-quill";
 import DOMPurify from "dompurify";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 
 const UploadSong = ({ setOpenModalUpload }) => {
   const formRef = React.useRef(null);
+  const { t } = useTranslation();
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
@@ -30,40 +32,46 @@ const UploadSong = ({ setOpenModalUpload }) => {
 
   const UploadIMGfile = async (file) => {
     setLoading(true);
-    message.loading("Uploading Image", 1);
+    message.loading(t("modal.uploadingImg"), 1);
     await handleUploadFileIMG(file).then((res) => {
       if (res.status === 200) {
         setFileImg(res.data);
-        message.success("Image Uploaded Successfully", 2);
+        message.success(t("modal.uploadImgSuccess"), 2);
         setLoading(false);
       }
-    });
+    }).catch(() => {
+      message.error(t("modal.uploadImgFailed"), 2);
+    }
+    );
   };
 
   const UploadMP3file = async (file) => {
     setLoading(true);
-    message.loading("Uploading Song File", 1);
+    message.loading(t("modal.uploadingMP3"), 1);
     await handleUploadFileMP3(file).then((res) => {
       if (res.status === 200) {
         setFileMP3(res.data);
-        message.success("Song File Uploaded Successfully", 2);
+        message.success(t("modal.uploadMP3Success"), 2);
         setLoading(false);
       }
-    });
+    }).catch(() => {
+      message.error(t("modal.uploadMP3Failed"), 2);
+    }
+    );
   };
   // Submit Form
   const onFinish = async (values) => {
     console.log("Received values:", values);
     if (values.artists == null) {
-      message.error("Please select at least one artist", 2);
+      message.error(t("modal.pleaseSelect1Artist"), 2);
       return;
     }
     if (fileImg == null) {
-      message.error("Please upload a cover image", 2);
+      message.error(t("modal.pleaseUploadCover"), 2);
       return;
     }
     if (fileMP3 == null) {
-      message.error("Please upload a song file", 2);
+      message.error(t("modal.pleaseUploadMP3"), 2);
       return;
     }
     const sanitizedContent = DOMPurify.sanitize(values?.lyric);
@@ -101,14 +109,14 @@ const UploadSong = ({ setOpenModalUpload }) => {
       if (response.status === 200) {
         // Handle success
         // console.log("Song posted successfully:", response.data);
-        message.success("Song posted successfully", 2);
+        message.success(t("modal.uploadSongSuccess"), 2);
         formRef.current.resetFields();
         setFileImg(null);
       }
     } catch (error) {
       // Handle network errors or other exceptions
       console.error("Error posting song:", error);
-      message.error(`Error posting song: ${error.message}`, 2);
+      message.error(`${t("modal.uploadSongFailed")}: ${error.message}`, 2);
     }
   };
 
@@ -128,12 +136,12 @@ const UploadSong = ({ setOpenModalUpload }) => {
     >
       <div className="w-full mb-10 text-center">
         <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-          Upload Your Masterpiece
+          {t("modal.uploadSong")}
         </h2>
       </div>
       <Form.Item
         name="songName"
-        label="Song Name"
+        label={t("modal.songName")}
         rules={[
           {
             required: true,
@@ -148,8 +156,8 @@ const UploadSong = ({ setOpenModalUpload }) => {
       {/* Upload Cover Art  */}
       <Form.Item
         name="songCoverArt"
-        label="Upload Cover Art"
-        extra="Upload your cover art image."
+        label={t("modal.uploadCoverArt")}
+        extra={t("modal.coverArtExtra")}
         getValueFromEvent={(e) => e && e.fileList}
         valuePropName="fileList">
         <div className="flex flex-row items-center gap-2">
@@ -159,15 +167,15 @@ const UploadSong = ({ setOpenModalUpload }) => {
             handleUploadFile={UploadIMGfile}
             accept="image/jpeg, image/png"
           />
-          {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
+          {fileImg && <img src={fileImg} alt="" className="object-cover w-16 h-16" />}
         </div>
       </Form.Item>
 
       {/* MP3 File */}
       <Form.Item
         name="songData"
-        label="Upload File"
-        extra="Upload your audio file mp3, wav."
+        label={t("modal.uploadSongFile")}
+        extra={t("modal.mp3fileExtra")}
         getValueFromEvent={(e) => e && e.fileList}
         valuePropName="fileList"
         rules={[
@@ -192,7 +200,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
       {/* Lyric  */}
       <Form.Item
         name="lyric"
-        label="Lyric"
+        label={t("modal.lyric")}
         rules={[
           {
             required: false,
@@ -206,7 +214,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
             toolbar: false
           }}
           onChange={setEditorValue}
-          placeholder="Lyrics..."
+          placeholder={t("modal.lyricPlaceholder")}
           className="overflow-auto bg-white dark:bg-backgroundDarkPrimary h-36 dark:text-white max-h-40"
         />
       </Form.Item>
@@ -216,7 +224,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
           type="submit"
           className="absolute px-2 py-2 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode right-2 hover:opacity-70"
         >
-          Upload Song
+          {t("modal.uploadSong")}
         </button>
       </Form.Item>
 

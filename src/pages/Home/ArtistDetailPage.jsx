@@ -186,7 +186,7 @@ const ArtistDetailPage = () => {
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
         style={{
-          background: `linear-gradient(to top right , transparent, ${colorBG} 100%)`,
+          background: `linear-gradient(to top right , transparent, ${colorBG} 300%)`,
         }}
       >
         <div className="flex flex-row mb-2">
@@ -195,7 +195,7 @@ const ArtistDetailPage = () => {
         <div className="flex flex-row items-center justify-start gap-4">
           <div className="relative flex flex-row items-start mt-5 mb-5">
             <img
-              className="w-20 h-20 rounded-full xl:w-52 xl:h-52 dark:bg-white"
+              className="object-cover w-20 h-20 rounded-full xl:w-52 xl:h-52 dark:bg-white"
               src={artistDetail.avatar ? artistDetail.avatar : Base_AVA}
               alt="artist-avatar"
             />
@@ -301,8 +301,8 @@ const ArtistDetailPage = () => {
                   </div>
                 )}
                 {postList?.length === 0 && (
-                  <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
-                    No posts yet!
+                  <div className="px-1 py-1 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
+                    No post
                   </div>
                 )}
               </div>
