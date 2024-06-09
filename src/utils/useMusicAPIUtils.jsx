@@ -1,11 +1,13 @@
 import axios from "axios";
 import UseCookie from "../hooks/useCookie";
 import useConfig from "./useConfig";
+import { useTranslation } from "react-i18next";
 
 export const useMusicAPIUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
+  const { t } = useTranslation();
 
   // Get list song to show homepage
   const getListSong = async (songPage) => {
@@ -178,7 +180,7 @@ export const useMusicAPIUtils = () => {
     try {
       if (
         confirm(
-          `Are you sure you want to delete this playlist? id: ${playlistId}`
+          `${"confirmModal.deletePlaylist"} id: ${playlistId}`
         ) == true
       ) {
         const response = await axios.delete(
@@ -232,7 +234,7 @@ export const useMusicAPIUtils = () => {
   // Delete a song in CMS
   const deleteSong = async (songId) => {
     try {
-      if (confirm(`Are you sure you want to delete this song?`) == true) {
+      if (confirm(t("confirmModal.deleteSong")) == true) {
         const response = await axios.delete(
           `${Base_URL}/songs/deleteSong?songId=${songId}`,
           {
@@ -259,7 +261,7 @@ export const useMusicAPIUtils = () => {
       console.log("deleteSongInPlaylist", songId, playlistId);
       if (
         confirm(
-          `Are you sure you want to delete this song in playlist? id: ${songId} playlistId: ${playlistId}`
+          `${t("confirmModal.deleteSongPlaylist")} id: ${songId} playlistId: ${playlistId}`
         ) == true
       ) {
         const response = await axios.delete(

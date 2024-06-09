@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import UseCookie from "../../hooks/useCookie";
 import axios from "axios";
-
 import { useDispatch } from "react-redux";
 import { setMyPLaylistList } from "../../redux/slice/playlist";
 import MyPlaylistItem from "./MyPlaylistItem";
@@ -9,6 +8,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useConfig from "../../utils/useConfig";
 import useIconUtils from "../../utils/useIconUtils";
 import { useTranslation } from "react-i18next";
+import { message } from "antd";
 
 const MyPlaylistSection = () => {
   const { getToken } = UseCookie();
@@ -40,8 +40,8 @@ const MyPlaylistSection = () => {
         }
       );
       if (response.status == 200) {
-        console.log("Create new playlist successfully");
-        alert("Create new playlist successfully");
+        // console.log("Create new playlist successfully");
+        message.success(t("message.createNewPlaylistSuccess"), 2);
         refreshPlaylist();
         // setRefresh(!refresh);
       }
@@ -55,7 +55,7 @@ const MyPlaylistSection = () => {
     try {
       if (
         confirm(
-          `Are you sure you want to delete this playlist? id: ${playlistId}`
+          `${t("confirmModal.deletePlaylist")} id: ${playlistId}`
         ) == true
       ) {
         const response = await axios.delete(
@@ -66,7 +66,7 @@ const MyPlaylistSection = () => {
             },
           }
         );
-        console.log("songList Response", response.data);
+        // console.log("songList Response", response.data);
         // Refresh the component
         refreshPlaylist();
         return response.data;

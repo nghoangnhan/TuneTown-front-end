@@ -10,6 +10,7 @@ import useDataUtils from "../../utils/useDataUtils";
 import { useForm } from "antd/es/form/Form";
 import PropTypes from "prop-types";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 // eslint-disable-next-line no-unused-vars
 const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEditUser }) => {
@@ -17,6 +18,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
   const { access_token } = getToken();
   const userId = editUserId ? editUserId : localStorage.getItem("userId");
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { editUser, getUserInfor } = useUserUtils();
   const { handleUploadFileIMG, } = useDataUtils();
   const { LoadingLogo } = useIconUtils();
@@ -29,11 +31,11 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 
   const UploadIMGfile = async (file) => {
     setLoading(true);
-    message.loading("Uploading Image", 1);
+    message.loading(t("modal.uploadingImg"), 1);
     await handleUploadFileIMG(file).then((res) => {
       if (res.status === 200) {
         setFileImg(res.data);
-        message.success("Image Uploaded Successfully", 2);
+        message.success(t("modal.uploadImgSuccess"), 2);
         setLoading(false);
       }
     });
@@ -41,7 +43,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 
   const onFinish = (values) => {
     if (fileImg === null || fileImg === undefined) {
-      message.error("Please upload jpg, jpeg or png");
+      message.error(t("modal.coverArtExtra"));
       return;
     }
     const postData = {
@@ -61,7 +63,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
   useEffect(() => {
     getUserInfor(userId).then((res) => {
       setUserInfor(res.user);
-      console.log("UserInfor", userInfor);
+      // console.log("UserInfor", userInfor);
     });
 
     setFileImg(userInfor?.avatar);
@@ -96,15 +98,15 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
     >
       <div className="w-full mb-5 text-center">
         <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-          Update User Information
+          {t("modal.updateUser")}
         </h2>
       </div>
 
       {/* Avatar Image */}
       <Form.Item
         name="songCoverArt"
-        label="Upload Cover Art"
-        extra="Upload your cover art image. Please wait for the file to be uploaded before submitting."
+        label={t("modal.uploadCoverArt")}
+        extra={t("modal.coverArtExtra")}
         getValueFromEvent={(e) => e && e.fileList}
         valuePropName="fileList">
         <div className="flex flex-row items-center gap-2">
@@ -119,7 +121,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
       </Form.Item>
       <Form.Item
         name="userName"
-        label="Name"
+        label={t("modal.userName")}
         rules={[
           {
             required: true,
@@ -132,7 +134,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 
       <Form.Item
         name="userBio"
-        label="Bio"
+        label={t("modal.bio")}
         rules={[
           {
             required: false,
@@ -144,7 +146,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 
       <Form.Item
         name="email"
-        label="Email"
+        label={t("modal.email")}
         rules={[
           {
             required: true,
@@ -154,13 +156,13 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
         <Input disabled className="dark:bg-backgroundPrimary dark:text-primaryText2" />
       </Form.Item>
       <Form.Item
-        label="Birthday"
+        label={t("modal.dateOfBirth")}
         name="birthDate"
         rules={[
-          { required: true, message: "Please input your date of birth!" },
+          { required: true, message: t("auth.requireDateOfBirth") },
           {
             type: "object",
-            message: "The input is not valid date!",
+            message: t("auth.notValidDate"),
           },
           {
             validator: async (_, value) => {
@@ -169,7 +171,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
                 const currentDate = new Date();
                 if (date > currentDate) {
                   return Promise.reject(
-                    new Error("Date of birth can not be in the future!")
+                    new Error(t("auth.dateIsNotFuture"))
                   );
                 }
               }
@@ -182,7 +184,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 
       <Form.Item  >
         <button type="submit" className="absolute px-2 py-2 border rounded-md right-2 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
-          Save Changes
+          {t("button.submit")}
         </button>
       </Form.Item>
       <LoadingLogo loading={loading}></LoadingLogo>

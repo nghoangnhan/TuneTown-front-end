@@ -71,7 +71,7 @@ const DetailPlaylist = () => {
         </div>
 
         <div className="flex flex-col justify-between h-full">
-          <div className="flex flex-col items-start gap-2">
+          <div className="flex flex-col items-start justify-center gap-2">
             <div className="flex flex-row items-center justify-center gap-4">
               <div>
                 {playlistDetail.playlistName}
@@ -81,9 +81,9 @@ const DetailPlaylist = () => {
               </button>
             </div>
             <div className="flex flex-col items-start justify-center gap-2">
-              <div className="text-2xl text-primary dark:text-primaryDarkmode">
+              {/* <div className="text-2xl text-primary dark:text-primaryDarkmode">
                 {t("playlist.madeBy")} {playlistDetail?.user?.userName}
-              </div>
+              </div> */}
               <div className="text-base text-primaryText2 dark:text-primaryTextDark">
                 {playlistDetail.playlistType}
               </div>

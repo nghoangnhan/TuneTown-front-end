@@ -4,10 +4,12 @@ import UseCookie from "../../../hooks/useCookie";
 import { Base_URL } from "../../../api/config";
 import axios from "axios";
 import SongItem from "../../HomePage/SongItem";
+import { useTranslation } from "react-i18next";
 
 /* eslint-disable no-unused-vars */
 const SongListCMS = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [songList, setSongList] = useState([]);
   const { getToken } = UseCookie();
   const { access_token } = getToken();
@@ -46,7 +48,7 @@ const SongListCMS = () => {
   };
   const deleteSong = async (songId) => {
     try {
-      confirm(`Are you sure you want to delete this playlist?`);
+      confirm(t("confirmModal.deleteSong"));
       if (confirm) {
         console.log("auth", access_token);
         const response = await axios.delete(
@@ -71,7 +73,7 @@ const SongListCMS = () => {
   if (!songList) return null;
   return (
     <div className="xl:w-full">
-      <div className="mt-2 flex flex-col gap-2">
+      <div className="flex flex-col gap-2 mt-2">
         {songList &&
           songList.map((songItem) => (
             <div

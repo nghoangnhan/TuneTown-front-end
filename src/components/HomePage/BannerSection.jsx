@@ -57,11 +57,11 @@ const BannerSection = () => {
     <div className="w-full overflow-hidden rounded-md slider-container">
       <Slider {...settings} >
         {playlistList && playlistList.slice(0, 5).map((playlistItem, index) => (
-          <div className={`${currentSlide === index ? "opacity-100" : "opacity-40"} relative ease-in transition-opacity duration-1000 flex items-center min-h-fit w-full h-full rounded-lg cursor-pointer`}
+          <div className={`${currentSlide === index ? "opacity-100" : "opacity-40"} overflow-hidden relative ease-in transition-opacity duration-1000 flex items-center justify-center min-h-fit w-full h-full rounded-lg cursor-pointer`}
             key={index}
           >
             <img
-              className="relative max-w-xl m-auto rounded-lg shadow-md cursor-pointer min-h-[300px] object-cover min-w-fit"
+              className="relative max-w-full m-auto rounded-lg shadow-md cursor-pointer min-h-[300px] object-cover min-w-fit"
               onDoubleClick={() => navigateToPlaylist(playlistItem.id)}
               src={
                 playlistItem.coverArt

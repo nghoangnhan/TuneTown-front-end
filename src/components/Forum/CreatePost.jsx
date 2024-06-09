@@ -15,6 +15,7 @@ import { setRefreshPost } from "../../redux/slice/social";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import ModalChoseSong from "./Modal/ModalChoseSong";
+import { useTranslation } from "react-i18next";
 
 
 const CreatePost = ({ setOpenModalCreate }) => {
@@ -22,6 +23,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
   const userId = localStorage.getItem("userId");
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { access_token } = getToken();
   // const { handleUploadFileMP3, handleUploadFileIMG } = useDataUtils();
   const { getPublicPlaylist } = useMusicAPIUtils();
@@ -46,7 +48,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
       if (contentParser == " " || contentParser == null || editorValue == " " || editorValue == null) {
-        message.error("Content is empty", 2);
+        message.error(t("modal.contentEmpty"), 2);
         return;
       }
       const response = await axios.post(`${Base_URL}/post/create`, {
@@ -71,7 +73,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
       }
       );
       form.resetFields();
-      message.success("Post Created Successfully", 2);
+      message.success(t("message.uploadPostSuccess"), 2);
       dispatch(setRefreshPost(true));
       setOpenModalCreate(false);
       setOpenModalChosePlaylist(false);
@@ -87,7 +89,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
       const listPlaylist = await getPublicPlaylist(userId);
       setPlaylistRs(listPlaylist);
       setOpenModalChosePlaylist(true);
-      console.log("PLAYLISTRS", playlistRs);
+      // console.log("PLAYLISTRS", playlistRs);
     } catch (error) {
       console.error("Error adding playlist:", error);
     }
@@ -104,7 +106,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
 
   const handleSongItemClick = (song) => {
     try {
-      console.log("Song Chosen", song);
+      // console.log("Song Chosen", song);
       setSongChosen(song);
       setOpenModalChoseSong(false);
     } catch (error) {
@@ -127,9 +129,9 @@ const CreatePost = ({ setOpenModalCreate }) => {
         className="formStyle"
       >
         <Form.Item
-          label="Content"
+          label={t("modal.content")}
           name="content"
-          rules={[{ required: true, message: "Please input your content!" }]}
+          rules={[{ required: true, message: t("modal.contentEmpty") }]}
         >
           <ReactQuill
             modules={{
@@ -138,7 +140,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
             theme="snow"
             value={Parser(editorValue)}
             onChange={setEditorValue}
-            placeholder="Your thoughts..."
+            placeholder={t("modal.yourThoughts")}
             className="overflow-auto bg-white h-36 dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
           />
         </Form.Item>
@@ -151,9 +153,9 @@ const CreatePost = ({ setOpenModalCreate }) => {
               type="button"
               className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
             >
-              Add Song
+              {t("modal.chooseaSong")}
             </Button>
-            {songChosen && <div className="text-primary">Song Chosen: {songChosen.songName}{" "}#{songChosen.id}</div>}
+            {songChosen && <div className="text-primary dark:text-primaryDarkmode">{t("modal.songChosen")}: {songChosen.songName}{" "}#{songChosen.id}</div>}
           </div>
         </Form.Item>
 
@@ -163,11 +165,11 @@ const CreatePost = ({ setOpenModalCreate }) => {
             <Button
               onClick={handleAddPlaylist}
               type="button"
-              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+              className="transition-colors duration-150 border min-w-[110px] rounded-md  dark:text-primaryDarkmode dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
             >
-              Add Playlist
+              {t("modal.chooseaPlaylist")}
             </Button>
-            {playlistChosen && <div className="text-primary">Playlist Chosen: {playlistChosen.playlistName}{" "}#{playlistChosen.id}</div>}
+            {playlistChosen && <div className="text-primary dark:text-primaryDarkmode">{t("modal.playlistChosen")}: {playlistChosen.playlistName}{" "}#{playlistChosen.id}</div>}
           </div>
         </Form.Item>
         <Form.Item>
@@ -175,7 +177,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
             type="submit"
             className="absolute px-2 py-2 transition-colors duration-150 border rounded-md right-2 text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
           >
-            Create Post
+            {t("modal.createPost")}
           </button>
         </Form.Item>
 

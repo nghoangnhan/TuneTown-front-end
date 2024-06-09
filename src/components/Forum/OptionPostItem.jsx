@@ -20,10 +20,10 @@ const OptionPostItem = ({ id, postId, postContent, setRefresh }) => {
   };
   const handleDeletePost = async (postId) => {
     if (postContent.author.id != userId) {
-      message.error("You are not authorized to delete this post");
+      message.error(t("message.notAuthorPost"));
       return;
     }
-    if (!window.confirm("Are you sure you want to delete this post?")) {
+    if (!window.confirm(t("confirmModal.deletePost"))) {
       return;
     }
     await deletePost(postId).then(() => {
@@ -33,7 +33,7 @@ const OptionPostItem = ({ id, postId, postContent, setRefresh }) => {
 
   const handleOpenModalUpdate = () => {
     if (postContent.author.id != userId) {
-      message.error("You are not authorized to update this post");
+      message.error(t("message.notAuthorPost"));
       return;
     }
     setOpenModalUpdate(true);
@@ -60,7 +60,7 @@ const OptionPostItem = ({ id, postId, postContent, setRefresh }) => {
         onCancel={onCancel}
         footer={null}
         centered
-        title="Update Post"
+        title={t("modal.updateSong")}
         className="modalStyle"
       >
         <UpdatePost

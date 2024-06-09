@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import EditUserForm from "../../Users/EditUserForm";
 import { useForm } from "antd/es/form/Form";
 import useConfig from "../../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [formRole] = useForm();
   const { Base_URL } = useConfig();
+  const { t } = useTranslation();
   const [userList, setUserList] = useState([]);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
@@ -90,7 +92,7 @@ const UserManagement = () => {
   // Delete User
   const deleteUser = async (userId) => {
     try {
-      if (confirm(`Are you sure you want to delete this User?`) == true) {
+      if (confirm(t("confirmModal.deleteUser")) == true) {
         const response = await axios.delete(
           `${Base_URL}/users?userId=${userId}`,
           {
@@ -100,7 +102,7 @@ const UserManagement = () => {
           }
         );
         if (response.status === 200) {
-          message.success("Delete User successfully!");
+          message.success(t("message.deleteUserSuccess"));
         }
         setRefresh(true);
         return response.status;
@@ -119,7 +121,7 @@ const UserManagement = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Avatar",
+      title: t("CMS.avatar"),
       dataIndex: "avatar",
       key: "avatar",
       align: "center",
@@ -140,26 +142,26 @@ const UserManagement = () => {
       },
     },
     {
-      title: "Name",
+      title: t("CMS.name"),
       dataIndex: "userName",
       key: "userName",
       align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "email",
+      title: t("CMS.email"),
       dataIndex: "email",
       key: "email",
       align: "center",
     },
     {
-      title: "Bio",
+      title: t("CMS.bio"),
       dataIndex: "userBio",
       key: "userBio",
       align: "center",
     },
     {
-      title: "Birthday",
+      title: t("CMS.birthDate"),
       dataIndex: "birthDate",
       key: "birthDate",
       align: "center",
@@ -173,7 +175,7 @@ const UserManagement = () => {
       },
     },
     {
-      title: "Role",
+      title: t("CMS.role"),
       key: "role",
       dataIndex: "role",
       align: "center",
@@ -196,7 +198,7 @@ const UserManagement = () => {
       },
     },
     {
-      title: "Action",
+      title: t("CMS.action"),
       key: "action",
       align: "center",
       render: (_, record) => (
@@ -208,13 +210,13 @@ const UserManagement = () => {
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
             onClick={() => showModalEdit(record.id)}
           >
-            Update
+            {t("CMS.update")}
           </button>
           <button
             className="w-16 px-2 py-1 text-purple-600 border border-purple-600 rounded-md dark:border-purple-500 dark::border-red-500 dark:text-purple-500 hover:opacity-60"
             onClick={() => showModalEditRole(record.id, record.role)}
           >
-            Role
+            {t("CMS.role")}
           </button>
           {/* <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark::border-red-500 dark:text-red-500 hover:opacity-60"
@@ -290,7 +292,7 @@ const UserManagement = () => {
           <EditUserForm editUserId={userId} setRefresh={setRefresh} setOpenModalEditUser={setIsModalEditOpen} isAdmin={true}></EditUserForm>
         </Modal>
         <Modal
-          title="Update User Role"
+          title={t("modal.updateUserRole")}
           open={isModalOpenUpdate}
           onCancel={handleCancel}
           centered
@@ -298,9 +300,9 @@ const UserManagement = () => {
           className="modalStyle w-fit h-fit"
         >
           <Form form={formRole} className="w-full pt-4 formStyle">
-            <Form.Item label="Role" name="role">
+            <Form.Item label={t("CMS.role")} name="role">
               <Select
-                placeholder="Role"
+                placeholder={t("CMS.selectRole")}
                 options={[
                   { label: "USER", value: "USER" },
                   { label: "ARTIST", value: "ARTIST" },
@@ -310,7 +312,7 @@ const UserManagement = () => {
             </Form.Item>
             <Form.Item className="w-full">
               <button type="submit" className="absolute right-0 px-2 py-1 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode" onClick={handleOkRole}>
-                Update Role
+                {t("CMS.update")}
               </button>
             </Form.Item>
           </Form>

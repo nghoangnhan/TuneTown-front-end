@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import useIconUtils from '../../utils/useIconUtils';
 import useConfig from '../../utils/useConfig';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ChatItem = ({ chat, index }) => {
     const { Check, CheckSeen } = useIconUtils();
     const { Base_AVA } = useConfig();
+    const { t } = useTranslation();
     const [isHover, setIsHover] = useState(false);
 
     // Check if chat is null
@@ -35,7 +37,7 @@ const ChatItem = ({ chat, index }) => {
 
                         <div className="flex flex-col gap-1 mx-1">
                             <h3 className="font-bold text-primary dark:text-primaryDarkmode">
-                                {chat.name ? chat.name : "Unknown"}
+                                {chat.name ? chat.name : t("message.unknown")}
                             </h3>
                             <div className="flex flex-row items-end gap-1">
                                 <span className="max-w-xs px-2 py-1 text-base break-words border rounded-md bg-slate-200">
@@ -56,7 +58,7 @@ const ChatItem = ({ chat, index }) => {
                     <div className="flex flex-col items-center justify-center">
                         <div className="flex flex-col items-center justify-center gap-2 mt-2">
                             <h3 className="font-bold text-primary dark:text-primaryDarkmode">
-                                {chat.name ? chat.name : "SYSTEM MESSAGE"}
+                                {chat.name ? chat.name : t("message.systemMessage")}
                             </h3>
                             <span className="max-w-xs px-2 py-1 text-base break-words rounded-md text-backgroundPlaylistDark dark:text-backgroundPlaylistHoverDark bg-backgroundComponentPrimary dark:bg-backgroundComponentPrimary">
                                 {chat.message}

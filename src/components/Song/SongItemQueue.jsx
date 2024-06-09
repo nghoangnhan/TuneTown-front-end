@@ -148,7 +148,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
         </div>
         <div className="absolute flex flex-row items-center gap-1 right-4 xl:gap-10">
           <button
-            className="p-1 hover:opacity-60 rounded-2xl"
+            className="p-1 text-primary dark:text-primaryDarkmode hover:opacity-60 rounded-2xl"
             onClick={HandlePlay}
           >
             <PlayButton></PlayButton>

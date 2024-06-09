@@ -6,11 +6,13 @@ import UpdateSong from "../../components/UploadSong/UpdateSong";
 import useUserUtils from "../../utils/useUserUtils";
 import useConfig from "../../utils/useConfig";
 import UploadSong from "../../components/UploadSong/UploadSong";
+import { useTranslation } from "react-i18next";
 
 const CMSArtist = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL, Base_AVA } = useConfig();
+  const { t } = useTranslation();
   const userId = localStorage.getItem("userId");
   const [form] = Form.useForm();
   const [refresh, setRefresh] = useState(false);
@@ -81,7 +83,7 @@ const CMSArtist = () => {
   // Delete Song
   const deleteSong = async (songId) => {
     try {
-      if (confirm(`Are you sure you want to delete this song?`) == true) {
+      if (confirm(t("confirmModal.deleteSong")) == true) {
         console.log("auth", access_token);
         const response = await axios.delete(
           `${Base_URL}/songs/deleteSong?songId=${songId}`,
@@ -92,7 +94,7 @@ const CMSArtist = () => {
           }
         );
         if (response.status === 200) {
-          message.success("Delete song successfully!");
+          message.success(t("message.deleteSongSuccess"));
         }
         // Refresh the component
         setRefresh(true);
@@ -125,7 +127,7 @@ const CMSArtist = () => {
       align: "center",
     },
     {
-      title: "Poster",
+      title: t("CMS.poster"),
       dataIndex: "poster",
       key: "poster",
       align: "center",
@@ -142,14 +144,14 @@ const CMSArtist = () => {
       },
     },
     {
-      title: "Song Name",
+      title: t("CMS.songName"),
       dataIndex: "songName",
       key: "songName",
       align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Artist",
+      title: t("CMS.artists"),
       dataIndex: "artists", // key in dataSongs
       key: "artists", // key in columnsSong
       align: "center",
@@ -163,13 +165,13 @@ const CMSArtist = () => {
       },
     },
     {
-      title: "Genres",
+      title: t("CMS.genres"),
       dataIndex: "genres",
       key: "genres",
       align: "center",
     },
     {
-      title: "Status",
+      title: t("CMS.status"),
       dataIndex: "status",
       key: "status",
       align: "center",
@@ -178,7 +180,7 @@ const CMSArtist = () => {
           return (
             <div className="flex items-center justify-center">
               <div className="w-16 px-1 py-1 text-red-700 border border-red-700 rounded-md dark:text-red-500 dark:border-red-500 h-fit hover:opacity-70">
-                Deleted
+                {t("CMS.private")}
               </div>
             </div>
           );
@@ -186,7 +188,7 @@ const CMSArtist = () => {
           return (
             <div className="flex items-center justify-center">
               <div className="w-16 px-1 py-1 border rounded-md h-fit text-primary dark:text-primaryDarkmode border-primary hover:opacity-70">
-                Public
+                {t("CMS.public")}
               </div>
             </div>
           );
@@ -194,7 +196,7 @@ const CMSArtist = () => {
       },
     },
     {
-      title: "Action",
+      title: t("CMS.action"),
       key: "action",
       align: "center",
       render: (_, record) => (
@@ -203,13 +205,13 @@ const CMSArtist = () => {
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70"
             onClick={() => handUpdateSong(record.key, record)}
           >
-            Update
+            {t("CMS.update")}
           </button>
           <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-70"
             onClick={() => deleteSong(record.key)}
           >
-            Delete
+            {t("CMS.delete")}
           </button>
         </Space>
       ),
@@ -232,12 +234,12 @@ const CMSArtist = () => {
     <div className="h-full min-h-screen px-4 pt-5 pb-24 text-headingText dark:text-headingTextDark bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       <div className="flex flex-row">
         <div className="mx-1 my-2 text-4xl font-bold text-primary dark:text-primaryDarkmode">
-          Good{" "}
+          {t("common.good")}{" "}
           {new Date().getHours() < 12
-            ? "Morning"
+            ? t("common.morning")
             : new Date().getHours() < 18
-              ? "Afternoon"
-              : "Evening"}
+              ? t("common.afternoon")
+              : t("common.evening")}
           {", "}
           {artistDetail.name ? artistDetail.name : artistDetail.userName}
           {"! "}
@@ -273,7 +275,7 @@ const CMSArtist = () => {
             className="px-3 py-1 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
             onClick={showModal}
           >
-            Create New Song
+            {t("modal.createNewSong")}
           </button>
         </div>
       </div>

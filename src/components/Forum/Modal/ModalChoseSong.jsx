@@ -3,11 +3,12 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import useConfig from "../../../utils/useConfig";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const ModalChoseSong = ({ openModal, setOpenModalChoseSong, handleSongItemClick }) => {
     const { Base_AVA, Base_URL, auth } = useConfig();
     const [songList, setSongList] = useState();
-
+    const { t } = useTranslation();
     const searchSongAPI = async (searchValue) => {
         try {
             const response = await axios.post(`${Base_URL}/songs/findSong?name=${searchValue}`, {}, {
@@ -32,7 +33,7 @@ const ModalChoseSong = ({ openModal, setOpenModalChoseSong, handleSongItemClick 
     if (!openModal) return null;
     return (
         <Modal
-            title="Choose a Song"
+            title={t("modal.chooseaSong")}
             open={openModal}
             onCancel={() => {
                 setOpenModalChoseSong(false);
@@ -42,12 +43,12 @@ const ModalChoseSong = ({ openModal, setOpenModalChoseSong, handleSongItemClick 
             className='modalStyle'
         >
             <Input type='text'
-                placeholder="Search..."
+                placeholder={t("modal.search")}
                 className="bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
                 onChange={(e) => { handleSearchSong(e.target.value) }}
             />
             {songList && (
-                <div className="left-0 right-0 w-full overflow-auto max-h-96 bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary">
+                <div className="left-0 right-0 w-full overflow-auto max-h-96 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
                     <ul className="px-4 py-2">
                         {songList.map((song) => (
                             <li

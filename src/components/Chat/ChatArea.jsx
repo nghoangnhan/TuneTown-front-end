@@ -87,12 +87,12 @@ const ChatArea = () => {
   const handleApproveRequest = async (userId, requestId, isApprove) => {
     try {
       const res = await ApproveRequest(userId, requestId, isApprove);
-      if (res === 200) {
+      if (res.status === 200 && res.data == true) {
         message.success(t("message.approveUserSuccess"), 2);
         setRefresh(true);
         dispatch(setRefreshChat(true));
-      } else {
-        message.error(t("message.approveUserFailed"), 2);
+      } else if (res.status === 200 && res.data == false) {
+        message.success(t("message.rejectUserSuccess"), 2);
       }
     } catch (error) {
       console.error("Error approving member:", error);
@@ -108,8 +108,6 @@ const ChatArea = () => {
         message.success(t("message.removeUserSuccess"), 2);
         setRefresh(true);
         dispatch(setRefreshChat(true));
-      } else {
-        message.error(t("message.removeUserFailed"), 2);
       }
     } catch (error) {
       console.error("Error deleting member:", error);
@@ -121,15 +119,27 @@ const ChatArea = () => {
     try {
       const res = await outCommunity(userId, communityId);
       if (res === 200) {
-        message.success(`Left community ${communityName} successfully`);
+        message.success(`${t("message.leaveCommunity")} ${communityName} ${t("message.successfully")}`);
         dispatch(setRefreshChat(true));
         navigate("/chat");
-      } else {
-        message.error(`Failed to leave community ${communityName}`);
       }
     } catch (error) {
       console.error("Error leaving community:", error);
-      message.error(`Failed to leave community ${communityName}`);
+      message.error(`${t("message.failedToLeaveCommunity")} ${communityName}`);
+    }
+  };
+
+  const handleDeleteCommunity = async (communityId) => {
+    try {
+      const res = await deleteCommunity(communityId);
+      if (res === 200) {
+        message.success(t("message.deleteCommunitySuccess"), 2);
+        dispatch(setRefreshChat(true));
+        navigate("/chat");
+      }
+    } catch (error) {
+      console.error("Error deleting community:", error);
+      message.error(t("message.deleteCommunityFailed"), 2);
     }
   };
 
@@ -250,7 +260,7 @@ const ChatArea = () => {
             <input
               type="text"
               className="w-full p-3 rounded-md outline-none dark:text-primaryTextDark2 dark:bg-backgroundComponentDarkPrimary"
-              placeholder="Type a message..."
+              placeholder={t("chat.inputChatPlaceholder")}
               value={newMessage}
               onChange={handleMessageChange}
               onKeyDown={(e) => {
@@ -271,15 +281,9 @@ const ChatArea = () => {
 
       {/*  End of chat input area */}
       <Menu id={`communityOption_${chatInfo?.communityId}`} className='contexify-menu'>
-        <Item
-          onClick={() => {
-            deleteCommunity(chatInfo?.communityId).then(() => {
-              dispatch(setRefreshChat(true));
-              navigate("/chat");
-            });
-          }}
+        <Item onClick={() => handleDeleteCommunity(chatInfo.communityId)}
         >
-          Delete Community
+          {t("chat.deleteCommunity")}
         </Item>
       </Menu>
       {/* Approved List */}

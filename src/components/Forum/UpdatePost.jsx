@@ -13,12 +13,14 @@ import Proptypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { setRefreshPost } from "../../redux/slice/social";
 import ModalChoseSong from "./Modal/ModalChoseSong";
+import { useTranslation } from "react-i18next";
 
 
 const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
     const [form] = Form.useForm();
     const userId = localStorage.getItem("userId");
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const { getToken } = UseCookie();
     const { access_token } = getToken();
     // const { LoadingLogo } = useIconUtils();
@@ -42,7 +44,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
             const sanitizedContent = DOMPurify.sanitize(values.content); // XSS (Cross-site scripting) 
             const contentParser = Parser(sanitizedContent).props.children;
             if (contentParser == "" || contentParser == null || editorValue == "") {
-                message.error("Content is empty", 2);
+                message.error(t("modal.contentEmpty"), 2);
                 return;
             }
             const response = await axios.put(`${Base_URL}/post`, {
@@ -62,7 +64,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
             setRefresh(true);
             dispatch(setRefreshPost(true));
             setOpenModalUpdate(false);
-            message.success("Post Updated Successfully", 2);
+            message.success(t("message.updatePostSuccess"), 2);
             return response;
         } catch (error) {
             console.log("Error:", error);
@@ -76,7 +78,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
             const listPlaylist = await getPublicPlaylist(userId);
             setPlaylistRs(listPlaylist);
             setOpenModalChosePlaylist(true);
-            console.log("PLAYLISTRS", playlistRs);
+            // console.log("PLAYLISTRS", playlistRs);
         } catch (error) {
             console.error("Error adding playlist:", error);
         }
@@ -84,7 +86,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
 
     const handleSongItemClick = (song) => {
         try {
-            console.log("Song Chosen", song);
+            // console.log("Song Chosen", song);
             setSongChosen(song);
             setOpenModalChoseSong(false);
         } catch (error) {
@@ -95,7 +97,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
     const handlePlaylistItemClick = (playlist) => {
         try {
             setPlaylistChosen(playlist);
-            console.log("Playlist Chosen", playlistChosen);
+            // console.log("Playlist Chosen", playlistChosen);
             setOpenModalChosePlaylist(false);
         } catch (error) {
             console.error("Error choosing playlist:", error);
@@ -103,7 +105,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
     }
 
     useEffect(() => {
-        console.log("POSTCONTENT", postContent);
+        // console.log("POSTCONTENT", postContent);
         if (postContent) {
             setPlaylistChosen(postContent.playlist);
             setSongChosen(postContent.song);
@@ -126,9 +128,9 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                 className="mx-auto bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
             >
                 <Form.Item
-                    label="Content"
+                    label={t("modal.content")}
                     name="content"
-                    rules={[{ required: true, message: "Please input your content!" }]}
+                    rules={[{ required: true, message: t("modal.contentEmpty") }]}
                 >
                     <ReactQuill
                         modules={{
@@ -137,7 +139,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                         theme="snow"
                         value={Parser(editorValue)}
                         onChange={setEditorValue}
-                        placeholder="Your thoughts..."
+                        placeholder={t("modal.yourThoughts")}
                         className="bg-white dark:bg-backgroundDarkPrimary h-36 dark:text-white"
                     />
                 </Form.Item>
@@ -150,9 +152,9 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                             type="button"
                             className="px-2 py-2 transition-colors duration-150 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
                         >
-                            Add Song
+                            {t("modal.chooseaSong")}
                         </button>
-                        {songChosen && <div className="text-primary">Song Chosen: {songChosen.songName}{" "}#{songChosen.id}</div>}
+                        {songChosen && <div className="text-primary dark:text-primaryDarkmode">{t("modal.songChosen")}: {songChosen.songName}{" "}#{songChosen.id}</div>}
                     </div>
                 </Form.Item>
 
@@ -164,9 +166,9 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                             type="button"
                             className="px-2 py-2 text-center bg-transparent border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
                         >
-                            Add Playlist
+                            {t("modal.chooseaPlaylist")}
                         </button>
-                        {playlistChosen && <div className="text-primary dark:text-primaryDarkmode">Playlist Chosen: {playlistChosen.playlistName}{" "}#{playlistChosen.id}</div>}
+                        {playlistChosen && <div className="text-primary dark:text-primaryDarkmode">{t("modal.playlistChosen")}: {playlistChosen.playlistName}{" "}#{playlistChosen.id}</div>}
                     </div>
                 </Form.Item>
                 <Form.Item>
@@ -174,7 +176,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                         type="submit"
                         className="w-full h-10 px-2 py-2 text-base text-center bg-transparent border rounded-lg text-primary dark:text-primaryDarkmode hover:opacity-70 border-primary dark:border-primaryDarkmode "
                     >
-                        Update Post
+                        {t("button.submit")}
                     </button>
                 </Form.Item>
                 {/* <LoadingLogo loading={loading}></LoadingLogo> */}

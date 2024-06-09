@@ -7,12 +7,14 @@ import { setChatChosen } from "../redux/slice/social";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import useUserUtils from "./useUserUtils";
+import { useTranslation } from "react-i18next";
 
 // CHAT UTILS 
 export const useChatUtils = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
@@ -219,7 +221,7 @@ export const useChatUtils = () => {
   const outCommunity = async (userId, communityId) => {
     try {
       if (!userId || !communityId) return;
-      if (confirm("Are you sure you want to leave this community?") === false) return;
+      if (confirm(t("confirmModal.leaveCommunity")) === false) return;
       const response = await axios.post(
         `${Base_URL}/community/outCommunity?userId=${userId}&communityId=${communityId}`,
         {},
@@ -296,7 +298,7 @@ export const useChatUtils = () => {
 
   const deleteConversation = async (userId, sentUser) => {
     try {
-      if (confirm("Are you sure you want to delete this conversation?") === false) return;
+      if (confirm(t("confirmModal.deleteConver")) === false) return;
       const response = await axios.delete(
         `${Base_URL}/messages`,
         {
@@ -318,7 +320,7 @@ export const useChatUtils = () => {
   const deleteCommunity = async (communityId) => {
     try {
       if (!communityId) return;
-      if (confirm("Are you sure you want to delete this community?") === false) return;
+      if (confirm(t("confirmModal.deleteCommunity")) === false) return;
       const response = await axios.delete(
         `${Base_URL}/community?hostId=${communityId}`,
         {
@@ -335,12 +337,12 @@ export const useChatUtils = () => {
   }
 
   const ApproveRequest = async (userId, userRequest, isApprove) => {
-    console.log("Approve Request", userId, userRequest, isApprove);
+    // console.log("Approve Request", userId, userRequest, isApprove);
     try {
       const response = await axios.post(
         `${Base_URL}/community/approve`,
         {
-          "isApprove": isApprove === true ? 1 : !1, // 1: Approve, !1: Refuse
+          "isApprove": isApprove === true ? 1 : 0, // 1: Approve, 0: Refuse
           "host": {
             "id": userId
           },
@@ -354,7 +356,7 @@ export const useChatUtils = () => {
           },
         }
       );
-      return response.status;
+      return response;
     } catch (error) {
       console.log("Error:", error);
     }
@@ -363,7 +365,7 @@ export const useChatUtils = () => {
   const DeleteMember = async (userId, communityId) => {
     try {
       if (!userId || !communityId) return;
-      if (confirm("Are you sure you want to delete this member?") === false) return;
+      if (confirm(t("confirmModal.removeUser")) === false) return;
       const response = await axios.post(
         `${Base_URL}/community/outCommunity?userId=${userId}&communityId=${communityId}`,
         {},

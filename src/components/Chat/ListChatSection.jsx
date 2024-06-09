@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import useChatUtils from '../../utils/useChatUtils';
 import { message } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line no-unused-vars
 const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
@@ -15,6 +16,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
     const dispatch = useDispatch();
     const { AcronymName, deleteConversation } = useChatUtils();
     const userId = localStorage.getItem("userId");
+    const { t } = useTranslation();
     // console.log("ListChatSection chatList", chatList);
     // Handle chat chosen
     const handleChatChosen = async (conver) => {
@@ -85,7 +87,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
                                 handleDeleteConversation(userId, conver.chatId);
                             }}
                         >
-                            Delete Conversation
+                            {t("chat.deleteConversation")}
                         </Item>
                     </Menu>
 

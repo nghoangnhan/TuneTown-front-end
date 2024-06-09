@@ -53,7 +53,7 @@ const UserDetailPage = ({ owned }) => {
       if (!isCreated) {
         await createCommunity(userId, userName);
         setIsCreated(true);
-        message.success("Community Created!");
+        message.success(t("message.createCommunitySuccess"));
       } else {
         dispatch(
           setChatChosen({
@@ -181,7 +181,7 @@ const UserDetailPage = ({ owned }) => {
                   onClick={handleCreateCommunity}
                   className="h-10 px-3 text-xs transition-colors duration-150 border rounded-lg xl:text-base border-primary dark:border-primaryDarkmode w-fit text-primary dark:text-primaryDarkmode focus:shadow-outline hover:opacity-70"
                 >
-                  {!isCreated ? "Create Community" : "Your community"}
+                  {!isCreated ? t("button.createCommunity") : t("button.yourCommunity")}
                 </button>
               )}
             </div>
@@ -211,7 +211,7 @@ const UserDetailPage = ({ owned }) => {
             </div>}
             {postList?.length === 0 && (
               <div className="px-1 py-1 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
-                No post
+                {t("forum.noPost")}
               </div>
             )}
           </div>

@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import { Input, Modal } from 'antd';
 import useConfig from '../../../utils/useConfig';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ModalPlaylistPost = ({ playlistRs, openModal, setOpenModalChosePlaylist, handlePlaylistItemClick }) => {
     const { Base_AVA } = useConfig();
+    const { t } = useTranslation();
     const [playlistOutput, setPlaylistOutput] = useState(playlistRs);
     const handleSearchPlaylist = (searchValue) => {
         setTimeout(() => {
@@ -18,7 +20,7 @@ const ModalPlaylistPost = ({ playlistRs, openModal, setOpenModalChosePlaylist, h
     }, [playlistRs]);
     return (
         <Modal
-            title="Choose a playlist"
+            title={t("modal.chooseaPlaylist")}
             open={openModal}
             onCancel={() => {
                 setOpenModalChosePlaylist(false);
@@ -28,10 +30,10 @@ const ModalPlaylistPost = ({ playlistRs, openModal, setOpenModalChosePlaylist, h
             className='modalStyle'
         >
             {playlistRs && (
-                <div className="left-0 right-0 w-full bg-backgroundPrimary dark:bg-backgroundComponentDarkPrimary">
+                <div className="left-0 right-0 w-full bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
                     <ul className="px-4 py-2">
                         <Input type='text'
-                            placeholder="Search..."
+                            placeholder={t("modal.search")}
                             className="bg-white dark:bg-backgroundDarkPrimary dark:text-white max-h-40"
                             onChange={(e) => { handleSearchPlaylist(e.target.value) }}
                         />

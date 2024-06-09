@@ -4,9 +4,11 @@ import { useForumUtils } from "../../../utils/useChatUtils";
 import useConfig from "../../../utils/useConfig";
 import UpdatePost from "../../Forum/UpdatePost";
 import CreatePost from "../../Forum/CreatePost";
+import { useTranslation } from "react-i18next";
 
 const PostManagement = () => {
     const { Base_AVA } = useConfig();
+    const { t } = useTranslation();
     const [postList, setPostlist] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const [searchValue, setSearchValue] = useState("");
@@ -28,7 +30,7 @@ const PostManagement = () => {
             align: "center",
         },
         {
-            title: "Author",
+            title: t("CMS.author"),
             dataIndex: "author",
             key: "author",
             align: "center",
@@ -44,14 +46,14 @@ const PostManagement = () => {
             ),
         },
         {
-            title: "Content",
+            title: t("CMS.content"),
             dataIndex: "postContent",
             key: "postContent",
             align: "center",
         }
         ,
         {
-            title: "Song  ",
+            title: t("CMS.song"),
             dataIndex: "song",
             key: "song",
             align: "center",
@@ -62,9 +64,7 @@ const PostManagement = () => {
                         alt="avatar"
                         className="w-10 h-10 bg-white dark:rounded-full"
                     />}
-                    {song?.songName ? song.songName : "No Song"
-                    }
-
+                    {song?.songName ? song.songName : t("CMS.noSong")}
                 </div>
             ),
         },
@@ -75,7 +75,7 @@ const PostManagement = () => {
         //     align: "center",
         // },
         {
-            title: "Playlist",
+            title: t("CMS.playlist"),
             dataIndex: "playlist",
             key: "playlist",
             align: "center",
@@ -86,17 +86,17 @@ const PostManagement = () => {
                         alt="avatar"
                         className="w-10 h-10 bg-white dark:rounded-full"
                     />}
-                    <div className="ml-2">{playlist?.playlistName ? playlist.playlistName : "No playlist"}</div>
+                    <div className="ml-2">{playlist?.playlistName ? playlist.playlistName : t("CMS.noPlaylist")}</div>
                 </div>
             ),
         },
         {
-            title: "Likes",
+            title: t("CMS.like"),
             dataIndex: "likes",
             key: "likes", align: "center",
         },
         {
-            title: "Date",
+            title: t("CMS.date"),
             dataIndex: "postTime",
             key: "postTime", align: "center",
             render(dateee) {
@@ -109,7 +109,7 @@ const PostManagement = () => {
             },
         },
         {
-            title: "Action",
+            title: t("CMS.action"),
             dataIndex: "action",
             key: "action", align: "center",
             render: (text, record) => (
@@ -118,13 +118,13 @@ const PostManagement = () => {
                         className="w-16 px-2 py-1 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-60"
                         onClick={() => handleEdit(record)}
                     >
-                        Update
+                        {t("CMS.update")}
                     </button>
                     <button
                         className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:text-red-600 dark:border-red-600 hover:opacity-60"
                         onClick={() => handleDelete(record)}
                     >
-                        Delete
+                        {t("CMS.delete")}
                     </button>
                 </div>
             )
@@ -166,7 +166,7 @@ const PostManagement = () => {
         likes: postItem.likes.length,
         postTime: postItem?.postTime,
     }));
-    console.log("dataPosts", dataPosts);
+    // console.log("dataPosts", dataPosts);
 
     useEffect(() => {
         getAllPostAdmin().then((res) => {
@@ -186,7 +186,7 @@ const PostManagement = () => {
     if (!postList) return null;
     return (
         <div className="h-full min-h-screen">
-            <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Post Management</div>
+            <div className="text-2xl font-bold text-primary dark:text-primaryDarkmode">{t("CMS.postManagement")}</div>
             <div className="flex flex-row justify-between mt-5 mb-5 ">
                 <div className="">
                     <Form
@@ -204,7 +204,7 @@ const PostManagement = () => {
                         autoComplete="off"
                     >
                         <Form.Item label="" name="author">
-                            <Input placeholder="Search..." onChange={handSearch} className="text-primaryText2 dark:text-primaryTextDark2" />
+                            <Input placeholder={t("CMS.search")} onChange={handSearch} className="text-primaryText2 dark:text-primaryTextDark2" />
                         </Form.Item>
                     </Form>
                 </div>
@@ -226,7 +226,7 @@ const PostManagement = () => {
                 pagination={{ pageSize: 8 }}
             />
             <Modal
-                title="Update Post"
+                title={t("modal.updatePost")}
                 // onOk={handleOk}
                 onCancel={() => {
                     setOpenModalUpdate(false);
@@ -242,7 +242,7 @@ const PostManagement = () => {
                 ></UpdatePost>
             </Modal>
             <Modal
-                title="Update Post"
+                title={t("modal.createPost")}
                 // onOk={handleOk}
                 onCancel={() => {
                     setModalCreatePost(false);

@@ -231,7 +231,7 @@ const MyDetailPlaylist = () => {
               type="submit"
               className="px-4 py-2 border rounded-md w-fit min-w-[120px] border-primary  dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-70  "
             >
-              {t("playlist.saveChanges")}
+              {t("button.submit")}
             </button>
           </Form.Item>
         </Form>
