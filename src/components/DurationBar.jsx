@@ -65,8 +65,31 @@ const DurationBar = () => {
     }
   };
 
-  const audioBufferArray = useRef([]);
+  const audioBufferArray = useRef([
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ]);
   const sourceNode = useRef([
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ]);
+  const timeOutArray = useRef([
     null,
     null,
     null,
@@ -86,66 +109,6 @@ const DurationBar = () => {
   const isSeeked = useRef(true);
 
   /**
-   * Download the audio files and getting buffer of them
-   */
-  const loadAudio = async (currentPartIndex) => {
-    if (audioContext && songData != null) {
-      const currentAudioUrl = songData + currentPartIndex + ".mp3";
-
-      try {
-        const response = await fetch(currentAudioUrl);
-        const arrayBuffer = await response.arrayBuffer();
-
-        // Decode the audio data
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        audioBufferArray.current.push(audioBuffer);
-
-        isLoaded.current = true;
-      } catch (error) {
-        console.error("Error loading or playing audio:", error);
-      }
-    }
-  };
-
-  /**
-   * Looping for downloading 10 parts of a song and create GainNode for controllig volume
-   */
-  const loadAndPlayAudio = async () => {
-    gainVolume.current = audioContext.createGain();
-    gainVolume.current.connect(audioContext.destination);
-    gainVolume.current.gain.setValueAtTime(volume, audioContext.currentTime);
-    for (let i = 1; i <= 10; i++) {
-      await loadAudio(i);
-      isLoaded.current = true;
-    }
-  };
-
-  /**
-   * Play the audio right after the first part is processed
-   */
-  useEffect(() => {
-    console.log("Loaded changed: " + isLoaded.current);
-    onLoaded();
-  }, [isLoaded.current]);
-
-  const onLoaded = async () => {
-    if (audioBufferArray.current.length > 0 && isLoaded.current) {
-      await createSourceForPlaying(currentIndex);
-      console.log(sourceNode.current[currentIndex]);
-      // setting songDuration
-      dispatch(
-        setDuration(sourceNode.current[currentIndex].buffer.duration * 10)
-      );
-      sourceNode.current[currentIndex].start(0, startTime);
-      if (currentIndex < 10) {
-        sourceNode.current[currentIndex].addEventListener("ended", (event) => {
-          playNext();
-        });
-      }
-    }
-  };
-
-  /**
    * Create a buffer source for buffered audio
    */
   const createSourceForPlaying = async (index) => {
@@ -156,25 +119,125 @@ const DurationBar = () => {
     source.connect(audioContext.destination);
     source.connect(gainVolume.current);
     // Set the source node in the state
+    console.log("replace index: " + index);
     sourceNode.current[index] = source;
   };
 
-  const playNext = async () => {
-    console.log("Trigger playnext");
-    if (currentIndex + 1 < audioBufferArray.current.length) {
+  /**
+   *
+   */
+  const setOnEnded = async () => {
+    const timeOut = setTimeout(async () => {
       await createSourceForPlaying(currentIndex + 1);
-      sourceNode.current[currentIndex + 1].start(0, startTime);
       setCurrentIndex(currentIndex + 1);
-    }
-    setStartTime(0);
+    }, (audioBufferArray.current[currentIndex].duration - startTime - 0.05) * 1000);
+    timeOutArray.current[currentIndex] = timeOut;
   };
 
-  // /**
-  //  * Connect the audio source into a chain
-  //  */
-  // useEffect(() => {
-  //   playNext();
-  // }, [currentIndex, isSeeked.current]);
+  /**
+   * Initialize the audioContext for a whole session
+   */
+  useEffect(() => {
+    const initAudioContext = async () => {
+      try {
+        const audioCtx = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        setAudioContext(audioCtx);
+      } catch (error) {
+        console.error("Error initializing AudioContext:", error);
+      }
+    };
+    initAudioContext();
+    return () => {
+      if (audioContext) {
+        audioContext.close();
+      }
+    };
+  }, []);
+
+  /**
+   * Play the audio right after the first part is processed
+   */
+  useEffect(() => {
+    console.log("Loaded changed " + isLoaded.current);
+    const onLoaded = async () => {
+      if (audioBufferArray.current.length > 0 && isLoaded.current) {
+        await createSourceForPlaying(currentIndex);
+        console.log(sourceNode.current[currentIndex]);
+        // setting songDuration
+        dispatch(
+          setDuration(sourceNode.current[currentIndex].buffer.duration * 10)
+        );
+        sourceNode.current[currentIndex].start(0, startTime);
+        await setOnEnded();
+      }
+    };
+    onLoaded();
+  }, [isLoaded.current]);
+
+  /**
+   * Connect the audio source into a chain
+   */
+  useEffect(() => {
+    const playNext = async () => {
+      if (sourceNode.current[currentIndex] != null) {
+        sourceNode.current[currentIndex].start(0, startTime);
+      }
+      // if (timeOutArray.current[currentIndex] != null) {
+      //   clearTimeout(timeOutArray.current[currentIndex]);
+      // }
+      if (currentIndex + 1 < audioBufferArray.current.length) {
+        await setOnEnded();
+      }
+      setStartTime(0);
+    };
+    playNext();
+  }, [currentIndex, isSeeked.current]);
+
+  // ----------------------------------------------------
+  const checkAudioReady = () => {
+    if (audioBufferArray.current.length > 0) {
+      setIsAudioReady(true);
+      return true;
+    }
+    return false;
+  };
+
+  // Update the currentTime every second
+  useEffect(() => {
+    // CheckPlaying(audioRef);
+    let interval; // Count the isPlaying
+    if (isAudioReady == true && isPlaying == true && currentTime < duration) {
+      // Update every second
+      interval = setInterval(() => {
+        dispatch(setCurrentTime(currentTime + 1));
+        audioRef.current.currentTime = currentTime + 1;
+        // audioRef.current.play();
+      }, 1000);
+      dispatch(setIsPlaying(true));
+    }
+    // if max time is reached, stop the interval
+    else if (currentTime >= duration && isPlaying == true) {
+      dispatch(setCurrentTime(0));
+      dispatch(setIsPlaying(!isPlaying));
+      clearInterval(interval);
+
+      // play next song
+      if (songQueue.length > 0) {
+        dispatch(setCurrentTime(0));
+        dispatch(setIsPlaying(true));
+        dispatch(playNextSong());
+      } else if (songQueue.length == 0) {
+        dispatch(setIsPlaying(false));
+        dispatch(setCurrentTime(0));
+        // dispatch(setCurrentSong(null));
+        dispatch(setSongLinks(null));
+      }
+    } else {
+      clearInterval(interval); // If the song is paused, stop the interval
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, currentTime, duration, dispatch, CheckPlaying]);
 
   // When click the play/pause button
   const handlePlayPause = async () => {
@@ -182,7 +245,7 @@ const DurationBar = () => {
       Set the isPlaying state to the opposite value, 
       then the useEffect willbe triggered and the play/pause button will be changed
        */
-    if (isAudioReady != null) {
+    if (isAudioReady) {
       dispatch(setIsPlaying(!isPlaying));
       if (sourceNode.current[0] == null) {
         await loadAndPlayAudio();
@@ -207,6 +270,32 @@ const DurationBar = () => {
     dispatch(setShuffle(!shuffle));
   };
 
+  useEffect(() => {
+    console.log("songData changed", songData);
+    const loadCurrentSong = async () => {
+      const clearCurrentSourceNode = async () => {
+        for (let i = 0; i < 10; i++) {
+          audioBufferArray.current = [];
+          if (sourceNode.current[i] != null) {
+            sourceNode.current[i].disconnect();
+            sourceNode.current[i] = null;
+          }
+          if (timeOutArray.current[i] != null)
+            clearTimeout(timeOutArray.current[i]);
+        }
+        isLoaded.current = false;
+      };
+      await clearCurrentSourceNode();
+
+      if (sourceNode.current[0] == null) {
+        await loadAndPlayAudio();
+        setCurrentIndex(0);
+        setIsAudioReady(true);
+      }
+    };
+    loadCurrentSong();
+  }, [songData]);
+
   // When the seekbar is changed by user
   const handleSeek = async (e) => {
     const newTime = e.target.value; // newTime is the new value of the seekbar
@@ -214,6 +303,14 @@ const DurationBar = () => {
     dispatch(setIsPlaying(true)); // When move the seekbar, the song will be played
     // audioRef.current.play();
     audioRef.current.currentTime = newTime; // Set the currentTime of the song to the newTime
+    const clearCurrentSourceNode = async () => {
+      for (let i = 0; i < 10; i++) {
+        if (sourceNode.current[i] != null) sourceNode.current[i].disconnect();
+        if (timeOutArray.current[i] != null)
+          clearTimeout(timeOutArray.current[i]);
+      }
+    };
+    await clearCurrentSourceNode();
     if (sourceNode.current[0] == null) {
       await loadAndPlayAudio();
     }
@@ -236,51 +333,39 @@ const DurationBar = () => {
     }
   };
 
-  // Update the currentTime every second
-  useEffect(() => {
-    // CheckPlaying(audioRef);
-    let interval; // Count the isPlaying
-    if (isAudioReady == true && isPlaying == true && currentTime < duration) {
-      // Update every second
-      interval = setInterval(() => {
-        dispatch(setCurrentTime(currentTime + 1));
-        audioRef.current.currentTime = currentTime + 1;
-        // audioRef.current.play();
-      }, 1000);
-      dispatch(setIsPlaying(true));
-    }
-    // if max time is reached, stop the interval
-    else if (currentTime >= duration && isPlaying == true) {
-      dispatch(setCurrentTime(0));
-      dispatch(setIsPlaying(!isPlaying));
-      clearInterval(interval);
-      // play next song
-      if (songQueue.length > 0) {
-        dispatch(setCurrentTime(0));
-        dispatch(setIsPlaying(true));
-        dispatch(playNextSong());
-      } else if (songQueue.length == 0) {
-        dispatch(setIsPlaying(false));
-        dispatch(setCurrentTime(0));
-        // dispatch(setCurrentSong(null));
-        dispatch(setSongLinks(null));
-      }
-    } else {
-      clearInterval(interval); // If the song is paused, stop the interval
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, currentTime, duration, dispatch, CheckPlaying]);
+  /**
+   * Download the audio files and getting buffer of them
+   */
+  const loadAudio = async (currentPartIndex) => {
+    if (audioContext && songData != null) {
+      const currentAudioUrl = songData + currentPartIndex + ".mp3";
 
-  useEffect(() => {
-    const loadCurrentSong = async () => {
-      if (sourceNode.current[0] == null) {
-        await loadAndPlayAudio();
-        setCurrentIndex(0);
-        setIsAudioReady(true);
+      try {
+        const response = await fetch(currentAudioUrl);
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Decode the audio data
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        audioBufferArray.current[currentPartIndex - 1] = audioBuffer;
+
+        if (currentPartIndex === 1) isLoaded.current = true;
+      } catch (error) {
+        console.error("Error loading or playing audio:", error);
       }
-    };
-    loadCurrentSong();
-  }, [songData]);
+    }
+  };
+
+  /**
+   * Looping for downloading 10 parts of a song and create GainNode for controllig volume
+   */
+  const loadAndPlayAudio = async () => {
+    gainVolume.current = audioContext.createGain();
+    gainVolume.current.connect(audioContext.destination);
+    gainVolume.current.gain.setValueAtTime(volume, audioContext.currentTime);
+    for (let i = 1; i <= 10; i++) {
+      loadAudio(i);
+    }
+  };
 
   /**
    * Hanlde onChange volume

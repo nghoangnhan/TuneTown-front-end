@@ -131,6 +131,7 @@ const musicStore = createSlice({
         state.songQueuePlayed.push(state.currentSong);
         state.currentSong = state.songQueue[0];
         state.songQueue.shift();
+        state.currentSong.currentTime = 0;
       } else {
         state.currentSong = null;
       }
@@ -141,6 +142,7 @@ const musicStore = createSlice({
         state.currentSong =
           state.songQueuePlayed[state.songQueuePlayed.length - 1];
         state.songQueuePlayed.pop();
+        state.currentSong.currentTime = 0;
       } else {
         state.currentSong = null;
       }
