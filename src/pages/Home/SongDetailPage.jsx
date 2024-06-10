@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import useSongUtils from "../../utils/useSongUtils";
 import LyricSection from "../../components/HomePage/LyricSection";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
-import SongItem from "../../components/Song/SongItem";
+// import SongItem from "../../components/Song/SongItem";
 import { useDispatch } from "react-redux";
 import { setCurrentSong } from "../../redux/slice/music";
 import { Modal } from "antd";
@@ -62,7 +62,7 @@ const SongDetailPage = () => {
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
         style={{
-          background: `linear-gradient(to top right , transparent, ${colorBG} 98%)`,
+          background: `linear-gradient(to top right , transparent, ${colorBG} 300%)`,
         }}
       >
         <div className="mb-4">

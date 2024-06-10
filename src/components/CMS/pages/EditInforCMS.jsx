@@ -119,7 +119,7 @@ const EditInfor = () => {
         >
           <div className="w-full mb-5 text-center">
             <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-              Edit Information
+              Update Information
             </h2>
           </div>
           {/* Avatar Image */}
@@ -135,6 +135,7 @@ const EditInfor = () => {
             ]}
           >
             <UploadAvatar setFileIMG={setFileIMG}></UploadAvatar>
+            {fileIMG && <img src={fileIMG} alt="" className="object-cover w-16 h-16" />}
           </Form.Item>
           <Form.Item
             name="userName"
@@ -176,6 +177,23 @@ const EditInfor = () => {
             name="birthDate"
             rules={[
               { required: true, message: "Please input your date of birth!" },
+              {
+                type: "object",
+                message: "The input is not valid date!",
+              },
+              {
+                validator: async (_, value) => {
+                  if (value) {
+                    const date = new Date(value);
+                    const currentDate = new Date();
+                    if (date > currentDate) {
+                      return Promise.reject(
+                        new Error("Date of birth can not be in the future!")
+                      );
+                    }
+                  }
+                },
+              },
             ]}
           >
             <DatePicker className="dark:bg-backgroundPrimary" />

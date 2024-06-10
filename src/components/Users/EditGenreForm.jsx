@@ -91,14 +91,13 @@ const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
             >
                 <div className="w-full mb-5 text-center">
                     <h1 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-                        Edit Genre
+                        Update Genre
                     </h1>
                 </div>
 
                 <Form.Item
                     label=" Genres"
                     name="genre"
-                    rules={[{ required: true, message: "Please input your genre!" }]}
                     className='flex justify-center mt-4 '
                 >
                     <Checkbox.Group className='grid items-center grid-cols-3 gap-8'>
@@ -110,7 +109,7 @@ const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
 
                 <Form.Item
                     wrapperCol={{ offset: 8, span: 16 }}>
-                    <button type="submit" className="w-1/4 h-10 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70">Submit</button>
+                    <button type="submit" className="absolute h-10 px-2 border rounded-md w-fit right-2 text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70">Save Changes</button>
                 </Form.Item>
             </Form>
         </div>

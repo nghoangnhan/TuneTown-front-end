@@ -1,6 +1,5 @@
 import {
   faBookmark,
-  faCircleCheck,
   faCircleQuestion,
   faComments,
 } from "@fortawesome/free-regular-svg-icons";
@@ -23,12 +22,12 @@ import {
   faPlay,
   faPlayCircle,
   faPlus,
+  faRankingStar,
   faRepeat,
   faRightFromBracket,
   faSearch,
   faShuffle,
   faSun,
-  faUserCheck,
   faUserGroup,
   faUserXmark,
   faVolumeHigh,
@@ -106,7 +105,7 @@ const useIconUtils = () => {
     );
   };
   ThumbsUpSolid.propTypes = {
-    liked: PropTypes.bool.isRequired,
+    liked: PropTypes.bool,
   };
 
   const ThumbsUpRegular = () => {
@@ -166,7 +165,7 @@ const useIconUtils = () => {
     );
   };
   LoadingLogo.propTypes = {
-    loading: PropTypes.bool.isRequired,
+    loading: PropTypes.bool,
   };
 
   const VerifyAccount = () => {
@@ -218,6 +217,10 @@ const useIconUtils = () => {
     return <FontAwesomeIcon icon={faArrowTrendUp}></FontAwesomeIcon>;
   };
 
+  const RankingStar = () => {
+    return <FontAwesomeIcon icon={faRankingStar}></FontAwesomeIcon>;
+  }
+
   const RepostButton = ({ handleRepostSong }) => {
     return (
       <button
@@ -242,7 +245,7 @@ const useIconUtils = () => {
     );
   };
   RepostButton.propTypes = {
-    handleRepostSong: PropTypes.func.isRequired,
+    handleRepostSong: PropTypes.func,
   };
 
   const DownloadButton = ({ handleDownloadSong }) => {
@@ -269,7 +272,7 @@ const useIconUtils = () => {
     );
   };
   DownloadButton.propTypes = {
-    handleDownloadSong: PropTypes.func.isRequired,
+    handleDownloadSong: PropTypes.func,
   };
 
   const ShareButton = ({ handleShareSong }) => {
@@ -296,7 +299,7 @@ const useIconUtils = () => {
     );
   };
   ShareButton.propTypes = {
-    handleShareSong: PropTypes.func.isRequired,
+    handleShareSong: PropTypes.func,
   };
 
   const MusicIcon = () => {
@@ -387,7 +390,7 @@ const useIconUtils = () => {
     );
   };
   CreatePlaylistButton.propTypes = {
-    CreateNewPlaylist: PropTypes.func.isRequired,
+    CreateNewPlaylist: PropTypes.func,
   };
 
   const UserGroupIcon = () => {
@@ -435,7 +438,7 @@ const useIconUtils = () => {
     PlayButton,
     PauseButton,
     ListenIcon,
-    TrendingIcon,
+    TrendingIcon, RankingStar,
     MusicIcon,
     RepostButton,
     DownloadButton,

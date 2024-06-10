@@ -11,7 +11,7 @@ const ModalApprove = ({ openApprovedList, setOpenApprovedList, converChosen, han
             <div className="flex flex-col items-center justify-center gap-3 p-5 bg-backgroundPlaylist dark:bg-backgroundPlaylistDark">
                 <h2 className="text-2xl font-bold text-primary dark:text-primaryDarkmode">Approved List</h2>
                 <div className="w-full overflow-auto h-96">
-                    {converChosen.approveRequests && converChosen.approveRequests.map((item) => (
+                    {converChosen?.approveRequests && converChosen.approveRequests.map((item) => (
                         <div className="flex flex-row items-center justify-around gap-2 rounded-md text-primaryText2 dark:text-primaryTextDark2 bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary" key={item.id}>
                             <img src={item.avatar ? item.avatar : Base_AVA} className="rounded-full max-h-9 dark:bg-white" alt="" />
                             <h2 className="p-2 text-primaryText2 dark:text-primaryTextDark2">{item.userName}</h2>

@@ -7,6 +7,7 @@ import { message } from "antd";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 function LoginGoogle() {
   const { saveToken } = UseCookie();
@@ -14,14 +15,15 @@ function LoginGoogle() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
+  const { t } = useTranslation()
 
   const handleUserData = async (usersData) => {
-    console.log("Data", usersData);
+    // console.log("Data", usersData);
     dispatch(setUserInfor(usersData));
     localStorage.setItem("userId", usersData.id);
     localStorage.setItem("userName", usersData.userName);
     localStorage.setItem("userRole", usersData.role);
-    console.log("User infor", usersData);
+    // console.log("User infor", usersData);
   };
 
   async function GetAccessToken(emailInput, passwordInput) {
@@ -30,7 +32,7 @@ function LoginGoogle() {
         email: emailInput,
         password: passwordInput,
       });
-      console.log("Respone Data Sign in", response.data);
+      // console.log("Respone Data Sign in", response.data);
       if ((response.data && response.data.access_token) || response.data) {
         // Save cookies and token
         saveToken(response.data.access_token);
@@ -82,16 +84,16 @@ function LoginGoogle() {
           },
         }
       );
-      console.log("editUser", response.data, response.status);
+      console.log("edit-user", response.data, response.status);
     } catch (error) {
       console.error("Error update user:", error.message);
     }
   }
 
   const onSuccess = async (res) => {
-    console.log("Login Success: currentUser:", res);
+    // console.log("Login Success: currentUser:", res);
     const account = jwtDecode(res.credential);
-    console.log("value", account);
+    // console.log("value", account);
     // const values = res.profileObj;
     const isEmailExisted = await checkEmailExisted(account.email);
     if (!isEmailExisted) {
@@ -99,14 +101,14 @@ function LoginGoogle() {
     }
     const getAccessToken = await GetAccessToken(account.email, "GOOGLE");
     await editUser(account, getAccessToken.access_token);
-    message.success("Login Successfully");
+    message.success(t("auth.signInSuccess"));
     setTimeout(() => {
       navigate("/");
     }, 1000);
   };
   const onFailure = (res) => {
     console.log("Login failed! res:", res);
-    message.error("Login Failed");
+    message.error(t("auth.signInFailed"));
   };
 
   return (

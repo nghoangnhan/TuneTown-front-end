@@ -1,13 +1,60 @@
 {
   "auth": {
     "signIn": "Đăng nhập",
-    "password": "Mật khẩu",
-    "dontHaveAccount": "Không có tài khoản",
-    "dontRememberPassword": "Không nhớ mật khẩu",
+    "signUp": "Đăng ký",
     "forgetPassword": "Quên mật khẩu",
-    "orLoginWith": "Hoặc đăng nhập với",
-    "loginWithFacebook": "Đăng nhập với Facebook",
-    "signUp": "Đăng kí"
+    "submit": "Gửi",
+    "changePassword": "Đổi mật khẩu",
+    "password": "Mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "backToSignIn": "Quay lại đăng nhập",
+    "dontHaveAccount": "Chưa có tài khoản",
+    "haveAccount": "Đã có tài khoản",
+    "dontRememberPassword": "Không nhớ mật khẩu",
+    "orSigninWith": "Hoặc đăng nhập với",
+    "signInWithFacebook": "Đăng nhập bằng Facebook",
+    "signInSuccess": "Đăng nhập thành công",
+    "signInFailed": "Đăng nhập thất bại",
+    "signUpSuccess": "Đăng ký thành công",
+    "signUpFailed": "Đăng ký thất bại",
+    "changePasswordSuccess": "Đổi mật khẩu thành công",
+    "changePasswordFailed": "Đổi mật khẩu thất bại",
+    "messageLogout": "Đăng xuất thành công",
+    "registerSuccess": "Đăng ký thành công",
+    "registerFailed": "Đăng ký thất bại",
+    "getOTP": "Lấy mã OTP",
+    "requireName": "Tên người dùng là bắt buộc",
+    "requireEmail": "Email là bắt buộc",
+    "notValidEmail": "Email không hợp lệ",
+    "requirePassword": "Mật khẩu là bắt buộc",
+    "requireConfirmPassword": "Xác nhận mật khẩu là bắt buộc",
+    "passwordNotMatch": "Mật khẩu không khớp",
+    "require8CharPassword": "Mật khẩu phải có ít nhất 8 ký tự",
+    "requireNewPass": "Mật khẩu mới là bắt buộc",
+    "requireSpecialCharPass": "Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt",
+    "requireEmailandOTP": "Vui lòng nhập email và mã OTP",
+    "requireDateOfBirth": "Ngày sinh là bắt buộc",
+    "requireOTP": "Mã OTP là bắt buộc",
+    "wrongOTP": "Mã OTP không đúng",
+    "notValidDate": "Ngày sinh không hợp lệ",
+    "dateIsNotFuture": "Ngày sinh không phải là tương lai",
+    "tourEmail": "Nhập email",
+    "tourEmailDetail": "Vui lòng nhập email của bạn ở đây.",
+    "tourPassword": "Nhập mật khẩu",
+    "tourPasswordDetail": "Vui lòng nhập mật khẩu của bạn ở đây.",
+    "tourGetOTP": "Lấy mã OTP",
+    "tourGetOTPDetail": "Vui lòng nhập email của bạn ở đây để lấy mã OTP.",
+    "tourOTP": "Nhập mã OTP",
+    "tourOTPDetail": "Vui lòng nhập mã OTP của bạn ở đây.",
+    "tourNewPass": "Nhập mật khẩu mới",
+    "tourNewPassDetail": "Vui lòng nhập mật khẩu mới của bạn ở đây.",
+    "sendingOTP": "Đang gửi mã OTP...",
+    "checkingOTP": "Đang kiểm tra mã OTP..., vui lòng chờ",
+    "authorModal": "Lỗi ủy quyền",
+    "authorModalAdmin": "Bạn không có quyền truy cập trang ADMIN",
+    "authorModalUser": "Bạn không có quyền truy cập trang này",
+    "authorModalArtist": "Bạn không có quyền truy cập trang NGHỆ SĨ"
   },
   "nav": {
     "home": "Trang chủ",
@@ -30,7 +77,17 @@
     "high": "Cao"
   },
   "home": {
-    "madeForYou": "Dành cho bạn"
+    "madeForYou": "Dành cho bạn",
+    "top10songs": "Những bài hát nổi bật",
+    "top10artists": "Những nghệ sĩ được nghe nhiều nhất",
+    "maybeYouShouldTry": "Có thể bạn nên thử",
+    "maybeWantListenAgain": "Có thể bạn muốn nghe lại",
+    "artistChartUpdating": "Bảng xếp hạng nghệ sĩ đang cập nhật...",
+    "songChartUpdating": "Bảng xếp hạng đang cập nhật...",
+    "spring": "mùa xuân",
+    "summer": "mùa hè",
+    "autumn": "mùa thu",
+    "winter": "mùa đông"
   },
   "forum": {
     "createAPost": "Đăng bài",
@@ -39,13 +96,15 @@
     "report": "Báo cáo",
     "refresh": "Làm mới",
     "updatePost": "Chỉnh sửa",
-    "deletePost": "Xóa bài viết"
+    "deletePost": "Xóa bài viết",
+    "repost": "Đăng lại"
   },
   "playlist": {
     "myPlaylist": "Danh sách phát của tôi",
     "createNewPlaylist": "Tạo danh sách phát mới",
     "private": "Riêng tư",
     "public": "Công khai",
+    "recommended": "Đề xuất",
     "createYourNewPlaylist": "Tạo danh sách phát cho riêng bạn",
     "editPlaylist": "Chỉnh sửa",
     "madeBy": "Tạo bởi",
@@ -54,10 +113,44 @@
     "uploadCoverArt": "Đăng ảnh bìa",
     "coverArtExtra": "Đăng ảnh bìa dưới dạng",
     "saveChanges": "Lưu thay đổi",
-    "editOrderSong": "Chỉnh sửa trình tự phát"
+    "editOrderSong": "Chỉnh sửa trình tự phát",
+    "save": "Lưu",
+    "savePlaylistSuccess": "Lưu danh sách phát thành công",
+    "savePlaylistFailed": "Lưu danh sách phát thất bại",
+    "deletePlaylistSuccess": "Xóa danh sách phát thành công",
+    "deletePlaylistFailed": "Xóa danh sách phát thất bại",
+    "songDetail": "Chi tiết bài hát"
+  },
+  "queue": {
+    "yourQueue": "Hàng đợi của bạn",
+    "nowPlaying": "Đang phát",
+    "nextUp": "Tiếp theo",
+    "noSongInQueue": "Không có bài hát trong hàng đợi"
+  },
+  "lyrics": {
+    "noLyric": "Bài hát này không có lời!",
+    "lyrics": "Lời bài hát"
+  },
+  "artist": {
+    "title": "Chi tiết nghệ sĩ"
   },
   "song": {
-    "title": "Tên bài hát"
+    "title": "Tiêu đề",
+    "refresh": "Làm mới",
+    "addToQueue": "Thêm vào hàng đợi",
+    "removeFromQueue": "Xóa khỏi hàng đợi",
+    "addToPlaylist": "Thêm vào danh sách phát",
+    "failedToAddSong": "Không thể thêm bài hát vào hàng đợi",
+    "added": "Đã thêm",
+    "deleted": "Đã xóa",
+    "order": "Sắp xếp",
+    "to": "đến",
+    "inPlaylist": "trong danh sách phát",
+    "toQueue": "vào hàng đợi",
+    "deleteSongInPlaylist": "Xóa bài hát trong danh sách phát này",
+    "removeFromQueueSuccess": "Xóa khỏi hàng đợi thành công",
+    "failedToOrderSong": "Không thể sắp xếp bài hát",
+    "failedToDeleteSong": "Không thể xóa bài hát"
   },
   "accountOptions": {
     "title": "Tùy chọn",
@@ -66,9 +159,6 @@
     "settings": "Cài đặt",
     "signOut": "Đăng xuất",
     "songManagement": "Quản lí bài hát"
-  },
-  "lyrics": {
-    "lyrics": "Lời bài hát"
   },
   "profile": {
     "editProfile": "Chỉnh sửa thông tin",
@@ -89,5 +179,44 @@
     "requestSent": "Đã gửi yêu cầu",
     "communityJoined": "Đã tham gia cộng đồng",
     "joinArtistCommunity": "Tham gia cộng đồng"
+  },
+  "modal": {
+    "uploadSong": "Tải lên bài hát",
+    "updateSong": "Cập nhật bài hát",
+    "deleteSong": "Xóa bài hát",
+    "songName": "Tên bài hát",
+    "songArtist": "Nghệ sĩ",
+    "selectArtist": "Chọn tên nghệ sĩ",
+    "pleaseSelect1Artist": "Vui lòng chọn ít nhất 1 nghệ sĩ",
+    "songGenre": "Thể loại",
+    "selectGenre": "Chọn thể loại",
+    "uploadCoverArt": "Tải lên ảnh bìa",
+    "coverArtExtra": "Tải lên hình ảnh của bạn với định dạng png, jpg, jpeg",
+    "uploadingImg": "Đang tải lên hình ảnh...",
+    "uploadImgFailed": "Tải lên hình ảnh thất bại",
+    "uploadImgSuccess": "Tải lên hình ảnh thành công",
+    "pleaseUploadCover": "Vui lòng tải lên ảnh bìa",
+    "uploadSongFile": "Tải lên tệp bài hát",
+    "uploadingMP3": "Đang tải lên tệp bài hát...",
+    "uploadMP3Failed": "Tải lên tệp bài hát thất bại",
+    "uploadMP3Success": "Tải lên tệp bài hát thành công",
+    "pleaseUploadMP3": "Vui lòng tải lên tệp bài hát",
+    "mp3fileExtra": "Tải lên bài hát của bạn với định dạng mp3",
+    "uploadingSong": "Đang tải lên bài hát...",
+    "uploadSongFailed": "Tải lên bài hát thất bại",
+    "uploadSongSuccess": "Tải lên bài hát thành công",
+    "pleaseUploadSong": "Vui lòng tải lên bài hát",
+    "lyric": "Lời bài hát",
+    "lyricPlaceholder": "Lời bài hát...",
+    "status": "Trạng thái",
+    "statusPlaceholder": "Chọn trạng thái",
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động"
+  },
+  "message": {
+    "approveUserSuccess": "Chấp nhận người dùng thành công",
+    "approveUserFailed": "Chấp nhận người dùng thất bại",
+    "removeUserSuccess": "Xóa người dùng thành công",
+    "removeUserFailed": "Xóa người dùng thất bại"
   }
 }

@@ -5,6 +5,7 @@ import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useIconUtils from "../../utils/useIconUtils";
 import useConfig from "../../utils/useConfig";
 import { message } from "antd";
+import { useTranslation } from "react-i18next";
 
 const DetailPlaylist = () => {
   //http://localhost:8080/playlists/getPlaylistSongs?playlistId=102
@@ -14,6 +15,7 @@ const DetailPlaylist = () => {
   const { getListSongPlaylist, getPlaylistByPlaylistId, savePlaylist } = useMusicAPIUtils();
   const [songPlaylistList, setSongPlaylistList] = useState();
   const [playlistDetail, setPlaylistDetail] = useState({});
+  const { t } = useTranslation();
 
   const fetchDataPlaylistInfor = async (playlistId) => {
     const detailData = await getPlaylistByPlaylistId(playlistId);
@@ -23,7 +25,7 @@ const DetailPlaylist = () => {
     const data = await getListSongPlaylist(playlistId);
     if (data) {
       setSongPlaylistList(data);
-      console.log("data", data);
+      // console.log("data", data);
     }
   };
 
@@ -31,11 +33,11 @@ const DetailPlaylist = () => {
     try {
       await savePlaylist(playlistId).then((res) => {
         if (res.status === 200) {
-          message.success("Save playlist successfully");
+          message.success(t("playlist.savePlaylistSuccess"));
         }
       });
     } catch (error) {
-      message.error("Error saving playlist");
+      message.error(t("playlist.savePlaylistFailed"));
       console.error("Error saving playlist:", error);
     }
   }
@@ -75,15 +77,15 @@ const DetailPlaylist = () => {
                 {playlistDetail.playlistName}
               </div>
               <button onClick={() => handleSavePlaylist(playlistDetail.id)} className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-base border border-solid rounded-md w-fit border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode">
-                <SavePlaylistIcon /> Save
+                <SavePlaylistIcon /> {t("playlist.save")}
               </button>
             </div>
             <div className="flex flex-col items-start justify-center gap-2">
               <div className="text-2xl text-primary dark:text-primaryDarkmode">
-                Made by {playlistDetail?.user?.userName}
+                {t("playlist.madeBy")} {playlistDetail?.user?.userName}
               </div>
               <div className="text-base text-primaryText2 dark:text-primaryTextDark">
-                {playlistDetail.playlistType} playlist
+                {playlistDetail.playlistType}
               </div>
             </div>
           </div>

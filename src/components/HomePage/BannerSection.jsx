@@ -61,7 +61,7 @@ const BannerSection = () => {
             key={index}
           >
             <img
-              className="relative object-cover max-w-xl m-auto rounded-lg shadow-md cursor-pointer max-h-80 h-fit min-w-fit"
+              className="relative max-w-xl m-auto rounded-lg shadow-md cursor-pointer min-h-[300px] object-cover min-w-fit"
               onDoubleClick={() => navigateToPlaylist(playlistItem.id)}
               src={
                 playlistItem.coverArt

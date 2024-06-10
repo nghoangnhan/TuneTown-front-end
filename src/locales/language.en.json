@@ -1,13 +1,60 @@
 {
   "auth": {
     "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "forgetPassword": "Forget Password",
+    "submit": "Submit",
+    "changePassword": "Change Password",
     "password": "Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "backToSignIn": "Back to Sign In",
     "dontHaveAccount": "Don't have account",
+    "haveAccount": "Have an account",
     "dontRememberPassword": "Don't remember your password",
-    "forgetPassword": "Forget Your Password",
-    "orLoginWith": "Or login with",
-    "loginWithFacebook": "Login with Facebook",
-    "signUp": "Sign Up"
+    "orSigninWith": "Or login with",
+    "signInWithFacebook": "Sign In with Facebook",
+    "signInSuccess": "Sign In Successfully",
+    "signInFailed": "Sign In Failed",
+    "signUpSuccess": "Sign Up Successfully",
+    "signUpFailed": "Sign Up Failed",
+    "changePasswordSuccess": "Change Password Successfully",
+    "changePasswordFailed": "Change Password Failed",
+    "messageLogout": "Logout Successfully",
+    "registerSuccess": "Register Successfully",
+    "registerFailed": "Register Failed",
+    "getOTP": "Get OTP",
+    "requireName": "Username is required",
+    "requireEmail": "Email is required",
+    "notValidEmail": "Email is not valid",
+    "requirePassword": "Password is required",
+    "requireConfirmPassword": "Confirm Password is required",
+    "passwordNotMatch": "Password does not match",
+    "require8CharPassword": "Password must be at least 8 characters",
+    "requireNewPass": "New Password is required",
+    "requireSpecialCharPass": "Password must contain at least one uppercase, one lowercase, one number and one special character",
+    "requireEmailandOTP": "Please enter your email and OTP",
+    "requireDateOfBirth": "Date of Birth is required",
+    "requireOTP": "OTP is required",
+    "wrongOTP": "OTP is wrong",
+    "notValidDate": "Date of Birth is not valid",
+    "dateIsNotFuture": "Date of Birth is not future",
+    "tourEmail": "Input email",
+    "tourEmailDetail": "Please enter your email here.",
+    "tourPassword": "Input password",
+    "tourPasswordDetail": "Please enter your password here.",
+    "tourGetOTP": "Get OTP",
+    "tourGetOTPDetail": "Please enter your email here to get OTP.",
+    "tourOTP": "Input OTP",
+    "tourOTPDetail": "Please enter your OTP here.",
+    "tourNewPass": "Input New Password",
+    "tourNewPassDetail": "Please enter your new password here.",
+    "sendingOTP": "Sending OTP...",
+    "checkingOTP": "Checking OTP..., please wait",
+    "authorModal": "Authorization Error",
+    "authorModalAdmin": "You are not authorized to access ADMIN PAGE",
+    "authorModalUser": "You are not authorized to access this page",
+    "authorModalArtist": "You are not authorized to access ARTIST PAGE"
   },
   "nav": {
     "home": "Home",
@@ -30,7 +77,17 @@
     "high": "High"
   },
   "home": {
-    "madeForYou": "Made For You"
+    "madeForYou": "Made For You",
+    "top10songs": "Top tracks in",
+    "top10artists": "Being listened in",
+    "maybeYouShouldTry": "Maybe you should try",
+    "maybeWantListenAgain": "Maybe you want to listen again",
+    "artistChartUpdating": "Artist chart is updating",
+    "songChartUpdating": "Song chart is updating",
+    "spring": "Spring",
+    "summer": "Summer",
+    "autumn": "Autumn",
+    "winter": "Winter"
   },
   "forum": {
     "createAPost": "Create a post",
@@ -39,25 +96,61 @@
     "report": "Report",
     "refresh": "Refresh",
     "updatePost": "Update post",
-    "deletePost": "Delete post"
+    "deletePost": "Delete post",
+    "repost": "Repost"
   },
   "playlist": {
     "myPlaylist": "My Playlist",
     "createNewPlaylist": "Create new playlist",
     "private": "Private",
     "public": "Public",
+    "recommended": "Recommended",
     "createYourNewPlaylist": "Create your new playlist",
-    "editPlaylist": "Edit playlist",
+    "editPlaylist": "Update playlist",
     "madeBy": "Made by",
     "playlistName": "Playlist Name",
     "playlistPrivacy": "Playlist privacy",
     "uploadCoverArt": "Upload cover art",
     "coverArtExtra": "Upload your cover image",
     "saveChanges": "Save changes",
-    "editOrderSong": "Edit songs' order"
+    "editOrderSong": "Update songs' order",
+    "save": "Save",
+    "savePlaylistSuccess": "Save playlist successfully",
+    "savePlaylistFailed": "Save playlist failed",
+    "deletePlaylistSuccess": "Delete playlist successfully",
+    "deletePlaylistFailed": "Delete playlist failed",
+    "songDetail": "Song Details"
+  },
+  "queue": {
+    "yourQueue": "Your Queue",
+    "nowPlaying": "Now Playing",
+    "nextUp": "Next Up",
+    "noSongInQueue": "No song in queue"
+  },
+  "lyrics": {
+    "noLyric": "This song has no lyric!",
+    "lyrics": "Lyrics"
+  },
+  "artist": {
+    "title": "Artist Details"
   },
   "song": {
-    "title": "Title"
+    "title": "Song Details",
+    "refresh": "Refresh",
+    "addToQueue": "Add to queue",
+    "removeFromQueue": "Remove from queue",
+    "addToPlaylist": "Add to playlist",
+    "failedToAddSong": "Failed to add song to queue",
+    "added": "Added",
+    "deleted": "Deleted",
+    "order": "Order",
+    "to": "to",
+    "inPlaylist": "in playlist",
+    "toQueue": "to queue",
+    "deleteSongInPlaylist": "Delete song in this playlist",
+    "removeFromQueueSuccess": "Remove from queue successfully",
+    "failedToOrderSong": "Failed to order song",
+    "failedToDeleteSong": "Failed to delete song"
   },
   "accountOptions": {
     "title": "Account Options",
@@ -67,12 +160,9 @@
     "signOut": "Sign out",
     "songManagement": "Song Management"
   },
-  "lyrics": {
-    "lyrics": "Lyrics"
-  },
   "profile": {
-    "editProfile": "Edit profile",
-    "editFavouriteGenres": "Edit favourite genres",
+    "editProfile": "Update profile",
+    "editFavouriteGenres": "Update favourite genres",
     "favouriteGenres": "Favourite genres"
   },
   "settings": {
@@ -89,5 +179,44 @@
     "requestSent": "Request Sent",
     "communityJoined": "Community joined",
     "joinArtistCommunity": "Join Community"
+  },
+  "modal": {
+    "uploadSong": "Upload Song",
+    "updateSong": "Update Song",
+    "deleteSong": "Delete Song",
+    "songName": "Song Name",
+    "songArtist": "Artists",
+    "selectArtist": "Select Artist Name",
+    "pleaseSelect1Artist": "Please select at least 1 artist",
+    "songGenre": "Genres",
+    "selectGenre": "Select Genre",
+    "uploadCoverArt": "Upload Cover Art",
+    "coverArtExtra": "Upload your image with png, jpg, jpeg format",
+    "uploadingImg": "Uploading image...",
+    "uploadImgFailed": "Upload image failed",
+    "uploadImgSuccess": "Upload image successfully",
+    "pleaseUploadCover": "Please upload cover image",
+    "uploadSongFile": "Upload Song File",
+    "uploadingMP3": "Uploading song file...",
+    "uploadMP3Failed": "Upload song file failed",
+    "uploadMP3Success": "Upload song file successfully",
+    "pleaseUploadMP3": "Please upload song file",
+    "mp3fileExtra": "Upload your song with mp3 format",
+    "uploadingSong": "Uploading song...",
+    "uploadSongFailed": "Upload song failed",
+    "uploadSongSuccess": "Upload song successfully",
+    "pleaseUploadSong": "Please upload song",
+    "lyric": "Lyric",
+    "lyricPlaceholder": "Lyrics...",
+    "status": "Status",
+    "statusPlaceholder": "Select status",
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "message": {
+    "approveUserSuccess": "Approve user successfully",
+    "approveUserFailed": "Approve user failed",
+    "removeUserSuccess": "Remove user successfully",
+    "removeUserFailed": "Remove user failed"
   }
 }

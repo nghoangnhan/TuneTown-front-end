@@ -96,7 +96,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
     >
       <div className="w-full mb-5 text-center">
         <h2 className="text-3xl font-bold uppercase font-monserrat text-primary dark:text-primaryDarkmode">
-          Edit User Information
+          Update User Information
         </h2>
       </div>
 
@@ -114,7 +114,7 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
             handleUploadFile={UploadIMGfile}
             accept="image/jpeg, image/png"
           />
-          {fileImg && <img src={fileImg} alt="" className="w-16 h-16" />}
+          {fileImg && <img src={fileImg} alt="" className="object-cover w-16 h-16" />}
         </div>
       </Form.Item>
       <Form.Item
@@ -158,6 +158,23 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
         name="birthDate"
         rules={[
           { required: true, message: "Please input your date of birth!" },
+          {
+            type: "object",
+            message: "The input is not valid date!",
+          },
+          {
+            validator: async (_, value) => {
+              if (value) {
+                const date = new Date(value);
+                const currentDate = new Date();
+                if (date > currentDate) {
+                  return Promise.reject(
+                    new Error("Date of birth can not be in the future!")
+                  );
+                }
+              }
+            },
+          },
         ]}
       >
         <DatePicker className="dark:bg-backgroundPrimary" />

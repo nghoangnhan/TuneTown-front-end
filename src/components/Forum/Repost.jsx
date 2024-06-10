@@ -17,11 +17,11 @@ const Repost = ({ song, closeModal }) => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     try {
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
-      const response = axios.post(`${Base_URL}/post/create`, {
+      const response = await axios.post(`${Base_URL}/post/create`, {
         author: {
           id: userId
         },
@@ -38,12 +38,12 @@ const Repost = ({ song, closeModal }) => {
           Authorization: `Bearer ${access_token}`,
         }
       });
-      if (response.status === 200) {
-        message.success("Repost Successfully", 2);
-      }
+      message.success("Repost Successfully", 2);
       form.resetFields();
       closeModal();
+      return response;
     } catch (error) {
+      message.error("Repost Failed", 2);
       console.log("Error:", error);
     }
   };

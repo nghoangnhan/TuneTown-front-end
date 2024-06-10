@@ -24,7 +24,7 @@ const LyricSection = ({ lyric }) => {
     return (
       <div className="max-h-screen xl:h-screen">
         <div className="h-full px-4 pt-8 mt-5 mb-5 text-2xl font-bold text-center bg-backgroundPrimary dark:bg-backgroundDarkPrimary text-primary dark:text-primaryDarkmode">
-          This song has no lyric!
+          {t("lyrics.noLyrics")}
         </div>
       </div>
     );

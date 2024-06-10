@@ -15,9 +15,10 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
     const dispatch = useDispatch();
     const { AcronymName, deleteConversation } = useChatUtils();
     const userId = localStorage.getItem("userId");
-
+    // console.log("ListChatSection chatList", chatList);
     // Handle chat chosen
     const handleChatChosen = async (conver) => {
+        // console.log("ChatNavigate handleChatChosen", conver);
         const converDetail = {
             chatId: conver.chatId,
             userName: conver.userName,
@@ -30,7 +31,7 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
             hosts: conver.hosts,
             joinUsers: conver.joinUsers,
         };
-        console.log("ChatNavigate handleChatChosen", converDetail);
+        // console.log("ChatNavigate handleChatChosen", converDetail);
 
         dispatch(setChatChosen(converDetail));
         if (!conver.communityId) {

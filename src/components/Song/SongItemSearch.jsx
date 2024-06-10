@@ -19,6 +19,7 @@ import { message } from "antd";
 import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 // Different from SongItem.jsx, this component is used for search page and the color of attribute is different
 const SongItemSearch = ({ song, songOrder }) => {
@@ -36,6 +37,7 @@ const SongItemSearch = ({ song, songOrder }) => {
   // const audio = document.getElementById("audio");
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const { t } = useTranslation();
 
   const songInforObj = {
     id: id,
@@ -83,16 +85,17 @@ const SongItemSearch = ({ song, songOrder }) => {
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`} className="contexify-menu">
-        <Item onClick={refreshPlaylist}>Refresh</Item>
+        <Item onClick={refreshPlaylist}>{t("song.refresh")}</Item>
         <Item
           onClick={() => {
             dispatch(addSongToQueue(songInforObj));
+            message.success(`${t("song.added")} ${songInforObj.songName} ${t("song.toQueue")}`);
           }}
         >
-          Add to Queue
+          {t("song.addToQueue")}
         </Item>
         <Separator />
-        <Submenu label="Add to playlist">
+        <Submenu label={t("song.addToPlaylist")}>
           {playlistList &&
             playlistList.map((playlist) => (
               <Item
@@ -102,10 +105,10 @@ const SongItemSearch = ({ song, songOrder }) => {
                     (result) => {
                       if (result.success) {
                         message.success(
-                          `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`
+                          `${t("song.added")} ${songInforObj.songName} #${songInforObj.id} ${t("song.to")} ${playlist.playlistName} #${playlist.id}`
                         );
                       } else {
-                        message.error(`Failed to add song: ${result.error}`);
+                        message.error(`${t("song.failedToAddSong")}: ${result.error}`);
                       }
                     }
                   );

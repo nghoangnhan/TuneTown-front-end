@@ -22,7 +22,7 @@ const UserDetailPage = ({ owned }) => {
   // const { userId } = useParams();
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
-  const { BackButton, UserCheck } = useIconUtils();
+  const { BackButton, UserCheck, LoadingLogo } = useIconUtils();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const refreshAccount = useSelector((state) => state.account.refreshAccount);
@@ -43,16 +43,8 @@ const UserDetailPage = ({ owned }) => {
   const { t } = useTranslation();
 
   const handleNavigate = (path) => {
-    dispatch(
-      setChatChosen({
-        chatId: path,
-        name: community.communityName,
-        avatar: community.communityAvatar,
-        communityId: community.communityId,
-      })
-    );
     console.log("COMMUNITY ", community);
-    navigate(`/chat/${path}`);
+    navigate(`/chat/community/${path}`);
   };
 
   const handleCreateCommunity = async () => {
@@ -65,13 +57,18 @@ const UserDetailPage = ({ owned }) => {
       } else {
         dispatch(
           setChatChosen({
-            chatId: "community/" + community.id,
+            // chatId: "community/" + community.id,
+            chatId: community.id,
             userName: community.communityName,
             avatar: community.communityAvatar,
             communityId: community.communityId,
+            communityName: community.communityName,
+            hosts: community.hosts,
+            joinUsers: community.joinUsers,
+            approveRequests: community.approveRequests
           })
         );
-        handleNavigate("community/" + community.id);
+        handleNavigate(community.id);
       }
     } catch (error) {
       console.log("Error:", error);
@@ -136,9 +133,9 @@ const UserDetailPage = ({ owned }) => {
         } min-h-screen p-2 bg-backgroundPrimary dark:bg-backgroundDarkPrimary pb-3`}
     >
       <div
-        className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
+        className={`flex flex-col items-start p-5 shadow-md rounded-xl my-3`}
         style={{
-          background: `linear-gradient(to top right , transparent, ${colorBG} 100%)`,
+          background: `linear-gradient(to top right , transparent, ${colorBG} 300%)`,
         }}
       >
         <div className="flex flex-row mb-2">
@@ -149,7 +146,7 @@ const UserDetailPage = ({ owned }) => {
             <img
               src={userInfor.avatar ? userInfor.avatar : Base_AVA}
               alt="Avatar"
-              className="w-20 h-20 rounded-full xl:w-56 xl:h-56"
+              className="object-cover w-20 h-20 rounded-full xl:w-56 xl:h-56"
             />
           </div>
           <div className="flex flex-col items-start gap-4 mb-5 font-bold text-center text-textNormal dark:text-textNormalDark">
@@ -188,7 +185,7 @@ const UserDetailPage = ({ owned }) => {
                 </button>
               )}
             </div>
-            <div className="flex items-center justify-center gap-2">
+            {userInfor.genres?.length > 0 && <div className="flex items-center justify-center gap-2">
               {t("profile.favouriteGenres")}:{" "}
               {userInfor.genres?.map((genre, index) => (
                 <span
@@ -198,7 +195,7 @@ const UserDetailPage = ({ owned }) => {
                   {genre.genreName}{" "}
                 </span>
               ))}
-            </div>
+            </div>}
           </div>
         </div>
       </div>
@@ -213,8 +210,8 @@ const UserDetailPage = ({ owned }) => {
               <PostSection postList={postList}></PostSection>
             </div>}
             {postList?.length === 0 && (
-              <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
-                No posts yet!
+              <div className="px-1 py-1 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
+                No post
               </div>
             )}
           </div>
@@ -246,6 +243,8 @@ const UserDetailPage = ({ owned }) => {
           setOpenModalEditGenre={setOpenModalGenres}
         ></EditGenreForm>
       </Modal>
+
+      <LoadingLogo loading={loading}></LoadingLogo>
     </div>
   );
 };

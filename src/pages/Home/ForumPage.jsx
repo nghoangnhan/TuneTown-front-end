@@ -4,6 +4,7 @@ import PostSection from "../../components/Forum/PostSection";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import SongChart from "../../components/HomePage/SongChart";
+import ArtistChart from "../../components/HomePage/ArtistChart";
 import { useForumUtils } from "../../utils/useChatUtils";
 import useConfig from "../../utils/useConfig";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,7 +58,7 @@ const ForumPage = () => {
             >
               {t("forum.createAPost")}
             </button>
-            <PostSection postList={postList?.postList}></PostSection>
+            <PostSection isForum={true} postList={postList?.postList}></PostSection>
             {postList.currentPage < postList.totalPages && <div className="flex justify-center w-full">
               <button onClick={
                 () => {
@@ -69,6 +70,7 @@ const ForumPage = () => {
           </div>
           <div className="mt-[60px]">
             <SongChart inForum={true}></SongChart>
+            <ArtistChart></ArtistChart>
           </div>
           {/* <PlaylistSection playlistTitle={"Maybe You Want!"}></PlaylistSection> */}
         </div>
@@ -86,7 +88,7 @@ const ForumPage = () => {
             >
               {t("forum.createAPost")}
             </button>
-            <PostSection postList={postList?.postList}></PostSection>
+            <PostSection isForum={true} postList={postList?.postList}></PostSection>
             {currentPage < totalPage && <div className="flex justify-center w-full">
               <button onClick={
                 () => {
@@ -98,6 +100,7 @@ const ForumPage = () => {
             </div>}
           </div>
           <SongChart></SongChart>
+          <ArtistChart></ArtistChart>
         </div>
       )}
 

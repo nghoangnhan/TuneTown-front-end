@@ -15,7 +15,7 @@ import { setRefreshPost } from "../../redux/slice/social";
 import ModalChoseSong from "./Modal/ModalChoseSong";
 
 
-const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
+const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
     const [form] = Form.useForm();
     const userId = localStorage.getItem("userId");
     const dispatch = useDispatch();
@@ -37,37 +37,39 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     const [openModalChoseSong, setOpenModalChoseSong] = useState(false);
     const [songChosen, setSongChosen] = useState();
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         try {
             const sanitizedContent = DOMPurify.sanitize(values.content); // XSS (Cross-site scripting) 
             const contentParser = Parser(sanitizedContent).props.children;
-            const response = axios.put(`${Base_URL}/post`, {
+            if (contentParser == "" || contentParser == null || editorValue == "") {
+                message.error("Content is empty", 2);
+                return;
+            }
+            const response = await axios.put(`${Base_URL}/post`, {
                 id: postContent.id,
                 author: {
                     id: postContent.author.id
                 },
                 content: contentParser,
-                song: postContent.song?.id ? { id: postContent.song.id } : null,
-                playlist: playlistChosen?.id ? { id: playlistChosen.id } : null,
+                song: songChosen?.id,
+                playlist: playlistChosen?.id,
                 mp3Link: null
             }, {
                 headers: {
                     Authorization: `Bearer ${access_token}`,
                 }
             });
+            setRefresh(true);
             dispatch(setRefreshPost(true));
-            message.success("Post Updated Successfully", 2);
             setOpenModalUpdate(false);
+            message.success("Post Updated Successfully", 2);
             return response;
         } catch (error) {
-            message.error("Error Updating Post", 2);
             console.log("Error:", error);
+            message.error("Error Updating Post", 2);
         }
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
-    };
 
     const handleAddPlaylist = async () => {
         try {
@@ -101,6 +103,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
     }
 
     useEffect(() => {
+        console.log("POSTCONTENT", postContent);
         if (postContent) {
             setPlaylistChosen(postContent.playlist);
             setSongChosen(postContent.song);
@@ -120,7 +123,6 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
                 name="basic"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
                 className="mx-auto bg-backgroundPlaylist dark:bg-backgroundPlaylistDark formStyle"
             >
                 <Form.Item
@@ -191,5 +193,6 @@ const UpdatePost = ({ postContent, setOpenModalUpdate }) => {
 UpdatePost.propTypes = {
     postContent: Proptypes.object.isRequired,
     setOpenModalUpdate: Proptypes.func.isRequired,
+    setRefresh: Proptypes.func,
 }
 export default UpdatePost;

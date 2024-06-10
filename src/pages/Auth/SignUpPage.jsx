@@ -5,12 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import UseCookie from "../../hooks/useCookie";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 const SignUpPage = () => {
   const passwordRef = useRef();
   const navigate = useNavigate();
   const { removeToken } = UseCookie();
   const { Base_URL } = useConfig();
+  const { t } = useTranslation();
 
   async function PostData(usn, email, password, bdate, method) {
     try {
@@ -21,14 +23,14 @@ const SignUpPage = () => {
         birthDate: bdate,
       });
       if (response.data) {
-        message.success("Sign Up Successfully");
+        message.success(t("auth.signUpSuccess"));
         setTimeout(() => {
           navigate("/login");
         }, 1000);
       }
-      console.log("Respone Data Sign Up", response.data);
+      // console.log("Respone Data Sign Up", response.data);
     } catch (error) {
-      console.log("Error Post Data function:", error);
+      // console.log("Error Post Data function:", error);
       const errorName = error.response.data.detail;
       message.error(errorName, 2);
       throw error;
@@ -38,14 +40,14 @@ const SignUpPage = () => {
 
   // post data to API
   const onFinish = (values) => {
-    console.log("Data inputed:", values);
+    // console.log("Data inputed:", values);
     const { username, email, password, birthDate, method } = values;
 
     PostData(username, email, password, birthDate, method);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    // console.log("Failed:", errorInfo);
   };
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const SignUpPage = () => {
 
       <div className="flex flex-col items-center justify-center min-h-screen xl:w-1/2">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-primary">Sign up</h1>
+          <h1 className="text-3xl font-bold text-primary">{t("auth.signUp")}</h1>
         </div>
         <Form
           className="w-full"
@@ -90,7 +92,7 @@ const SignUpPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your username!",
+                message: t("auth.requireName"),
               },
             ]}
           >
@@ -100,10 +102,10 @@ const SignUpPage = () => {
             label="Birthday"
             name="birthDate"
             rules={[
-              { required: true, message: "Please input your date of birth!" },
+              { required: true, message: t("auth.requireDateOfBirth") },
               {
                 type: "object",
-                message: "The input is not valid date!",
+                message: t("auth.notValidDate"),
               },
               {
                 validator: async (_, value) => {
@@ -112,7 +114,7 @@ const SignUpPage = () => {
                     const currentDate = new Date();
                     if (date > currentDate) {
                       return Promise.reject(
-                        new Error("Date of birth can not be in the future!")
+                        new Error(t("auth.dateIsNotFuture"))
                       );
                     }
                   }
@@ -128,11 +130,11 @@ const SignUpPage = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your email!",
+                message: t("auth.requireEmail"),
               },
               {
                 type: "email",
-                message: "The input is not valid E-mail!",
+                message: t("auth.notValidEmail"),
               },
             ]}
           >
@@ -140,16 +142,16 @@ const SignUpPage = () => {
           </Form.Item>
 
           <Form.Item
-            label="Password"
+            label={t("auth.password")}
             name="password"
             rules={[
               {
                 required: true,
-                message: "Please input your password!",
+                message: t("auth.requirePassword"),
               },
               {
                 min: 8,
-                message: "Password must be at least 8 characters",
+                message: t("auth.require8CharPassword"),
               },
               {
                 // Require uppercase, lowercase, number, and special character
@@ -157,7 +159,7 @@ const SignUpPage = () => {
                   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])"
                 ),
                 message:
-                  "Password must contain at least one uppercase, one lowercase, one number and one special character",
+                  t("auth.requireSpecialCharPass"),
               }
             ]}
           >
@@ -166,13 +168,13 @@ const SignUpPage = () => {
 
           <Form.Item
             name="confirm"
-            label="Confirm Password"
+            label={t("auth.confirmPassword")}
             dependencies={["password"]}
             hasFeedback
             rules={[
               {
                 required: true,
-                message: "Please confirm your password!",
+                message: t("auth.requireConfirmPassword"),
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -180,7 +182,7 @@ const SignUpPage = () => {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error("The new password that you entered do not match!")
+                    new Error(t("auth.passwordNotMatch"))
                   );
                 },
               }),
@@ -191,15 +193,15 @@ const SignUpPage = () => {
 
           <Form.Item className="flex flex-row items-center justify-center">
             <button className="px-3 py-2 mt-2 font-semibold text-white rounded-md shadow-lg bg-primary hover:opacity-70 w-max">
-              Sign Up
+              {t("auth.signUp")}
             </button>
           </Form.Item>
         </Form>
 
         <div className="text-headingText ">
-          Have an account?
+          {t("auth.haveAccount")}?
           <NavLink to="/login" className="text-[#34a56d] ml-1 text-sm">
-            Login
+            {t("auth.signIn")}
           </NavLink>
         </div>
 

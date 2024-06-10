@@ -39,12 +39,17 @@ const CreatePost = ({ setOpenModalCreate }) => {
   const [playlistChosen, setPlaylistChosen] = useState();
   const [songChosen, setSongChosen] = useState();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     try {
       console.log("Received values:", values);
+
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props.children;
-      const response = axios.post(`${Base_URL}/post/create`, {
+      if (contentParser == " " || contentParser == null || editorValue == " " || editorValue == null) {
+        message.error("Content is empty", 2);
+        return;
+      }
+      const response = await axios.post(`${Base_URL}/post/create`, {
         author: {
           id: userId
         },
@@ -76,10 +81,6 @@ const CreatePost = ({ setOpenModalCreate }) => {
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-    form.resetFields();
-  };
 
   const handleAddPlaylist = async () => {
     try {
@@ -118,7 +119,6 @@ const CreatePost = ({ setOpenModalCreate }) => {
         layout="vertical"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         onAbort={
           () => {
             form.resetFields();
@@ -175,7 +175,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
             type="submit"
             className="absolute px-2 py-2 transition-colors duration-150 border rounded-md right-2 text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
           >
-            Submit
+            Create Post
           </button>
         </Form.Item>
 

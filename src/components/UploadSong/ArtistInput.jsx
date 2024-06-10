@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import UseCookie from "../../hooks/useCookie";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 const ArtistInput = () => {
   const { Base_URL } = useConfig();
@@ -13,6 +14,7 @@ const ArtistInput = () => {
   const [emailRS, setEmailRS] = useState([]);
   const [artistRS, setArtistRS] = useState([]); // [{id:"",name: "", email: ""}]
   const [emailInput, setEmailInput] = useState("");
+  const { t } = useTranslation();
   const inputDebounce = useDebounce(emailInput, 500);
   const handleEmailChange = (value) => {
     setEmailInput(value);
@@ -80,7 +82,7 @@ const ArtistInput = () => {
   return (
     <Form.Item
       name="artists"
-      label="Song Artist"
+      label={t("modal.songArtist")}
       rules={[
         {
           required: true,
@@ -91,7 +93,7 @@ const ArtistInput = () => {
       <Select
         showSearch
         mode="multiple"
-        placeholder="Select Artist Email"
+        placeholder={t("modal.selectArtist")}
         optionFilterProp="children"
         // onChange={handleEmailChange}
         onSearch={handleEmailChange}

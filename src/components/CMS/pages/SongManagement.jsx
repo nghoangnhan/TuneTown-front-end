@@ -15,7 +15,7 @@ const layout = {
 const SongManagement = () => {
   const { getToken } = UseCookie();
   const [form] = Form.useForm();
-  const { Base_URL, Base_AVA } = useConfig();
+  const { Base_URL } = useConfig();
   const { access_token } = getToken();
   const { deleteSong } = useMusicAPIUtils();
   const [songList, setSongList] = useState([]);
@@ -96,11 +96,14 @@ const SongManagement = () => {
       render: (poster) => {
         return (
           <div className="flex items-center justify-center">
-            <img
-              src={poster ? poster : Base_AVA}
+            {poster && <img
+              src={poster}
               alt="poster"
               className="w-12 h-12 rounded-full dark:bg-white"
-            />
+            />}
+            {
+              !poster && <div>None</div>
+            }
           </div>
         );
       },
@@ -162,7 +165,7 @@ const SongManagement = () => {
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
             onClick={() => handUpdateSong(record.key, record.songName, record.poster, record.artists, record.genres, record.listens, record.status)}
           >
-            Edit
+            Update
           </button>
           <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:border-red-500 dark:text-red-500 hover:opacity-60"

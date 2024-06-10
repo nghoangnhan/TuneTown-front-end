@@ -44,9 +44,11 @@ const ChatItem = ({ chat, index }) => {
                                 {chat.own && chat.seen == 1 && <CheckSeen />}
                                 {chat.own && chat.seen == 0 && <Check />}
                             </div>
-                            {isHover && <div className={`flex ${chat.own == true ? "justify-end" : "justify-start"}`}>
-                                <p className="text-xs text-slate-400">{chat.time}</p>
-                            </div>}
+                            {isHover &&
+                                <div className={`flex ${chat.own == true ? "justify-end" : "justify-start"}`}>
+                                    <p className={`text-xs transition-opacity duration-1000 ease-in-out opacity-0 text-slate-400 ${isHover ? "opacity-100" : ""}`}>{chat.time}</p>
+                                </div>
+                            }
                         </div>
                     </div>}
 

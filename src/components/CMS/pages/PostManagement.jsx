@@ -34,11 +34,11 @@ const PostManagement = () => {
             align: "center",
             render: (author) => (
                 <div className="flex flex-row items-center">
-                    <img
-                        src={author.avatar ? author.avatar : Base_AVA}
+                    {author.avatar && <img
+                        src={author.avatar}
                         alt="avatar"
                         className="w-10 h-10 rounded-full"
-                    />
+                    />}
                     <div className="ml-2">{author.userName}</div>
                 </div>
             ),
@@ -68,12 +68,12 @@ const PostManagement = () => {
                 </div>
             ),
         },
-        {
-            title: "Artist",
-            dataIndex: "artist",
-            key: "artist",
-            align: "center",
-        },
+        // {
+        //     title: "Artist",
+        //     dataIndex: "artist",
+        //     key: "artist",
+        //     align: "center",
+        // },
         {
             title: "Playlist",
             dataIndex: "playlist",
@@ -118,7 +118,7 @@ const PostManagement = () => {
                         className="w-16 px-2 py-1 border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-60"
                         onClick={() => handleEdit(record)}
                     >
-                        Edit
+                        Update
                     </button>
                     <button
                         className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark:text-red-600 dark:border-red-600 hover:opacity-60"
@@ -140,7 +140,7 @@ const PostManagement = () => {
     };
 
     const handleEdit = (record) => {
-        console.log("Edit", record);
+        // console.log("Edit", record);
         setOpenModalUpdate(true);
         const postContent = {
             id: record.key,
@@ -208,14 +208,14 @@ const PostManagement = () => {
                         </Form.Item>
                     </Form>
                 </div>
-                <div>
+                {/* <div>
                     <button
                         className="px-4 py-2 text-white rounded-md bg-primary dark:bg-primaryDarkmode hover:opacity-70"
                         onClick={() => setModalCreatePost(true)}
                     >
                         Create New Post
                     </button>
-                </div>
+                </div> */}
             </div>
             <Table
                 columns={columnPost}

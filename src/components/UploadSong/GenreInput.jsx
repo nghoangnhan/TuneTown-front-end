@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import UseCookie from "../../hooks/useCookie";
 import useConfig from "../../utils/useConfig";
+import { useTranslation } from "react-i18next";
 
 const GenreInput = () => {
   const { Base_URL } = useConfig();
@@ -13,6 +14,7 @@ const GenreInput = () => {
   const [genreNameRS, setGenreNameRS] = useState([]);
   const [genreRS, setGenreRS] = useState([]); // [{id:"",name: "", email: ""}]
   const [genreNameInput, setGenreNameInput] = useState("");
+  const { t } = useTranslation();
   const inputDebounce = useDebounce(genreNameInput, 500);
 
   // Genre Name Input
@@ -59,15 +61,15 @@ const GenreInput = () => {
           }
         });
 
-        console.log("GenreRS", genreRS);
-        console.log("genreNameRS", genreNameRS);
+        // console.log("GenreRS", genreRS);
+        // console.log("genreNameRS", genreNameRS);
       });
     }
   }, [inputDebounce]);
   return (
     <Form.Item
       name="genres"
-      label="Song Genres"
+      label={t("modal.songGenre")}
       rules={[
         {
           required: true,
@@ -79,13 +81,13 @@ const GenreInput = () => {
         showSearch
         allowClear
         mode="multiple"
-        placeholder="Select Genre Name"
+        placeholder={t("modal.selectGenre")}
         optionFilterProp="children"
         // onChange={handleEmailChange}
         onSearch={handleGenreNameChange}
         filterOption={filterOption}
         options={genreRS.map((genre) => {
-          console.log("genre", genre);
+          // console.log("genre", genre);
           return { id: genre.id, value: genre.id, label: genre.genreName };
         })}
       />

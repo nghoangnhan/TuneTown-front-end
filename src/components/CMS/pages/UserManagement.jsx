@@ -10,7 +10,7 @@ const UserManagement = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const [formRole] = useForm();
-  const { Base_URL, Base_AVA } = useConfig();
+  const { Base_URL } = useConfig();
   const [userList, setUserList] = useState([]);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
@@ -125,11 +125,17 @@ const UserManagement = () => {
       align: "center",
       render: (avatar) => {
         return (
-          <img
-            src={avatar ? avatar : Base_AVA}
-            alt="avatar"
-            className="object-cover rounded-full w-11 h-11"
-          />
+          <div>
+            {avatar && <img
+              src={avatar}
+              alt="avatar"
+              className="object-cover rounded-full w-11 h-11"
+            />}
+            {
+              !avatar && <div>None</div>
+            }
+          </div>
+
         );
       },
     },
@@ -202,7 +208,7 @@ const UserManagement = () => {
             className="w-16 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode hover:opacity-60"
             onClick={() => showModalEdit(record.id)}
           >
-            Edit
+            Update
           </button>
           <button
             className="w-16 px-2 py-1 text-purple-600 border border-purple-600 rounded-md dark:border-purple-500 dark::border-red-500 dark:text-purple-500 hover:opacity-60"
@@ -210,12 +216,12 @@ const UserManagement = () => {
           >
             Role
           </button>
-          <button
+          {/* <button
             className="w-16 px-2 py-1 text-red-600 border border-red-600 rounded-md dark::border-red-500 dark:text-red-500 hover:opacity-60"
             onClick={() => deleteUser(record.id)}
           >
             Delete
-          </button>
+          </button> */}
         </Space>
       ),
     },
@@ -284,14 +290,14 @@ const UserManagement = () => {
           <EditUserForm editUserId={userId} setRefresh={setRefresh} setOpenModalEditUser={setIsModalEditOpen} isAdmin={true}></EditUserForm>
         </Modal>
         <Modal
-          title="Edit User Role"
+          title="Update User Role"
           open={isModalOpenUpdate}
           onCancel={handleCancel}
           centered
           footer={[]}
           className="modalStyle w-fit h-fit"
         >
-          <Form form={formRole} className="pt-4 w-fit h-fit formStyle">
+          <Form form={formRole} className="w-full pt-4 formStyle">
             <Form.Item label="Role" name="role">
               <Select
                 placeholder="Role"
@@ -302,8 +308,8 @@ const UserManagement = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item className="">
-              <button type="submit" className="absolute right-0 px-2 py-1 border rounded-md border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode" onClick={handleOkRole}>
+            <Form.Item className="w-full">
+              <button type="submit" className="absolute right-0 px-2 py-1 border rounded-md hover:opacity-70 border-primary dark:border-primaryDarkmode text-primary dark:text-primaryDarkmode" onClick={handleOkRole}>
                 Update Role
               </button>
             </Form.Item>

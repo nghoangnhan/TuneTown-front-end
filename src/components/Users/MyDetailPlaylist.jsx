@@ -59,9 +59,16 @@ const MyDetailPlaylist = () => {
     playlistType,
     coverArt
   ) => {
+    if (!coverArt) {
+      coverArt = playlistDetail.coverArt;
+    }
+    if (playlistName === "") {
+      message.error("Playlist Name is required", 2);
+      return;
+    }
     await editPlaylist(playlistId, playlistName, playlistType, coverArt).then(
       () => {
-        message.success("Edit Playlist Successfully", 2);
+        message.success("Update Playlist Successfully", 2);
         fetchDataPlaylistInfor(playlistId);
         dispatch(setRefreshPlaylist(true));
       }
@@ -173,7 +180,7 @@ const MyDetailPlaylist = () => {
             label={t("playlist.playlistName")}
             rules={[{ required: true }]}
           >
-            <Input />
+            <Input className="dark:bg-primaryTextDark2" />
           </Form.Item>
           <Form.Item name="playlistType" label={t("playlist.playlistPrivacy")}>
             <Select

@@ -151,7 +151,19 @@ const ChatNavigate = () => {
     if (!chat.userName) {
       chat.userName = chat.communityName;
     }
-    dispatch(setChatChosen(chat));
+    const chatDetail = {
+      chatId: chat.chatId,
+      userName: chat.userName,
+      avatar: chat.avatar,
+      communityId: chat.communityId,
+      communityName: chat.communityName,
+      communityAvatar: chat.communityAvatar,
+      communityHost: chat.communityHost,
+      approveRequests: chat.approveRequests,
+      hosts: chat.hosts,
+      joinUsers: chat.joinUsers,
+    };
+    dispatch(setChatChosen(chatDetail));
     navigate(`/chat/${chat.id}`);
     setKeywordsInput('');
   }
@@ -164,6 +176,10 @@ const ChatNavigate = () => {
       handleSearch(keywordsInputDebounce);
     }
   }, [keywordsInputDebounce]);
+
+  useEffect(() => {
+    fetchChatList();
+  }, [userId])
 
   useEffect(() => {
     if (refreshChatList === true) {
@@ -208,7 +224,6 @@ const ChatNavigate = () => {
             <Input
               name="keywords"
               placeholder="Search..."
-              placeholdertextcolor="text-primaryText2 dark:text-primaryTextDark2"
               onChange={(e) => setKeywordsInput(e.target.value)}
               className="w-full text-lg rounded-md text-primaryText dark:text-primaryTextDark2 "
             />
@@ -219,13 +234,13 @@ const ChatNavigate = () => {
         </Form>
         {/* Render userResults absolutely positioned below the search input */}
         {chatRs && (
-          <div className="absolute left-0 right-0 bg-white shadow-md top-full">
+          <div className="absolute left-0 right-0 shadow-md bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary2 top-full">
             <ul className="px-4 py-1">
               {chatRs.map((chat) => (
-                <li key={chat.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-blue-100"
+                <li key={chat.id} className="flex items-center p-2 space-x-2 rounded-md cursor-pointer hover:bg-backgroundPlaylistHover dark:hover:bg-backgroundPlaylistHoverDark"
                   onClick={() => handleChatItemClick(chat)}>
                   <img src={`${chat.avatar ? chat.avatar : defaultAva}`} alt="Chat Avatar" className="w-8 h-8 bg-white rounded-full" />
-                  <span>{chat.userName ? chat.userName : chat.communityName}</span>
+                  <span className="text-primaryText2 dark:text-primaryTextDark2">{chat.userName ? chat.userName : chat.communityName}</span>
                 </li>
               ))}
             </ul>

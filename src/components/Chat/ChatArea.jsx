@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import UseCookie from "../../hooks/useCookie";
 import MessageSection from "./MessageSection";
-import defaultAva from "../../assets/img/logo/logo.png";
 import { useChatUtils } from "../../utils/useChatUtils";
 import { setIsNewMessage, setRefreshChat } from "../../redux/slice/social";
 import useIconUtils from "../../utils/useIconUtils";
@@ -13,10 +12,11 @@ import { Item, Menu, useContextMenu } from "react-contexify";
 import { message } from "antd";
 import ModalApprove from "./ModalApprove";
 import ModalEditMember from "./ModalEditMember";
+import { useTranslation } from "react-i18next";
 
 const ChatArea = () => {
   const { handleSocketReconnect, loadMessage, deleteCommunity, ApproveRequest, DeleteMember, outCommunity, getCommunityByHostId } = useChatUtils();
-  const { Base_URL, socket } = useConfig();
+  const { Base_URL, socket, Base_AVA } = useConfig();
   const { getToken } = UseCookie();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,9 +24,11 @@ const ChatArea = () => {
   const { access_token } = getToken();
   const { show } = useContextMenu();
   const userId = localStorage.getItem("userId");
+  const { t } = useTranslation();
   const { chatId } = useParams();
   const converChosen = useSelector((state) => state.social.currentChat);
   const [chatInfo, setChatInfo] = useState();
+  const [communityInfo, setCommunityInfo] = useState();
   const [newMessage, setNewMessage] = useState("");
   const [chatContent, setChatContent] = useState([]);
   const [openApprovedList, setOpenApprovedList] = useState(false);
@@ -34,49 +36,40 @@ const ChatArea = () => {
   const [refresh, setRefresh] = useState(false);
 
   const sendMessage = async (sendUserId, receiveUserId, content) => {
-    console.log("Send messageeeeeeeeeeeeeeee:", sendUserId, receiveUserId, content);
-    // Check if the message is empty or the sender is the receiver
     if (!content || content.trim() === "" || sendUserId === receiveUserId) {
       return;
     }
-    // Send the message to the server
+
     try {
       const response = await axios.post(
         `${Base_URL}/messages/sendMessage`,
         {
-          sendUser: {
-            id: sendUserId
-          },
+          sendUser: { id: sendUserId },
           receiveUserId: receiveUserId,
           content: content,
         },
         {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
+          headers: { Authorization: `Bearer ${access_token}` },
         }
       );
+
       if (response.status !== 200) {
         throw new Error("Failed to send message");
       }
-      // Clear the message input
       setNewMessage("");
-      // Emit the message to the server
       socket.emit("send_message", {
-        sendUser: {
-          id: sendUserId
-        },
+        sendUser: { id: sendUserId },
         receiveUserId: receiveUserId,
         content: content,
       });
-      // Update the chat list
-      handleLoadmessage(sendUserId, receiveUserId);
-      // Set isNewMessage to true
+
+      await handleLoadmessage(sendUserId, receiveUserId)
       dispatch(setIsNewMessage(true));
     } catch (error) {
       console.error("Error sending messages:", error);
     }
   };
+
 
   const displayMenu = (e, communityId) => {
     e.preventDefault();
@@ -92,72 +85,93 @@ const ChatArea = () => {
   };
 
   const handleApproveRequest = async (userId, requestId, isApprove) => {
-    await ApproveRequest(userId, requestId, isApprove).then((res) => {
+    try {
+      const res = await ApproveRequest(userId, requestId, isApprove);
       if (res === 200) {
-        message.success("Approve request successfully");
+        message.success(t("message.approveUserSuccess"), 2);
         setRefresh(true);
         dispatch(setRefreshChat(true));
+      } else {
+        message.error(t("message.approveUserFailed"), 2);
       }
-      else {
-        message.error("Failed to approve request");
-        console.log("Error approve request:", res);
-      }
+    } catch (error) {
+      console.error("Error approving member:", error);
+      message.error(t("message.approveUserFailed"), 2);
     }
-    );
-  }
+  };
 
   const handleDeleteMember = async (userId, communityId) => {
-    await DeleteMember(userId, communityId).then((res) => {
+    console.log("Delete Member", userId, communityId);
+    try {
+      const res = await DeleteMember(userId, communityId);
       if (res === 200) {
-        message.success("Delete member successfully");
+        message.success(t("message.removeUserSuccess"), 2);
         setRefresh(true);
         dispatch(setRefreshChat(true));
+      } else {
+        message.error(t("message.removeUserFailed"), 2);
       }
-      else {
-        message.error("Failed to delete member");
-        console.log("Error delete member:", res);
-      }
+    } catch (error) {
+      console.error("Error deleting member:", error);
+      message.error(t("message.removeUserFailed"), 2);
     }
-    );
-  }
+  };
 
   const handleOutCommunity = async (userId, communityId, communityName) => {
-    await outCommunity(userId, communityId).then((res) => {
+    try {
+      const res = await outCommunity(userId, communityId);
       if (res === 200) {
         message.success(`Left community ${communityName} successfully`);
         dispatch(setRefreshChat(true));
         navigate("/chat");
-      }
-      else {
+      } else {
         message.error(`Failed to leave community ${communityName}`);
-        console.log("Error leave community:", res);
       }
-    });
-  }
+    } catch (error) {
+      console.error("Error leaving community:", error);
+      message.error(`Failed to leave community ${communityName}`);
+    }
+  };
 
   const handleLoadmessage = async (userId, chatId) => {
-    await loadMessage(userId, chatId).then((data) => {
-      console.log("handle Load Messages", data);
-      // dispatch(setIsNewMessage(true));
+    try {
+      // console.log("handle Load Messages", userId, chatId);
+      const data = await loadMessage(userId, chatId);
+      // console.log("handle Load Messagesssssssssssssss", data);
+      dispatch(setIsNewMessage(true));
       setChatContent(data);
-    });
-  }
+      setRefresh(false);
+    } catch (error) {
+      console.error("Error loading messages:", error);
+    }
+  };
 
+  // Load chat content when the component mounts or the chat changes
   useEffect(() => {
     if (converChosen !== null && userId !== null) {
       setChatInfo(converChosen);
-      console.log("Chat info converChosen 1:", converChosen);
-      handleLoadmessage(userId, converChosen.chatId);
+      handleLoadmessage(userId, chatId);
     }
-  }, [converChosen, setOpenApprovedList]);
+  }, [chatId, converChosen, userId, refresh]);
 
-  //  useEffect(() => {
-  //   if (converChosen.communityId !== null) {
-  //     getCommunityByHostId(converChosen.communityId).then((res) => {
-  //       setChatInfo(res);
+  // Load chat content when refresh is true
+  // useEffect(() => {
+  //   if (refresh == true) {
+  //     handleLoadmessage(userId, chatId).then(() => {
+  //       setRefresh(false);
   //     });
   //   }
-  // }, []);
+  // }, [refresh, userId, chatId]);
+
+  // Get community info when the component mounts or the chat changes
+  useEffect(() => {
+    if (converChosen?.communityId) {
+      getCommunityByHostId(converChosen.communityId).then((res) => {
+        console.log("Community Info", res);
+        setCommunityInfo(res);
+      });
+    }
+  }, [chatId, refresh, openApprovedList, openEditMember, converChosen]);
 
   useEffect(() => {
     if (socket) {
@@ -166,43 +180,35 @@ const ChatArea = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (refresh === true) {
-      handleLoadmessage(userId, converChosen.chatId).then(() => {
-        setRefresh(false);
-      });
-    }
-  }, [refresh]);
-
-  useEffect(() => {
     if (socket) {
-      socket.on("receive_message", () => {
-        // Update the chat list
-        handleLoadmessage(userId, converChosen.chatId);
-        // Set isNewMessage to true
+      const receiveMessageHandler = async () => {
+        await handleLoadmessage(userId, chatId);
         dispatch(setIsNewMessage(true));
-      })
-    }
+      };
 
-    // // Ngắt kết nối khi component unmounts
-    return () => {
-      socket?.disconnect();
-    };
-  }, [socket]);
+      socket.on("receive_message", receiveMessageHandler);
+
+      return () => {
+        socket.off("receive_message", receiveMessageHandler);
+        socket.disconnect();
+      };
+    }
+  }, [socket, userId, chatId]);
 
   return (
     <div className="">
       <div className="fixed flex flex-row items-center justify-between w-screen h-20 pl-3 bg-slate-50 dark:bg-backgroundChattingInputNavDark">
         <div className="flex flex-row items-center ">
-          <BackIcon url={"/"}></BackIcon>
+          <BackIcon url={"/chat"}></BackIcon>
           <div className="w-10">
             <img
-              src={`${chatInfo?.avatar ? chatInfo.avatar : defaultAva}`}
+              src={`${chatInfo?.avatar ? chatInfo.avatar : Base_AVA}`}
               alt="user"
               className="bg-white rounded-full"
             />
           </div>
-          <h2 className="z-50 flex items-center h-full pl-3 font-bold text-primary dark:text-primaryDarkmode">
-            {chatInfo?.userName ? chatInfo.userName : "Unknown"}
+          <h2 className="z-50 flex items-center h-full pl-3 font-bold text-primary dark:text-primaryDarkmode ">
+            {chatInfo?.communityName ? chatInfo?.communityName : chatInfo?.userName}
           </h2>
         </div>
 
@@ -280,13 +286,13 @@ const ChatArea = () => {
       <ModalApprove
         openApprovedList={openApprovedList}
         setOpenApprovedList={setOpenApprovedList}
-        converChosen={converChosen}
+        converChosen={communityInfo}
         handleApproveRequest={handleApproveRequest}
       ></ModalApprove>
       <ModalEditMember
-        openApprovedList={openEditMember}
+        openEditMember={openEditMember}
         setOpenEditMember={setOpenEditMember}
-        converChosen={converChosen}
+        converChosen={communityInfo}
         handleDeleteMember={handleDeleteMember}
       ></ModalEditMember>
     </div>

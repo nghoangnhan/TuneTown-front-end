@@ -36,6 +36,7 @@ const ArtistDetailPage = () => {
   const [artistDetail, setArtistDetail] = useState({});
   const [topSongListArtist, setTopSongListArtist] = useState([]);
   const [songListArtist, setSongListArtist] = useState([]);
+  const [communityDetail, setCommunityDetail] = useState();
   const [page, setPage] = useState(1);
   const [follow, setFollow] = useState(false);
   const [request, setRequest] = useState();
@@ -47,17 +48,6 @@ const ArtistDetailPage = () => {
   const [listFollower, setListFollower] = useState([]);
   const [listFollowing, setListFollowing] = useState([]);
   const { t } = useTranslation();
-
-  const handleNavigate = (path) => {
-    dispatch(
-      setChatChosen({
-        chatId: path,
-        name: artistDetail.name,
-        avatar: artistDetail.avatar,
-      })
-    );
-    navigate(`/chat/${path}`);
-  };
 
   const handleGetArtistDetail = async (artistId) => {
     await getArtistByArtistId(artistId).then((result) => {
@@ -79,7 +69,25 @@ const ArtistDetailPage = () => {
 
   const handleGetCommunity = async (artistId) => {
     const response = await getCommunityByHostId(artistId);
+    setCommunityDetail(response);
     return response;
+  };
+
+  const handleNavigate = (path) => {
+    dispatch(
+      setChatChosen({
+        chatId: path,
+        userName: artistDetail.name,
+        avatar: artistDetail.avatar ? artistDetail.avatar : communityDetail.communityAvatar,
+        communityId: communityDetail.id,
+        communityName: communityDetail.communityName,
+        communityHost: artistDetail.id,
+        approveRequests: communityDetail.approveRequests,
+        hosts: communityDetail.hosts,
+        joinUsers: communityDetail.joinUsers,
+      })
+    );
+    navigate(`/chat/community/${path}`);
   };
 
   const handleJoinCommunity = async () => {
@@ -91,7 +99,7 @@ const ArtistDetailPage = () => {
       setRequest(updatedRequest);
     } else {
       // Navigate to joined community
-      handleNavigate("community/" + communityId);
+      handleNavigate(communityId);
     }
   };
 
@@ -145,27 +153,21 @@ const ArtistDetailPage = () => {
     getPosterColor(artistDetail.avatar, colorBG, setColorBG, setLoading);
   }, [artistDetail, follow]);
 
+  // Check if you join or request to join the community
   useEffect(() => {
     fetchDataCommunity();
   }, [request, join, artistId]);
+  useEffect(() => {
+    CheckArtistCommunityExist(artistId);
+  }, [artistId]);
 
+  // Get data of artist
   useEffect(() => {
     handleGetArtistDetail(artistId);
     getUserPost(artistId).then((res) => {
       setPostList(res.postList);
     });
   }, [artistId, refresh]);
-
-  useEffect(() => {
-    if (page == 0) return;
-    getAllSongArtist(artistId, page).then((result) => {
-      setSongListArtist([...songListArtist, ...result.songList]);
-    });
-  }, [page]);
-
-  useEffect(() => {
-    CheckArtistCommunityExist(artistId);
-  }, [artistId]);
 
   useEffect(() => {
     getArtistFollower(artistId).then((res) => {
@@ -175,6 +177,14 @@ const ArtistDetailPage = () => {
       setListFollowing(res?.following);
     });
   }, [artistId, follow, follower]);
+
+  // get all song of artist
+  useEffect(() => {
+    if (page == 0) return;
+    getAllSongArtist(artistId, page).then((result) => {
+      setSongListArtist([...songListArtist, ...result.songList]);
+    });
+  }, [page]);
 
   if (songListArtist == null) return null;
 
@@ -186,7 +196,7 @@ const ArtistDetailPage = () => {
       <div
         className={`flex flex-col items-start p-5 shadow-md rounded-xl`}
         style={{
-          background: `linear-gradient(to top right , transparent, ${colorBG} 100%)`,
+          background: `linear-gradient(to top right , transparent, ${colorBG} 300%)`,
         }}
       >
         <div className="flex flex-row mb-2">
@@ -195,7 +205,7 @@ const ArtistDetailPage = () => {
         <div className="flex flex-row items-center justify-start gap-4">
           <div className="relative flex flex-row items-start mt-5 mb-5">
             <img
-              className="w-20 h-20 rounded-full xl:w-52 xl:h-52 dark:bg-white"
+              className="object-cover w-20 h-20 rounded-full xl:w-52 xl:h-52 dark:bg-white"
               src={artistDetail.avatar ? artistDetail.avatar : Base_AVA}
               alt="artist-avatar"
             />
@@ -301,8 +311,8 @@ const ArtistDetailPage = () => {
                   </div>
                 )}
                 {postList?.length === 0 && (
-                  <div className="px-1 py-1 text-4xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
-                    No posts yet!
+                  <div className="px-1 py-1 text-2xl font-bold text-center text-primary dark:text-primaryDarkmode rounded-xl xl:h-fit xl:py-4 xl:mt-3">
+                    No post
                   </div>
                 )}
               </div>

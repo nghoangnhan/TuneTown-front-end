@@ -19,6 +19,7 @@ import { message } from "antd";
 import useSongUtils from "../../utils/useSongUtils";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
 import useIconUtils from "../../utils/useIconUtils";
+import { useTranslation } from "react-i18next";
 
 const SongItemQueue = ({ song, isPlaying, order }) => {
   const { id, songName, artists, songCover, songData, lyric } = song;
@@ -35,7 +36,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
   const audioRef = useRef();
   const [playlistList, setPlaylistList] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { t } = useTranslation();
 
   // This song will be send to duration bar if it is playing
   const songInforObj = {
@@ -82,19 +83,19 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
 
   return (
     <div onContextMenu={(e) => displayMenu(e, songInforObj.id)}>
-      {contextHolder}
       {/* Context Menu */}
       <Menu id={`songOption_${songInforObj.id}`} className="contexify-menu">
-        <Item onClick={refreshPlaylist}>Refresh</Item>
+        <Item onClick={refreshPlaylist}>{t("song.refresh")}</Item>
         <Item
           onClick={() => {
             dispatch(removeSongFromQueue(songInforObj.id));
+            message.success(t("song.removeFromQueueSuccess"));
           }}
         >
-          Remove from Queue
+          {t("song.removeFromQueue")}
         </Item>
         <Separator />
-        <Submenu label="Add to playlist">
+        <Submenu label={t("song.addToPlaylist")}>
           {playlistList &&
             playlistList.map((playlist) => (
               <Item
@@ -103,15 +104,11 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
                   addSongToPlaylist(songInforObj.id, playlist.id).then(
                     (result) => {
                       if (result.success) {
-                        messageApi.open({
-                          type: "success",
-                          content: `Added ${songInforObj.songName} #${songInforObj.id} to ${playlist.playlistName} #${playlist.id}`,
-                        });
+                        message.success(
+                          `${t("song.added")} ${songInforObj.songName} #${songInforObj.id} ${t("song.to")} ${playlist.playlistName} #${playlist.id}`
+                        );
                       } else {
-                        messageApi.open({
-                          type: "error",
-                          content: `Failed to add song: ${result.error}`,
-                        });
+                        message.error(`${t("song.failedToAddSong")}: ${result.error}`);
                       }
                     }
                   );

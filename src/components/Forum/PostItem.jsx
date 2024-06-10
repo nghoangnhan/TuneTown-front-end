@@ -179,11 +179,12 @@ const PostItem = ({ postContent }) => {
 
         {/* Song Content */}
         {(postContent.song || postContent.mp3Link) && (
-          <div className="flex flex-row items-center justify-between p-2 mt-2 rounded-md hover:dark:bg-backgroundSongItemDark">
+          <div className="flex flex-row items-center justify-between p-2 mt-2 rounded-md hover:dark:bg-backgroundSongItemDark"
+            style={{ pointerEvents: postContent.song.status === 0 ? 'none' : 'auto', opacity: postContent.song.status === 0 ? 0.5 : 1 }}>
             <div className="flex flex-row gap-2">
               <div className="items-center rounded-md ">
                 <img
-                  className="w-16 h-16 rounded-md"
+                  className="object-cover w-16 h-16 rounded-md"
                   src={
                     postContent.song?.poster ? postContent.song.poster : Base_AVA
                   }
@@ -346,6 +347,7 @@ const PostItem = ({ postContent }) => {
         id={`postOption_${postContent.id}`}
         postId={postContent.id}
         postContent={postContent}
+        setRefresh={setRefresh}
       ></OptionPostItem>
     </div>
   );

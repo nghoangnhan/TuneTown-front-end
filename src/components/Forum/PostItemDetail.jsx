@@ -3,7 +3,6 @@ import { useForumUtils } from "../../utils/useChatUtils";
 import { useEffect, useRef, useState } from "react";
 import PostItemComment from "./PostItemComment";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsReply } from "../../redux/slice/social.js";
 import useIconUtils from "../../utils/useIconUtils.jsx";
 import useConfig from "../../utils/useConfig";
 import { useMusicAPIUtils } from "../../utils/useMusicAPIUtils";
@@ -15,7 +14,7 @@ import { addPlaylistSongToQueue, setCurrentSong, setCurrentTime, setIsPlaying } 
 
 const PostItemDetail = () => {
   const { postId } = useParams();
-  const { getPostById, createComment, createReply, scrollToBottom, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
+  const { getPostById, createComment, scrollToBottom, likePost, handleCheckLiked, handleSharePost } = useForumUtils();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { show } = useContextMenu();
@@ -28,7 +27,7 @@ const PostItemDetail = () => {
   const [postContent, setPostContent] = useState();
   const [liked, setLiked] = useState();
   const isReplying = useSelector((state) => state.social.isReplying);
-  const replyCommentId = useSelector((state) => state.social.replyComment.replyCommentId);
+  // const replyCommentId = useSelector((state) => state.social.replyComment.replyCommentId);
   const replyComment = useSelector((state) => state.social.replyComment)
   const [songPlaylist, setSongPlaylist] = useState(null);
   const { getListSongPlaylist } = useMusicAPIUtils();
@@ -49,33 +48,33 @@ const PostItemDetail = () => {
 
   const handleCreateComment = async () => {
     if (commentRef.current.value === "") return;
-    if (isReplying == false) {
-      const comment = {
-        postId: parseInt(postId),
-        author: userId,
-        content: commentRef.current.value,
-      };
-      console.log("Create Comment", comment);
-      await createComment(comment).then((res) => {
-        setRefresh(true);
-        console.log("Create Comment", res);
-        commentRef.current.value = "";
-        scrollToBottom(windownEndRef);
-      });
-    } else if (isReplying == true) {
-      const reply = {
-        author: userId,
-        content: commentRef.current.value,
-        postId: parseInt(postId),
-        commentId: replyCommentId,
-      };
-      console.log("Create Reply", reply);
-      await createReply(reply).then((res) => {
-        setRefresh(true);
-        console.log("Create Reply", res);
-        commentRef.current.value = "";
-      });
-    }
+    // if (isReplying == false) {
+    const comment = {
+      postId: parseInt(postId),
+      author: userId,
+      content: commentRef.current.value,
+    };
+    console.log("Create Comment", comment);
+    await createComment(comment).then((res) => {
+      setRefresh(true);
+      console.log("Create Comment", res);
+      commentRef.current.value = "";
+      scrollToBottom(windownEndRef);
+    });
+    // } else if (isReplying == true) {
+    //   const reply = {
+    //     author: userId,
+    //     content: commentRef.current.value,
+    //     postId: parseInt(postId),
+    //     commentId: replyCommentId,
+    //   };
+    //   console.log("Create Reply", reply);
+    //   await createReply(reply).then((res) => {
+    //     setRefresh(true);
+    //     console.log("Create Reply", res);
+    //     commentRef.current.value = "";
+    //   });
+    // }
   };
 
   const handleAddSongToQueue = (songList) => {
@@ -114,7 +113,7 @@ const PostItemDetail = () => {
 
   useEffect(() => {
     handGetPostById();
-  }, [postId]);
+  }, [postId, refresh]);
 
   useEffect(() => {
     if (handleCheckLiked(postContent?.likes)) {
@@ -125,8 +124,7 @@ const PostItemDetail = () => {
   }, [postContent?.likes, likePost]);
 
   useEffect(() => {
-    if (refresh) handGetPostById();
-    setRefresh(false);
+    if (refresh == true) handGetPostById().then(() => setRefresh(false))
   }, [refresh]);
 
   const getSongFromPlaylist = async (playlistId) => {
@@ -377,7 +375,7 @@ const PostItemDetail = () => {
             defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
             className="w-full p-2 rounded-md outline-none bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary text-primaryText2 dark:text-primaryTextDark2"
           />
-          {isReplying && (
+          {/* {isReplying && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
@@ -390,7 +388,7 @@ const PostItemDetail = () => {
             >
               <path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
             </svg>
-          )}
+          )} */}
           <button
             className="px-4 py-2 font-bold text-white rounded-md bg-primary hover:bg-primaryHoverOn"
             onClick={handleCreateComment}
@@ -402,9 +400,10 @@ const PostItemDetail = () => {
       </div>
       {/* Context Menu */}
       <OptionPostItem
-        id={`songOption_${postContent.id}`}
+        id={`postOption_${postContent.id}`}
         postId={postContent.id}
         postContent={postContent}
+        setRefresh={setRefresh}
       ></OptionPostItem>
     </div>
   );

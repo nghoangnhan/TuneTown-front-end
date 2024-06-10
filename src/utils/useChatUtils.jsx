@@ -164,7 +164,7 @@ export const useChatUtils = () => {
           });
         }
       }
-      // console.log("UPDATE ", updatedChatContent);
+      console.log("UPDATE ", updatedChatContent);
       return updatedChatContent;
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -233,7 +233,7 @@ export const useChatUtils = () => {
     } catch (error) {
       console.log("Error:", error);
     }
-  };
+  }
 
   const createCommunity = async (artistId, userName) => {
     try {
@@ -242,9 +242,9 @@ export const useChatUtils = () => {
         {
           communityId: artistId,
           communityName: `${userName}'s community`,
-          hosts: [{
+          host: {
             id: artistId
-          }],
+          },
           joinUsers: [{
             id: artistId
           }],
@@ -335,13 +335,18 @@ export const useChatUtils = () => {
   }
 
   const ApproveRequest = async (userId, userRequest, isApprove) => {
+    console.log("Approve Request", userId, userRequest, isApprove);
     try {
       const response = await axios.post(
         `${Base_URL}/community/approve`,
         {
           "isApprove": isApprove === true ? 1 : !1, // 1: Approve, !1: Refuse
-          "hostId": userId,
-          "approveUserId": userRequest
+          "host": {
+            "id": userId
+          },
+          "approveUser": {
+            "id": userRequest
+          },
         },
         {
           headers: {
