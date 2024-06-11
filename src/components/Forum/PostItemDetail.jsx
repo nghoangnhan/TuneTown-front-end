@@ -168,7 +168,7 @@ const PostItemDetail = () => {
         <div className="mb-2">
           <BackButton url={"/forum"}></BackButton>
         </div>
-        <div className="text-4xl font-bold ">{t("post.postDetail")}</div>
+        {/* <div className="text-4xl font-bold ">{t("post.postDetail")}</div> */}
       </div>
       <div className="px-3 py-3 m-auto mt-2 shadow-lg bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary font-montserrat rounded-2xl max-xl:w-fit xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5 ">
         <div className="flex flex-row items-start justify-between mb-4">
