@@ -86,14 +86,6 @@ const musicStore = createSlice({
     },
     setRepeat: (state, action) => {
       state.repeat = action.payload;
-      if (state.repeat === true) {
-        const currentSongCopy = { ...state.currentSong }; // Tạo bản sao của currentSong
-        state.songQueue = [currentSongCopy, ...state.songQueue]; // Thêm bản sao vào đầu mảng
-      }
-      if (state.repeat === false) {
-        // Xóa bản sao của currentSong khỏi đầu mảng songQueue
-        state.songQueue.shift();
-      }
     },
     setShuffle: (state, action) => {
       state.shuffle = action.payload;
