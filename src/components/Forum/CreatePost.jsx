@@ -46,8 +46,8 @@ const CreatePost = ({ setOpenModalCreate }) => {
       console.log("Received values:", values);
 
       const sanitizedContent = DOMPurify.sanitize(values.content);
-      const contentParser = Parser(sanitizedContent).props.children;
-      if (contentParser == " " || contentParser == null || editorValue == " " || editorValue == null) {
+      const contentParser = Parser(sanitizedContent).props?.children;
+      if (contentParser == "" || editorValue == "") {
         message.error(t("modal.contentEmpty"), 2);
         return;
       }

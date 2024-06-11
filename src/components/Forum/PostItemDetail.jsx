@@ -10,6 +10,7 @@ import { useSongUtils } from "../../utils/useSongUtils";
 import OptionPostItem from "./OptionPostItem.jsx";
 import { useContextMenu } from "react-contexify";
 import { addPlaylistSongToQueue, setCurrentSong, setCurrentTime, setIsPlaying } from "../../redux/slice/music.js";
+import { useTranslation } from "react-i18next";
 
 
 const PostItemDetail = () => {
@@ -18,6 +19,7 @@ const PostItemDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { show } = useContextMenu();
+  const { t } = useTranslation();
   const { BackButton, ThumbsUpSolid, UserCheck, OptionsIcon, SendIcon, PlayButton } = useIconUtils();
   const { Base_AVA } = useConfig();
   const userId = localStorage.getItem("userId");
@@ -146,12 +148,12 @@ const PostItemDetail = () => {
     });
   }
 
-  console.log("PostItemDetail PostContent ", postContent)
+  // console.log("PostItemDetail PostContent ", postContent)
   useEffect(() => {
     if (postContent && postContent.playlist) {
       getSongFromPlaylist(postContent.playlist.id)
         .then(song => {
-          console.log("Song Playlist", song);
+          // console.log("Song Playlist", song);
           setSongPlaylist(song)
         })
         .catch(error => console.error("Error:", error));
@@ -166,7 +168,7 @@ const PostItemDetail = () => {
         <div className="mb-2">
           <BackButton url={"/forum"}></BackButton>
         </div>
-        <div className="text-4xl font-bold ">Post Detail</div>
+        <div className="text-4xl font-bold ">{t("post.postDetail")}</div>
       </div>
       <div className="px-3 py-3 m-auto mt-2 shadow-lg bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary font-montserrat rounded-2xl max-xl:w-fit xl:h-fit xl:mx-5 xl:mt-8 xl:py-5 xl:px-5 ">
         <div className="flex flex-row items-start justify-between mb-4">
@@ -176,7 +178,7 @@ const PostItemDetail = () => {
             )}>
               <div>
                 <img
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full dark:bg-white"
                   src={postContent.author?.avatar ? postContent.author.avatar : Base_AVA}
                   alt="Avatar"
                 />
@@ -209,7 +211,11 @@ const PostItemDetail = () => {
         </div>
 
         {/* Post Content */}
-        <div className="mb-10 text-md">{postContent?.content}</div>
+        <div className="mb-10 text-md" >
+          <div dangerouslySetInnerHTML={{ __html: postContent.content }}>
+            {/* {postContent?.content} */}
+          </div>
+        </div>
 
         {/* Song Infor */}
         {(postContent.song || postContent.mp3Link) && (
@@ -354,7 +360,7 @@ const PostItemDetail = () => {
           <button className="mx-2 mt-2 font-bold text-md opacity-80" onClick={() => {
             handleSharePost(postContent)
           }}>
-            Share
+            {t("post.share")}
           </button>
         </div>
       </div>
@@ -371,7 +377,7 @@ const PostItemDetail = () => {
             ref={commentRef}
             onKeyDown={(e) => e.key === "Enter" && handleCreateComment()}
             type="text"
-            placeholder={"Write a comment"}
+            placeholder={t("post.writeComment")}
             defaultValue={isReplying ? `@${replyComment.userName} ` : ''}
             className="w-full p-2 rounded-md outline-none bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary text-primaryText2 dark:text-primaryTextDark2"
           />

@@ -387,18 +387,16 @@ const DurationBar = () => {
       <div className="flex flex-row items-center justify-center gap-5">
         {/* Shuffle button */}
         <button
-          className={` text-iconText dark:text-iconTextDark hover:opacity-70 ${
-            shuffle ? "text-iconTextActive dark:text-iconTextActiveDark" : ""
-          }`}
+          className={` text-iconText dark:text-iconTextDark hover:opacity-70 ${shuffle ? "text-iconTextActive dark:text-iconTextActiveDark" : ""
+            }`}
           onClick={() => handleShuffle()}
         >
           <ShuffleIcon></ShuffleIcon>
         </button>
         {/* Skip previous button */}
         <button
-          className={`${
-            songQueuePlayed == 0 ? "" : "hover:opacity-70"
-          } text-iconText dark:text-iconTextDark`}
+          className={`${songQueuePlayed == 0 ? "" : "hover:opacity-70"
+            } text-iconText dark:text-iconTextDark`}
           disabled={songQueuePlayed.length == 0}
           onClick={
             // Play previous song in queue
@@ -442,9 +440,8 @@ const DurationBar = () => {
 
         {/* Skip next button  */}
         <button
-          className={`${
-            songQueue == 0 ? " ]" : "hover:opacity-70"
-          } text-iconText dark:text-iconTextDark`}
+          className={`${songQueue == 0 ? " ]" : "hover:opacity-70"
+            } text-iconText dark:text-iconTextDark`}
           disabled={songQueue.length == 0}
           onClick={
             // Play next song in queue
@@ -468,13 +465,14 @@ const DurationBar = () => {
 
         {/* Repeat button */}
         <button
-          className={`text-iconText dark:text-iconTextDark hover:opacity-70 ${
-            repeat ? "text-iconTextActive dark:text-iconTextActiveDark" : ""
-          }`}
+          className={`text-iconText items-start dark:text-iconTextDark hover:opacity-70 ${repeat ? "text-iconTextActive dark:text-iconTextActiveDark" : ""
+            }`}
           onClick={() => handleRepeat()}
         >
           <RepeatIcon></RepeatIcon>
-          {repeat ? "1" : ""}
+          <span className="relative text-xs" style={{ top: repeat ? "-6px" : "0" }}>
+            {repeat ? "1" : ""}
+          </span>
         </button>
       </div>
 

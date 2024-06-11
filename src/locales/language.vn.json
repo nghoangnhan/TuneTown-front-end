@@ -159,6 +159,13 @@
     "failedToOrderSong": "Thứ tự bài hát thất bại",
     "failedToDeleteSong": "Xóa bài hát thất bại"
   },
+  "post": {
+    "postDetail": "Chi tiết bài viết",
+    "editPost": "Cập nhật bài viết",
+    "writeComment": "Viết bình luận...",
+    "share": "Chia sẻ",
+    "like": "Thích"
+  },
   "accountOptions": {
     "title": "Tùy chọn Tài khoản",
     "myProfile": "Hồ sơ của tôi",

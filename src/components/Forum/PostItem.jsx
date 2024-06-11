@@ -139,7 +139,7 @@ const PostItem = ({ postContent }) => {
             )}>
               <div>
                 <img
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full dark:bg-white"
                   src={postContent.author?.avatar ? postContent.author.avatar : Base_AVA}
                   alt="Avatar"
                 />
@@ -162,8 +162,9 @@ const PostItem = ({ postContent }) => {
             <div
               className="mt-2 text-base cursor-pointer text-textNormal dark:text-textNormalDark"
               onClick={handlePostClick}
+              dangerouslySetInnerHTML={{ __html: postContent.content }}
             >
-              {postContent.content}
+              {/* {postContent.content} */}
             </div>
           </div>
           {/* Post Option */}

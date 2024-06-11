@@ -42,8 +42,8 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
     const onFinish = async (values) => {
         try {
             const sanitizedContent = DOMPurify.sanitize(values.content); // XSS (Cross-site scripting) 
-            const contentParser = Parser(sanitizedContent).props.children;
-            if (contentParser == "" || contentParser == null || editorValue == "") {
+            const contentParser = Parser(sanitizedContent).props?.children;
+            if (contentParser == "" || editorValue == "") {
                 message.error(t("modal.contentEmpty"), 2);
                 return;
             }

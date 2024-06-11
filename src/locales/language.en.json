@@ -159,6 +159,13 @@
     "failedToOrderSong": "Failed to order song",
     "failedToDeleteSong": "Failed to delete song"
   },
+  "post": {
+    "postDetail": "Post Details",
+    "editPost": "Update post",
+    "writeComment": "Write comment...",
+    "share": "Share",
+    "like": "Like"
+  },
   "accountOptions": {
     "title": "Account Options",
     "myProfile": "My Profile",

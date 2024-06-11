@@ -159,6 +159,13 @@
     "failedToOrderSong": "Error al ordenar la canción",
     "failedToDeleteSong": "Error al eliminar la canción"
   },
+  "post": {
+    "postDetail": "Detalles de la publicación",
+    "editPost": "Actualizar publicación",
+    "writeComment": "Escribe un comentario...",
+    "share": "Compartir",
+    "like": "Me gusta"
+  },
   "accountOptions": {
     "title": "Opciones de cuenta",
     "myProfile": "Mi perfil",

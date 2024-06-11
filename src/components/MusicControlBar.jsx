@@ -6,12 +6,17 @@ import useSongUtils from "../utils/useSongUtils";
 import DefaultArt from "../assets/img/logo/logo.png";
 import useConfig from "../utils/useConfig";
 import NavigationBar from "./NavigationBar";
+import { useNavigate } from "react-router-dom";
+import useIconUtils from "../utils/useIconUtils";
 
 const MusicControlBar = () => {
   const songInfor = useSelector((state) => state.music.currentSong);
   // Check Screen Size Mobile
   const { isMobile } = useConfig();
+  const navigate = useNavigate();
+  const { QueueIcon, LyricIcon } = useIconUtils();
   const currentSong = useSelector((state) => state.music.currentSong);
+  const lyric = useSelector((state) => state.music.currentSong.lyric);
   const { showArtistV2, AcronymName, NavigateSong } = useSongUtils();
 
   return (
@@ -33,6 +38,27 @@ const MusicControlBar = () => {
             {!isMobile && AcronymName(showArtistV2(songInfor.artists), 28)}
           </div>
         </div>
+
+        {isMobile && (
+          <div className="flex flex-row ml-5">
+            <button
+              className={`mr-2 pt-1 text-iconText dark:text-iconTextDark  ${!lyric
+                ? "cursor-not-allowed opacity-50"
+                : "cursor-pointer hover:opacity-70"
+                }`}
+              disabled={!lyric}
+              onClick={() => navigate("/lyric")}
+            >
+              <LyricIcon />
+            </button>
+            <button
+              className={`mr-2 text-iconText dark:text-iconTextDark hover:opacity-70`}
+              onClick={() => navigate("/queue")}
+            >
+              <QueueIcon />
+            </button>
+          </div>
+        )}
       </div>
 
       {!isMobile &&
