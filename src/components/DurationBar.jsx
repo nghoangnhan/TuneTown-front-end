@@ -107,6 +107,7 @@ const DurationBar = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const gainVolume = useRef();
   const isSeeked = useRef(true);
+  const [isNextSong, setIsNextSong] = useState(false);
 
   /**
    * Create a buffer source for buffered audio
@@ -222,11 +223,16 @@ const DurationBar = () => {
       dispatch(setIsPlaying(!isPlaying));
       clearInterval(interval);
 
-      // play next song
-      if (songQueue.length > 0) {
+      if (repeat === true) {
+        dispatch(setCurrentTime(0));
+        dispatch(setIsPlaying(true));
+        setIsNextSong((prev) => !prev);
+      } else if (songQueue.length > 0) {
+        // play next song
         dispatch(setCurrentTime(0));
         dispatch(setIsPlaying(true));
         dispatch(playNextSong());
+        setIsNextSong((prev) => !prev);
       } else if (songQueue.length == 0) {
         dispatch(setIsPlaying(false));
         dispatch(setCurrentTime(0));
@@ -294,7 +300,7 @@ const DurationBar = () => {
       }
     };
     loadCurrentSong();
-  }, [songData]);
+  }, [songData, isNextSong]);
 
   // When the seekbar is changed by user
   const handleSeek = async (e) => {
@@ -401,6 +407,7 @@ const DurationBar = () => {
                 dispatch(setIsPlaying(true));
                 dispatch(setCurrentTime(0));
                 dispatch(playPreviousSong());
+                setIsNextSong((prev) => !prev);
               } else if (songQueuePlayed.length == 0) {
                 // dispatch(setIsPlaying(false));
                 // dispatch(setCurrentTime(0));
@@ -446,6 +453,7 @@ const DurationBar = () => {
                 dispatch(setIsPlaying(true));
                 dispatch(setCurrentTime(0));
                 dispatch(playNextSong());
+                setIsNextSong((prev) => !prev);
               } else if (songQueue.length == 0) {
                 // dispatch(setIsPlaying(false));
                 // dispatch(setCurrentTime(0));
@@ -466,6 +474,7 @@ const DurationBar = () => {
           onClick={() => handleRepeat()}
         >
           <RepeatIcon></RepeatIcon>
+          {repeat ? "1" : ""}
         </button>
       </div>
 
