@@ -4,8 +4,15 @@ import LeftSideBar from "../../components/CMS/LeftSideBar";
 import ContentPage from "../../components/CMS/pages/ContentPage";
 import TheHeader from "../../components/Header/TheHeader";
 import AuthorizationModal from "../../components/AuthorizationModal";
+import { useEffect } from "react";
 
 const CMSPage = () => {
+  const userRole = localStorage.getItem("userRole");
+  useEffect(() => {
+    if (userRole != "ADMIN") {
+      window.location.href = "/";
+    }
+  }, [userRole]);
   return (
     <div className="">
       <Layout className="">

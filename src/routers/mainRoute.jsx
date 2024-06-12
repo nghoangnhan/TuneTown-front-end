@@ -189,14 +189,9 @@ export default function init(routes) {
   };
 
   // Push route
-
-  { userRole == "ADMIN" && routes.push(cmsRoute) }
-  {
-    userRole != "ADMIN" &&
-      [routes.push(route),
-      routes.push(singleRoute),
-      routes.push(chatRoute),
-      ]
-  }
+  routes.push(route)
+  routes.push(singleRoute)
+  routes.push(chatRoute)
+  routes.push(cmsRoute)
   routes.push(errorRoute)
 }

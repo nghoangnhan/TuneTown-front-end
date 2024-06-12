@@ -3,10 +3,18 @@ import ChatNavigate from "../../components/Chat/ChatNavigate";
 import { useSelector } from "react-redux";
 import useConfig from "../../utils/useConfig";
 import AuthorizationModal from "../../components/AuthorizationModal";
+import { useEffect } from "react";
 
 const ChattingPage = () => {
   const { isMobile } = useConfig();
   const chatId = useSelector((state) => state.social.currentChat.chatId);
+  const userRole = localStorage.getItem("userRole");
+
+  useEffect(() => {
+    if (userRole == "ADMIN") {
+      window.location.href = "/cms";
+    }
+  }, [userRole]);
   return (
     <div className="bg-backgroundPrimary dark:bg-backgroundDarkPrimary">
       {/* Desktop Layout */}

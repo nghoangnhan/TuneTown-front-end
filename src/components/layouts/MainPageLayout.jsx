@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import NavigationBar from "../NavigationBar";
 import TheHeader from "../Header/TheHeader";
@@ -9,6 +9,12 @@ import useConfig from "../../utils/useConfig";
 
 const MainPageLayout = () => {
   const { isMobile } = useConfig();
+  const userRole = localStorage.getItem("userRole");
+  useEffect(() => {
+    if (userRole == "ADMIN") {
+      window.location.href = "/cms";
+    }
+  }, [userRole]);
   return (
     <Fragment>
       <div className="flex flex-col bg-backgroundComponentPrimary dark:bg-backgroundComponentDarkPrimary">
