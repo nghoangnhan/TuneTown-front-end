@@ -30,60 +30,44 @@ export const useChatUtils = () => {
   };
 
   // const handleSocketReconnect = (socket) => {
+  //   let interval;
+
   //   const handleConnect = () => {
   //     console.log("Connected to server");
-  //     clearInterval(reconnectInterval);
+  //     if (interval) {
+  //       clearInterval(interval); // Clear interval on successful reconnection
+  //       interval = null;
+  //     }
   //   };
 
   //   const handleDisconnect = () => {
   //     console.log("Disconnected from server");
   //     // Reconnect to the server
-  //     socket.connect();
+  //     interval = setInterval(() => {
+  //       socket.connect();
+  //     }, 1000);
   //   };
 
-  //   // Set up event listeners for connection and disconnection
+  //   // Listen for connect and disconnect events
   //   socket.on("connect", handleConnect);
   //   socket.on("disconnect", handleDisconnect);
 
-  //   // Function to start the reconnect process
-  //   const startReconnect = () => {
-  //     console.log("Reconnecting to server...");
-  //     socket.connect();
-  //   };
-
-  //   // Set up a reconnect interval
-  //   let reconnectInterval;
-
-  //   const reconnect = () => {
-  //     if (!socket.connected) {
-  //       console.log("Attempting to reconnect...");
-  //       startReconnect();
-  //     }
-  //   };
-
-  //   // Start the reconnect interval
-  //   reconnectInterval = setInterval(reconnect, 1000);
-
-  //   // Return a cleanup function
+  //   // Clean up event listeners
   //   return () => {
-  //     clearInterval(reconnectInterval);
+  //     if (interval) {
+  //       clearInterval(interval); // Clear interval when cleaning up
+  //     }
   //     socket.off("connect", handleConnect);
   //     socket.off("disconnect", handleDisconnect);
   //   };
   // };
-
   const handleSocketReconnect = (socket) => {
     const handleConnect = () => {
       console.log("Connected to server");
     };
+
     const handleDisconnect = () => {
       console.log("Disconnected from server");
-      // Reconnect to the server
-      const interval = setInterval(() => {
-        socket.connect();
-      }, 1000);
-
-      return () => clearInterval(interval);
     };
 
     // Listen for connect and disconnect events

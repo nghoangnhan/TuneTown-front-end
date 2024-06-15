@@ -14,9 +14,9 @@ const useConfig = () => {
 
     const { getToken } = UseCookie();
     // Link to the backend server
-    // const Base_URL = "https://tunetown-production.up.railway.app";
+    const Base_URL = "https://tunetown-production.up.railway.app";
     const Base_URL_FE = "http://localhost:5173";
-    const Base_URL = "http://localhost:8080";
+    // const Base_URL = "http://localhost:8080";
     const Base_AVA = Base_Ava
     const default_Img = Base_AVA;
     // token return an object {access_token, refress_Token}
@@ -27,10 +27,11 @@ const useConfig = () => {
 
     // Socket.io
     const [socket, setSocket] = useState(null);
+    // const socket = io("https://socketserver-v6lc.onrender.com");
 
     useEffect(() => {
         const newSocket = io.connect("ws://localhost:3000", {
-            // const newSocket = io.connect("https://socketserver-v6lc.onrender.com", {
+            // const newSocket = io.connect("wss://socketserver-v6lc.onrender.com", {
             reconnection: true,
             reconnectionAttempts: Infinity,
             reconnectionDelay: 1500, // thời gian chờ trước lần thử kết nối lại đầu tiên

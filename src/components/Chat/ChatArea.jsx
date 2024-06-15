@@ -183,11 +183,11 @@ const ChatArea = () => {
     }
   }, [chatId, refresh, openApprovedList, openEditMember, converChosen]);
 
-  useEffect(() => {
-    if (socket) {
-      handleSocketReconnect(socket);
-    }
-  }, [socket]);
+  // useEffect(() => {
+  //   if (socket) {
+  //     handleSocketReconnect(socket);
+  //   }
+  // }, [socket]);
 
   useEffect(() => {
     if (socket) {
