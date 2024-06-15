@@ -19,13 +19,13 @@ function LoginFacebook() {
   const { t } = useTranslation();
 
   const handleUserData = async (userData) => {
-    console.log("Data", userData);
+    // console.log("Data", userData);
     dispatch(setUserInfor(userData));
     // Save user info to localStorage
     localStorage.setItem("userId", userData.id);
     localStorage.setItem("userName", userData.userName);
     localStorage.setItem("userRole", userData.role);
-    console.log("User facebook info", userData);
+    // console.log("User facebook info", userData);
   };
 
   async function GetAccessToken(emailInput, passwordInput) {
@@ -34,7 +34,7 @@ function LoginFacebook() {
         email: emailInput,
         password: passwordInput,
       });
-      console.log("Response Data Facebook Sign in", response.data);
+      // console.log("Response Data Facebook Sign in", response.data);
       if (response.data && response.data.access_token) {
         // Save token to cookie
         saveToken(response.data.access_token);
@@ -78,20 +78,20 @@ function LoginFacebook() {
           },
         }
       );
-      console.log("editUser", response.data, response.status);
+      // console.log("editUser", response.data, response.status);
     } catch (error) {
       console.error("Error update user:", error.message);
     }
   }
 
   const responseFacebook = async (response) => {
-    console.log(response.data);
+    // console.log(response.data);
     const { name, email } = response.data;
     const avatar = response.data.picture.data.url;
 
     // Check email exist
     const isEmailExisted = await checkEmailExisted(email);
-    console.log(isEmailExisted);
+    // console.log(isEmailExisted);
     if (!isEmailExisted) {
       // if email not exist, register new user
       await Register(name, email, "FACEBOOK", avatar);
@@ -102,8 +102,8 @@ function LoginFacebook() {
     const credential = getAccessToken.access_token;
     const account = jwtDecode(credential);
 
-    console.log("value", account);
-    console.log(credential);
+    // console.log("value", account);
+    // console.log(credential);
     await editUser(account, getAccessToken.access_token);
     message.success("Login Successfully");
     // Navigate to /home after successful login

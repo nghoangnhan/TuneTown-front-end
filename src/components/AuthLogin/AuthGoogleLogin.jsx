@@ -84,7 +84,7 @@ function LoginGoogle() {
           },
         }
       );
-      console.log("edit-user", response.data, response.status);
+      // console.log("edit-user", response.data, response.status);
     } catch (error) {
       console.error("Error update user:", error.message);
     }
@@ -107,7 +107,7 @@ function LoginGoogle() {
     }, 1000);
   };
   const onFailure = (res) => {
-    console.log("Login failed! res:", res);
+    // console.log("Login failed! res:", res);
     message.error(t("auth.signInFailed"));
   };
 

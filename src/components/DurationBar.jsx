@@ -120,7 +120,7 @@ const DurationBar = () => {
     source.connect(audioContext.destination);
     source.connect(gainVolume.current);
     // Set the source node in the state
-    console.log("replace index: " + index);
+    // console.log("replace index: " + index);
     sourceNode.current[index] = source;
   };
 
@@ -160,11 +160,11 @@ const DurationBar = () => {
    * Play the audio right after the first part is processed
    */
   useEffect(() => {
-    console.log("Loaded changed " + isLoaded.current);
+    // console.log("Loaded changed " + isLoaded.current);
     const onLoaded = async () => {
       if (audioBufferArray.current.length > 0 && isLoaded.current) {
         await createSourceForPlaying(currentIndex);
-        console.log(sourceNode.current[currentIndex]);
+        // console.log(sourceNode.current[currentIndex]);
         // setting songDuration
         dispatch(
           setDuration(sourceNode.current[currentIndex].buffer.duration * 10)
@@ -277,7 +277,7 @@ const DurationBar = () => {
   };
 
   useEffect(() => {
-    console.log("songData changed", songData);
+    // console.log("songData changed", songData);
     const loadCurrentSong = async () => {
       const clearCurrentSourceNode = async () => {
         for (let i = 0; i < 10; i++) {
@@ -322,9 +322,9 @@ const DurationBar = () => {
     }
     const partIndex = ~~(newTime / audioBufferArray.current[0].duration);
     const currentStartTime = newTime % audioBufferArray.current[0].duration;
-    console.log(
-      "seek to: " + newTime + "=> part: " + partIndex + " " + currentStartTime
-    );
+    // console.log(
+    //   "seek to: " + newTime + "=> part: " + partIndex + " " + currentStartTime
+    // );
     await createSourceForPlaying(partIndex);
     setCurrentIndex(partIndex);
     isSeeked.current = !isSeeked.current;
