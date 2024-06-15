@@ -9,7 +9,7 @@ const UploadImage = () => {
   const { getToken } = UseCookie();
   const { access_token } = getToken();
   const { Base_URL } = useConfig();
-  
+
   const UploadImage = async (values) => {
     try {
       const response = await axios.post(
@@ -25,7 +25,7 @@ const UploadImage = () => {
 
       if (response.status === 200) {
         // Handle success
-        console.log("Poster posted successfully:", response.data);
+        // console.log("Poster posted successfully:", response.data);
       } else {
         // Handle other status codes
         console.error("Error posting poster:", response.statusText);

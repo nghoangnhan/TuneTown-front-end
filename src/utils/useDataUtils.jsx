@@ -10,7 +10,7 @@ export const useDataUtils = () => {
   const handleUploadFileIMG = async (file) => {
     let formData = new FormData();
     formData.append("image", file);
-    console.log("handleUploadFile FileIMG", formData);
+    // console.log("handleUploadFile FileIMG", formData);
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadImage`,
@@ -23,7 +23,7 @@ export const useDataUtils = () => {
         }
       );
       if (response.status == 200) {
-        console.log("Files posted successfully:", response.data);
+        // console.log("Files posted successfully:", response.data);
       } else {
         console.error("Error posting files:", response.data);
       }
@@ -36,7 +36,7 @@ export const useDataUtils = () => {
   const handleUploadFileMP3 = async (file) => {
     let formData = new FormData();
     formData.append("mp3File", file);
-    console.log("handleUploadFile FileMP3", formData);
+    // console.log("handleUploadFile FileMP3", formData);
     try {
       const response = await axios.post(
         `${Base_URL}/file/uploadMp3`,
@@ -49,7 +49,7 @@ export const useDataUtils = () => {
         }
       );
       if (response.status == 200) {
-        console.log("Files posted successfully:", response.data);
+        // console.log("Files posted successfully:", response.data);
       } else {
         console.error("Error posting files:", response.data);
       }

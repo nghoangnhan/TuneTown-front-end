@@ -43,13 +43,13 @@ const UserDetailPage = ({ owned }) => {
   const { t } = useTranslation();
 
   const handleNavigate = (path) => {
-    console.log("COMMUNITY ", community);
+    // console.log("COMMUNITY ", community);
     navigate(`/chat/community/${path}`);
   };
 
   const handleCreateCommunity = async () => {
     try {
-      console.log("Community", community);
+      // console.log("Community", community);
       if (!isCreated) {
         await createCommunity(userId, userName);
         setIsCreated(true);
@@ -102,7 +102,7 @@ const UserDetailPage = ({ owned }) => {
       });
       getUserPost(userId).then((res) => {
         setPostList(res.postList);
-        console.log("PostList", postList);
+        // console.log("PostList", postList);
       });
       getUserPlaylist(userId).then((data) => {
         setPlaylistList(data);

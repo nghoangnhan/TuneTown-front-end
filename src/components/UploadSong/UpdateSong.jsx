@@ -57,7 +57,7 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
   };
 
   const onFinish = async (values) => {
-    console.log("Received values:", values);
+    // console.log("Received values:", values);
     if (values.artists == null) {
       message.error(t("modal.pleaseSelect1Artist"), 2);
       return;
@@ -67,7 +67,7 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
       return;
     }
     if (fileMP3 == null && values.songData == null) {
-      console.log("FileMP3", fileMP3);
+      // console.log("FileMP3", fileMP3);
       message.error(t("modal.pleaseUploadMP3"), 2);
       return;
     }
@@ -87,7 +87,7 @@ const UpdateSong = ({ songData, setModalUpdate, setRefresh }) => {
       }),
       lyric: contentParser ? contentParser : editorValue,
     };
-    console.log("Posting Data", postData);
+    // console.log("Posting Data", postData);
     await updateSong(postData).then(() => {
       setModalUpdate(false);
       setRefresh(true);

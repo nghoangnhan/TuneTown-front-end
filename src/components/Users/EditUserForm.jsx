@@ -193,8 +193,8 @@ const EditUserForm = ({ isAdmin, isModal, setRefresh, editUserId, setOpenModalEd
 };
 
 EditUserForm.propTypes = {
-  isAdmin: PropTypes.bool.isRequired,
-  isModal: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool,
+  isModal: PropTypes.bool,
   setOpenModalEditUser: PropTypes.func,
   editUserId: PropTypes.string,
   setRefresh: PropTypes.func,

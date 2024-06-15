@@ -63,7 +63,7 @@ const SongItemQueue = ({ song, isPlaying, order }) => {
   // const songDuration = GetSongDuration(songLink);
 
   function displayMenu(e, songId) {
-    console.log("PlaylistList", playlistList);
+    // console.log("PlaylistList", playlistList);
     e.preventDefault();
     show({
       position: { x: e.clientX, y: e.clientY },

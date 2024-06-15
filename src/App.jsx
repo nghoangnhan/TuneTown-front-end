@@ -21,7 +21,7 @@ function App() {
   }, [lng]);
 
   useEffect(() => {
-    console.log("darkTheme", darkTheme)
+    // console.log("darkTheme", darkTheme)
     if (darkTheme === true) {
       document.documentElement.classList.add("dark");
     } else {

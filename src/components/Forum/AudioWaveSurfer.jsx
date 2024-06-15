@@ -21,13 +21,13 @@ const AudioWaveSurfer = ({ song, mp3Link }) => {
         try {
             let data = '';
             if (!song) {
-                console.log("!song");
+                // console.log("!song");
                 data = await combineData(-1);
             }
             else {
                 data = await combineData(song.id);
             }
-            console.log(data);
+            // console.log(data);
             const audioBlob = new Blob([data], { type: 'audio/mp3' });
             const audioURL = URL.createObjectURL(audioBlob);
             setAudio(audioURL);

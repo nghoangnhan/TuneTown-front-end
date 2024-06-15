@@ -13,13 +13,13 @@ const SongSectionCustom = ({ titleSong, tryNew, listenAgain }) => {
         if (listenAgain == true) {
             getListSongListenAgain().then((response) => {
                 setSongList(response.songs);
-                console.log("songListAgain", songList);
+                // console.log("songListAgain", songList);
             });
         }
         else if (tryNew == true) {
             getListSongTryNew().then((response) => {
                 setSongList(response.songs);
-                console.log("songListTryNew", songList);
+                // console.log("songListTryNew", songList);
             })
         }
     }, []);

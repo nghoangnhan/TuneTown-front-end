@@ -61,7 +61,7 @@ const UploadAvatar = ({ setFileIMG }) => {
   const handleUploadFileIMG = async (file) => {
     let formData = new FormData();
     formData.append("image", file);
-    console.log("handleUploadFile FileIMG", formData);
+    // console.log("handleUploadFile FileIMG", formData);
     message.loading("Uploading file...", 2);
     try {
       const response = await axios.post(
@@ -76,7 +76,7 @@ const UploadAvatar = ({ setFileIMG }) => {
       );
 
       if (response.status == 200) {
-        console.log("Files posted successfully:", response.data);
+        // console.log("Files posted successfully:", response.data);
         message.success("Upload file successfully");
         setFileIMG(response.data);
       } else {

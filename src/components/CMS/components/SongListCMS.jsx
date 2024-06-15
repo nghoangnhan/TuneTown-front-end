@@ -25,14 +25,14 @@ const SongListCMS = () => {
 
   const getListSong = async (songPage) => {
     try {
-      console.log("auth", access_token);
+      // console.log("auth", access_token);
       const response = await axios.get(`${Base_URL}/songs?page=${songPage}`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       });
       const { songList, currentPage, totalPages } = response.data;
-      console.log("songList Response", songList, currentPage, totalPages);
+      // console.log("songList Response", songList, currentPage, totalPages);
       if (response.data) {
         setSongList((prevSongList) => [...prevSongList, ...songList]);
         setTotalPages(totalPages);
@@ -50,7 +50,7 @@ const SongListCMS = () => {
     try {
       confirm(t("confirmModal.deleteSong"));
       if (confirm) {
-        console.log("auth", access_token);
+        // console.log("auth", access_token);
         const response = await axios.delete(
           `${Base_URL}/songs/deleteSong?songId=${songId}`,
           {

@@ -49,7 +49,7 @@ const useUserUtils = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log(response.data, response.status);
+      // console.log(response.data, response.status);
       dispatch(setRefershAccount(false));
       return response.data;
     } catch (error) {
@@ -68,7 +68,7 @@ const useUserUtils = () => {
           },
         }
       );
-      console.log("getUserPost Response", response.data);
+      // console.log("getUserPost Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -86,7 +86,7 @@ const useUserUtils = () => {
           },
         }
       );
-      console.log("getArtistByArtistId Response", response.data);
+      // console.log("getArtistByArtistId Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -103,7 +103,7 @@ const useUserUtils = () => {
           },
         }
       );
-      console.log("Follow Artist Response", response.data);
+      // console.log("Follow Artist Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -117,7 +117,7 @@ const useUserUtils = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("getAllGenres Response", response.data);
+      // console.log("getAllGenres Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -135,7 +135,7 @@ const useUserUtils = () => {
       dispatch(setRefershAccount(true));
       if (response.status === 200) {
         // Handle success
-        console.log("User edited successfully:", response.data);
+        // console.log("User edited successfully:", response.data);
         message.success("User edited successfully");
       }
     } catch (error) {
@@ -172,7 +172,7 @@ const useUserUtils = () => {
           },
         }
       );
-      console.log("getAllSongArtist Response", response.data);
+      // console.log("getAllSongArtist Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -189,7 +189,7 @@ const useUserUtils = () => {
           },
         }
       );
-      console.log("getAllSongArtist Response", response.data);
+      // console.log("getAllSongArtist Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);

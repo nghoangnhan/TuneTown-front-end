@@ -28,7 +28,7 @@ const SongSection = ({ titleSong }) => {
         },
       });
       const { songList, currentPage, totalPages } = response.data;
-      console.log("songList Response", songList, currentPage, totalPages);
+      // console.log("songList Response", songList, currentPage, totalPages);
       // setTotalPages(totalPages);
       if (currentPage < totalPages) {
         setHasMoreSongs(true);

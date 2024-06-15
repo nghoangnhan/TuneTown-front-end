@@ -18,7 +18,7 @@ export const useMusicAPIUtils = () => {
         },
       });
       const { songList, currentPage, totalPages } = response.data;
-      console.log("ListSong Response", songList, currentPage, totalPages);
+      // console.log("ListSong Response", songList, currentPage, totalPages);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -50,7 +50,7 @@ export const useMusicAPIUtils = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("Public PlaylistList Response", response.data);
+      // console.log("Public PlaylistList Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -64,7 +64,7 @@ export const useMusicAPIUtils = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("Save Playlist Response", response);
+      // console.log("Save Playlist Response", response);
       return response;
     } catch (error) {
       console.log("Error:", error);
@@ -82,7 +82,7 @@ export const useMusicAPIUtils = () => {
           },
         }
       );
-      console.log("PlaylistDetail Response", response.data);
+      // console.log("PlaylistDetail Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -114,7 +114,7 @@ export const useMusicAPIUtils = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("SongDetail Response", response.data);
+      // console.log("SongDetail Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -145,7 +145,7 @@ export const useMusicAPIUtils = () => {
         }
       );
       if (response.status === 200) {
-        console.log("Playlist edited successfully", response.data);
+        // console.log("Playlist edited successfully", response.data);
         // eslint-disable-next-line no-undef
         messageApi.open({
           type: "success",
@@ -168,7 +168,7 @@ export const useMusicAPIUtils = () => {
           },
         }
       );
-      console.log("addSongToHistory Response", response.data);
+      // console.log("addSongToHistory Response", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -191,7 +191,7 @@ export const useMusicAPIUtils = () => {
             },
           }
         );
-        console.log("songList Response", response.data);
+        // console.log("songList Response", response.data);
         // Refresh the component
         return response.data;
       }
@@ -216,7 +216,7 @@ export const useMusicAPIUtils = () => {
           },
         }
       );
-      console.log("songList Response", response.data);
+      // console.log("songList Response", response.data);
       if (response.status === 200) {
         // Return a success flag or any relevant data
         return { success: true, data: response.data };
@@ -258,7 +258,7 @@ export const useMusicAPIUtils = () => {
   // Delete a song in playlist
   const deleteSongInPlaylist = async (songId, playlistId) => {
     try {
-      console.log("deleteSongInPlaylist", songId, playlistId);
+      // console.log("deleteSongInPlaylist", songId, playlistId);
       if (
         confirm(
           `${t("confirmModal.deleteSongPlaylist")} id: ${songId} playlistId: ${playlistId}`
@@ -277,7 +277,7 @@ export const useMusicAPIUtils = () => {
             },
           }
         );
-        console.log("songList Response", response.data);
+        // console.log("songList Response", response.data);
         // Refresh the component
         return response.status;
       }

@@ -25,7 +25,7 @@ const SongManagement = () => {
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const handSearch = (e) => {
-    console.log("value", e.target.value);
+    // console.log("value", e.target.value);
     setSearchValue(e.target.value);
   };
 
@@ -38,7 +38,7 @@ const SongManagement = () => {
         },
       });
       const { songList, currentPage, totalPages } = response.data;
-      console.log("songList Response", songList, currentPage, totalPages);
+      // console.log("songList Response", songList, currentPage, totalPages);
       return response.data;
     } catch (error) {
       console.log("Error:", error);

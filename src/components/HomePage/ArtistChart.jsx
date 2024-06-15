@@ -63,7 +63,7 @@ const ArtistChart = ({ titleArtist, StartTime, EndTime, inForum }) => {
         // console.log("Time Detail", startTime, endTime);
         getListArtistPeriod().then((response) => {
             setArtistList(response.artistsChart);
-            console.log(artistList)
+            // console.log(artistList)
         });
     }, []);
 

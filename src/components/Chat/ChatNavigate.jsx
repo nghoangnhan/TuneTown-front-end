@@ -44,7 +44,7 @@ const ChatNavigate = () => {
         }
       );
       const data = await response.data;
-      console.log("Fetch Chat List: ", data)
+      // console.log("Fetch Chat List: ", data)
       setChatListRaw(data);
 
       const sortedData = Object.values(data).sort((a, b) => {
@@ -100,7 +100,7 @@ const ChatNavigate = () => {
       });
 
       setConverList(updatedConverList);
-      console.log("Chat Navigate 94 Converlist ", updatedConverList);
+      // console.log("Chat Navigate 94 Converlist ", updatedConverList);
     } catch (error) {
       console.error("Error fetching chat list:", error);
     }
@@ -147,7 +147,7 @@ const ChatNavigate = () => {
   };
 
   const handleChatItemClick = async (chat) => {
-    console.log("Chat Item Click", chat);
+    // console.log("Chat Item Click", chat);
     if (!chat.userName) {
       chat.userName = chat.communityName;
     }

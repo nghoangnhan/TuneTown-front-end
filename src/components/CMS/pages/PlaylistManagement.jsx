@@ -88,7 +88,7 @@ const PlaylistManagement = () => {
   const [isModalOpenUpload, setIsModalOpenUpload] = useState(false);
 
   const handSearch = (e) => {
-    console.log("value", e.target.value);
+    // console.log("value", e.target.value);
     setSearchValue(e.target.value);
   };
 
@@ -204,7 +204,7 @@ const PlaylistManagement = () => {
 
   useEffect(() => {
     getUserPlaylist(1202).then((res) => {
-      console.log("Playlist", res);
+      // console.log("Playlist", res);
       setPlaylistList(res);
     });
   }, []);
@@ -212,7 +212,7 @@ const PlaylistManagement = () => {
   useEffect(() => {
     if (refresh === true) {
       getUserPlaylist(1202).then((res) => {
-        console.log("Playlist", res);
+        // console.log("Playlist", res);
         setPlaylistList(res);
       });
     }

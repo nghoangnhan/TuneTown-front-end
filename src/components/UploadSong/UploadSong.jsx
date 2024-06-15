@@ -61,7 +61,7 @@ const UploadSong = ({ setOpenModalUpload }) => {
   };
   // Submit Form
   const onFinish = async (values) => {
-    console.log("Received values:", values);
+    // console.log("Received values:", values);
     if (values.artists == null) {
       message.error(t("modal.pleaseSelect1Artist"), 2);
       return;

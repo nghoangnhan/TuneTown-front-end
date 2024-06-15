@@ -63,7 +63,7 @@ const SongItemSearch = ({ song, songOrder }) => {
   // const songDuration = GetSongDuration(songData);
 
   function displayMenu(e, songId) {
-    console.log("PlaylistList", playlistList);
+    // console.log("PlaylistList", playlistList);
     e.preventDefault();
     show({
       position: { x: e.clientX, y: e.clientY },

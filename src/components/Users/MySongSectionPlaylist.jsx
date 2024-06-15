@@ -45,14 +45,14 @@ const MySongSectionPlaylist = ({ songData, playlistId }) => {
       songCover: song.song.poster,
       songData: song.song.songData,
     }));
-    console.log(queueSongs);
+    // console.log(queueSongs);
     dispatch(addPlaylistSongToQueue(queueSongs));
   };
 
   useEffect(() => {
     setSongList(songData);
     if (refreshPlaylist == true) setSongList(songData);
-    console.log("MySongSectionPlaylist || SongList", songList);
+    // console.log("MySongSectionPlaylist || SongList", songList);
   }, [songData, refreshPlaylist]);
 
   if (!songList) return null;

@@ -25,7 +25,7 @@ const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
                         Authorization: `Bearer ${auth.access_token}`,
                     },
                 });
-            console.log(response.data, response.status);
+            // console.log(response.data, response.status);
             if (response.status === 200) {
                 dispatch(setRefershAccount(true));
                 message.success("Genres updated successfully", 2);
@@ -42,12 +42,12 @@ const EditGenreForm = ({ setOpenModalEditGenre, genreFavourite }) => {
             return;
         }
         const genreList = values.genre.map((id) => {
-            console.log("ID:", id);
+            // console.log("ID:", id);
             return {
                 id: id
             }
         });
-        console.log("Genre List:", genreList);
+        // console.log("Genre List:", genreList);
         updatedGenres(genreList);
         setOpenModalEditGenre(false);
     }

@@ -39,7 +39,7 @@ const EditInfor = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("Admin", userInfor);
+      // console.log("Admin", userInfor);
       return response.data;
     } catch (error) {
       // Handle network errors or other exceptions
@@ -71,7 +71,7 @@ const EditInfor = () => {
   const onFinish = async (values) => {
     // Value in Inpurt
     const { userName, userBio, email, birthDate } = values;
-    console.log("Values", values);
+    // console.log("Values", values);
     const postData = {
       id: userId,
       avatar: fileIMG,

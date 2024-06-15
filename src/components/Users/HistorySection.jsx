@@ -32,7 +32,7 @@ const HistorySection = () => {
       );
       // console.log("Song History", response.data);
       setSongList(response.data);
-      console.log("Song History", response.data);
+      // console.log("Song History", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);

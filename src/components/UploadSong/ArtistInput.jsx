@@ -44,7 +44,7 @@ const ArtistInput = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("Response", response.data.users);
+      // console.log("Response", response.data.users);
       return response.data.users;
     } catch (error) {
       console.log("Error:", error);

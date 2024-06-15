@@ -33,7 +33,7 @@ export const useSongUtils = () => {
   };
   // Show artist name
   const showArtist = (artistName) => {
-    console.log("showArtist", artistName);
+    // console.log("showArtist", artistName);
     if (artistName.length > 1) {
       return artistName.join(", ");
     } else {
@@ -145,7 +145,7 @@ export const useSongUtils = () => {
   // Get the max duration of the song
   const GetSongDuration = (audioRef) => {
     // const audioElement = new Audio(audioRef);
-    console.log("audioRef", audioRef.current.duration);
+    // console.log("audioRef", audioRef.current.duration);
     return audioRef.current.duration;
   };
 
@@ -164,7 +164,7 @@ export const useSongUtils = () => {
         const color = colorThief.getColor(img);
         const hexColor = rgbToHex(color[0], color[1], color[2]);
         setColorBG(hexColor);
-        console.log("Color", colorBG);
+        // console.log("Color", colorBG);
         setLoading(false);
       };
 

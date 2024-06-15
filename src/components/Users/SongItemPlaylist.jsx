@@ -72,7 +72,7 @@ const SongItemPlaylist = ({
   // const songDuration = GetSongDuration(songData);
 
   function displayMenu(e, songId) {
-    console.log("PlaylistList", playlistList);
+    // console.log("PlaylistList", playlistList);
     e.preventDefault();
     show({
       position: { x: e.clientX, y: e.clientY },
@@ -85,7 +85,7 @@ const SongItemPlaylist = ({
   const handleDeleteSong = () => {
     deleteSongInPlaylist(songId, localStorage.getItem("myPlaylistId")).then(
       (response) => {
-        console.log("Delete song response", response);
+        // console.log("Delete song response", response);
         if (response === 200) {
           message.success(`${t("song.deleted")} ${songInforObj.songName} ${t("song.inPlaylist")}`);
           // Trigger a re-render by updating the refresh state
@@ -119,7 +119,7 @@ const SongItemPlaylist = ({
   }
 
   useEffect(() => {
-    console.log("SongId", songId);
+    // console.log("SongId", songId);
     getUserPlaylist(userId).then((data) => setPlaylistList(data));
     if (refreshPlaylist == true) {
       getUserPlaylist(userId).then((data) => {

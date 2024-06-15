@@ -56,7 +56,7 @@ const ArtistDetailPage = () => {
       setFollow(result.isFollowed);
       setTopSongListArtist(result.songs);
       setRefresh(false);
-      console.log("SetArtistDetail", artistDetail);
+      // console.log("SetArtistDetail", artistDetail);
     });
   };
   const handleFollowArtist = async (artistId) => {
@@ -146,7 +146,7 @@ const ArtistDetailPage = () => {
   useEffect(() => {
     if (!artistDetail || !artistDetail.avatar) {
       setFollow(artistDetail.isFollowed);
-      console.log(artistDetail.isFollowed);
+      // console.log(artistDetail.isFollowed);
       setLoading(false);
       return;
     }

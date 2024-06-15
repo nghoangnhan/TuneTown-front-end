@@ -92,7 +92,7 @@ function useAccount() {
   const { mutate: authSignup } = useMutation({
     mutationFn: SignUpApi,
     onSuccess: (data) => {
-      console.log("data", data.code);
+      // console.log("data", data.code);
       {
         data.code == "ERROR-ACCOUNT-0000"
           ? message.error("email exist")

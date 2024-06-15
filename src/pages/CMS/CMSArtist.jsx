@@ -47,7 +47,7 @@ const CMSArtist = () => {
   };
 
   const handSearch = (e) => {
-    console.log("value", e.target.value);
+    // console.log("value", e.target.value);
     setSearchValue(e.target.value);
   };
   // Update Song
@@ -84,7 +84,7 @@ const CMSArtist = () => {
   const deleteSong = async (songId) => {
     try {
       if (confirm(t("confirmModal.deleteSong")) == true) {
-        console.log("auth", access_token);
+        // console.log("auth", access_token);
         const response = await axios.delete(
           `${Base_URL}/songs/deleteSong?songId=${songId}`,
           {

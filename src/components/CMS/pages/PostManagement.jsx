@@ -18,7 +18,7 @@ const PostManagement = () => {
     const { getAllPostAdmin, deletePost } = useForumUtils();
 
     const handSearch = (e) => {
-        console.log("value", e.target.value);
+        // console.log("value", e.target.value);
         setSearchValue(e.target.value);
     };
 
@@ -132,9 +132,9 @@ const PostManagement = () => {
     ];
 
     const handleDelete = (record) => {
-        console.log("Delete", record);
+        // console.log("Delete", record);
         deletePost(record.key).then((res) => {
-            console.log("res", res);
+            // console.log("res", res);
             setRefresh(true);
         });
     };

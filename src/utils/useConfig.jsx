@@ -30,14 +30,15 @@ const useConfig = () => {
     // const socket = io("https://socketserver-v6lc.onrender.com");
 
     useEffect(() => {
-        const newSocket = io.connect("ws://localhost:3000", {
-            // const newSocket = io.connect("wss://socketserver-v6lc.onrender.com", {
+        // const newSocket = io.connect("ws://localhost:3000", {
+        const newSocket = io.connect("wss://socketserver-v6lc.onrender.com", {
             reconnection: true,
             reconnectionAttempts: Infinity,
             reconnectionDelay: 1500, // thời gian chờ trước lần thử kết nối lại đầu tiên
-            reconnectionDelayMax: 10000, // thời gian chờ tối đa giữa các lần thử
+            reconnectionDelayMax: 9000, // thời gian chờ tối đa giữa các lần thử
             randomizationFactor: 0.5,   // thời gian chờ ngẫu nhiên (reconnectionDelay * randomizationFactor) giữa các lần thử
         });
+        // const newSocket = io.connect("https://socketserver-v6lc.onrender.com");
 
         setSocket(newSocket);
         // Clean up the connection when the component unmounts

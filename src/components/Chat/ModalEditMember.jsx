@@ -5,7 +5,7 @@ import useIconUtils from '../../utils/useIconUtils';
 
 const ModalEditMember = ({ openEditMember, setOpenEditMember, converChosen, handleDeleteMember }) => {
     const { Base_AVA } = useConfig();
-    console.log(converChosen);
+    // console.log(converChosen);
     const { BanIcon } = useIconUtils();
     return (
         <Modal open={openEditMember} onCancel={() => setOpenEditMember(false)}
