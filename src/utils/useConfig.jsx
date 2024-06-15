@@ -13,8 +13,8 @@ const useConfig = () => {
     const is30Inch = useMediaQuery({ query: "(max-width: 3840px)" });
 
     const { getToken } = UseCookie();
-    // Link to the backend server 
-    // export const Base_URL = "https://tunetown-production.up.railway.app";
+    // Link to the backend server
+    // const Base_URL = "https://tunetown-production.up.railway.app";
     const Base_URL_FE = "http://localhost:5173";
     const Base_URL = "http://localhost:8080";
     const Base_AVA = Base_Ava
@@ -30,6 +30,7 @@ const useConfig = () => {
 
     useEffect(() => {
         const newSocket = io.connect("ws://localhost:3000", {
+            // const newSocket = io.connect("https://socketserver-v6lc.onrender.com", {
             reconnection: true,
             reconnectionAttempts: Infinity,
             reconnectionDelay: 1500, // thời gian chờ trước lần thử kết nối lại đầu tiên
@@ -37,7 +38,6 @@ const useConfig = () => {
             randomizationFactor: 0.5,   // thời gian chờ ngẫu nhiên (reconnectionDelay * randomizationFactor) giữa các lần thử
         });
 
-        // const newSocket = io.connect("https://socketserver-v6lc.onrender.com");
         setSocket(newSocket);
         // Clean up the connection when the component unmounts
         return () => newSocket.disconnect();
