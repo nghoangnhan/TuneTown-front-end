@@ -90,7 +90,7 @@ const TheHeader = () => {
             </div>
           </div>
         }
-        <span className="hidden mr-3 cursor-default xl:block text-primaryText2 dark:text-white">
+        <span className="block mr-3 cursor-default  text-primaryText2 dark:text-white">
           {userInfor.userName ? userInfor.userName : "Unknown User"}
         </span>
 
