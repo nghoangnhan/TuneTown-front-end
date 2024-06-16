@@ -53,7 +53,7 @@ const ModalChoseSong = ({ openModal, setOpenModalChoseSong, handleSongItemClick 
                         {songList.map((song) => (
                             <li
                                 key={song.id}
-                                className="flex items-center p-2 space-x-2 rounded-md cursor-pointer bg-backgroundPlaylistHover dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 hover:dark:bg-backgroundPlaylistHoverDark text-primaryText2 "
+                                className="flex items-center p-2 space-x-2 rounded-md cursor-pointer bg-backgroundComponentPrimary hover:bg-backgroundPlaylistHover dark:bg-backgroundPlaylistDark dark:text-primaryTextDark2 hover:dark:bg-backgroundPlaylistHoverDark text-primaryText2 "
                                 onClick={() => {
                                     handleSongItemClick(song)
                                 }}
