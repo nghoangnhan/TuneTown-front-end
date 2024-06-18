@@ -32,6 +32,7 @@ const useConfig = () => {
     useEffect(() => {
         // const newSocket = io.connect("ws://localhost:3000", {
         const newSocket = io.connect("wss://socketserver-v6lc.onrender.com", {
+            // const newSocket = io.connect("wss://socketserver-1.onrender.com", {
             reconnection: true,
             reconnectionAttempts: Infinity,
             reconnectionDelay: 1500, // thời gian chờ trước lần thử kết nối lại đầu tiên
