@@ -64,9 +64,9 @@
   },
   "common": {
     "good": "Chào",
-    "morning": "Buổi sáng",
-    "afternoon": "Buổi chiều",
-    "evening": "Buổi tối",
+    "morning": "buổi sáng",
+    "afternoon": "buổi chiều",
+    "evening": "buổi tối",
     "back": "Trở lại",
     "selectFile": "Chọn tệp",
     "loadMore": "Tải thêm",
@@ -84,10 +84,10 @@
     "maybeWantListenAgain": "Có thể bạn muốn nghe lại",
     "artistChartUpdating": "Bảng xếp hạng nghệ sĩ đang cập nhật",
     "songChartUpdating": "Bảng xếp hạng bài hát đang cập nhật",
-    "spring": "Mùa xuân",
-    "summer": "Mùa hè",
-    "autumn": "Mùa thu",
-    "winter": "Mùa đông"
+    "spring": "mùa xuân",
+    "summer": "mùa hè",
+    "autumn": "mùa thu",
+    "winter": "mùa đông"
   },
   "forum": {
     "createAPost": "Tạo bài viết",
