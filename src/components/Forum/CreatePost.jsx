@@ -43,7 +43,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
 
   const onFinish = async (values) => {
     try {
-      console.log("Received values:", values);
+      // console.log("Received values:", values);
 
       const sanitizedContent = DOMPurify.sanitize(values.content);
       const contentParser = Parser(sanitizedContent).props?.children;

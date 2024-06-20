@@ -44,7 +44,7 @@ const LoginPage = () => {
         email: emailInput,
         password: passwordInput,
       });
-      console.log("Respone Data Sign in", response.data);
+      // console.log("Respone Data Sign in", response.data);
       if ((response.data && response.data.access_token) || response.data) {
         // Save cookies and token
         saveToken(response.data.access_token);

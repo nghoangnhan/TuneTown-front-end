@@ -111,7 +111,7 @@ export const useChatUtils = () => {
         // If community
         if (message.community) {
           const isSystemMessage = message.message.receiveUserId === message.community.id;
-          console.log("MESSAGES ", messages);
+          // console.log("MESSAGES ", messages);
           for (const msg of message.community.communityMessages) {
             const own = userId === msg.sendUser.id;
             const name = msg.type == 2 ? "SYSTEM MESSAGE" : (own ? " " : msg.sendUser.userName);
@@ -150,7 +150,7 @@ export const useChatUtils = () => {
           });
         }
       }
-      console.log("UPDATE ", updatedChatContent);
+      // console.log("UPDATE ", updatedChatContent);
       return updatedChatContent;
     } catch (error) {
       console.error("Error fetching messages:", error);

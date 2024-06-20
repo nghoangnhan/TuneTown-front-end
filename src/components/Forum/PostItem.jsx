@@ -74,7 +74,7 @@ const PostItem = ({ postContent }) => {
   };
 
   const handleAddSongToQueue = (songList) => {
-    console.log("handleAddSongToQueue", songList);
+    // console.log("handleAddSongToQueue", songList);
     dispatch(setCurrentTime(0));
     dispatch(
       setCurrentSong({
@@ -96,7 +96,7 @@ const PostItem = ({ postContent }) => {
       songCover: song?.poster,
       songData: song?.songData,
     }));
-    console.log(queueSongs);
+    // console.log(queueSongs);
     dispatch(addPlaylistSongToQueue(queueSongs));
   };
 
@@ -123,7 +123,7 @@ const PostItem = ({ postContent }) => {
       getSongFromPlaylist(postContent.playlist.id)
         .then((song) => {
           setSongPlaylist(song);
-          console.log("Song Playlist", song);
+          // console.log("Song Playlist", song);
         })
         .catch((error) => console.error("Error:", error));
     }

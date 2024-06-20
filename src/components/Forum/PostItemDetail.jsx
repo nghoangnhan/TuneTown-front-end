@@ -56,10 +56,10 @@ const PostItemDetail = () => {
       author: userId,
       content: commentRef.current.value,
     };
-    console.log("Create Comment", comment);
+    // console.log("Create Comment", comment);
     await createComment(comment).then((res) => {
       setRefresh(true);
-      console.log("Create Comment", res);
+      // console.log("Create Comment", res);
       commentRef.current.value = "";
       scrollToBottom(windownEndRef);
     });
@@ -80,7 +80,7 @@ const PostItemDetail = () => {
   };
 
   const handleAddSongToQueue = (songList) => {
-    console.log("handleAddSongToQueue", songList);
+    // console.log("handleAddSongToQueue", songList);
     dispatch(setCurrentTime(0));
     dispatch(
       setCurrentSong({
@@ -102,7 +102,7 @@ const PostItemDetail = () => {
       songCover: song?.poster,
       songData: song?.songData,
     }));
-    console.log(queueSongs);
+    // console.log(queueSongs);
     dispatch(addPlaylistSongToQueue(queueSongs));
   };
 

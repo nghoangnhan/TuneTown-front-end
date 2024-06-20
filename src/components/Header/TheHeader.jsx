@@ -41,7 +41,7 @@ const TheHeader = () => {
     getUserInfor(userId).then((res) => {
       setUserInfor(res.user);
       localStorage.setItem("userName", res.user.userName);
-      console.log("The Header || UserInfor", res.user);
+      // console.log("The Header || UserInfor", res.user);
     });
     // HandleUserData(userIdReduce, userNameReduce, userRoleReduce);
   }, [userId]);
@@ -90,7 +90,7 @@ const TheHeader = () => {
             </div>
           </div>
         }
-        <span className="block mr-3 cursor-default  text-primaryText2 dark:text-white">
+        <span className="block mr-3 cursor-default text-primaryText2 dark:text-white">
           {userInfor.userName ? userInfor.userName : "Unknown User"}
         </span>
 

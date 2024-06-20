@@ -16,7 +16,7 @@ const ModalChoseSong = ({ openModal, setOpenModalChoseSong, handleSongItemClick 
                     Authorization: `Bearer ${auth.access_token}`,
                 },
             });
-            console.log("SearchSong Response", response.data);
+            // console.log("SearchSong Response", response.data);
             return response.data;
         } catch (error) {
             console.log("Error:", error);
@@ -25,7 +25,7 @@ const ModalChoseSong = ({ openModal, setOpenModalChoseSong, handleSongItemClick 
 
     const handleSearchSong = (searchValue) => {
         searchSongAPI(searchValue).then((res) => {
-            console.log("SearchSong", res);
+            // console.log("SearchSong", res);
             setSongList(res);
         });
     };

@@ -16,7 +16,7 @@ function UploadFileDropZone(props) {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result;
-        console.log(binaryStr);
+        // console.log(binaryStr);
         props.setUploadedFile(file);
       };
       reader.readAsArrayBuffer(file);

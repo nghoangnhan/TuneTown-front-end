@@ -55,19 +55,19 @@ const SearchPage = () => {
     }
   };
   const handleSearch = async (keywords) => {
-    console.log("SearchPage || handleSearchSong", keywords);
+    // console.log("SearchPage || handleSearchSong", keywords);
     // Checkk if keywords is empty
     if (keywords === "") return;
     // Search Song
     const searchSong = await searchSongByName(keywords);
-    console.log("SearchSong || Song Result", searchSong);
+    // console.log("SearchSong || Song Result", searchSong);
     if (searchSong.length === 0) return;
     else {
       setSongRs(searchSong);
     }
     // Search Artist
     const searchArtist = await searchArtistByName(keywords);
-    console.log("SearchArtist || Artist Result", searchArtist);
+    // console.log("SearchArtist || Artist Result", searchArtist);
     if (searchArtist.length === 0) return;
     else {
       setArtistRs(searchArtist);
@@ -75,7 +75,7 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    console.log("SearchPage || keywordsInput", keywordsInput);
+    // console.log("SearchPage || keywordsInput", keywordsInput);
     if (keywordsInputDebounce === "") {
       setSongRs(null);
       setArtistRs(null);
