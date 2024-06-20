@@ -50,7 +50,11 @@ const ListChatSection = ({ chatList, converChosen, chatListRaw }) => {
             message.error("Invalid user data");
             return;
         }
-        await deleteConversation(userId, sendUser).then(() => {
+        await deleteConversation(userId, sendUser).then((res) => {
+            if (res.status !== 200) {
+                message.error("Failed to delete conversation. Please try again later.");
+                return;
+            }
             message.success("Delete conversation successfully");
             navigate("/chat");
             dispatch(setRefreshChat(true));

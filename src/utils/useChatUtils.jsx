@@ -295,7 +295,7 @@ export const useChatUtils = () => {
           },
         }
       );
-      return response.data;
+      return response;
     } catch (error) {
       console.log("Error:", error);
     }
