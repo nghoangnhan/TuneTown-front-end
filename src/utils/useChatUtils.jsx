@@ -395,7 +395,7 @@ export const useForumUtils = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("POST", response.data);
+      // console.log("POST", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
@@ -410,7 +410,7 @@ export const useForumUtils = () => {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      console.log("POST", response.data);
+      // console.log("POST", response.data);
       return response.data;
     } catch (error) {
       console.log("Error:", error);
