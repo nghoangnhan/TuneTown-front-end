@@ -20,7 +20,7 @@ const SongItem = ({ song, chart, songOrder, songListen, songId }) => {
   const { addSongToPlaylist, getUserPlaylist,
     addSongToHistory, combineData } = useMusicAPIUtils();
   const { ListenIcon, RepostButton,
-    DownloadButton, ShareButton, PlayButton } = useIconUtils();
+    DownloadButton, ShareButton, PlayButton, LoadingLogo } = useIconUtils();
   const { showArtistV2, NavigateSong, handleDownloadSong, handleShareSong } = useSongUtils();
   const isPlaying = useSelector((state) => state.music.isPlaying);
   const songInfor = useSelector((state) => state.music.currentSong);
@@ -193,11 +193,7 @@ const SongItem = ({ song, chart, songOrder, songListen, songId }) => {
       >
         <Repost song={songInforObj} closeModal={() => setOpenModal(false)} />
       </Modal>
-      {loading && (
-        <div className="overlay">
-          <img src="/src/assets/img/logo/logo.png" alt="Loading..." width={100} height={100} className="zoom-in-out" />
-        </div>
-      )}
+      <LoadingLogo loading={loading}></LoadingLogo>
     </div>
   );
 };
