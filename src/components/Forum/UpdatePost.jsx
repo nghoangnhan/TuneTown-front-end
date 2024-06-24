@@ -54,7 +54,9 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                 },
                 content: contentParser,
                 song: songChosen?.id,
-                playlist: playlistChosen?.id,
+                playlist: {
+                    id: playlistChosen?.id
+                },
                 mp3Link: null
             }, {
                 headers: {
