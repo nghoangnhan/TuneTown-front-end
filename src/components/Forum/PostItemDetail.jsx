@@ -90,6 +90,7 @@ const PostItemDetail = () => {
         songDuration: songList[0]?.songDuration || 200,
         songCover: songList[0]?.poster,
         songData: songList[0]?.songData,
+        lyric: songList[0]?.lyric,
       })
     );
 
@@ -101,6 +102,7 @@ const PostItemDetail = () => {
       songDuration: song?.songDuration || 200,
       songCover: song?.poster,
       songData: song?.songData,
+      lyric: song?.lyric,
     }));
     // console.log(queueSongs);
     dispatch(addPlaylistSongToQueue(queueSongs));
@@ -255,6 +257,7 @@ const PostItemDetail = () => {
                 songDuration: postContent.song.songDuration || 200,
                 songCover: postContent.song.poster,
                 songData: postContent.song.songData,
+                lyric: postContent.song?.lyric,
               }
             ))}>
               <PlayButton color={true} />
@@ -334,6 +337,7 @@ const PostItemDetail = () => {
                             songDuration: song.songDuration || 200,
                             songCover: song.poster,
                             songData: song.songData,
+                            lyric: song?.lyric,
                           }
                         ))}
                       >
