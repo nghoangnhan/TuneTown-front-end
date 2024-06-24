@@ -164,7 +164,7 @@ const UpdatePost = ({ postContent, setOpenModalUpdate, setRefresh }) => {
                         <button
                             onClick={handleAddPlaylist}
                             type="button"
-                            className="px-2 py-2 text-center bg-transparent border rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+                            className="px-2 py-2 text-center bg-transparent border rounded-md text-primary dark:text-primaryDarkmode border-primary hover:opacity-70 dark:border-primaryDarkmode"
                         >
                             {t("modal.chooseaPlaylist")}
                         </button>

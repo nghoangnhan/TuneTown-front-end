@@ -151,7 +151,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
             <Button
               onClick={() => setOpenModalChoseSong(true)}
               type="button"
-              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
             >
               {t("modal.chooseaSong")}
             </Button>
@@ -165,7 +165,7 @@ const CreatePost = ({ setOpenModalCreate }) => {
             <Button
               onClick={handleAddPlaylist}
               type="button"
-              className="transition-colors duration-150 border min-w-[110px] rounded-md  dark:text-primaryDarkmode dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode"
+              className="transition-colors duration-150 border min-w-[110px] rounded-md text-primary dark:text-primaryDarkmode border-primary dark:border-primaryDarkmode hover:opacity-70"
             >
               {t("modal.chooseaPlaylist")}
             </Button>
